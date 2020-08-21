@@ -40,10 +40,10 @@ public class OfflineMessageDispatcher {
         Bundle bundle = intent.getExtras();
         DemoLog.i(TAG, "bundle: " + bundle);
         if (bundle == null) {
-            String ext = VIVOPushMessageReceiverImpl.getParams();
-            if (!TextUtils.isEmpty(ext)) {
-                return getOfflineMessageBeanFromContainer(ext);
-            }
+//            String ext = VIVOPushMessageReceiverImpl.getParams();
+//            if (!TextUtils.isEmpty(ext)) {
+//                return getOfflineMessageBeanFromContainer(ext);
+//            }
             return null;
         } else {
             String ext = bundle.getString("ext");
