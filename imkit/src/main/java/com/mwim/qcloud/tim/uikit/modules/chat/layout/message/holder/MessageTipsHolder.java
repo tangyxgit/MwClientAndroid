@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 
 public class MessageTipsHolder extends MessageEmptyHolder {

@@ -14,7 +14,7 @@ import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
 import com.mwim.qcloud.tim.uikit.utils.MD5Utils;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ThreadHelper;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 
 import java.io.File;

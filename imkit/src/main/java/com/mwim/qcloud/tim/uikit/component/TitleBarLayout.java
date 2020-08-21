@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.base.ITitleBarLayout;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import androidx.annotation.Nullable;
 

@@ -22,7 +22,7 @@ import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.MessageListAdapter;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.tencent.imsdk.v2.V2TIMTextElem;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.AudioPlayer;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;

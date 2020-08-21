@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.modules.contact.FriendProfileLayout;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 
 public class GroupApplyMemberActivity extends Activity {

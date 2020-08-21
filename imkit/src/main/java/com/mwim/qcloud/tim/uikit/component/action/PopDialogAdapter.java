@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.ArrayList;
 import java.util.List;

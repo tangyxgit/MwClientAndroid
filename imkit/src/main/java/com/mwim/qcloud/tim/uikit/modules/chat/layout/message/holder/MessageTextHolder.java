@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.face.FaceManager;
 
 public class MessageTextHolder extends MessageContentHolder {

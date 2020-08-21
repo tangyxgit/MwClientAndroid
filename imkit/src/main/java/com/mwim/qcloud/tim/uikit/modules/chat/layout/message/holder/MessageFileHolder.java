@@ -9,7 +9,7 @@ import com.tencent.imsdk.v2.V2TIMDownloadCallback;
 import com.tencent.imsdk.v2.V2TIMElem;
 import com.tencent.imsdk.v2.V2TIMFileElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 

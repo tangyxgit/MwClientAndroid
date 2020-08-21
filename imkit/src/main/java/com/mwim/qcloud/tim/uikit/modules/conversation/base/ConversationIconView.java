@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.gatherimage.SynthesizedImageView;
 import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;

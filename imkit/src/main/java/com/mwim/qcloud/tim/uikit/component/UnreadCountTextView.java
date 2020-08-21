@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import androidx.appcompat.widget.AppCompatTextView;
 

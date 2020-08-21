@@ -24,7 +24,7 @@ import com.mwim.qcloud.tim.uikit.component.action.PopMenuAction;
 import com.mwim.qcloud.tim.uikit.component.action.PopMenuAdapter;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.ArrayList;
 import java.util.List;

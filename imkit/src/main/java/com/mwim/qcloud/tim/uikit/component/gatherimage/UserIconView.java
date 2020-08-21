@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.List;
 

@@ -5,7 +5,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.utils.DateTimeUtil;
 
 import java.util.Date;

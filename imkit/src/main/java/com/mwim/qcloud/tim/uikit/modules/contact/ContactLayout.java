@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.mwim.qcloud.tim.uikit.modules.contact.interfaces.IContactLayout;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 
 

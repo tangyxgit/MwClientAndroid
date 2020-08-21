@@ -11,7 +11,7 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.mwim.qcloud.tim.uikit.TUIKit;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.ImageEngine;
 
 import java.io.File;

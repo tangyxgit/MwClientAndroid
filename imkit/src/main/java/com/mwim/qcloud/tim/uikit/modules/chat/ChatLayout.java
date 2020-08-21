@@ -16,7 +16,7 @@ import com.mwim.qcloud.tim.uikit.modules.group.apply.GroupApplyManagerActivity;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfoActivity;
 import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatManagerKit;

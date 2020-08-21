@@ -15,7 +15,7 @@ import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.ArrayList;
 import java.util.List;

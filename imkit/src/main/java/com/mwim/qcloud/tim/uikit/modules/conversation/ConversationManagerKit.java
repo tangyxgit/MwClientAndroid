@@ -12,7 +12,7 @@ import com.tencent.imsdk.v2.V2TIMGroupMemberInfoResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;

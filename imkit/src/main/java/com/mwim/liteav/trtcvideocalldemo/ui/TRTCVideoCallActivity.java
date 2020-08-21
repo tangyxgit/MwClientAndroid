@@ -33,7 +33,7 @@ import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.liteav.model.TRTCAVCallListener;
 import com.mwim.liteav.trtcvideocalldemo.ui.videolayout.TRTCVideoLayout;
 import com.mwim.liteav.trtcvideocalldemo.ui.videolayout.TRTCVideoLayoutManager;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 
 import java.util.ArrayList;

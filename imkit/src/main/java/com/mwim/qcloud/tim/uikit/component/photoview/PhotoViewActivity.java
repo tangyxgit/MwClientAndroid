@@ -17,7 +17,7 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMDownloadCallback;
 import com.tencent.imsdk.v2.V2TIMElem;
 import com.tencent.imsdk.v2.V2TIMImageElem;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.io.File;
 

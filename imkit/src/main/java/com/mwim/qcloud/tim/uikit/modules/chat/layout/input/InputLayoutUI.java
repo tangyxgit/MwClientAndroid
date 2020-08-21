@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IInputLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreActionUnit;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;

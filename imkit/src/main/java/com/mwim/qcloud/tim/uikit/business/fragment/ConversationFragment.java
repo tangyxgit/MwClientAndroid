@@ -26,7 +26,7 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationListLayout;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.ArrayList;
 import java.util.List;

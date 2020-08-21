@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.base.INoticeLayout;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 public class NoticeLayout extends RelativeLayout implements INoticeLayout {
 

@@ -14,7 +14,7 @@ import android.widget.RadioGroup;
 
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.ArrayList;
 

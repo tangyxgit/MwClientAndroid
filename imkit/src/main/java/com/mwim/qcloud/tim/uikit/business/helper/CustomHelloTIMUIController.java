@@ -11,7 +11,7 @@ import com.mwim.qcloud.tim.uikit.business.message.CustomHelloMessage;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 public class CustomHelloTIMUIController {
 

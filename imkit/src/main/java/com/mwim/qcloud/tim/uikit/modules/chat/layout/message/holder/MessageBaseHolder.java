@@ -8,7 +8,7 @@ import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.MessageLayoutUI;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.MessageListAdapter;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 
 import androidx.recyclerview.widget.RecyclerView;

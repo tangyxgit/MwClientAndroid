@@ -15,7 +15,7 @@ import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 public class VideoViewActivity extends Activity {
 

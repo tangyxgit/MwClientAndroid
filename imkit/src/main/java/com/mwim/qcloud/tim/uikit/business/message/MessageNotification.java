@@ -26,7 +26,7 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMOfflinePushInfo;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 public class MessageNotification {
 

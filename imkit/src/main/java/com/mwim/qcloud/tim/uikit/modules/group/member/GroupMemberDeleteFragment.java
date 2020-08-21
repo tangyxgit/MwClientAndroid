@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;

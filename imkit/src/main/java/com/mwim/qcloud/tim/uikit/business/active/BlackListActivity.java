@@ -10,7 +10,7 @@ import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 public class BlackListActivity extends IMBaseActivity {
 

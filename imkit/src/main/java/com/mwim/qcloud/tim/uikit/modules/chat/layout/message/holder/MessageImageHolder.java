@@ -19,7 +19,7 @@ import com.tencent.imsdk.v2.V2TIMFaceElem;
 import com.tencent.imsdk.v2.V2TIMImageElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMVideoElem;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.component.face.FaceManager;
 import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;

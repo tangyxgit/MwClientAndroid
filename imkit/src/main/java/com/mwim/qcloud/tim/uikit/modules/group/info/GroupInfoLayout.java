@@ -18,7 +18,7 @@ import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.SelectionActivity;

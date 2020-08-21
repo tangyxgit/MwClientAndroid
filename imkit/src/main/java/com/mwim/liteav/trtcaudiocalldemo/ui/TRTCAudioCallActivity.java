@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 
 import com.mwim.liteav.model.IntentParams;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
@@ -37,7 +38,6 @@ import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.liteav.model.TRTCAVCallListener;
 import com.mwim.liteav.trtcaudiocalldemo.ui.audiolayout.TRTCAudioLayout;
 import com.mwim.liteav.trtcaudiocalldemo.ui.audiolayout.TRTCAudioLayoutManager;
-import com.tencent.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 
 import java.util.ArrayList;

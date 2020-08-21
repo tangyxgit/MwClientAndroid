@@ -22,7 +22,7 @@ import com.tencent.imsdk.v2.V2TIMFriendApplication;
 import com.tencent.imsdk.v2.V2TIMFriendOperationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.List;
 

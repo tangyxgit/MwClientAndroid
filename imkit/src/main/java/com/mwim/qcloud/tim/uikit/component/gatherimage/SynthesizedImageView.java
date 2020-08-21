@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import android.util.AttributeSet;
 
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.List;
 

@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.mwim.qcloud.tim.uikit.modules.group.interfaces.IGroupMemberLayout;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;

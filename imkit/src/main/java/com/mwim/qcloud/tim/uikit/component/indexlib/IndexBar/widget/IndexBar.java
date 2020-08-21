@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.component.indexlib.IndexBar.helper.IIndexBarDataHelper;
 import com.mwim.qcloud.tim.uikit.component.indexlib.IndexBar.helper.IndexBarDataHelperImpl;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.CustomLinearLayoutManager;
 import com.mwim.qcloud.tim.uikit.component.indexlib.IndexBar.bean.BaseIndexPinyinBean;
 

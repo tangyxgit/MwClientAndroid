@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationAdapter;
 import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationLayout;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;

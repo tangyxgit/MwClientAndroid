@@ -29,7 +29,7 @@ import com.mwim.qcloud.tim.uikit.component.video.state.CameraMachine;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.video.view.CameraView;
 
 import java.io.IOException;

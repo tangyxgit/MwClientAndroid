@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.modules.group.interfaces.IGroupMemberLayout;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;

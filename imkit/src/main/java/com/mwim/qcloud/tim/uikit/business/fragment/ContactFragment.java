@@ -20,7 +20,7 @@ import com.mwim.qcloud.tim.uikit.modules.contact.ContactLayout;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 
 public class ContactFragment extends BaseFragment {

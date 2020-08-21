@@ -28,7 +28,7 @@ import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
 import com.mwim.liteav.trtcaudiocalldemo.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocalldemo.ui.TRTCVideoCallActivity;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.AudioPlayer;
 import com.mwim.qcloud.tim.uikit.component.face.Emoji;

@@ -12,7 +12,7 @@ import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import static com.tencent.imsdk.v2.V2TIMManager.V2TIM_STATUS_LOGINED;
 

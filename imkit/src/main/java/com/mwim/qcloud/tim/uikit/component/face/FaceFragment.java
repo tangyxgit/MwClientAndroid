@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.utils.SoftKeyBoardUtil;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.io.IOException;
 import java.util.ArrayList;

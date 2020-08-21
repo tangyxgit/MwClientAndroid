@@ -15,7 +15,7 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 /**
  * 登录状态的Activity都要集成该类，来完成被踢下线等监听处理。
  */

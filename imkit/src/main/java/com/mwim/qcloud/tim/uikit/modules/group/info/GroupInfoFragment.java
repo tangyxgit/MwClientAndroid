@@ -12,7 +12,7 @@ import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberDeleteFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInviteFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberManagerFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 

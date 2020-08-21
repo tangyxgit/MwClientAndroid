@@ -8,7 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.List;
 

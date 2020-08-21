@@ -21,7 +21,7 @@ import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMConversation;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 
 public class ChatFragment extends BaseFragment {

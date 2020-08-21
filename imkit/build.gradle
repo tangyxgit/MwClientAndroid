@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+group='com.mwim.qcloud.tim.uikit'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion

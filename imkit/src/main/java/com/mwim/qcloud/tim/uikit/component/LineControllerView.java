@@ -14,7 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 /**
  * 设置等页面条状控制或显示信息的控件

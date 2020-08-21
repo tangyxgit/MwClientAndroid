@@ -22,7 +22,7 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

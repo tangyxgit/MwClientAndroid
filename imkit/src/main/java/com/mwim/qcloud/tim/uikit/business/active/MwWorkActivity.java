@@ -22,7 +22,7 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
-import com.tencent.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.R;
 
 /**
  * Created by tangyx
