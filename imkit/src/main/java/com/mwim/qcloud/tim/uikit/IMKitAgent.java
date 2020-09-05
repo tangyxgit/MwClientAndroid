@@ -2,7 +2,6 @@ package com.mwim.qcloud.tim.uikit;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
 import com.huawei.hms.push.HmsMessaging;
 import com.meizu.cloud.pushsdk.PushManager;
@@ -17,13 +16,13 @@ import com.mwim.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.mwim.qcloud.tim.uikit.config.GeneralConfig;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
-import com.mwim.qcloud.tim.uikit.utils.AppUtils;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
+import com.work.util.AppUtils;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;

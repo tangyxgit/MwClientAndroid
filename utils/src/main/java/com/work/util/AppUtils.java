@@ -1,4 +1,4 @@
-package com.mwim.qcloud.tim.uikit.utils;
+package com.work.util;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -269,7 +269,7 @@ public class AppUtils {
      */
     public static boolean isAppBackground(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        if(Build.VERSION.SDK_INT> Build.VERSION_CODES.KITKAT_WATCH){
+        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.KITKAT_WATCH){
             List<ActivityManager.RunningAppProcessInfo> appProcesses = am.getRunningAppProcesses();
             for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
                 if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
