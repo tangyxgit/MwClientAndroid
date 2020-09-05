@@ -9,12 +9,12 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <com.tencent.qcloud.tim.uikit.component.TitleBarLayout
+    <com.mwim.qcloud.tim.uikit.component.TitleBarLayout
         android:id="@+id/start_c2c_chat_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/page_title_height" />
 
-    <com.tencent.qcloud.tim.uikit.modules.contact.ContactListView
+    <com.mwim.qcloud.tim.uikit.modules.contact.ContactListView
         android:id="@+id/contact_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

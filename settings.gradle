@@ -1,3 +1,8 @@
+include ':recycler_view_helper'
+include ':netwrok'
+include ':api'
+include ':utils'
+include ':base'
 include ':imkit'
 include ':app'
 rootProject.name = "MwClientAndroid"

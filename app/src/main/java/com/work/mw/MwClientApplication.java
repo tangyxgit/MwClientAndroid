@@ -1,9 +1,14 @@
 package com.work.mw;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
-import com.mwim.qcloud.tim.uikit.business.StatisticActivityLifecycleCallback;
 
 /**
  * Created by tangyx
@@ -11,36 +16,57 @@ import com.mwim.qcloud.tim.uikit.business.StatisticActivityLifecycleCallback;
  * email tangyx@live.com
  */
 
-public class MwClientApplication extends Application {
+public class MwClientApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
         IMKitAgent.init(this,"");
-//        if (BrandUtil.isBrandXiaoMi()) {
-//            // 小米离线推送
-//            MiPushClient.registerPush(this, PrivateConstants.XM_PUSH_APPID, PrivateConstants.XM_PUSH_APPKEY);
-//        } else if (BrandUtil.isBrandHuawei()) {
-//            // 华为离线推送，设置是否接收Push通知栏消息调用示例
-//            HmsMessaging.getInstance(this).turnOnPush().addOnCompleteListener(new com.huawei.hmf.tasks.OnCompleteListener<Void>() {
-//                @Override
-//                public void onComplete(com.huawei.hmf.tasks.Task<Void> task) {
-//                    if (task.isSuccessful()) {
-//                        DemoLog.i(TAG, "huawei turnOnPush Complete");
-//                    } else {
-//                        DemoLog.e(TAG, "huawei turnOnPush failed: ret=" + task.getException().getMessage());
-//                    }
-//                }
-//            });
-//        } else if (MzSystemUtils.isBrandMeizu(this)) {
-//            // 魅族离线推送
-//            PushManager.register(this, PrivateConstants.MZ_PUSH_APPID, PrivateConstants.MZ_PUSH_APPKEY);
-//        } else if (BrandUtil.isBrandVivo()) {
-//            // vivo离线推送
-//            PushClient.getInstance(getApplicationContext()).initialize();
-//        } else if (HeytapPushManager.isSupportPush()) {
-//            // oppo离线推送，因为需要登录成功后向我们后台设置token，所以注册放在MainActivity中做
-//        }
-
+        IMKitAgent.registerPush();
         registerActivityLifecycleCallbacks(new StatisticActivityLifecycleCallback());
+    }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(base);
+    }
+
+    static class StatisticActivityLifecycleCallback implements ActivityLifecycleCallbacks {
+
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+            IMKitAgent.onActivityStarted();
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+            IMKitAgent.onActivityStopped();
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+
+        }
     }
 }

@@ -10,11 +10,11 @@ import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
-import com.mwim.qcloud.tim.uikit.business.Menu;
 import com.mwim.qcloud.tim.uikit.business.active.BlackListActivity;
 import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
 import com.mwim.qcloud.tim.uikit.business.active.GroupListActivity;
 import com.mwim.qcloud.tim.uikit.business.active.NewFriendActivity;
+import com.mwim.qcloud.tim.uikit.business.helper.PopMenuHelper;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactLayout;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
@@ -27,7 +27,8 @@ public class ContactFragment extends BaseFragment {
 
     private static final String TAG = ContactFragment.class.getSimpleName();
     private ContactLayout mContactLayout;
-    private Menu mMenu;
+//    private Menu mMenu;
+    private PopMenuHelper mMenu;
 
     @Nullable
     @Override
@@ -41,15 +42,16 @@ public class ContactFragment extends BaseFragment {
     private void initViews(View view) {
         // 从布局文件中获取通讯录面板
         mContactLayout = view.findViewById(R.id.contact_layout);
-        mMenu = new Menu(getActivity(), mContactLayout.getTitleBar(), Menu.MENU_TYPE_CONTACT);
+//        mMenu = new Menu(getActivity(), mContactLayout.getTitleBar(), Menu.MENU_TYPE_CONTACT);
+        mContactLayout.getTitleBar().getRightGroup().setVisibility(View.GONE);
         mContactLayout.getTitleBar().setOnRightClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMenu.isShowing()) {
-                    mMenu.hide();
-                } else {
-                    mMenu.show();
-                }
+//                if (mMenu.isShowing()) {
+//                    mMenu.hide();
+//                } else {
+//                    mMenu.show();
+//                }
             }
         });
         mContactLayout.getContactListView().setOnItemClickListener(new ContactListView.OnItemClickListener() {

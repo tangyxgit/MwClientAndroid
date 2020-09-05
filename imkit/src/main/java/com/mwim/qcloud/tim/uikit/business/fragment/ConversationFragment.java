@@ -3,6 +3,7 @@ package com.mwim.qcloud.tim.uikit.business.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -10,13 +11,13 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.Constants;
-import com.mwim.qcloud.tim.uikit.business.Menu;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
-import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
+import com.mwim.qcloud.tim.uikit.business.helper.PopMenuHelper;
 import com.mwim.qcloud.tim.uikit.component.action.PopActionClickListener;
 import com.mwim.qcloud.tim.uikit.component.action.PopDialogAdapter;
 import com.mwim.qcloud.tim.uikit.component.action.PopMenuAction;
@@ -40,7 +41,8 @@ public class ConversationFragment extends BaseFragment {
     private PopDialogAdapter mConversationPopAdapter;
     private PopupWindow mConversationPopWindow;
     private List<PopMenuAction> mConversationPopActions = new ArrayList<>();
-    private Menu mMenu;
+//    private Menu mMenu;
+    private PopMenuHelper mMenu;
 
     @Nullable
     @Override
@@ -53,7 +55,13 @@ public class ConversationFragment extends BaseFragment {
     private void initView() {
         // 从布局文件中获取会话列表面板
         mConversationLayout = mBaseView.findViewById(R.id.conversation_layout);
-        mMenu = new Menu(getActivity(), (TitleBarLayout) mConversationLayout.getTitleBar(), Menu.MENU_TYPE_CONVERSATION);
+//        mMenu = new Menu(getActivity(), (TitleBarLayout) mConversationLayout.getTitleBar(), Menu.MENU_TYPE_CONVERSATION);
+        mMenu = new PopMenuHelper(R.menu.map_group, mConversationLayout.getTitleBar().getRightIcon(), new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
         // 会话列表面板的默认UI和交互初始化
         mConversationLayout.initDefault();
         // 通过API设置ConversataonLayout各种属性的样例，开发者可以打开注释，体验效果
@@ -79,11 +87,7 @@ public class ConversationFragment extends BaseFragment {
         mConversationLayout.getTitleBar().setOnRightClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mMenu.isShowing()) {
-                    mMenu.hide();
-                } else {
-                    mMenu.show();
-                }
+                mMenu.showMenu(getActivity());
             }
         });
     }

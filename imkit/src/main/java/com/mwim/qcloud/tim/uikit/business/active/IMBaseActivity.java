@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -9,17 +8,18 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.mwim.qcloud.tim.uikit.R;
+import com.workstation.android.BaseHomeActivity;
+
 /**
  * 登录状态的Activity都要集成该类，来完成被踢下线等监听处理。
  */
-public class IMBaseActivity extends Activity {
+public abstract class IMBaseActivity extends BaseHomeActivity {
 
     private static final String TAG = IMBaseActivity.class.getSimpleName();
 
@@ -50,12 +50,9 @@ public class IMBaseActivity extends Activity {
 //        context.startActivity(intent);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        DemoLog.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color));
@@ -65,7 +62,6 @@ public class IMBaseActivity extends Activity {
             vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
             getWindow().getDecorView().setSystemUiVisibility(vis);
         }
-
         IMKitAgent.addIMEventListener(mIMEventListener);
     }
 

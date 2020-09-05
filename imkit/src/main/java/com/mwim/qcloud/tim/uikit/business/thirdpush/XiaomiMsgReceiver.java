@@ -1,10 +1,7 @@
 package com.mwim.qcloud.tim.uikit.business.thirdpush;
 
 import android.content.Context;
-import android.content.Intent;
-import android.text.TextUtils;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -13,8 +10,6 @@ import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
 
 import java.util.List;
-import java.util.Map;
-
 
 public class XiaomiMsgReceiver extends PushMessageReceiver {
 

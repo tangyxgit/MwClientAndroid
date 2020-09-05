@@ -26,4 +26,20 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
+    <!--PopMenu的Style-->
+    <style name="PopMenuStyle" >
+        <item name="dropDownListViewStyle">@style/PopMenuDivider</item>
+        <item name="textAppearanceSmallPopupMenu">@style/PopMenuText</item>
+        <item name="textAppearanceLargePopupMenu">@style/PopMenuText</item>
+        <item name="android:itemBackground">@drawable/selector_pop_menu</item>
+    </style>
+    <style name="PopMenuText">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="PopMenuDivider">
+        <item name="divider">@color/color_e6e6e6</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
 </resources>

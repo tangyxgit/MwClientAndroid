@@ -50,7 +50,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <!--    业务逻辑    -->
-        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity" android:theme="@style/Theme.AppCompat.Slider"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.ChatActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.AddMoreActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.BlackListActivity"/>
