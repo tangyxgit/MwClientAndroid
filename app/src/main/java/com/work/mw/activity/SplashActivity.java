@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
@@ -20,7 +21,7 @@ import com.workstation.android.BaseHomeActivity;
  * email tangyx@live.com
  */
 
-public class SplashActivity extends BaseHomeActivity {
+public class SplashActivity extends BaseActivity {
     private static final String TAG = SplashActivity.class.getSimpleName();
     private UserInfo mUserInfo;
 

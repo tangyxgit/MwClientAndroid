@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.http.network.HttpConnectWork;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
-import com.jaeger.library.StatusBarUtil;
 import com.work.util.NetworkUtils;
 import com.work.util.ToastUtil;
 import com.workstation.listener.HomeWorkListener;
@@ -111,7 +109,7 @@ public class BaseHomeActivity extends ToolBarActivity
     };
 
     public void setStatusBar(){
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.defaultColorPrimary),50);
+//        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.defaultColorPrimary),50);
     }
 
     @Override

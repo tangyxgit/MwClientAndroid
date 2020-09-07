@@ -233,8 +233,4 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         return false;
     }
 
-    @Override
-    public void setStatusBar() {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.status_bar_color));
-    }
 }
