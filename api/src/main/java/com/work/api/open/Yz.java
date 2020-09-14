@@ -83,6 +83,7 @@ public class Yz extends ApiClient {
         params.resp = new UploadResp();
         if(SLog.debug)SLog.e("Upload File:"+path);
         params.addFileParam("file",new File(path));
+        params.addTextParam("token",path);
         ConnectDataTask dataTask = new ConnectDataTask(params);
         dataTask.uploadFile();
     }

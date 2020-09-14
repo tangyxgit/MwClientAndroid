@@ -17,6 +17,8 @@ import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.work.api.open.Yz;
 import com.work.api.open.model.RegisterReq;
+import com.work.api.open.model.UploadResp;
+import com.work.api.open.model.client.OpenData;
 import com.work.util.ToastUtil;
 import com.workstation.crop.config.CropProperty;
 
@@ -54,31 +56,19 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         super.onInitValue();
         setTitleName(R.string.user_info_title);
         UserApi userApi = UserApi.instance();
-        String userIcon = userApi.getUserIcon();
-        if (TextUtils.isEmpty(userIcon)) {
-            GlideEngine.loadImage(mUserIcon, R.drawable.default_head);
-        } else {
-            GlideEngine.loadCornerImage(mUserIcon, userIcon,null,10);
-        }
         findViewById(R.id.user_layout).setOnClickListener(this);
         mNickname.setCanNav(true);
         mNickname.setOnClickListener(this);
-        mNickname.setContent(userApi.getNickName());
         mPhone.setCanNav(true);
         mPhone.setOnClickListener(this);
-        mPhone.setContent(userApi.getMobile());
         mDepartment.setCanNav(true);
         mDepartment.setOnClickListener(this);
-        mDepartment.setContent(userApi.getDepartment());
         mPosition.setCanNav(true);
         mPosition.setOnClickListener(this);
-        mPosition.setContent(userApi.getPosition());
         mCard.setCanNav(true);
         mCard.setOnClickListener(this);
-        mCard.setContent(userApi.getCard());
         mEmail.setCanNav(true);
         mEmail.setOnClickListener(this);
-        mEmail.setContent(userApi.getEmail());
     }
 
     @Override
@@ -89,6 +79,12 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void updateUser(){
         UserApi userApi = UserApi.instance();
+        String userIcon = userApi.getUserIcon();
+        if (TextUtils.isEmpty(userIcon)) {
+            GlideEngine.loadImage(mUserIcon, R.drawable.default_head);
+        } else {
+            GlideEngine.loadCornerImage(mUserIcon, userIcon,null,10);
+        }
         mNickname.setContent(userApi.getNickName());
         mPhone.setContent(userApi.getMobile());
         mDepartment.setContent(userApi.getDepartment());
@@ -197,9 +193,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     public void onResult(RequestWork req, ResponseWork resp) throws Exception {
         super.onResult(req, resp);
         if(resp.isSuccess()){
+            UserApi userApi = UserApi.instance();
             if(req instanceof RegisterReq){
                 int viewId = resp.getPositionParams(0);
-                UserApi userApi = UserApi.instance();
                 if (viewId == R.id.modify_nick_name) {
                     userApi.setNickName(((RegisterReq) req).getNickName());
                 }else if(viewId == R.id.modify_department){
@@ -212,6 +208,15 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     userApi.setEmail(((RegisterReq) req).getEmail());
                 }
                 updateUser();
+            }else if(resp instanceof UploadResp){
+                OpenData data = ((UploadResp) resp).getData();
+                if(data!=null){
+                    userApi.setUserIcon(data.getUserIcon());
+                    updateUser();
+                    RegisterReq registerReq = new RegisterReq();
+                    registerReq.setUserIcon(data.getUserIcon());
+                    Yz.getSession().update(registerReq,null);
+                }
             }
         }else{
             ToastUtil.warning(this,resp.getMessage());
