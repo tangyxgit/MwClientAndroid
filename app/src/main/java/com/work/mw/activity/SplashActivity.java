@@ -1,7 +1,7 @@
 package com.work.mw.activity;
 
 import android.content.Intent;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
@@ -10,10 +10,9 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.mw.R;
-import com.work.mw.modal.UserInfo;
-import com.workstation.android.BaseHomeActivity;
+import com.work.mw.modal.UserApi;
+import com.work.util.SLog;
 
 /**
  * Created by tangyx
@@ -22,18 +21,17 @@ import com.workstation.android.BaseHomeActivity;
  */
 
 public class SplashActivity extends BaseActivity {
-    private static final String TAG = SplashActivity.class.getSimpleName();
-    private UserInfo mUserInfo;
+    private UserApi mUserInfo;
 
     @Override
     public void onInitValue() throws Exception {
         super.onInitValue();
-        mUserInfo = UserInfo.getInstance();
+        mUserInfo = UserApi.instance();
         handleData();
     }
 
     private void handleData() {
-        if (mUserInfo != null && mUserInfo.isAutoLogin()) {
+        if (mUserInfo != null && !TextUtils.isEmpty(mUserInfo.getUserSign())) {
             login();
         } else {
             View mFlashView = findViewById(R.id.loading_view);
@@ -46,16 +44,15 @@ public class SplashActivity extends BaseActivity {
         }
     }
     private void login() {
-        IMKitAgent.login(mUserInfo.getUserId(), mUserInfo.getUserSig(), new IUIKitCallBack() {
+        IMKitAgent.login(mUserInfo.getPhone(), mUserInfo.getUserSign(), new IUIKitCallBack() {
             @Override
             public void onError(String module, final int code, final String desc) {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        ToastUtil.toastLongMessage("登录失败, errCode = " + code + ", errInfo = " + desc);
                         startLogin();
                     }
                 });
-                Log.i(TAG, "imLogin errorCode = " + code + ", errorInfo = " + desc);
+                SLog.e("imLogin errorCode = " + code + ", errorInfo = " + desc);
             }
 
             @Override

@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name" translatable="false">元信</string>
     <string name="activity_forgetpassword" translatable="false">忘记密码</string>
+    <string name="activity_register" translatable="false">注册</string>
 
     <string name="text_login_ing" translatable="false">登录中...</string>
+    <string name="text_please_wait" translatable="false">请稍等...</string>
     <string name="text_manager_login" translatable="false">登录</string>
     <string name="text_forget_password" translatable="false">忘记密码？</string>
     <string name="text_version" translatable="false">版本号 %1$s</string>
@@ -14,11 +16,14 @@
     <string name="text_send_fail" translatable="false">发送失败</string>
     <string name="text_get_sms_code" translatable="false">获取验证码</string>
     <string name="text_compile" translatable="false">完成</string>
+    <string name="text_register" translatable="false">马上注册</string>
 
-    <string name="hint_account" translatable="false">请输入手机号或邮箱</string>
+    <string name="hint_account" translatable="false">请输入手机号</string>
     <string name="hint_password" translatable="false">请输入您的密码</string>
     <string name="hint_password_new" translatable="false">请输入您的新密码</string>
     <string name="hint_confirm_password_new" translatable="false">请再次输入您的新密码</string>
 
     <string name="toast_permission_error" translatable="false">部分权限未允许，可能影响正常使用</string>
+    <string name="toast_password_error" translatable="false">两次密码不一致</string>
+    <string name="toast_reset_success" translatable="false">密码重置成功</string>
 </resources>

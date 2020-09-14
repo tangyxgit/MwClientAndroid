@@ -32,28 +32,28 @@ public class ApiClient {
 
     protected void requestPost(String url, RequestWork requestWork, ResponseWork responseWork, OnResultDataListener onResultDataListener, Object... objects){
         url = clientModelUrl(url);
-        StringBuilder urlBuilder = new StringBuilder(url);
-        if(getApiConfig()!=null && getApiConfig().paramObj!=null){//是否配置默认的参数
-            Object paramObj = getApiConfig().paramObj;
-            Field[] fields = paramObj.getClass().getDeclaredFields();
-            for (Field field:fields) {
-                String name = field.getName();
-                Object value = getFieldValueByName(name,paramObj);
-                if(TextUtils.equals(String.valueOf(value),"null")){
-                    continue;
-                }
-                try {
-                    if(!urlBuilder.toString().contains("?")){
-                        urlBuilder.append("?").append(name).append("=").append(URLEncoder.encode(String.valueOf(value),"UTF-8"));
-                    }else{
-                        urlBuilder.append("&").append(name).append("=").append(URLEncoder.encode(String.valueOf(value),"UTF-8"));
-                    }
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        url = urlBuilder.toString();
+//        StringBuilder urlBuilder = new StringBuilder(url);
+//        if(getApiConfig()!=null && getApiConfig().paramObj!=null){//是否配置默认的参数
+//            Object paramObj = getApiConfig().paramObj;
+//            Field[] fields = paramObj.getClass().getDeclaredFields();
+//            for (Field field:fields) {
+//                String name = field.getName();
+//                Object value = getFieldValueByName(name,paramObj);
+//                if(TextUtils.equals(String.valueOf(value),"null")){
+//                    continue;
+//                }
+//                try {
+//                    if(!urlBuilder.toString().contains("?")){
+//                        urlBuilder.append("?").append(name).append("=").append(URLEncoder.encode(String.valueOf(value),"UTF-8"));
+//                    }else{
+//                        urlBuilder.append("&").append(name).append("=").append(URLEncoder.encode(String.valueOf(value),"UTF-8"));
+//                    }
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        url = urlBuilder.toString();
         String postData = getPostData(requestWork);
         RequestParams params = getParams(url,postData,requestWork,responseWork,onResultDataListener,objects);
         ConnectDataTask connectDataTask = new ConnectDataTask(params);

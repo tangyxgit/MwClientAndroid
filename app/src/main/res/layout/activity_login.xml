@@ -15,10 +15,10 @@
             android:layout_marginTop="78dp"
             android:src="@mipmap/ic_launcher"/>
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/account"
+            android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:met_iconLeft="@mipmap/icon_account"
+            app:met_iconLeft="@mipmap/login_phone_s"
             app:met_primaryColor="@color/defaultColorAccent"
             app:met_baseColor="@color/color_e6e6e6"
             app:met_textColor="@color/defaultColorAccent"
@@ -30,9 +30,10 @@
             app:met_floatingLabelAlwaysShown="true"
             android:maxLength="18"
             android:textSize="15sp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginTop="40dp"
+            android:inputType="number"
             android:hint="@string/hint_account"/>
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/password"
@@ -48,8 +49,8 @@
             android:textSize="15sp"
             android:maxLength="18"
             android:inputType="textPassword"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginTop="10dp"
             android:hint="@string/hint_password"/>
         <com.dd.processbutton.iml.ActionProcessButton
@@ -91,4 +92,24 @@
         android:textSize="@dimen/sp_12"
         android:textColor="@color/color_666666"
         android:layout_marginBottom="25dp"/>
+    <LinearLayout
+        android:id="@+id/register_layout"
+        android:gravity="center"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="55dp"
+        android:background="@drawable/shape_bg_trans_2da0f0_radius_5"
+        android:layout_width="118dp"
+        android:layout_height="30dp">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_account"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_2da0f0"
+            android:layout_marginStart="8dp"
+            android:text="@string/text_register"/>
+    </LinearLayout>
 </FrameLayout>

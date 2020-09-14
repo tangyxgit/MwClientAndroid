@@ -30,6 +30,6 @@ public class BaseResp extends ResponseWork {
 
     @Override
     public boolean isSuccess() {
-        return getCode() == 100;
+        return getCode() == 200;
     }
 }

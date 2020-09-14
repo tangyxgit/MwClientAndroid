@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/account"
+        android:id="@+id/phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:met_iconLeft="@mipmap/icon_account"
+        app:met_iconLeft="@mipmap/login_phone_s"
         app:met_primaryColor="@color/defaultColorAccent"
         app:met_baseColor="@color/color_e6e6e6"
         app:met_textColor="@color/defaultColorAccent"
@@ -21,8 +21,9 @@
         app:met_floatingLabelAlwaysShown="true"
         android:maxLength="18"
         android:textSize="15sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="25dp"
+        android:inputType="number"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="25dp"
         android:layout_marginTop="20dp"
         android:hint="@string/hint_account"/>
     <FrameLayout
@@ -103,7 +104,7 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:textColor="@color/white"
-        app:pb_textProgress="@string/text_login_ing"
+        app:pb_textProgress="@string/text_please_wait"
         app:pb_cornerRadius="5dp"
         app:pb_colorNormal="@color/color_2da0f0"
         app:pb_colorPressed="@color/defaultColorAccent"

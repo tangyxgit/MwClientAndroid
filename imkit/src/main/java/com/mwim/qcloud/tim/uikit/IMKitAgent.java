@@ -35,9 +35,7 @@ import java.io.File;
 
 public final class IMKitAgent {
 
-    private static final int SDKAPPID = 1400411394;
-    private static final int EXPIRETIME = 604800;
-    private static final String SECRETKEY = "cca5cda88a8b72e3b9f9697471eded3fd83366b166a48a6152801f923ea67ebb";
+    private static final int AppId = 1400425549;
 
     private static IMEventListener IMEventPushListener = new IMEventListener() {
         @Override
@@ -61,7 +59,7 @@ public final class IMKitAgent {
 
     public static void init(Context context,String appKey){
         instance = context;
-        TUIKit.init(context,SDKAPPID,getConfigs(context));
+        TUIKit.init(context,AppId,getConfigs(context));
     };
     private static TUIKitConfigs getConfigs(Context context) {
         GeneralConfig config = new GeneralConfig();
@@ -109,7 +107,6 @@ public final class IMKitAgent {
     public static void login(String userid, String usersig, final IUIKitCallBack callback) {
         TUIKitImpl.login(userid, usersig, callback);
     }
-
     /**
      * 注册推送
      */
