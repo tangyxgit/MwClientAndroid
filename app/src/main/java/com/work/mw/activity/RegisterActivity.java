@@ -14,6 +14,7 @@ import com.dd.processbutton.iml.ActionProcessButton;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginResp;
@@ -21,7 +22,6 @@ import com.work.api.open.model.RegisterReq;
 import com.work.api.open.model.SendSmsReq;
 import com.work.api.open.model.client.OpenData;
 import com.work.mw.R;
-import com.work.mw.modal.UserApi;
 import com.work.util.ToastUtil;
 
 /**
@@ -184,7 +184,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     userApi.setUserId(data.getUserId());
                     userApi.setUserSign(data.getUserSign());
                     RegisterReq registerReq = (RegisterReq) req;
-                    userApi.setPhone(registerReq.getMobile());
+                    userApi.setMobile(registerReq.getMobile());
                 }
                 onBackPressed();
             }else{

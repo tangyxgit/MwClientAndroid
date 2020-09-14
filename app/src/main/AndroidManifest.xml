@@ -30,7 +30,7 @@
 
     <!-- ********华为推送权限设置******** -->
     <permission
-        android:name="com.tencent.qcloud.tim.tuikit.permission.PROCESS_PUSH_MSG"
+        android:name="com.work.mw.permission.PROCESS_PUSH_MSG"
         android:protectionLevel="signatureOrSystem" />
     <uses-permission android:name = "com.huawei.android.launcher.permission.CHANGE_BADGE" />
 

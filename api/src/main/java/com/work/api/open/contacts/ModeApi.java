@@ -32,6 +32,14 @@ public final class ModeApi {
      */
     public final static String update="user/update";
     /**
+     * 获取用户信息
+     */
+    public final static String getUserByUserId="user/getUserByUserId";
+    /**
+     * 上传文件
+     */
+    public final static String upload = "api/upload";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

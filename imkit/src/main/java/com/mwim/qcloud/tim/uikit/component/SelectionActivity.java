@@ -1,28 +1,22 @@
 package com.mwim.qcloud.tim.uikit.component;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.ToastUtil;
 
-import java.util.ArrayList;
-
-public class SelectionActivity extends Activity {
+public class SelectionActivity extends BaseActivity {
 
     private static OnResultReturnListener sOnResultReturnListener;
-
-    private RadioGroup radioGroup;
     private EditText input;
     private int mSelectionType;
 
@@ -45,84 +39,47 @@ public class SelectionActivity extends Activity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.selection_activity);
-        final TitleBarLayout titleBar = findViewById(R.id.edit_title_bar);
-        radioGroup = findViewById(R.id.content_list_rg);
+    public void onInitValue() throws Exception {
+        super.onInitValue();
         input = findViewById(R.id.edit_content_et);
 
         Bundle bundle = getIntent().getBundleExtra(TUIKitConstants.Selection.CONTENT);
-        switch (bundle.getInt(TUIKitConstants.Selection.TYPE)) {
-            case TUIKitConstants.Selection.TYPE_TEXT:
-                radioGroup.setVisibility(View.GONE);
-                String defaultString = bundle.getString(TUIKitConstants.Selection.INIT_CONTENT);
-                int limit = bundle.getInt(TUIKitConstants.Selection.LIMIT);
-                if (!TextUtils.isEmpty(defaultString)) {
-                    input.setText(defaultString);
-                    input.setSelection(defaultString.length());
-                }
-                if (limit > 0) {
-                    input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(limit)});
-                }
-                break;
-            case TUIKitConstants.Selection.TYPE_LIST:
-                input.setVisibility(View.GONE);
-                ArrayList<String> list = bundle.getStringArrayList(TUIKitConstants.Selection.LIST);
-                if (list == null || list.size() == 0) {
-                    return;
-                }
-                for (int i = 0; i < list.size(); i++) {
-                    RadioButton radioButton = new RadioButton(this);
-                    radioButton.setText(list.get(i));
-                    radioButton.setId(i);
-                    radioGroup.addView(radioButton, i, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                }
-                int checked = bundle.getInt(TUIKitConstants.Selection.DEFAULT_SELECT_ITEM_INDEX);
-                radioGroup.check(checked);
-                radioGroup.invalidate();
-                break;
-            default:
-                finish();
-                return;
+        if (bundle.getInt(TUIKitConstants.Selection.TYPE) == TUIKitConstants.Selection.TYPE_TEXT) {
+            String defaultString = bundle.getString(TUIKitConstants.Selection.INIT_CONTENT);
+            int limit = bundle.getInt(TUIKitConstants.Selection.LIMIT);
+            if (!TextUtils.isEmpty(defaultString)) {
+                input.setText(defaultString);
+                input.setSelection(defaultString.length());
+            }
+            if (limit > 0) {
+                input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(limit)});
+            }
+        } else {
+            finish();
+            return;
         }
-        mSelectionType = bundle.getInt(TUIKitConstants.Selection.TYPE);
-
+        mSelectionType = bundle.getInt(TUIKitConstants.Selection.TYPE,TUIKitConstants.Selection.TYPE_TEXT);
         final String title = bundle.getString(TUIKitConstants.Selection.TITLE);
-        titleBar.setTitle(title, TitleBarLayout.POSITION.MIDDLE);
-        titleBar.setOnLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        titleBar.getRightIcon().setVisibility(View.GONE);
-        titleBar.getRightTitle().setText(getResources().getString(R.string.sure));
-        titleBar.setOnRightClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                echoClick(title);
-            }
-        });
+        setTitleName(title);
     }
 
-    private void echoClick(String title) {
-        switch (mSelectionType) {
-            case TUIKitConstants.Selection.TYPE_TEXT:
-                if (TextUtils.isEmpty(input.getText().toString()) && title.equals(getResources().getString(R.string.modify_group_name))) {
-                    ToastUtil.toastLongMessage("没有输入昵称，请重新填写");
-                    return;
-                }
+    @Override
+    public View onCustomTitleRight(TextView view) {
+        view.setText(R.string.user_save);
+        return view;
+    }
 
-                if (sOnResultReturnListener != null) {
-                    sOnResultReturnListener.onReturn(input.getText().toString());
-                }
-                break;
-            case TUIKitConstants.Selection.TYPE_LIST:
-                if (sOnResultReturnListener != null) {
-                    sOnResultReturnListener.onReturn(radioGroup.getCheckedRadioButtonId());
-                }
-                break;
+    @Override
+    public void onRightClickListener(View view) {
+        super.onRightClickListener(view);
+        if (mSelectionType == TUIKitConstants.Selection.TYPE_TEXT) {
+            if (TextUtils.isEmpty(input.getText().toString())) {
+                ToastUtil.error(this,R.string.toast_user_message_empty);
+                return;
+            }
+            if (sOnResultReturnListener != null) {
+                sOnResultReturnListener.onReturn(input.getText().toString());
+            }
         }
         finish();
     }

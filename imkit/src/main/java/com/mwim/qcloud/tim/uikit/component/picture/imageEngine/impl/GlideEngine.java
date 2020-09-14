@@ -68,9 +68,7 @@ public class GlideEngine implements ImageEngine {
             File file = Glide.with(TUIKit.getAppContext()).asFile().load(url).submit().get();
             File destFile = new File(filePath);
             file.renameTo(destFile);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }

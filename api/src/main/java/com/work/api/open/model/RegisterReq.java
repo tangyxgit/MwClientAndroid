@@ -10,11 +10,38 @@ public class RegisterReq extends BaseReq {
     private String mobile;
     private String userIcon;
     private String nickName;
+    private String departName;
     private String card;
     private String position;
     private String email;
     private String password;
     private String smsCode;
+    private String newPassword;
+    private String oldPassword;
+
+    public String getDepartName() {
+        return departName;
+    }
+
+    public void setDepartName(String departName) {
+        this.departName = departName;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 
     public String getSmsCode() {
         return smsCode;

@@ -59,6 +59,9 @@
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.GroupListActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.StartC2CChatActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity"/>
+        <activity android:name=".business.active.UserInfoActivity"/>
+        <activity android:name=".business.active.UserSettingActivity"/>
+        <activity android:name=".business.active.UpdatePwdActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

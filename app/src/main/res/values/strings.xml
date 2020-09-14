@@ -16,7 +16,7 @@
     <string name="text_send_fail" translatable="false">发送失败</string>
     <string name="text_get_sms_code" translatable="false">获取验证码</string>
     <string name="text_compile" translatable="false">完成</string>
-    <string name="text_register" translatable="false">马上注册</string>
+    <string name="text_register" translatable="false">还没有账号？去注册</string>
 
     <string name="hint_account" translatable="false">请输入手机号</string>
     <string name="hint_password" translatable="false">请输入您的密码</string>

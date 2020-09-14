@@ -10,8 +10,8 @@ import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.work.api.open.ApiClient;
-import com.work.mw.modal.UserApi;
 import com.work.util.SharedUtils;
 
 /**

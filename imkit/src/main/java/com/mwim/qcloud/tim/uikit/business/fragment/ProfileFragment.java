@@ -23,10 +23,15 @@ public class ProfileFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
         mBaseView = inflater.inflate(R.layout.profile_fragment, container, false);
         initView();
         return mBaseView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mProfileLayout.updateProfile();
     }
 
     private void initView() {

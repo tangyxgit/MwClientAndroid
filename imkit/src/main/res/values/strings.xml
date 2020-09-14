@@ -26,13 +26,39 @@
     <string name="profile" translatable="false">我</string>
     <string name="id" translatable="false">账号：%1$s</string>
     <string name="modify_user_icon" translatable="false">修改头像</string>
+    <string name="im_user_icon" translatable="false">头像</string>
     <string name="modify_nick_name" translatable="false">修改昵称</string>
+    <string name="im_nick_name" translatable="false">昵称</string>
+    <string name="im_phone" translatable="false">手机号</string>
+    <string name="im_department" translatable="false">部门</string>
+    <string name="modify_department" translatable="false">修改部门</string>
+    <string name="im_position" translatable="false">职位</string>
+    <string name="modify_im_position" translatable="false">修改职位</string>
+    <string name="im_card" translatable="false">工号</string>
+    <string name="modify_im_card" translatable="false">修改工号</string>
+    <string name="im_email" translatable="false">邮箱</string>
+    <string name="modify_im_email" translatable="false">修改邮箱</string>
     <string name="modify_signature" translatable="false">修改个性签名</string>
+    <string name="modify_setting" translatable="false">设置</string>
     <string name="add_rule" translatable="false">加我为好友时</string>
     <string name="allow_type_allow_any" translatable="false">允许任何人</string>
     <string name="allow_type_deny_any" translatable="false">拒绝任何人</string>
     <string name="allow_type_need_confirm" translatable="false">需要验证</string>
     <string name="exit" translatable="false">退出登录</string>
+    <string name="user_info_title" translatable="false">个人信息</string>
+    <string name="user_content_default" translatable="false">待完善</string>
+    <string name="user_setting_about" translatable="false">联系我们</string>
+    <string name="user_setting_version" translatable="false">检查更新</string>
+    <string name="user_setting_cache" translatable="false">清除缓存</string>
+    <string name="user_setting_update_pwd" translatable="false">修改密码</string>
+    <string name="user_save" translatable="false">保存</string>
+    <string name="user_hint_old_pwd" translatable="false">请输入原密码</string>
+    <string name="user_hint_new_pwd" translatable="false">请输入新密码</string>
+    <string name="user_hint_new_confirm_pwd" translatable="false">请确认新密码</string>
+    <string name="user_text_please_wait" translatable="false">请稍等</string>
+    <string name="label_select_avatar" translatable="false">选择头像</string>
+    <string name="user_select_camera" translatable="false">拍照</string>
+    <string name="user_select_phone" translatable="false">相册</string>
 
     // 群信息相关
     <string name="tips_empty_group_member" translatable="false">请选择群成员</string>
@@ -121,5 +147,10 @@
     <string name="video_call" translatable="false">视频通话</string>
     <string name="audio_call" translatable="false">语音通话</string>
 
+    <string name="label_confirm" translatable="false">确认</string>
+    <string name="dialog_logout" translatable="false">确认退出账号吗？</string>
 
+    <string name="toast_user_message_empty" translatable="false">信息不能为空</string>
+    <string name="toast_pwd_error" translatable="false">两次密码不一致</string>
+    <string name="toast_pwd_success" translatable="false">修改成功</string>
 </resources>

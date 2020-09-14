@@ -67,6 +67,10 @@ dependencies {
     implementation 'com.huawei.hms:push:5.0.0.300'
     // MEIZU push sdk
     implementation 'com.meizu.flyme.internet:push-internal:3.9.7'
+    //输入框
+    api 'com.rengwuxian.materialedittext:library:2.1.4'
+    //按钮
+    api 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     api project(path: ':base')
     // vivo push sdk
 //    implementation(name:'vivo_pushsdk-v2.9.0.0', ext:'aar')

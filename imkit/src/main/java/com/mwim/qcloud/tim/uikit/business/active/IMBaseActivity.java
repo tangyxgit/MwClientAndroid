@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -8,7 +7,7 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.utils.DemoLog;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.ToastUtil;
 
 /**
  * 登录状态的Activity都要集成该类，来完成被踢下线等监听处理。
@@ -18,31 +17,20 @@ public abstract class IMBaseActivity extends BaseActivity {
     private static final String TAG = IMBaseActivity.class.getSimpleName();
 
     // 监听做成静态可以让每个子类重写时都注册相同的一份。
-    private static IMEventListener mIMEventListener = new IMEventListener() {
+    private IMEventListener mIMEventListener = new IMEventListener() {
         @Override
         public void onForceOffline() {
-            ToastUtil.toastLongMessage("您的帐号已在其它终端登录");
-            logout(IMKitAgent.instance());
+            ToastUtil.warning(IMBaseActivity.this,"您的帐号已在其它终端登录");
+            logout();
         }
 
         @Override
         public void onUserSigExpired() {
-            ToastUtil.toastLongMessage("账号已过期，请重新登录");
-            logout(IMKitAgent.instance());
+            ToastUtil.warning(IMBaseActivity.this,"账号已过期，请重新登录");
+            logout();
         }
 
     };
-
-    public static void logout(Context context) {
-//        DemoLog.i(TAG, "logout");
-//        UserInfo.getInstance().setToken("");
-//        UserInfo.getInstance().setAutoLogin(false);
-//
-//        Intent intent = new Intent(context, LoginForDevActivity.class);
-//        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-//        intent.putExtra(Constants.LOGOUT, true);
-//        context.startActivity(intent);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

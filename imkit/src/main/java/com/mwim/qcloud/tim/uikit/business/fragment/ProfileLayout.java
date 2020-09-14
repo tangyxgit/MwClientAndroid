@@ -1,9 +1,8 @@
 package com.mwim.qcloud.tim.uikit.business.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
+import android.content.Intent;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -13,40 +12,32 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.http.network.listener.OnResultDataListener;
+import com.http.network.model.RequestWork;
+import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
+import com.mwim.qcloud.tim.uikit.business.active.UserSettingActivity;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
-import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
-import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.tencent.imsdk.v2.V2TIMCallback;
-import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.imsdk.v2.V2TIMUserFullInfo;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.work.api.open.Yz;
+import com.work.api.open.model.LoginResp;
+import com.work.api.open.model.client.OpenData;
+import com.work.util.SLog;
+import com.work.util.StringUtils;
 
 public class ProfileLayout extends LinearLayout implements View.OnClickListener {
 
-    private static final String TAG = ProfileLayout.class.getSimpleName();
-
     private ImageView mUserIcon;
-    private TextView mAccountView;
-    private TitleBarLayout mTitleBar;
+    private TextView mNickname;
+    private TextView mSubMessage;
 
-    private LineControllerView mModifyUserIconView;
-    private LineControllerView mModifyNickNameView;
-    private LineControllerView mModifyAllowTypeView;
-    private LineControllerView mModifySignatureView;
-    private ArrayList<String> mJoinTypeTextList = new ArrayList<>();
-    private ArrayList<Integer> mJoinTypeIdList = new ArrayList<>();
-    private int mJoinTypeIndex = 2;
-    private String mIconUrl;
+    private LineControllerView mDepartment;
+    private LineControllerView mPosition;
+    private LineControllerView mCard;
+    private LineControllerView mEmail;
 
     public ProfileLayout(Context context) {
         super(context);
@@ -65,80 +56,38 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
 
     private void init() {
         inflate(getContext(), R.layout.profile_layout, this);
-
         mUserIcon = findViewById(R.id.self_icon);
-//        GlideEngine.loadImage(mUserIcon, UserInfo.getInstance().getAvatar());
-        mAccountView = findViewById(R.id.self_account);
-
-        mTitleBar = findViewById(R.id.self_info_title_bar);
+        mNickname = findViewById(R.id.self_account);
+        mSubMessage = findViewById(R.id.sub_message);
+        TitleBarLayout mTitleBar = findViewById(R.id.self_info_title_bar);
+        mTitleBar.setBackgroundColor(Color.WHITE);
         mTitleBar.getLeftGroup().setVisibility(GONE);
         mTitleBar.getRightGroup().setVisibility(GONE);
         mTitleBar.setTitle(getResources().getString(R.string.profile), TitleBarLayout.POSITION.MIDDLE);
 
-        mModifyUserIconView = findViewById(R.id.modify_user_icon);
-        mModifyUserIconView.setCanNav(false);
-        mModifyUserIconView.setOnClickListener(this);
-        mModifySignatureView = findViewById(R.id.modify_signature);
-        mModifySignatureView.setCanNav(true);
-        mModifySignatureView.setOnClickListener(this);
-        mModifyNickNameView = findViewById(R.id.modify_nick_name);
-        mModifyNickNameView.setCanNav(true);
-        mModifyNickNameView.setOnClickListener(this);
-        mModifyAllowTypeView = findViewById(R.id.modify_allow_type);
-        mModifyAllowTypeView.setCanNav(true);
-        mModifyAllowTypeView.setOnClickListener(this);
-
-        mJoinTypeTextList.add(getResources().getString(R.string.allow_type_allow_any));
-        mJoinTypeTextList.add(getResources().getString(R.string.allow_type_deny_any));
-        mJoinTypeTextList.add(getResources().getString(R.string.allow_type_need_confirm));
-        mJoinTypeIdList.add(V2TIMUserFullInfo.V2TIM_FRIEND_ALLOW_ANY);
-        mJoinTypeIdList.add(V2TIMUserFullInfo.V2TIM_FRIEND_DENY_ANY);
-        mJoinTypeIdList.add(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
-
-        String selfUserID = V2TIMManager.getInstance().getLoginUser();
-
-        mAccountView.setText(String.format(getResources().getString(R.string.id), selfUserID));
-
-        List<String> userList = new ArrayList<>();
-        userList.add(selfUserID);
-        V2TIMManager.getInstance().getUsersInfo(userList, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
+        findViewById(R.id.user_layout).setOnClickListener(this);
+        mDepartment = findViewById(R.id.modify_department);
+        mPosition = findViewById(R.id.modify_position);
+        mCard = findViewById(R.id.modify_card);
+        mEmail = findViewById(R.id.modify_email);
+        LineControllerView mModifySettingView = findViewById(R.id.modify_setting);
+        mModifySettingView.setCanNav(true);
+        mModifySettingView.setOnClickListener(this);
+        updateProfile();
+        Yz.getSession().getUserByUserId(new OnResultDataListener() {
             @Override
-            public void onError(int code, String desc) {
-                DemoLog.e(TAG, "initSelfProfile err code = " + code + ", desc = " + desc);
-                ToastUtil.toastShortMessage("Error code = " + code + ", desc = " + desc);
-            }
-
-            @Override
-            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
-                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.size() == 0) {
-                    DemoLog.e(TAG, "getUsersInfo success but is empty");
-                    return;
-                }
-                V2TIMUserFullInfo v2TIMUserFullInfo = v2TIMUserFullInfos.get(0);
-                DemoLog.i(TAG, "initSelfProfile success, v2TIMUserFullInfo = " + v2TIMUserFullInfo.toString());
-                if (TextUtils.isEmpty(v2TIMUserFullInfo.getFaceUrl())) {
-                    GlideEngine.loadImage(mUserIcon, R.drawable.default_user_icon);
-                } else {
-                    GlideEngine.loadImage(mUserIcon, Uri.parse(v2TIMUserFullInfo.getFaceUrl()));
-                }
-                TUIKitConfigs.getConfigs().getGeneralConfig().setUserFaceUrl(v2TIMUserFullInfo.getFaceUrl());
-                TUIKitConfigs.getConfigs().getGeneralConfig().setUserNickname(v2TIMUserFullInfo.getNickName());
-
-                mModifyNickNameView.setContent(v2TIMUserFullInfo.getNickName());
-                mAccountView.setText(String.format(getResources().getString(R.string.id), v2TIMUserFullInfo.getUserID()));
-                mModifySignatureView.setContent(v2TIMUserFullInfo.getSelfSignature());
-                mModifyAllowTypeView.setContent(getResources().getString(R.string.allow_type_need_confirm));
-                if (v2TIMUserFullInfo.getAllowType() == V2TIMUserFullInfo.V2TIM_FRIEND_ALLOW_ANY) {
-                    mModifyAllowTypeView.setContent(getResources().getString(R.string.allow_type_allow_any));
-                    mJoinTypeIndex = 0;
-                } else if (v2TIMUserFullInfo.getAllowType() == V2TIMUserFullInfo.V2TIM_FRIEND_DENY_ANY) {
-                    mModifyAllowTypeView.setContent(getResources().getString(R.string.allow_type_deny_any));
-                    mJoinTypeIndex = 1;
-                } else if (v2TIMUserFullInfo.getAllowType() == V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM) {
-                    mModifyAllowTypeView.setContent(getResources().getString(R.string.allow_type_need_confirm));
-                    mJoinTypeIndex = 2;
-                } else {
-                    mModifyAllowTypeView.setContent("");
+            public void onResult(RequestWork req, ResponseWork resp) {
+                if(resp.isSuccess() && resp instanceof LoginResp){
+                    OpenData data = ((LoginResp) resp).getData();
+                    UserApi userApi = UserApi.instance();
+                    userApi.setNickName(data.getNickName());
+                    userApi.setUserIcon(data.getUserIcon());
+                    userApi.setMobile(data.getMobile());
+                    userApi.setDepartment(data.getDepartName());
+                    userApi.setPosition(data.getPosition());
+                    userApi.setCard(data.getCard());
+                    userApi.setEmail(data.getEmail());
+                    updateProfile();
                 }
             }
         });
@@ -146,94 +95,37 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.modify_user_icon) {
-            String selfUserID = V2TIMManager.getInstance().getLoginUser();
-            if (TextUtils.isEmpty(selfUserID)) {
-                DemoLog.e(TAG, "selfUserID:" + selfUserID);
-                return;
-            }
-            byte[] bytes = selfUserID.getBytes();
-            int index = bytes[bytes.length - 1] % 10;
-            String avatarName = "avatar" + index + "_100";
-            mIconUrl = "https://imgcache.qq.com/qcloud/public/static/" + avatarName + ".20191230.png";
-            GlideEngine.loadImage(mUserIcon, Uri.parse(mIconUrl));
-            updateProfile();
-        } else if (v.getId() == R.id.modify_nick_name) {
-            Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mModifyNickNameView.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 20);
-            SelectionActivity.startTextSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
-                @Override
-                public void onReturn(Object text) {
-                    mModifyNickNameView.setContent(text.toString());
-                    updateProfile();
-                }
-            });
-        } else if (v.getId() == R.id.modify_allow_type) {
-            Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.add_rule));
-            bundle.putStringArrayList(TUIKitConstants.Selection.LIST, mJoinTypeTextList);
-            bundle.putInt(TUIKitConstants.Selection.DEFAULT_SELECT_ITEM_INDEX, mJoinTypeIndex);
-            SelectionActivity.startListSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
-                @Override
-                public void onReturn(Object text) {
-                    mModifyAllowTypeView.setContent(mJoinTypeTextList.get((Integer) text));
-                    mJoinTypeIndex = (Integer) text;
-                    updateProfile();
-                }
-            });
-        } else if (v.getId() == R.id.modify_signature) {
-            Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_signature));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mModifySignatureView.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 20);
-            SelectionActivity.startTextSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
-                @Override
-                public void onReturn(Object text) {
-                    mModifySignatureView.setContent(text.toString());
-                    updateProfile();
-                }
-            });
+        if(v.getId() == R.id.user_layout){
+            getContext().startActivity(new Intent(getContext(), UserInfoActivity.class));
+        }else if(v.getId() == R.id.modify_setting){
+            getContext().startActivity(new Intent(getContext(), UserSettingActivity.class));
         }
     }
 
-    private void updateProfile() {
-        HashMap<String, Object> hashMap = new HashMap<>();
-
-        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
+    public void updateProfile() {
+        UserApi userApi = UserApi.instance();
         // 头像
+        String mIconUrl = userApi.getUserIcon();
         if (!TextUtils.isEmpty(mIconUrl)) {
-            v2TIMUserFullInfo.setFaceUrl(mIconUrl);
-//            UserInfo.getInstance().setAvatar(mIconUrl);
+            GlideEngine.loadCornerImage(mUserIcon, mIconUrl,null,10);
+        }else{
+            GlideEngine.loadImage(mUserIcon, R.drawable.default_head);
         }
-
         // 昵称
-        String nickName = mModifyNickNameView.getContent();
-        v2TIMUserFullInfo.setNickname(nickName);
-
-        // 个性签名
-        String signature = mModifySignatureView.getContent();
-        v2TIMUserFullInfo.setSelfSignature(signature);
-
-        // 加我验证方式
-        int allowType = mJoinTypeIdList.get(mJoinTypeIndex);
-        v2TIMUserFullInfo.setAllowType(allowType);
-
-        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, new V2TIMCallback() {
-            @Override
-            public void onError(int code, String desc) {
-                DemoLog.e(TAG, "modifySelfProfile err code = " + code + ", desc = " + desc);
-                ToastUtil.toastShortMessage("Error code = " + code + ", desc = " + desc);
-            }
-
-            @Override
-            public void onSuccess() {
-                DemoLog.i(TAG, "modifySelfProfile success");
-                TUIKitConfigs.getConfigs().getGeneralConfig().setUserFaceUrl(mIconUrl);
-                TUIKitConfigs.getConfigs().getGeneralConfig().setUserNickname(mModifyNickNameView.getContent());
-            }
-        });
+        String nickName = userApi.getNickName();
+        //手机号
+        String phone = userApi.getMobile();
+        mNickname.setText(TextUtils.isEmpty(nickName)?phone:nickName);
+        mSubMessage.setText(StringUtils.hideStr(phone));
+        String contentDefault = getResources().getString(R.string.user_content_default);
+        String email = userApi.getEmail();
+        String department = userApi.getDepartment();
+        String position = userApi.getPosition();
+        String card = userApi.getCard();
+        mDepartment.setContent(TextUtils.isEmpty(department)?contentDefault:department);
+        mPosition.setContent(TextUtils.isEmpty(position)?contentDefault:position);
+        mCard.setContent(TextUtils.isEmpty(card)?contentDefault:card);
+        mEmail.setContent(TextUtils.isEmpty(email)?contentDefault:email);
     }
 
 }

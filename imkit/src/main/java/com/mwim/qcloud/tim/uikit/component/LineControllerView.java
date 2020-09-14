@@ -27,7 +27,6 @@ public class LineControllerView extends LinearLayout {
     private boolean mIsJump;
     private boolean mIsSwitch;
 
-    private TextView mNameText;
     private TextView mContentText;
     private ImageView mNavArrowView;
     private Switch mSwitchView;
@@ -49,7 +48,7 @@ public class LineControllerView extends LinearLayout {
     }
 
     private void setUpView() {
-        mNameText = findViewById(R.id.name);
+        TextView mNameText = findViewById(R.id.name);
         mNameText.setText(mName);
         mContentText = findViewById(R.id.content);
         mContentText.setText(mContent);

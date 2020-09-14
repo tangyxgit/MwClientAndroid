@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -19,13 +18,12 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
-import com.work.api.open.model.RegisterReq;
 import com.work.api.open.model.client.OpenData;
 import com.work.mw.R;
-import com.work.mw.modal.UserApi;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
@@ -46,7 +44,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO};
     private EditText mPhone;
-    private ImageView mAccount;
     private EditText mPassword;
     private ActionProcessButton mSubmit;
 
@@ -54,7 +51,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onInitView() throws Exception {
         super.onInitView();
         mPhone = findViewById(R.id.phone);
-        mAccount = findViewById(R.id.account);
         mPassword = findViewById(R.id.password);
         mSubmit = findViewById(R.id.submit);
         TextView mVersion = findViewById(R.id.version);
@@ -63,7 +59,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             mVersion.setText(getString(R.string.text_version,appInfo.getVersionName()));
         }
         findViewById(R.id.forget).setOnClickListener(this);
-        findViewById(R.id.register_layout).setOnClickListener(this);
+        findViewById(R.id.register).setOnClickListener(this);
         findViewById(R.id.submit).setOnClickListener(this);
     }
 
@@ -71,7 +67,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onInitValue() throws Exception {
         super.onInitValue();
         setSubEnable(false);
-        mAccount.setColorFilter(ContextCompat.getColor(this,R.color.color_2da0f0));
         mPhone.addTextChangedListener(this);
         mPassword.addTextChangedListener(this);
         if(!hasPermission(PERMISSIONS)){
@@ -82,7 +77,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                 @Override
                 public void onDenied(String permission) {
-
                     ToastUtil.error(LoginActivity.this,R.string.toast_permission_error);
                 }
             });
@@ -102,7 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        String phone = UserApi.instance().getPhone();
+        String phone = UserApi.instance().getMobile();
         if(!TextUtils.isEmpty(phone)){
             mPhone.setText(phone);
         }
@@ -119,7 +113,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             case R.id.forget:
                 startActivity(new Intent(this, RegisterActivity.class).putExtra(RegisterActivity.class.getSimpleName(),false));
                 break;
-            case R.id.register_layout:
+            case R.id.register:
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
             case R.id.submit:
@@ -129,28 +123,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 mSubmit.setEnabled(false);
                 mSubmit.setProgress(50);
                 Yz.getSession().login(loginReq,this);
-//                String account = mPhone.getText().toString();
-//                UserInfo.getInstance().setUserId(account);
-//                final String userSig = GenerateTestUserSig.genTestUserSig(account);
-//                IMKitAgent.login(account, userSig, new IUIKitCallBack() {
-//                    @Override
-//                    public void onError(String module, final int code, final String desc) {
-//                        runOnUiThread(new Runnable() {
-//                            public void run() {
-//                                ToastUtil.error(LoginActivity.this,"登录失败, errCode = " + code + "errInfo = " + desc);
-//                            }
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(Object data) {
-//                        UserInfo.getInstance().setAutoLogin(true);
-//                        UserInfo.getInstance().setUserSig(userSig);
-//                        Intent intent = new Intent(LoginActivity.this, MwWorkActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//                });
                 break;
         }
     }
@@ -182,9 +154,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     UserApi userApi = UserApi.instance();
                     userApi.setUserId(data.getUserId());
                     userApi.setUserSign(data.getUserSign());
+                    userApi.setNickName(data.getNickName());
+                    userApi.setUserIcon(data.getUserIcon());
+                    userApi.setMobile(data.getMobile());
+                    userApi.setDepartment(data.getDepartName());
+                    userApi.setPosition(data.getPosition());
+                    userApi.setCard(data.getCard());
+                    userApi.setEmail(data.getEmail());
                     LoginReq loginReq = (LoginReq) req;
-                    userApi.setPhone(loginReq.getMobile());
-                    IMKitAgent.login(userApi.getPhone(), userApi.getUserSign(), new IUIKitCallBack() {
+                    userApi.setMobile(loginReq.getMobile());
+                    IMKitAgent.login(userApi.getMobile(), userApi.getUserSign(), new IUIKitCallBack() {
                         @Override
                         public void onSuccess(Object data) {
                             SLog.e("im success:"+data);

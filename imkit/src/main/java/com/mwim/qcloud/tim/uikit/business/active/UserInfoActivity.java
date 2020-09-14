@@ -1,0 +1,227 @@
+package com.mwim.qcloud.tim.uikit.business.active;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.http.network.model.RequestWork;
+import com.http.network.model.ResponseWork;
+import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.dialog.UserAvatarDialog;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
+import com.mwim.qcloud.tim.uikit.component.LineControllerView;
+import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
+import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
+import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.work.api.open.Yz;
+import com.work.api.open.model.RegisterReq;
+import com.work.util.ToastUtil;
+import com.workstation.crop.config.CropProperty;
+
+/**
+ * Created by tangyx
+ * Date 2020/9/14
+ * email tangyx@live.com
+ */
+
+public class UserInfoActivity extends BaseActivity implements View.OnClickListener {
+
+    private ImageView mUserIcon;
+    private LineControllerView mNickname;
+    private LineControllerView mPhone;
+    private LineControllerView mDepartment;
+    private LineControllerView mPosition;
+    private LineControllerView mCard;
+    private LineControllerView mEmail;
+    private UserAvatarDialog mUserAvatarDialog;
+
+    @Override
+    public void onInitView() throws Exception {
+        super.onInitView();
+        mUserIcon = findViewById(R.id.user_icon);
+        mNickname = findViewById(R.id.modify_nick_name);
+        mPhone = findViewById(R.id.modify_phone);
+        mDepartment = findViewById(R.id.modify_department);
+        mPosition = findViewById(R.id.modify_position);
+        mCard = findViewById(R.id.modify_card);
+        mEmail = findViewById(R.id.modify_email);
+    }
+
+    @Override
+    public void onInitValue() throws Exception {
+        super.onInitValue();
+        setTitleName(R.string.user_info_title);
+        UserApi userApi = UserApi.instance();
+        String userIcon = userApi.getUserIcon();
+        if (TextUtils.isEmpty(userIcon)) {
+            GlideEngine.loadImage(mUserIcon, R.drawable.default_head);
+        } else {
+            GlideEngine.loadCornerImage(mUserIcon, userIcon,null,10);
+        }
+        findViewById(R.id.user_layout).setOnClickListener(this);
+        mNickname.setCanNav(true);
+        mNickname.setOnClickListener(this);
+        mNickname.setContent(userApi.getNickName());
+        mPhone.setCanNav(true);
+        mPhone.setOnClickListener(this);
+        mPhone.setContent(userApi.getMobile());
+        mDepartment.setCanNav(true);
+        mDepartment.setOnClickListener(this);
+        mDepartment.setContent(userApi.getDepartment());
+        mPosition.setCanNav(true);
+        mPosition.setOnClickListener(this);
+        mPosition.setContent(userApi.getPosition());
+        mCard.setCanNav(true);
+        mCard.setOnClickListener(this);
+        mCard.setContent(userApi.getCard());
+        mEmail.setCanNav(true);
+        mEmail.setOnClickListener(this);
+        mEmail.setContent(userApi.getEmail());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUser();
+    }
+
+    private void updateUser(){
+        UserApi userApi = UserApi.instance();
+        mNickname.setContent(userApi.getNickName());
+        mPhone.setContent(userApi.getMobile());
+        mDepartment.setContent(userApi.getDepartment());
+        mPosition.setContent(userApi.getPosition());
+        mCard.setContent(userApi.getCard());
+        mEmail.setContent(userApi.getEmail());
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if(id == R.id.user_layout){
+            if(mUserAvatarDialog==null){
+                mUserAvatarDialog = new UserAvatarDialog().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (view.getId() == R.id.camera) {
+                            onOpenCamera(true);
+                        }else{
+                            onOpenPhoto(true);
+                        }
+                        mUserAvatarDialog.dismiss();
+                    }
+                });
+            }
+            mUserAvatarDialog.show(getSupportFragmentManager(),"user_avatar");
+        }else if (id == R.id.modify_nick_name) {
+            Bundle bundle = new Bundle();
+            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name));
+            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getNickName());
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
+                @Override
+                public void onReturn(Object res) {
+                    String text = (String) res;
+                    showProgressLoading(false,false);
+                    RegisterReq registerReq = new RegisterReq();
+                    registerReq.setNickName(text);
+                    Yz.getSession().update(registerReq,UserInfoActivity.this,R.id.modify_nick_name);
+                }
+            });
+        } else if (id == R.id.modify_department) {
+            Bundle bundle = new Bundle();
+            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_department));
+            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getDepartment());
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
+                @Override
+                public void onReturn(Object res) {
+                    String text = (String) res;
+                    showProgressLoading(false,false);
+                    RegisterReq registerReq = new RegisterReq();
+                    registerReq.setDepartName(text);
+                    Yz.getSession().update(registerReq,UserInfoActivity.this,R.id.modify_department);
+                }
+            });
+        }else if (id == R.id.modify_position) {
+            Bundle bundle = new Bundle();
+            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_position));
+            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getPosition());
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
+                @Override
+                public void onReturn(Object res) {
+                    String text = (String) res;
+                    showProgressLoading(false,false);
+                    RegisterReq registerReq = new RegisterReq();
+                    registerReq.setPosition(text);
+                    Yz.getSession().update(registerReq,UserInfoActivity.this,R.id.modify_position);
+                }
+            });
+        }else if (id == R.id.modify_card) {
+            Bundle bundle = new Bundle();
+            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_card));
+            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getCard());
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
+                @Override
+                public void onReturn(Object res) {
+                    String text = (String) res;
+                    showProgressLoading(false,false);
+                    RegisterReq registerReq = new RegisterReq();
+                    registerReq.setCard(text);
+                    Yz.getSession().update(registerReq,UserInfoActivity.this,R.id.modify_card);
+                }
+            });
+        }else if (id == R.id.modify_email) {
+            Bundle bundle = new Bundle();
+            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_email));
+            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getEmail());
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
+                @Override
+                public void onReturn(Object res) {
+                    String text = (String) res;
+                    showProgressLoading(false,false);
+                    RegisterReq registerReq = new RegisterReq();
+                    registerReq.setEmail(text);
+                    Yz.getSession().update(registerReq,UserInfoActivity.this,R.id.modify_email);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onResult(RequestWork req, ResponseWork resp) throws Exception {
+        super.onResult(req, resp);
+        if(resp.isSuccess()){
+            if(req instanceof RegisterReq){
+                int viewId = resp.getPositionParams(0);
+                UserApi userApi = UserApi.instance();
+                if (viewId == R.id.modify_nick_name) {
+                    userApi.setNickName(((RegisterReq) req).getNickName());
+                }else if(viewId == R.id.modify_department){
+                    userApi.setDepartment(((RegisterReq) req).getDepartName());
+                }else if(viewId == R.id.modify_position){
+                    userApi.setPosition(((RegisterReq) req).getPosition());
+                }else if(viewId == R.id.modify_card){
+                    userApi.setCard(((RegisterReq) req).getCard());
+                }else if(viewId == R.id.modify_email){
+                    userApi.setEmail(((RegisterReq) req).getEmail());
+                }
+                updateUser();
+            }
+        }else{
+            ToastUtil.warning(this,resp.getMessage());
+        }
+    }
+
+    @Override
+    public void onSelectImageCallback(String imagePath, CropProperty property) {
+        super.onSelectImageCallback(imagePath, property);
+        showProgressLoading(false,false);
+        Yz.getSession().upload(imagePath,this);
+    }
+}

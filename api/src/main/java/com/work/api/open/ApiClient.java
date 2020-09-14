@@ -121,7 +121,7 @@ public class ApiClient {
         connectDataTask.downFile();
     }
 
-    private String clientModelUrl(String url){
+    protected String clientModelUrl(String url){
         if(!url.startsWith("http") && getApiConfig()!=null){
             url = getApiConfig().hostName+url;
         }

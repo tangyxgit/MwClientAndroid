@@ -184,15 +184,18 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         if (id == R.id.conversation_btn_group) {
             current = new ConversationFragment();
             mConversationBtn.setTextColor(getResources().getColor(R.color.tab_text_selected_color));
-            mConversationBtn.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.conversation_selected), null, null);
+            mConversationBtn.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this,R.drawable.conversation_selected), null, null);
+            setStatusBar(ContextCompat.getColor(this,R.color.status_bar_color));
         } else if (id == R.id.contact_btn_group) {
             current = new ContactFragment();
             mContactBtn.setTextColor(getResources().getColor(R.color.tab_text_selected_color));
-            mContactBtn.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.contact_selected), null, null);
+            mContactBtn.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this,R.drawable.contact_selected), null, null);
+            setStatusBar(ContextCompat.getColor(this,R.color.status_bar_color));
         } else if (id == R.id.myself_btn_group) {
             current = new ProfileFragment();
             mProfileSelfBtn.setTextColor(getResources().getColor(R.color.tab_text_selected_color));
-            mProfileSelfBtn.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.myself_selected), null, null);
+            mProfileSelfBtn.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this,R.drawable.myself_selected), null, null);
+            setStatusBar(ContextCompat.getColor(this,R.color.white));
         }
 
         if (current != null && !current.isAdded()) {

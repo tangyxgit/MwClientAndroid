@@ -8,10 +8,10 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.work.mw.R;
-import com.work.mw.modal.UserApi;
 import com.work.util.SLog;
 
 /**
@@ -44,7 +44,7 @@ public class SplashActivity extends BaseActivity {
         }
     }
     private void login() {
-        IMKitAgent.login(mUserInfo.getPhone(), mUserInfo.getUserSign(), new IUIKitCallBack() {
+        IMKitAgent.login(mUserInfo.getMobile(), mUserInfo.getUserSign(), new IUIKitCallBack() {
             @Override
             public void onError(String module, final int code, final String desc) {
                 runOnUiThread(new Runnable() {
