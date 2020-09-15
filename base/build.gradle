@@ -24,6 +24,6 @@ dependencies {
     api 'com.jaeger.statusbarutil:library:1.5.1'
     api 'junit:junit:4.12'
     api project(path: ':api')
-    implementation project(path: ':recycler_view_helper')
+    api project(path: ':recycler_view_helper')
     implementation project(path: ':utils')
 }

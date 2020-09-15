@@ -2,80 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
-
-    <com.mwim.qcloud.tim.uikit.component.TitleBarLayout
-        android:id="@+id/add_friend_titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/page_title_height" />
-
-    <LinearLayout
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/user_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
-            android:text="@string/user_id"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/user_id"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:iconifiedByDefault="false"
-            android:textSize="@dimen/btn_text_size"
-            android:padding="10dp"
-            android:maxLength="30"
-            android:singleLine="true"
-            android:textCursorDrawable="@drawable/my_cursor"
-            android:hint="@string/hint_add_user_id" />
-
-    </LinearLayout>
-
-    <LinearLayout
+        app:met_primaryColor="@color/defaultColorAccent"
+        app:met_baseColor="@color/color_e6e6e6"
+        app:met_textColor="@color/defaultColorAccent"
+        app:met_underlineColor="@color/color_e6e6e6"
+        app:met_textColorHint="@color/color_cccccc"
+        app:met_iconPadding="0dp"
+        android:maxLength="18"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/request_hint_user"/>
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/add_wording"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
-            android:text="@string/add_wording"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/add_wording"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:textSize="@dimen/btn_text_size"
-            android:padding="10dp"
-            android:maxLength="100"
-            android:textCursorDrawable="@drawable/my_cursor"
-            android:hint="@string/hint_add_wording" />
-    </LinearLayout>
-
-    <Button
+        app:met_primaryColor="@color/defaultColorAccent"
+        app:met_baseColor="@color/color_e6e6e6"
+        app:met_textColor="@color/defaultColorAccent"
+        app:met_underlineColor="@color/color_e6e6e6"
+        app:met_textColorHint="@color/color_cccccc"
+        app:met_iconPadding="0dp"
+        android:maxLength="18"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/hint_add_wording"/>
+    <com.dd.processbutton.iml.ActionProcessButton
+        android:id="@+id/submit"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="@dimen/btn_margin_top"
-        android:layout_marginLeft="@dimen/btn_margin_left"
-        android:layout_marginRight="@dimen/btn_margin_right"
-        android:background="@color/bg_negative_btn"
-        android:text="@string/contact_add"
-        android:onClick="add"
-        android:textColor="#fb6155" />
-
+        android:layout_height="44dp"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:textColor="@color/white"
+        app:pb_textProgress="@string/user_text_please_wait"
+        app:pb_cornerRadius="5dp"
+        app:pb_colorNormal="@color/color_2da0f0"
+        app:pb_colorPressed="@color/defaultColorAccent"
+        android:text="@string/contact_add"/>
 </LinearLayout>

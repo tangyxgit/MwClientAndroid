@@ -1,42 +1,47 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.adapter.NewFriendListAdapter;
-import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMFriendApplication;
 import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewFriendActivity extends IMBaseActivity {
+public class NewFriendActivity extends IMBaseActivity implements BaseQuickAdapter.OnItemClickListener {
 
-    private static final String TAG = NewFriendActivity.class.getSimpleName();
-
-    private TitleBarLayout mTitleBar;
-    private ListView mNewFriendLv;
+    private RecyclerView mNewFriendLv;
     private NewFriendListAdapter mAdapter;
     private TextView mEmptyView;
     private List<V2TIMFriendApplication> mList = new ArrayList<>();
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_im_contact_new_friend);
-        init();
+    public void onInitView() throws Exception {
+        super.onInitView();
+        mNewFriendLv = findViewById(R.id.new_friend_list);
+        mEmptyView = findViewById(R.id.empty_text);
+    }
+
+    @Override
+    public void onInitValue() throws Exception {
+        super.onInitValue();
+        mNewFriendLv.setLayoutManager(new LinearLayoutManager(this));
+        mNewFriendLv.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.background_color).build());
+        setTitleName(R.string.new_friend);
     }
 
     @Override
@@ -45,42 +50,36 @@ public class NewFriendActivity extends IMBaseActivity {
         initPendency();
     }
 
-    private void init() {
-        mTitleBar = findViewById(R.id.new_friend_titlebar);
-        mTitleBar.setTitle(getResources().getString(R.string.new_friend), TitleBarLayout.POSITION.LEFT);
-        mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        mTitleBar.setTitle(getResources().getString(R.string.add_friend), TitleBarLayout.POSITION.RIGHT);
-        mTitleBar.getRightIcon().setVisibility(View.GONE);
-        mTitleBar.setOnRightClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(IMKitAgent.instance(), AddMoreActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("isGroup", false);
-                startActivity(intent);
-            }
-        });
+    @Override
+    public int onCustomContentId() {
+        return R.layout.activity_im_contact_new_friend;
+    }
 
-        mNewFriendLv = findViewById(R.id.new_friend_list);
-        mEmptyView = findViewById(R.id.empty_text);
+    @Override
+    public View onCustomTitleRight(TextView view) {
+        view.setText(R.string.add_friend);
+        return view;
+    }
+
+    @Override
+    public void onRightClickListener(View view) {
+        super.onRightClickListener(view);
+        Intent intent = new Intent(IMKitAgent.instance(), AddMoreActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("isGroup", false);
+        startActivity(intent);
     }
 
     private void initPendency() {
         V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
             @Override
             public void onError(int code, String desc) {
-                DemoLog.e(TAG, "getPendencyList err code = " + code + ", desc = " + desc);
-                ToastUtil.toastShortMessage("Error code = " + code + ", desc = " + desc);
+                SLog.e("getPendencyList err code = " + code + ", desc = " + desc);
             }
 
             @Override
             public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
-                DemoLog.i(TAG, "getFriendApplicationList success");
+                SLog.e("getFriendApplicationList success");
                 if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
                     if (v2TIMFriendApplicationResult.getFriendApplicationList().size() == 0) {
                         mEmptyView.setText(getResources().getString(R.string.no_friend_apply));
@@ -92,16 +91,23 @@ public class NewFriendActivity extends IMBaseActivity {
                 mNewFriendLv.setVisibility(View.VISIBLE);
                 mList.clear();
                 mList.addAll(v2TIMFriendApplicationResult.getFriendApplicationList());
-                mAdapter = new NewFriendListAdapter(NewFriendActivity.this, R.layout.contact_new_friend_item, mList);
+                mAdapter = new NewFriendListAdapter(mList);
+                mAdapter.setOnItemClickListener(NewFriendActivity.this);
                 mNewFriendLv.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
             }
         });
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-    }
 
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        V2TIMFriendApplication item = mAdapter.getItem(position);
+        if(item!=null && item.getType() == V2TIMFriendApplication.V2TIM_FRIEND_APPLICATION_COME_IN){
+            Intent intent = new Intent(this, FriendProfileActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(TUIKitConstants.ProfileType.CONTENT, item);
+            startActivity(intent);
+        }
+    }
 }

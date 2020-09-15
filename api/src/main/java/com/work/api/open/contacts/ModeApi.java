@@ -10,7 +10,6 @@ public final class ModeApi {
      *短信验证码
      */
     public final static String sendSms = "user/sendSms";
-    public final static String sendSmsReset = "user/sendSmsReset";
     /**
      * 注册
      */
@@ -36,9 +35,17 @@ public final class ModeApi {
      */
     public final static String getUserByUserId="user/getUserByUserId";
     /**
+     * 获取指定人的信息
+     */
+    public final static String getUserByMobile = "user/getUserByMobile";
+    /**
      * 上传文件
      */
     public final static String upload = "api/upload";
+    /**
+     * 搜索朋友
+     */
+    public final static String getUserByParam="user/getUserByParam";
     /**
      * 退出登录
      */

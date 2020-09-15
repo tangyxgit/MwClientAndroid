@@ -9,6 +9,15 @@ package com.work.api.open.model;
 public class SendSmsReq extends BaseReq {
 
     private String mobile;
+    private int code;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 
     public String getMobile() {
         return mobile;

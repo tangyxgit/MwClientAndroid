@@ -52,20 +52,6 @@ public interface ITitleBarLayout {
     LinearLayout getRightGroup();
 
     /**
-     * 返回左边标题的图片
-     *
-     * @return
-     */
-    ImageView getLeftIcon();
-
-    /**
-     * 设置左边标题的图片
-     *
-     * @param resId
-     */
-    void setLeftIcon(int resId);
-
-    /**
      * 返回右边标题的图片
      *
      * @return

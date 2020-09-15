@@ -25,7 +25,6 @@ import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.client.OpenData;
-import com.work.util.SLog;
 import com.work.util.StringUtils;
 
 public class ProfileLayout extends LinearLayout implements View.OnClickListener {

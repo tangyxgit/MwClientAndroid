@@ -1,11 +1,8 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android.graphics.Color;
 import android.text.TextUtils;
-
-import androidx.annotation.Nullable;
-
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
@@ -18,11 +15,9 @@ import com.mwim.qcloud.tim.uikit.R;
 public class FriendProfileActivity extends IMBaseActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_im_contact_friend_profile);
+    public void onInitView() throws Exception {
+        super.onInitView();
         FriendProfileLayout layout = findViewById(R.id.friend_profile);
-
         layout.initData(getIntent().getSerializableExtra(TUIKitConstants.ProfileType.CONTENT));
         layout.setOnButtonClickListener(new FriendProfileLayout.OnButtonClickListener() {
             @Override
@@ -51,4 +46,17 @@ public class FriendProfileActivity extends IMBaseActivity {
         });
     }
 
+    @Override
+    public void onInitValue() throws Exception {
+        super.onInitValue();
+        setTitleName(null);
+        setStatusBar(Color.WHITE);
+        mTitleLayout.setBackgroundColor(Color.WHITE);
+
+    }
+
+    @Override
+    public int onCustomContentId() {
+        return R.layout.activity_im_contact_friend_profile;
+    }
 }

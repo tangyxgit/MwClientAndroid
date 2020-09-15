@@ -67,8 +67,10 @@
 
     // 新朋友
     <string name="request_agree" translatable="false">同意</string>
-    <string name="request_accepted" translatable="false">已接受</string>
+    <string name="request_accepted" translatable="false">已添加</string>
     <string name="request_waiting" translatable="false">等待验证</string>
+    <string name="request_hint_user" translatable="false">请输入对方的手机号</string>
+    <string name="user_add_friends" translatable="false">添加到通讯录</string>
 
     <string name="test_custom_action" translatable="false">自定义消息</string>
     <string name="test_custom_message" translatable="false">查看详情>></string>
@@ -126,12 +128,15 @@
     <string name="view_original_image" translatable="false">查看原图</string>
 
     <!-- 联系人相关 -->
-    <string name="new_friend" translatable="false">新的联系人</string>
+    <string name="new_friend" translatable="false">新的好友</string>
     <string name="group" translatable="false">我的群聊</string>
     <string name="blacklist" translatable="false">黑名单</string>
     <string name="contact_count" translatable="false">%d位联系人</string>
     <string name="contact_title" translatable="false">通讯录</string>
     <string name="conversation_title" translatable="false">消息列表</string>
+    <string name="conversation_wording_message" translatable="false">对方发来的验证码信息</string>
+    <string name="conversation_wording_send" translatable="false">发送给对方的验证码信息</string>
+    <string name="conversation_search_msg" translatable="false">手机号/昵称</string>
 
     <!-- 好友资料 -->
     <string name="profile_detail" translatable="false">详细资料</string>
@@ -153,4 +158,5 @@
     <string name="toast_user_message_empty" translatable="false">信息不能为空</string>
     <string name="toast_pwd_error" translatable="false">两次密码不一致</string>
     <string name="toast_pwd_success" translatable="false">修改成功</string>
+    <string name="toast_add_more_friends" translatable="false">不能添加自己为好友</string>
 </resources>

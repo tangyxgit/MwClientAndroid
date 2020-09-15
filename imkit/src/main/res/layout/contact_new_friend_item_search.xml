@@ -36,12 +36,4 @@
             android:textColor="@color/color_999999"
             android:textSize="@dimen/sp_12" />
     </LinearLayout>
-    <Button
-        android:id="@+id/agree"
-        android:layout_width="60dp"
-        android:layout_height="24dp"
-        android:background="@color/background_color"
-        android:textColor="@color/color_2da0f0"
-        android:textSize="@dimen/sp_12"
-        android:layout_gravity="center"/>
 </LinearLayout>

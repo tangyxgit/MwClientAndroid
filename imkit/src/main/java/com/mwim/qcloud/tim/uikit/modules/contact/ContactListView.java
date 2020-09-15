@@ -34,9 +34,7 @@ public class ContactListView extends LinearLayout {
     private static final String TAG = ContactListView.class.getSimpleName();
 
     private static final String INDEX_STRING_TOP = "↑";
-    private RecyclerView mRv;
     private ContactAdapter mAdapter;
-    private CustomLinearLayoutManager mManager;
     private List<ContactItemBean> mData = new ArrayList<>();
     private SuspensionDecoration mDecoration;
     private ProgressBar mContactLoadingBar;
@@ -46,11 +44,6 @@ public class ContactListView extends LinearLayout {
      * 右侧边栏导航区域
      */
     private IndexBar mIndexBar;
-
-    /**
-     * 显示指示器DialogText
-     */
-    private TextView mTvSideBarHint;
 
     public ContactListView(Context context) {
         super(context);
@@ -69,14 +62,17 @@ public class ContactListView extends LinearLayout {
 
     private void init() {
         inflate(getContext(), R.layout.contact_list, this);
-        mRv = findViewById(R.id.contact_member_list);
-        mManager = new CustomLinearLayoutManager(getContext());
+        RecyclerView mRv = findViewById(R.id.contact_member_list);
+        CustomLinearLayoutManager mManager = new CustomLinearLayoutManager(getContext());
         mRv.setLayoutManager(mManager);
 
         mAdapter = new ContactAdapter(mData);
         mRv.setAdapter(mAdapter);
         mRv.addItemDecoration(mDecoration = new SuspensionDecoration(getContext(), mData));
-        mTvSideBarHint = findViewById(R.id.contact_tvSideBarHint);
+        /**
+         * 显示指示器DialogText
+         */
+        TextView mTvSideBarHint = findViewById(R.id.contact_tvSideBarHint);
         mIndexBar = findViewById(R.id.contact_indexBar);
         mIndexBar.setPressedShowTextView(mTvSideBarHint)
                 .setNeedRealIndex(false)
@@ -88,7 +84,7 @@ public class ContactListView extends LinearLayout {
         return mAdapter;
     }
 
-    public void setDataSource(List<ContactItemBean> data) {
+    private void setDataSource(List<ContactItemBean> data) {
         mContactLoadingBar.setVisibility(GONE);
         this.mData = data;
         mAdapter.setDataSource(mData);

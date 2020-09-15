@@ -3,7 +3,6 @@ package com.mwim.qcloud.tim.uikit.business.active;
 import android.app.Fragment;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,7 +11,6 @@ import androidx.core.content.ContextCompat;
 import com.huawei.agconnect.config.AGConnectServicesConfig;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.common.ApiException;
-import com.jaeger.library.StatusBarUtil;
 import com.mwim.liteav.model.CallModel;
 import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
@@ -25,10 +23,11 @@ import com.mwim.qcloud.tim.uikit.business.thirdpush.ThirdPushTokenMgr;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
+import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
 import com.mwim.qcloud.tim.uikit.R;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 
 /**
  * Created by tangyx
@@ -37,7 +36,6 @@ import com.mwim.qcloud.tim.uikit.R;
  */
 
 public class MwWorkActivity extends IMBaseActivity implements ConversationManagerKit.MessageUnreadWatcher{
-    private static final String TAG = MwWorkActivity.class.getSimpleName();
     private TextView mConversationBtn;
     private TextView mContactBtn;
     private TextView mProfileSelfBtn;
@@ -50,12 +48,14 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         super.onInitView();
         initView();
         prepareThirdPushToken();
+        //设置为必须要验证才能加好友
+        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
+        v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
+        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo,null);
     }
 
     @Override
     protected void onStart() {
-        super.onStart();
-        DemoLog.i(TAG, "onStart");
         super.onStart();
 
     }
@@ -74,7 +74,6 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
 
     @Override
     protected void onNewIntent(Intent intent) {
-        DemoLog.i(TAG, "onNewIntent");
         super.onNewIntent(intent);
         mCallModel = (CallModel)intent.getSerializableExtra(Constants.CHAT_INFO);
     }
@@ -92,13 +91,12 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
                         // read from agconnect-services.json
                         String appId = AGConnectServicesConfig.fromContext(MwWorkActivity.this).getString("client/app_id");
                         String token = HmsInstanceId.getInstance(MwWorkActivity.this).getToken(appId, "HCM");
-                        DemoLog.i(TAG, "huawei get token:" + token);
                         if(!TextUtils.isEmpty(token)) {
                             ThirdPushTokenMgr.getInstance().setThirdPushToken(token);
                             ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
                         }
                     } catch (ApiException e) {
-                        DemoLog.e(TAG, "huawei get token failed, " + e);
+                        e.printStackTrace();
                     }
                 }
             }.start();
@@ -135,7 +133,6 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         mContactBtn = findViewById(R.id.contact);
         mProfileSelfBtn = findViewById(R.id.mine);
         mMsgUnread = findViewById(R.id.msg_total_unread);
-        Log.e(TAG,"mMsgUnread:"+mMsgUnread);
         getFragmentManager().beginTransaction().replace(R.id.empty_view, new ConversationFragment()).commitAllowingStateLoss();
         FileUtil.initPath(); // 从application移入到这里，原因在于首次装上app，需要获取一系列权限，如创建文件夹，图片下载需要指定创建好的文件目录，否则会下载本地失败，聊天页面从而获取不到图片、表情
 
@@ -155,7 +152,6 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
 
     @Override
     protected void onResume() {
-        DemoLog.i(TAG, "onResume");
         super.onResume();
         if (mCallModel != null) {
             TRTCAVCallImpl impl = (TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(IMKitAgent.instance());
@@ -173,7 +169,6 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
     }
 
     public void tabClick(View view) {
-        DemoLog.i(TAG, "tabClick last: " + mLastTab + " current: " + view);
         if (mLastTab != null && mLastTab.getId() == view.getId()) {
             return;
         }
@@ -201,8 +196,6 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         if (current != null && !current.isAdded()) {
             getFragmentManager().beginTransaction().replace(R.id.empty_view, current).commitAllowingStateLoss();
             getFragmentManager().executePendingTransactions();
-        } else {
-            DemoLog.w(TAG, "fragment added!");
         }
     }
 

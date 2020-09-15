@@ -44,7 +44,7 @@ public class SplashActivity extends BaseActivity {
         }
     }
     private void login() {
-        IMKitAgent.login(mUserInfo.getMobile(), mUserInfo.getUserSign(), new IUIKitCallBack() {
+        IMKitAgent.login(mUserInfo.getUserId(), mUserInfo.getUserSign(), new IUIKitCallBack() {
             @Override
             public void onError(String module, final int code, final String desc) {
                 runOnUiThread(new Runnable() {

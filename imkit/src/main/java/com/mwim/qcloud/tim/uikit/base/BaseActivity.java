@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import androidx.core.content.ContextCompat;
 
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.workstation.android.TakePhotoActivity;
@@ -29,6 +30,8 @@ public class BaseActivity extends TakePhotoActivity {
         }
     }
     public void logout() {
+        IMKitAgent.logout(null);
+        IMKitAgent.unInit();
         UserApi.instance().clear();
         Intent intent = new Intent();
         intent.setClassName(this.getApplicationContext(),"com.work.mw.activity.LoginActivity");

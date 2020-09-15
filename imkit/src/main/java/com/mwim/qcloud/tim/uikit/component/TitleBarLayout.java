@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.mwim.qcloud.tim.uikit.base.ITitleBarLayout;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.R;
+import com.workstation.view.MaterialMenuDrawable;
+import com.workstation.view.MaterialMenuView;
 
 import androidx.annotation.Nullable;
 
@@ -21,7 +23,8 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     private TextView mLeftTitle;
     private TextView mCenterTitle;
     private TextView mRightTitle;
-    private ImageView mLeftIcon;
+//    private ImageView mLeftIcon;
+    private MaterialMenuView mLeftIcon;
     private ImageView mRightIcon;
     private RelativeLayout mTitleLayout;
 
@@ -49,7 +52,8 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
         mLeftTitle = findViewById(R.id.page_title_left_text);
         mRightTitle = findViewById(R.id.page_title_right_text);
         mCenterTitle = findViewById(R.id.page_title);
-        mLeftIcon = findViewById(R.id.page_title_left_icon);
+        mLeftIcon = findViewById(R.id.title_back);
+        mLeftIcon.setState(MaterialMenuDrawable.IconState.ARROW);
         mRightIcon = findViewById(R.id.page_title_right_icon);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mTitleLayout.getLayoutParams();
         params.height = ScreenUtil.getPxByDp(50);
@@ -90,16 +94,6 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     @Override
     public LinearLayout getRightGroup() {
         return mRightGroup;
-    }
-
-    @Override
-    public ImageView getLeftIcon() {
-        return mLeftIcon;
-    }
-
-    @Override
-    public void setLeftIcon(int resId) {
-        mLeftIcon.setImageResource(resId);
     }
 
     @Override

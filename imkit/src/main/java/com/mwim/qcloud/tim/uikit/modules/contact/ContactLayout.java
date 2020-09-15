@@ -15,8 +15,6 @@ import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 
 public class ContactLayout extends LinearLayout implements IContactLayout {
 
-    private static final String TAG = ContactLayout.class.getSimpleName();
-
     private TitleBarLayout mTitleBar;
     private ContactListView mContactListView;
 

@@ -163,7 +163,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     userApi.setEmail(data.getEmail());
                     LoginReq loginReq = (LoginReq) req;
                     userApi.setMobile(loginReq.getMobile());
-                    IMKitAgent.login(userApi.getMobile(), userApi.getUserSign(), new IUIKitCallBack() {
+                    IMKitAgent.login(userApi.getUserId(), userApi.getUserSign(), new IUIKitCallBack() {
                         @Override
                         public void onSuccess(Object data) {
                             SLog.e("im success:"+data);

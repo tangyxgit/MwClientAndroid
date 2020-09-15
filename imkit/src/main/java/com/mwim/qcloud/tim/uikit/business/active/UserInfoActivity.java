@@ -15,10 +15,14 @@ import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.work.api.open.Yz;
 import com.work.api.open.model.RegisterReq;
 import com.work.api.open.model.UploadResp;
 import com.work.api.open.model.client.OpenData;
+import com.work.util.SLog;
 import com.work.util.ToastUtil;
 import com.workstation.crop.config.CropProperty;
 
@@ -55,7 +59,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     public void onInitValue() throws Exception {
         super.onInitValue();
         setTitleName(R.string.user_info_title);
-        UserApi userApi = UserApi.instance();
         findViewById(R.id.user_layout).setOnClickListener(this);
         mNickname.setCanNav(true);
         mNickname.setOnClickListener(this);
@@ -78,19 +81,33 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void updateUser(){
+        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
         UserApi userApi = UserApi.instance();
         String userIcon = userApi.getUserIcon();
         if (TextUtils.isEmpty(userIcon)) {
             GlideEngine.loadImage(mUserIcon, R.drawable.default_head);
         } else {
+            v2TIMUserFullInfo.setFaceUrl(userIcon);
             GlideEngine.loadCornerImage(mUserIcon, userIcon,null,10);
         }
         mNickname.setContent(userApi.getNickName());
+        v2TIMUserFullInfo.setNickname(userApi.getNickName());
         mPhone.setContent(userApi.getMobile());
         mDepartment.setContent(userApi.getDepartment());
         mPosition.setContent(userApi.getPosition());
         mCard.setContent(userApi.getCard());
         mEmail.setContent(userApi.getEmail());
+        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, new V2TIMCallback() {
+            @Override
+            public void onError(int code, String desc) {
+                SLog.e("个人信息同步失败："+code+">"+desc);
+            }
+
+            @Override
+            public void onSuccess() {
+                SLog.e("个人信息同步成功");
+            }
+        });
     }
 
     @Override

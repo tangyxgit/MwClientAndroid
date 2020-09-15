@@ -108,10 +108,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 SendSmsReq sendSmsReq = new SendSmsReq();
                 sendSmsReq.setMobile(phone);
                 if(isRegister){
-                    Yz.getSession().sendSms(sendSmsReq,this);
+                    sendSmsReq.setCode(1);
                 }else{
-                    Yz.getSession().sendSmsReset(sendSmsReq,this);
+                    sendSmsReq.setCode(2);
                 }
+                Yz.getSession().sendSms(sendSmsReq,this);
                 break;
             case R.id.submit:
                 String password = mPassword.getText().toString().trim();

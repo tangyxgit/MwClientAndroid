@@ -7,6 +7,8 @@ import com.http.network.task.ConnectDataTask;
 import com.work.api.open.contacts.ModeApi;
 import com.work.api.open.model.BaseReq;
 import com.work.api.open.model.BaseResp;
+import com.work.api.open.model.GetUserByParamReq;
+import com.work.api.open.model.GetUserByParamResp;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.RegisterReq;
@@ -32,9 +34,6 @@ public class Yz extends ApiClient {
      */
     public void sendSms(SendSmsReq sendSmsReq, OnResultDataListener onResultDataListener){
         requestPost(ModeApi.sendSms,sendSmsReq,new BaseResp(),onResultDataListener);
-    }
-    public void sendSmsReset(SendSmsReq sendSmsReq, OnResultDataListener onResultDataListener){
-        requestPost(ModeApi.sendSmsReset,sendSmsReq,new BaseResp(),onResultDataListener);
     }
     /**
      * 注册
@@ -71,6 +70,18 @@ public class Yz extends ApiClient {
      */
     public void getUserByUserId(OnResultDataListener onResultDataListener){
         requestPost(ModeApi.getUserByUserId,new BaseReq(),new LoginResp(),onResultDataListener);
+    }
+    /**
+     * 获取指定手机号的信息
+     */
+    public void getUserByMobile(LoginReq loginReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getUserByMobile,loginReq,new LoginResp(),onResultDataListener);
+    }
+    /**
+     * 搜索朋友
+     */
+    public void getUserByParam(GetUserByParamReq getUserByParamReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getUserByParam,getUserByParamReq,new GetUserByParamResp(),onResultDataListener);
     }
     /**
      * 上传文件

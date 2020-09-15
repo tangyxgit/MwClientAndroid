@@ -3,51 +3,91 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     android:orientation="vertical">
-
-    <com.mwim.qcloud.tim.uikit.component.TitleBarLayout
-        android:id="@+id/friend_titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/page_title_height" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_20"
+        android:gravity="center_vertical"
         android:background="@color/white"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <com.mwim.qcloud.tim.uikit.component.CircleImageView
+        android:orientation="horizontal">
+        <ImageView
             android:id="@+id/avatar"
-            android:layout_width="115dp"
-            android:layout_height="115dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/default_user_icon" />
-
-        <TextView
-            android:id="@+id/name"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/default_head" />
+        <LinearLayout
+            android:layout_marginStart="@dimen/dp_20"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/app_name"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/mobile"
+                android:text="@string/app_name"
+                android:textColor="@color/color_999999"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/add_wording_layout"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/dp_20"
+        android:paddingRight="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/add_wording"
+            android:gravity="top"
+            android:background="@drawable/border_backgroun_color_r_10"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/text_gray1"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_14"
+            android:enabled="false"
+            android:padding="@dimen/dp_10"
+            android:hint="@string/conversation_wording_message"
+            android:minHeight="100dp"/>
     </LinearLayout>
 
-    <com.mwim.qcloud.tim.uikit.component.LineControllerView
-        android:id="@+id/id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:name="@string/profile_id" />
-
-    <com.mwim.qcloud.tim.uikit.component.LineControllerView
-        android:id="@+id/add_wording"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+    <LinearLayout
+        android:id="@+id/dep_layout"
         android:visibility="gone"
-        app:name="@string/profile_add_wording" />
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.mwim.qcloud.tim.uikit.component.LineControllerView
+            android:id="@+id/modify_department"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:name="@string/im_department" />
+        <com.mwim.qcloud.tim.uikit.component.LineControllerView
+            android:id="@+id/modify_position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:name="@string/im_position" />
+        <com.mwim.qcloud.tim.uikit.component.LineControllerView
+            android:id="@+id/modify_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:name="@string/im_card" />
+        <com.mwim.qcloud.tim.uikit.component.LineControllerView
+            android:id="@+id/modify_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:name="@string/im_email" />
+    </LinearLayout>
 
     <com.mwim.qcloud.tim.uikit.component.LineControllerView
         android:id="@+id/remark"
@@ -78,35 +118,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/btn_margin_left"
-        android:paddingRight="@dimen/btn_margin_right">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/btnChat"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@color/bg_positive_btn"
-            android:clickable="true"
+            android:layout_height="48dp"
+            android:background="@color/white"
             android:gravity="center"
             android:text="@string/profile_chat"
-            android:textColor="@color/positive_text"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/color_2da0f0" />
 
         <TextView
             android:id="@+id/btnDel"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:background="@color/bg_negative_btn"
-            android:clickable="true"
+            android:layout_height="48dp"
+            android:layout_marginTop="0.5dp"
+            android:background="@color/white"
             android:gravity="center"
             android:text="@string/profile_del"
-            android:textColor="@color/negative_text"
-            android:textSize="14sp" />
-
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/negative_text" />
     </LinearLayout>
 
 </LinearLayout>

@@ -109,14 +109,14 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
         if (timFriendInfoList == null || timFriendInfoList.size() == 0) {
             return;
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("已和");
-        for (V2TIMFriendInfo v2TIMFriendInfo : timFriendInfoList) {
-            stringBuilder.append(v2TIMFriendInfo.getUserID()).append(",");
-        }
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-        stringBuilder.append("成为好友");
-        ToastUtil.toastLongMessage(stringBuilder.toString());
+//        StringBuilder stringBuilder = new StringBuilder();
+//        stringBuilder.append("已和");
+//        for (V2TIMFriendInfo v2TIMFriendInfo : timFriendInfoList) {
+//            stringBuilder.append(v2TIMFriendInfo.getUserID()).append(",");
+//        }
+//        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+//        stringBuilder.append("成为好友");
+//        ToastUtil.toastLongMessage(stringBuilder.toString());
     }
 
     protected void onReceiveMessage(final V2TIMMessage msg) {

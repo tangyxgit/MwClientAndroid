@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.work.util.ToastUtil;
 
 /**
@@ -14,7 +13,6 @@ import com.work.util.ToastUtil;
  */
 public abstract class IMBaseActivity extends BaseActivity {
 
-    private static final String TAG = IMBaseActivity.class.getSimpleName();
 
     // 监听做成静态可以让每个子类重写时都注册相同的一份。
     private IMEventListener mIMEventListener = new IMEventListener() {
@@ -40,7 +38,6 @@ public abstract class IMBaseActivity extends BaseActivity {
 
     @Override
     protected void onStart() {
-        DemoLog.i(TAG, "onStart");
         super.onStart();
 //        boolean login = UserInfo.getInstance().isAutoLogin();
 //        if (!login) {
@@ -50,31 +47,26 @@ public abstract class IMBaseActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        DemoLog.i(TAG, "onResume");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        DemoLog.i(TAG, "onPause");
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        DemoLog.i(TAG, "onStop");
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        DemoLog.i(TAG, "onDestroy");
         super.onDestroy();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        DemoLog.i(TAG, "onNewIntent");
         super.onNewIntent(intent);
     }
 }

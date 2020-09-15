@@ -50,8 +50,38 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <!--    业务逻辑    -->
-        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity" android:theme="@style/Theme.AppCompat.Slider"/>
-        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.ChatActivity"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.mwim.qcloud.tim.uikit.business.active.ChatActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+            <!-- 华为离线推送打开应用内页面 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="com.tencent.qcloud"
+                    android:path="/detail"
+                    android:scheme="pushscheme" />
+            </intent-filter>
+
+            <!-- OPPO离线推送的intent action方式必须配置category且不能有data数据 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- OPPO离线推送的scheme url方式必须配置action和category -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:scheme="pushscheme"
+                    android:host="com.tencent.qcloud"/>
+            </intent-filter>
+        </activity>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.AddMoreActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.BlackListActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity"/>
@@ -62,6 +92,8 @@
         <activity android:name=".business.active.UserInfoActivity"/>
         <activity android:name=".business.active.UserSettingActivity"/>
         <activity android:name=".business.active.UpdatePwdActivity"/>
+        <activity android:name=".business.active.SearchAddMoreActivity"
+            android:windowSoftInputMode="stateVisible"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

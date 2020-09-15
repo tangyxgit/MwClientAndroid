@@ -143,12 +143,13 @@ public class ApiClient {
                     try {
                         JSONObject paramJson = new JSONObject(paramData);
                         JSONObject postJson = new JSONObject(postData);
-
                         Iterator<String> iterator = paramJson.keys();
                         while (iterator.hasNext()){
                             String key = iterator.next();
-                            String val = paramJson.optString(key);
-                            postJson.put(key,val);
+                            if(!postJson.has(key)){//防止覆盖
+                                String val = paramJson.optString(key);
+                                postJson.put(key,val);
+                            }
                         }
                         postData = postJson.toString();
                     } catch (JSONException e) {

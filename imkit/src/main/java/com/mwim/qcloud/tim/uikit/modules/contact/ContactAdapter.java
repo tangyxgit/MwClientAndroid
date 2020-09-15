@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.modules.contact;
 
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,7 +132,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                     holder.avatar.setImageResource(R.drawable.default_head);
                 }
             } else {
-                GlideEngine.loadImage(holder.avatar, Uri.parse(contactBean.getAvatarurl()));
+                GlideEngine.loadCornerImage(holder.avatar, contactBean.getAvatarurl(),null,10);
             }
         }
 

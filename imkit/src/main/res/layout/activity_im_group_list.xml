@@ -4,11 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.mwim.qcloud.tim.uikit.component.TitleBarLayout
-        android:id="@+id/group_list_titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/page_title_height" />
-
     <com.mwim.qcloud.tim.uikit.modules.contact.ContactListView
         android:id="@+id/group_list"
         android:layout_width="match_parent"
