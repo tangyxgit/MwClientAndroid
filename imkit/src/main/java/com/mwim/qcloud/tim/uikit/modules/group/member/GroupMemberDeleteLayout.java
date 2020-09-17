@@ -1,9 +1,9 @@
 package com.mwim.qcloud.tim.uikit.modules.group.member;
 
 import android.content.Context;
-import android.graphics.Color;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import android.util.AttributeSet;
 import android.view.View;
@@ -16,14 +16,13 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfoProvider;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.ToastUtil;
 
 import java.util.List;
 
 public class GroupMemberDeleteLayout extends LinearLayout implements IGroupMemberLayout {
 
     private TitleBarLayout mTitleBar;
-    private ListView mMembers;
     private GroupMemberDeleteAdapter mAdapter;
     private List<GroupMemberInfo> mDelMembers;
     private GroupInfo mGroupInfo;
@@ -47,8 +46,8 @@ public class GroupMemberDeleteLayout extends LinearLayout implements IGroupMembe
         inflate(getContext(), R.layout.group_member_del_layout, this);
         mTitleBar = findViewById(R.id.group_member_title_bar);
         mTitleBar.setTitle("移除", TitleBarLayout.POSITION.RIGHT);
+        mTitleBar.getRightTitle().setTextColor(ContextCompat.getColor(getContext(),R.color.text_negative));
         mTitleBar.setTitle("移除成员", TitleBarLayout.POSITION.MIDDLE);
-        mTitleBar.getRightTitle().setTextColor(Color.BLUE);
         mTitleBar.getRightIcon().setVisibility(View.GONE);
         mTitleBar.setOnRightClickListener(new OnClickListener() {
             @Override
@@ -58,7 +57,7 @@ public class GroupMemberDeleteLayout extends LinearLayout implements IGroupMembe
                 provider.removeGroupMembers(mDelMembers, new IUIKitCallBack() {
                     @Override
                     public void onSuccess(Object data) {
-                        ToastUtil.toastLongMessage("删除成员成功");
+                        ToastUtil.success(getContext(),"删除成员成功");
                         post(new Runnable() {
                             @Override
                             public void run() {
@@ -72,7 +71,7 @@ public class GroupMemberDeleteLayout extends LinearLayout implements IGroupMembe
 
                     @Override
                     public void onError(String module, int errCode, String errMsg) {
-                        ToastUtil.toastLongMessage("删除成员失败:" + errCode + "=" + errMsg);
+                        ToastUtil.error(getContext(),"删除成员失败:" + errCode + "=" + errMsg);
                     }
                 });
             }
@@ -89,7 +88,7 @@ public class GroupMemberDeleteLayout extends LinearLayout implements IGroupMembe
                 }
             }
         });
-        mMembers = findViewById(R.id.group_del_members);
+        ListView mMembers = findViewById(R.id.group_del_members);
         mMembers.setAdapter(mAdapter);
     }
 

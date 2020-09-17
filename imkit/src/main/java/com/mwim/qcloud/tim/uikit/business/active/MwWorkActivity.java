@@ -1,6 +1,7 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,7 +29,6 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
-
 /**
  * Created by tangyx
  * Date 2020/8/16
@@ -42,10 +42,12 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
     private TextView mMsgUnread;
     private View mLastTab;
     private CallModel mCallModel;
+    public static Context instance;
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
+        instance = this;
         initView();
         prepareThirdPushToken();
         //设置为必须要验证才能加好友
@@ -69,6 +71,7 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
     @Override
     protected void onDestroy() {
         mLastTab = null;
+        instance = null;
         super.onDestroy();
     }
 
@@ -210,6 +213,7 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
 
     @Override
     public void updateUnread(int count) {
+//        SLog.e(">>>count:"+count);
         if (count > 0) {
             mMsgUnread.setVisibility(View.VISIBLE);
         } else {

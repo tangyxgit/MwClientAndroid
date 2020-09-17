@@ -16,8 +16,11 @@ public class GroupInfo extends ChatInfo {
     private String groupName;
     private String notice;
     private List<GroupMemberInfo> memberDetails;
+    private List<GroupMemberInfo> memberAdminDetails;
     private int joinType;
     private String owner;
+    private boolean isMuted;
+    private int revOpt;
 
     public GroupInfo() {
         setType(V2TIMConversation.V2TIM_GROUP);
@@ -113,6 +116,14 @@ public class GroupInfo extends ChatInfo {
         this.memberDetails = memberDetails;
     }
 
+    public void setMemberAdminDetails(List<GroupMemberInfo> memberAdminDetails) {
+        this.memberAdminDetails = memberAdminDetails;
+    }
+
+    public List<GroupMemberInfo> getMemberAdminDetails() {
+        return memberAdminDetails;
+    }
+
     /**
      * 获取群成员数量
      *
@@ -152,6 +163,22 @@ public class GroupInfo extends ChatInfo {
         this.owner = owner;
     }
 
+    public void setMuted(boolean muted) {
+        isMuted = muted;
+    }
+
+    public boolean isMuted() {
+        return isMuted;
+    }
+
+    public int getRevOpt() {
+        return revOpt;
+    }
+
+    public void setRevOpt(int revOpt) {
+        this.revOpt = revOpt;
+    }
+
     /**
      * 从SDK转化为TUIKit的群信息bean
      *
@@ -170,6 +197,8 @@ public class GroupInfo extends ChatInfo {
         setGroupType(infoResult.getGroupInfo().getGroupType());
         setOwner(infoResult.getGroupInfo().getOwner());
         setJoinType(infoResult.getGroupInfo().getGroupAddOpt());
+        setMuted(infoResult.getGroupInfo().isAllMuted());
+        setRevOpt(infoResult.getGroupInfo().getRecvOpt());
         return this;
     }
 }

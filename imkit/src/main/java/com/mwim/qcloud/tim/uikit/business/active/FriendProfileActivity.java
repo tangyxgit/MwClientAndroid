@@ -40,8 +40,9 @@ public class FriendProfileActivity extends IMBaseActivity {
 
             @Override
             public void onDeleteFriendClick(String id) {
-                Intent intent = new Intent(IMKitAgent.instance(), MwWorkActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(IMKitAgent.instance(), MwWorkActivity.class);
+//                startActivity(intent);
+                finish();
             }
         });
     }

@@ -13,13 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:paddingLeft="17.3dp">
+        android:gravity="center_vertical"
+        android:paddingStart="17.3dp">
 
         <CheckBox
             android:id="@+id/contact_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:button="@drawable/checkbox_selector"
             android:clickable="false"
             android:focusable="false"
@@ -31,7 +32,7 @@
             android:layout_height="@dimen/contact_avatar_height"
             android:clickable="false"
             android:focusable="false"
-            android:src="@drawable/default_user_icon" />
+            android:src="@drawable/default_head" />
 
         <RelativeLayout
             android:layout_width="match_parent"

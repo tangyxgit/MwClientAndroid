@@ -1,6 +1,7 @@
 package com.mwim.qcloud.tim.uikit.modules.chat;
 
 import com.google.gson.Gson;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.group.apply.GroupApplyInfo;
@@ -101,8 +102,9 @@ public class GroupChatManagerKit extends ChatManagerKit {
                 MessageCustom messageCustom = new MessageCustom();
                 messageCustom.version = TUIKitConstants.version;
                 messageCustom.businessID = MessageCustom.BUSINESS_ID_GROUP_CREATE;
-                messageCustom.opUser = V2TIMManager.getInstance().getLoginUser();
-                messageCustom.content = "创建群组";
+//                messageCustom.opUser = V2TIMManager.getInstance().getLoginUser();
+                messageCustom.opUser = UserApi.instance().getNickName();
+                messageCustom.content = "发起了群聊";
                 String data = gson.toJson(messageCustom);
 
                 V2TIMMessage createTips = MessageInfoUtil.buildGroupCustomMessage(data);

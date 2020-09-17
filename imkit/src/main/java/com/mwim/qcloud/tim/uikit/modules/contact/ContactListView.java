@@ -21,17 +21,14 @@ import com.mwim.qcloud.tim.uikit.component.indexlib.suspension.SuspensionDecorat
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ThreadHelper;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ContactListView extends LinearLayout {
-
-    private static final String TAG = ContactListView.class.getSimpleName();
 
     private static final String INDEX_STRING_TOP = "↑";
     private ContactAdapter mAdapter;
@@ -164,7 +161,7 @@ public class ContactListView extends LinearLayout {
     }
 
     private void loadFriendListDataAsync() {
-        TUIKitLog.i(TAG, "loadFriendListDataAsync");
+        SLog.i("loadFriendListDataAsync");
         ThreadHelper.INST.execute(new Runnable() {
             @Override
             public void run() {
@@ -172,8 +169,7 @@ public class ContactListView extends LinearLayout {
                 V2TIMManager.getFriendshipManager().getFriendList(new V2TIMValueCallback<List<V2TIMFriendInfo>>() {
                     @Override
                     public void onError(int code, String desc) {
-                        TUIKitLog.e(TAG, "loadFriendListDataAsync err code:" + code + ", desc:" + desc);
-                        ToastUtil.toastShortMessage("loadFriendList error code = " + code + ", desc = " + desc);
+                        SLog.e("loadFriendListDataAsync err code:" + code + ", desc:" + desc);
                     }
 
                     @Override
@@ -181,7 +177,7 @@ public class ContactListView extends LinearLayout {
                         if (v2TIMFriendInfos == null) {
                             v2TIMFriendInfos = new ArrayList<>();
                         }
-                        TUIKitLog.i(TAG, "loadFriendListDataAsync->getFriendList:" + v2TIMFriendInfos.size());
+                        SLog.i("loadFriendListDataAsync->getFriendList:" + v2TIMFriendInfos.size());
                         assembleFriendListData(v2TIMFriendInfos);
                     }
                 });
@@ -229,21 +225,20 @@ public class ContactListView extends LinearLayout {
     }
 
     private void loadBlackListData() {
-        TUIKitLog.i(TAG, "loadBlackListData");
+        SLog.i("loadBlackListData");
 
         V2TIMManager.getFriendshipManager().getBlackList(new V2TIMValueCallback<List<V2TIMFriendInfo>>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "getBlackList err code = " + code + ", desc = " + desc);
-                ToastUtil.toastShortMessage("Error code = " + code + ", desc = " + desc);
+                SLog.e("getBlackList err code = " + code + ", desc = " + desc);
                 mContactLoadingBar.setVisibility(GONE);
             }
 
             @Override
             public void onSuccess(List<V2TIMFriendInfo> v2TIMFriendInfos) {
-                TUIKitLog.i(TAG, "getBlackList success: " + v2TIMFriendInfos.size());
+                SLog.i("getBlackList success: " + v2TIMFriendInfos.size());
                 if (v2TIMFriendInfos.size() == 0) {
-                    TUIKitLog.i(TAG, "getBlackList success but no data");
+                    SLog.i("getBlackList success but no data");
                 }
                 mData.clear();
                 for (V2TIMFriendInfo timFriendInfo : v2TIMFriendInfos) {
@@ -281,21 +276,20 @@ public class ContactListView extends LinearLayout {
     }
 
     private void loadGroupListData() {
-        TUIKitLog.i(TAG, "loadGroupListData");
+        SLog.i("loadGroupListData");
 
         V2TIMManager.getGroupManager().getJoinedGroupList(new V2TIMValueCallback<List<V2TIMGroupInfo>>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "getGroupList err code = " + code + ", desc = " + desc);
-                ToastUtil.toastShortMessage("Error code = " + code + ", desc = " + desc);
+                SLog.e("getGroupList err code = " + code + ", desc = " + desc);
                 mContactLoadingBar.setVisibility(GONE);
             }
 
             @Override
             public void onSuccess(List<V2TIMGroupInfo> v2TIMGroupInfos) {
-                TUIKitLog.i(TAG, "getGroupList success: " + v2TIMGroupInfos.size());
+                SLog.i("getGroupList success: " + v2TIMGroupInfos.size());
                 if (v2TIMGroupInfos.size() == 0) {
-                    TUIKitLog.i(TAG, "getGroupList success but no data");
+                    SLog.i("getGroupList success but no data");
                 }
                 mData.clear();
                 for (V2TIMGroupInfo info : v2TIMGroupInfos) {

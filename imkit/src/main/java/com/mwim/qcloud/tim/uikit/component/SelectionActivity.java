@@ -73,10 +73,10 @@ public class SelectionActivity extends BaseActivity {
     public void onRightClickListener(View view) {
         super.onRightClickListener(view);
         if (mSelectionType == TUIKitConstants.Selection.TYPE_TEXT) {
-            if (TextUtils.isEmpty(input.getText().toString())) {
-                ToastUtil.error(this,R.string.toast_user_message_empty);
-                return;
-            }
+//            if (TextUtils.isEmpty(input.getText().toString())) {
+//                ToastUtil.error(this,R.string.toast_user_message_empty);
+//                return;
+//            }
             if (sOnResultReturnListener != null) {
                 sOnResultReturnListener.onReturn(input.getText().toString());
             }

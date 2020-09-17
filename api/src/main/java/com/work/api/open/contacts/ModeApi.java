@@ -47,6 +47,10 @@ public final class ModeApi {
      */
     public final static String getUserByParam="user/getUserByParam";
     /**
+     * 修改手机号
+     */
+    public final static String updateMobile="user/updateMobile";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

@@ -25,13 +25,13 @@ import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
+import com.work.util.SLog;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageInfoUtil {
-    private static final String TAG = MessageInfoUtil.class.getSimpleName();
 
     /**
      * 创建一条文本消息
@@ -42,7 +42,6 @@ public class MessageInfoUtil {
     public static MessageInfo buildTextMessage(String message) {
         MessageInfo info = new MessageInfo();
         V2TIMMessage v2TIMMessage = V2TIMManager.getMessageManager().createTextMessage(message);
-
         info.setExtra(message);
         info.setMsgTime(System.currentTimeMillis() / 1000);
         info.setSelf(true);
@@ -51,6 +50,7 @@ public class MessageInfoUtil {
         info.setMsgType(MessageInfo.MSG_TYPE_TEXT);
         return info;
     }
+
 
     /**
      * 创建一条自定义表情的消息
@@ -252,7 +252,7 @@ public class MessageInfoUtil {
             }
             return false;
         } catch (Exception e) {
-            TUIKitLog.e(TAG, "parse json error");
+            SLog.e("parse json error");
         }
         return false;
     }
@@ -268,7 +268,7 @@ public class MessageInfoUtil {
             }
             return false;
         } catch (Exception e) {
-            TUIKitLog.e(TAG, "parse json error");
+            SLog.e( "parse json error");
         }
         return false;
     }
@@ -277,7 +277,7 @@ public class MessageInfoUtil {
         if (timMessage == null
                 || timMessage.getStatus() == V2TIMMessage.V2TIM_MSG_STATUS_HAS_DELETED
                 || timMessage.getElemType() == V2TIMMessage.V2TIM_ELEM_TYPE_NONE) {
-            TUIKitLog.e(TAG, "ele2MessageInfo parameters error");
+            SLog.e("ele2MessageInfo parameters error");
             return null;
         }
         final MessageInfo msgInfo = new MessageInfo();
@@ -313,12 +313,12 @@ public class MessageInfoUtil {
                     // 忽略正在输入，它不能作为真正的消息展示
                     return null;
                 }
-                TUIKitLog.i(TAG, "custom data:" + data);
-                String content = "[自定义消息]";
+                SLog.i( "custom data:" + data);
+                String content = "";
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_CUSTOM);
                 msgInfo.setExtra(content);
                 Gson gson = new Gson();
-                MessageCustom messageCustom = null;
+                MessageCustom messageCustom;
                 try {
                     messageCustom = gson.fromJson(data, MessageCustom.class);
                     if (!TextUtils.isEmpty(messageCustom.businessID) && messageCustom.businessID.equals(MessageCustom.BUSINESS_ID_GROUP_CREATE)) {
@@ -354,16 +354,17 @@ public class MessageInfoUtil {
                                             && callModel.invitedList.get(0).equals(timMessage.getSender())) {
                                         content = "\"" + senderShowName + "\"" + "无应答";
                                     } else {
-                                        StringBuilder inviteeShowStringBuilder = new StringBuilder();
+//                                        StringBuilder inviteeShowStringBuilder = new StringBuilder();
                                         if (callModel.invitedList != null && callModel.invitedList.size() > 0) {
-                                            for (String invitee : callModel.invitedList) {
-                                                inviteeShowStringBuilder.append(invitee).append("、");
-                                            }
-                                            if (inviteeShowStringBuilder.length() > 0) {
-                                                inviteeShowStringBuilder.delete(inviteeShowStringBuilder.length() - 1, inviteeShowStringBuilder.length());
-                                            }
+//                                            for (String invitee : callModel.invitedList) {
+//                                                inviteeShowStringBuilder.append(invitee).append("、");
+//                                            }
+//                                            if (inviteeShowStringBuilder.length() > 0) {
+//                                                inviteeShowStringBuilder.delete(inviteeShowStringBuilder.length() - 1, inviteeShowStringBuilder.length());
+//                                            }
+                                            content = isGroup ? ("音视频\"" + callModel.invitedList.size() + "\"" + "人无应答") : "无应答";
                                         }
-                                        content = isGroup ? ("\"" + inviteeShowStringBuilder.toString() + "\"" + "无应答") : "无应答";
+//                                        content = isGroup ? ("\"" + inviteeShowStringBuilder.toString() + "\"" + "无应答") : "无应答";
                                     }
                                     break;
                                 case CallModel.VIDEO_CALL_ACTION_ACCEPT:
@@ -383,56 +384,75 @@ public class MessageInfoUtil {
                         }
                     }
                 } catch (Exception e) {
-                    TUIKitLog.e(TAG, "invalid json: " + data + ", exception:" + e);
+                    SLog.e( "invalid json: " + data + ", exception:" + e);
                 }
             }
         } else if (type == V2TIMMessage.V2TIM_ELEM_TYPE_GROUP_TIPS) {
             V2TIMGroupTipsElem groupTipElem = timMessage.getGroupTipsElem();
             int tipsType = groupTipElem.getType();
-            String user = "";
+            StringBuilder user = new StringBuilder();
             if (groupTipElem.getMemberList().size() > 0) {
                 List<V2TIMGroupMemberInfo> v2TIMGroupMemberInfoList = groupTipElem.getMemberList();
                 for (int i = 0; i < v2TIMGroupMemberInfoList.size(); i++) {
                     V2TIMGroupMemberInfo v2TIMGroupMemberInfo = v2TIMGroupMemberInfoList.get(i);
                     if (i == 0) {
-                        user = user + v2TIMGroupMemberInfo.getUserID();
+                        if(!TextUtils.isEmpty(v2TIMGroupMemberInfo.getNameCard())){
+                            user.append(v2TIMGroupMemberInfo.getNameCard());
+                        }else if(!TextUtils.isEmpty(v2TIMGroupMemberInfo.getNickName())){
+                            user.append(v2TIMGroupMemberInfo.getNickName());
+                        }else{
+                            user.append(v2TIMGroupMemberInfo.getUserID());
+                        }
                     } else {
                         if (i == 2 && v2TIMGroupMemberInfoList.size() > 3) {
-                            user = user + "等";
+                            user.append("等");
                             break;
                         } else {
-                            user = user + "，" + v2TIMGroupMemberInfo.getUserID();
+                            user.append("，");
+                            if(!TextUtils.isEmpty(v2TIMGroupMemberInfo.getNameCard())){
+                                user.append(v2TIMGroupMemberInfo.getNameCard());
+                            }else if(!TextUtils.isEmpty(v2TIMGroupMemberInfo.getNickName())){
+                                user.append(v2TIMGroupMemberInfo.getNickName());
+                            }else{
+                                user.append(v2TIMGroupMemberInfo.getUserID());
+                            }
                         }
                     }
                 }
 
             } else {
-                user = groupTipElem.getOpMember().getUserID();
+                if(!TextUtils.isEmpty(groupTipElem.getOpMember().getNameCard())){
+                    user.append(groupTipElem.getOpMember().getNameCard());
+                }else if(!TextUtils.isEmpty(groupTipElem.getOpMember().getNickName())){
+                    user.append(groupTipElem.getOpMember().getNickName());
+                }else{
+                    user.append(groupTipElem.getOpMember().getUserID());
+                }
             }
-            String message = TUIKitConstants.covert2HTMLString(user);
+            StringBuilder message = new StringBuilder(TUIKitConstants.covert2HTMLString(user.toString()));
             if (tipsType == V2TIMGroupTipsElem.V2TIM_GROUP_TIPS_TYPE_JOIN) {
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_JOIN);
-                message = message + "加入群组";
+                message.append("加入群组");
             }
             if (tipsType == V2TIMGroupTipsElem.V2TIM_GROUP_TIPS_TYPE_INVITE) {
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_JOIN);
-                message = message + "被邀请进群";
+                message.append("被邀请进群");
             }
             if (tipsType == V2TIMGroupTipsElem.V2TIM_GROUP_TIPS_TYPE_QUIT) {
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_QUITE);
-                message = message + "退出群组";
+                message.append("退出群组");
             }
             if (tipsType == V2TIMGroupTipsElem.V2TIM_GROUP_TIPS_TYPE_KICKED) {
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_KICK);
-                message = message + "被踢出群组";
+                message.append("被踢出群组");
             }
             if (tipsType == V2TIMGroupTipsElem.V2TIM_GROUP_TIPS_TYPE_SET_ADMIN) {
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NOTICE);
-                message = message + "被设置管理员";
+                message.append("被设置管理员");
             }
             if (tipsType == V2TIMGroupTipsElem.V2TIM_GROUP_TIPS_TYPE_CANCEL_ADMIN) {
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NOTICE);
-                message = message + "被取消管理员";
+                message.append("被取消管理员");
             }
             if (tipsType == V2TIMGroupTipsElem.V2TIM_GROUP_TIPS_TYPE_GROUP_INFO_CHANGE) {
                 List<V2TIMGroupChangeInfo> modifyList = groupTipElem.getGroupChangeInfoList();
@@ -441,22 +461,23 @@ public class MessageInfoUtil {
                     int modifyType = modifyInfo.getType();
                     if (modifyType == V2TIMGroupChangeInfo.V2TIM_GROUP_INFO_CHANGE_TYPE_NAME) {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NAME);
-                        message = message + "修改群名称为\"" + modifyInfo.getValue() + "\"";
+                        message.append("修改群名称为\"").append(modifyInfo.getValue()).append("\"");
                     } else if (modifyType == V2TIMGroupChangeInfo.V2TIM_GROUP_INFO_CHANGE_TYPE_NOTIFICATION) {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NOTICE);
-                        message = message + "修改群公告为\"" + modifyInfo.getValue() + "\"";
+                        message.append("修改群公告为\"").append(modifyInfo.getValue()).append("\"");
                     } else if (modifyType == V2TIMGroupChangeInfo.V2TIM_GROUP_INFO_CHANGE_TYPE_OWNER) {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NOTICE);
-                        message = message + "转让群主给\"" + modifyInfo.getValue() + "\"";
+//                        message.append("转让群主给\"").append(modifyInfo.getValue()).append("\"");
+                        message.append("已转让群主");
                     } else if (modifyType == V2TIMGroupChangeInfo.V2TIM_GROUP_INFO_CHANGE_TYPE_FACE_URL) {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NOTICE);
-                        message = message + "修改了群头像";
+                        message.append("修改了群头像");
                     } else if (modifyType == V2TIMGroupChangeInfo.V2TIM_GROUP_INFO_CHANGE_TYPE_INTRODUCTION) {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NOTICE);
-                        message = message + "修改群介绍为\"" + modifyInfo.getValue() + "\"";
+                        message.append("修改群介绍为\"").append(modifyInfo.getValue()).append("\"");
                     }
                     if (i < modifyList.size() - 1) {
-                        message = message + "、";
+                        message.append("、");
                     }
                 }
             }
@@ -466,17 +487,17 @@ public class MessageInfoUtil {
                     long shutupTime = modifyList.get(0).getMuteTime();
                     if (shutupTime > 0) {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NOTICE);
-                        message = message + "被禁言\"" + DateTimeUtil.formatSeconds(shutupTime) + "\"";
+                        message.append("被禁言\"").append(DateTimeUtil.formatSeconds(shutupTime)).append("\"");
                     } else {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NOTICE);
-                        message = message + "被取消禁言";
+                        message.append("被取消禁言");
                     }
                 }
             }
-            if (TextUtils.isEmpty(message)) {
+            if (TextUtils.isEmpty(message.toString())) {
                 return null;
             }
-            msgInfo.setExtra(message);
+            msgInfo.setExtra(message.toString());
         } else {
             if (type == V2TIMMessage.V2TIM_ELEM_TYPE_TEXT) {
                 V2TIMTextElem txtEle = timMessage.getTextElem();

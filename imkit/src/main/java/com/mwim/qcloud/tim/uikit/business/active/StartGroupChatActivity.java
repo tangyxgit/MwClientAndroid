@@ -1,17 +1,16 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
-
-import androidx.annotation.Nullable;
+import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
+import com.mwim.qcloud.tim.uikit.business.dialog.GroupJoinTypeDialog;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
-import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
@@ -19,20 +18,16 @@ import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StartGroupChatActivity extends IMBaseActivity {
 
-    private static final String TAG = StartGroupChatActivity.class.getSimpleName();
-
-    private TitleBarLayout mTitleBar;
-    private ContactListView mContactListView;
     private LineControllerView mJoinType;
     private ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
     private int mGroupType = -1;
@@ -42,38 +37,16 @@ public class StartGroupChatActivity extends IMBaseActivity {
     private boolean mCreating;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_popup_start_group_chat);
-
-        init();
-    }
-
-    private void init() {
+    public void onInitView() throws Exception {
+        super.onInitView();
         String[] array = getResources().getStringArray(R.array.group_type);
         mGroupTypeValue.addAll(Arrays.asList(array));
         array = getResources().getStringArray(R.array.group_join_type);
         mJoinTypes.addAll(Arrays.asList(array));
         GroupMemberInfo memberInfo = new GroupMemberInfo();
         memberInfo.setAccount(V2TIMManager.getInstance().getLoginUser());
+        memberInfo.setNameCard(UserApi.instance().getNickName());
         mMembers.add(0, memberInfo);
-        mTitleBar = findViewById(R.id.group_create_title_bar);
-        mTitleBar.setTitle(getResources().getString(R.string.sure), TitleBarLayout.POSITION.RIGHT);
-        mTitleBar.getRightTitle().setTextColor(getResources().getColor(R.color.title_bar_font_color));
-        mTitleBar.getRightIcon().setVisibility(View.GONE);
-        mTitleBar.setOnRightClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createGroupChat();
-            }
-        });
-        mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         mJoinType = findViewById(R.id.group_type_join);
         mJoinType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +55,9 @@ public class StartGroupChatActivity extends IMBaseActivity {
             }
         });
         mJoinType.setCanNav(true);
-        mJoinType.setContent(mJoinTypes.get(2));
+        mJoinType.setContent(mJoinTypes.get(mJoinTypeIndex));
 
-        mContactListView = findViewById(R.id.group_create_member_list);
+        ContactListView mContactListView = findViewById(R.id.group_create_member_list);
         mContactListView.loadDataSource(ContactListView.DataSource.FRIEND_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
             @Override
@@ -92,11 +65,13 @@ public class StartGroupChatActivity extends IMBaseActivity {
                 if (selected) {
                     GroupMemberInfo memberInfo = new GroupMemberInfo();
                     memberInfo.setAccount(contact.getId());
+                    memberInfo.setNameCard(contact.getNickname());
                     mMembers.add(memberInfo);
                 } else {
                     for (int i = mMembers.size() - 1; i >= 0; i--) {
                         if (mMembers.get(i).getAccount().equals(contact.getId())) {
                             mMembers.remove(i);
+                            break;
                         }
                     }
                 }
@@ -106,37 +81,59 @@ public class StartGroupChatActivity extends IMBaseActivity {
         setGroupType(getIntent().getIntExtra("type", TUIKitConstants.GroupType.PRIVATE));
     }
 
+    @Override
+    public void onInitValue() throws Exception {
+        super.onInitValue();
+    }
+
+    @Override
+    public int onCustomContentId() {
+        return R.layout.activity_popup_start_group_chat;
+    }
+
+    @Override
+    public View onCustomTitleRight(TextView view) {
+        view.setText(R.string.sure);
+        return view;
+    }
+
+    @Override
+    public void onRightClickListener(View view) {
+        super.onRightClickListener(view);
+        createGroupChat();
+    }
+
     public void setGroupType(int type) {
         mGroupType = type;
         switch (type) {
             case TUIKitConstants.GroupType.PUBLIC:
-                mTitleBar.setTitle(getResources().getString(R.string.create_group_chat), TitleBarLayout.POSITION.MIDDLE);
+                setTitleName(getResources().getString(R.string.create_group_chat));
                 mJoinType.setVisibility(View.VISIBLE);
                 break;
             case TUIKitConstants.GroupType.CHAT_ROOM:
-                mTitleBar.setTitle(getResources().getString(R.string.create_chat_room), TitleBarLayout.POSITION.MIDDLE);
+                setTitleName(getResources().getString(R.string.create_chat_room));
                 mJoinType.setVisibility(View.VISIBLE);
                 break;
             case TUIKitConstants.GroupType.PRIVATE:
             default:
-                mTitleBar.setTitle(getResources().getString(R.string.create_private_group), TitleBarLayout.POSITION.MIDDLE);
+                setTitleName(getResources().getString(R.string.create_private_group));
                 mJoinType.setVisibility(View.GONE);
                 break;
         }
     }
 
     private void showJoinTypePickerView() {
-        Bundle bundle = new Bundle();
-        bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.group_join_type));
-        bundle.putStringArrayList(TUIKitConstants.Selection.LIST, mJoinTypes);
-        bundle.putInt(TUIKitConstants.Selection.DEFAULT_SELECT_ITEM_INDEX, mJoinTypeIndex);
-        SelectionActivity.startListSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
+        GroupJoinTypeDialog mGroupJoinDialog = new GroupJoinTypeDialog();
+        mGroupJoinDialog.setJoinTypes(mJoinTypes);
+        mGroupJoinDialog.setOnResultReturnListener(new SelectionActivity.OnResultReturnListener() {
             @Override
             public void onReturn(Object text) {
                 mJoinType.setContent(mJoinTypes.get((Integer) text));
                 mJoinTypeIndex = (Integer) text;
             }
         });
+        mGroupJoinDialog.setJoinTypeIndex(mJoinTypeIndex);
+        mGroupJoinDialog.show(getSupportFragmentManager(),"group_join");
     }
 
     private void createGroupChat() {
@@ -144,26 +141,26 @@ public class StartGroupChatActivity extends IMBaseActivity {
             return;
         }
         if (mGroupType < 3 && mMembers.size() == 1) {
-            ToastUtil.toastLongMessage(getResources().getString(R.string.tips_empty_group_member));
+            ToastUtil.info(this,getResources().getString(R.string.tips_empty_group_member));
             return;
         }
         if (mGroupType > 0 && mJoinTypeIndex == -1) {
-            ToastUtil.toastLongMessage(getResources().getString(R.string.tips_empty_group_type));
+            ToastUtil.info(this,getResources().getString(R.string.tips_empty_group_type));
             return;
         }
         if (mGroupType == 0) {
             mJoinTypeIndex = -1;
         }
         final GroupInfo groupInfo = new GroupInfo();
-        String groupName = V2TIMManager.getInstance().getLoginUser();
+        StringBuilder groupName = new StringBuilder(UserApi.instance().getNickName());
         for (int i = 1; i < mMembers.size(); i++) {
-            groupName = groupName + "、" + mMembers.get(i).getAccount();
+            groupName.append("、").append(mMembers.get(i).getNameCard());
         }
         if (groupName.length() > 20) {
-            groupName = groupName.substring(0, 17) + "...";
+            groupName = new StringBuilder(groupName.substring(0, 17) + "...");
         }
-        groupInfo.setChatName(groupName);
-        groupInfo.setGroupName(groupName);
+        groupInfo.setChatName(groupName.toString());
+        groupInfo.setGroupName(groupName.toString());
         groupInfo.setMemberDetails(mMembers);
         groupInfo.setGroupType(mGroupTypeValue.get(mGroupType));
         groupInfo.setJoinType(mJoinTypeIndex);
@@ -186,7 +183,7 @@ public class StartGroupChatActivity extends IMBaseActivity {
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 mCreating = false;
-                ToastUtil.toastLongMessage("createGroupChat fail:" + errCode + "=" + errMsg);
+                ToastUtil.error(StartGroupChatActivity.this,"createGroupChat fail:" + errCode + "=" + errMsg);
             }
         });
     }

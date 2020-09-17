@@ -15,8 +15,7 @@
         android:id="@+id/group_del_members"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        android:numColumns="6" />
+        android:divider="@null"/>
 
 
 </LinearLayout>

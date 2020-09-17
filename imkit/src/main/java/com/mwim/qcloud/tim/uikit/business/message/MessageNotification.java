@@ -21,12 +21,12 @@ import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMOfflinePushInfo;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SLog;
 
 public class MessageNotification {
 
@@ -49,7 +49,7 @@ public class MessageNotification {
     private MessageNotification() {
         mManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         if (mManager == null) {
-            DemoLog.e(TAG, "get NotificationManager failed");
+            SLog.e("get NotificationManager failed");
             return;
         }
         createNotificationChannel(false);
@@ -96,7 +96,7 @@ public class MessageNotification {
         if (callModel != null && callModel.action == CallModel.VIDEO_CALL_ACTION_DIALING) {
             isDialing = true;
         }
-        DemoLog.e(TAG, "isDialing: " + isDialing);
+        SLog.e("isDialing: " + isDialing);
 
         final String tag;
         final int id;
@@ -120,7 +120,7 @@ public class MessageNotification {
             builder = new Notification.Builder(mContext);
         }
 
-        String tickerStr = "收到一条新消息";
+        String tickerStr = "新消息";
         builder.setTicker(tickerStr).setWhen(System.currentTimeMillis());
         V2TIMOfflinePushInfo v2TIMOfflinePushInfo = msg.getOfflinePushInfo();
         String title = null;
@@ -145,6 +145,9 @@ public class MessageNotification {
         builder.setContentTitle(title);
         if (TextUtils.isEmpty(desc)) {
             MessageInfo info = MessageInfoUtil.createMessageInfo(msg);
+            if(info==null){
+                return;
+            }
             builder.setContentText(info.getExtra().toString());
         } else {
             builder.setContentText(desc);
@@ -154,7 +157,6 @@ public class MessageNotification {
         // 小米手机需要在设置里面把【云通信IM】的"后台弹出权限"打开才能点击Notification跳转。
         if (isDialing) {
             launch = new Intent(mContext, MwWorkActivity.class);
-            launch = new Intent();
             launch.putExtra(Constants.CHAT_INFO, callModel);
             launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } else {
@@ -168,8 +170,10 @@ public class MessageNotification {
             }
             chatInfo.setChatName(title);
             launch = new Intent(mContext, ChatActivity.class);
-            launch = new Intent();
             launch.putExtra(Constants.CHAT_INFO, chatInfo);
+            launch.putExtra(Constants.CHAT_INTO_ID,chatInfo.getId());
+            launch.putExtra(Constants.CHAT_INTO_TYPE,chatInfo.getType());
+            launch.putExtra(Constants.CHAT_INTO_NAME,title);
             launch.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         builder.setContentIntent(PendingIntent.getActivity(mContext,

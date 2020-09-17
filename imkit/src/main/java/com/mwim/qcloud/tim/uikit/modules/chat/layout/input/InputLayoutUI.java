@@ -31,7 +31,6 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     protected static final int VIDEO_RECORD = 3;
     protected static final int SEND_PHOTO = 4;
     protected static final int SEND_FILE = 5;
-    private static String TAG = InputLayoutUI.class.getSimpleName();
     /**
      * 语音/文字切换输入控件
      */

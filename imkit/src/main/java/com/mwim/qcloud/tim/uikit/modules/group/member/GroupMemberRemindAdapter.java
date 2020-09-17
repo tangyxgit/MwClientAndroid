@@ -1,17 +1,18 @@
 package com.mwim.qcloud.tim.uikit.modules.group.member;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
 
@@ -19,13 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GroupMemberDeleteAdapter extends BaseAdapter {
+public class GroupMemberRemindAdapter extends BaseAdapter {
 
     private List<GroupMemberInfo> mGroupMembers = new ArrayList<>();
-    private List<GroupMemberInfo> mDelMembers = new ArrayList<>();
-    private OnSelectChangedListener mSelectCallback;
+    private SelectionActivity.OnResultReturnListener onResultReturnListener;
+    private BaseActivity mActivity;
 
-    public GroupMemberDeleteAdapter() {
+    public GroupMemberRemindAdapter() {
     }
 
     @Override
@@ -47,11 +48,10 @@ public class GroupMemberDeleteAdapter extends BaseAdapter {
     public View getView(final int i, View view, final ViewGroup viewGroup) {
         MyViewHolder holder;
         if (view == null) {
-            view = LayoutInflater.from(TUIKit.getAppContext()).inflate(R.layout.group_member_del_adpater, viewGroup, false);
+            view = LayoutInflater.from(TUIKit.getAppContext()).inflate(R.layout.group_member_remind_adpater, viewGroup, false);
             holder = new MyViewHolder();
             holder.memberIcon = view.findViewById(R.id.group_member_icon);
             holder.memberName = view.findViewById(R.id.group_member_name);
-            holder.delCheck = view.findViewById(R.id.group_member_del_check);
             view.setTag(holder);
         } else {
             holder = (MyViewHolder) view.getTag();
@@ -69,18 +69,11 @@ public class GroupMemberDeleteAdapter extends BaseAdapter {
         }else{
             holder.memberName.setText(info.getAccount());
         }
-        holder.delCheck.setChecked(false);
-        holder.delCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    mDelMembers.add(info);
-                } else {
-                    mDelMembers.remove(info);
-                }
-                if (mSelectCallback != null) {
-                    mSelectCallback.onSelectChanged(mDelMembers);
-                }
+            public void onClick(View view) {
+                onResultReturnListener.onReturn(info);
+                mActivity.finish();
             }
         });
         return view;
@@ -98,21 +91,16 @@ public class GroupMemberDeleteAdapter extends BaseAdapter {
         }
     }
 
-    public void setOnSelectChangedListener(OnSelectChangedListener callback) {
-        mSelectCallback = callback;
+    public void setOnResultReturnListener(SelectionActivity.OnResultReturnListener onResultReturnListener) {
+        this.onResultReturnListener = onResultReturnListener;
     }
 
-    public void clear() {
-        mDelMembers.clear();
+    public void setActivity(BaseActivity mActivity) {
+        this.mActivity = mActivity;
     }
 
-    public interface OnSelectChangedListener {
-        void onSelectChanged(List<GroupMemberInfo> mDelMembers);
-    }
-
-    private class MyViewHolder {
+    private static class MyViewHolder {
         private ImageView memberIcon;
         private TextView memberName;
-        private CheckBox delCheck;
     }
 }

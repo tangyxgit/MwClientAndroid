@@ -17,12 +17,11 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 public class GroupMemberDeleteFragment extends BaseFragment {
 
     private GroupMemberDeleteLayout mMemberDelLayout;
-    private View mBaseView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mBaseView = inflater.inflate(R.layout.group_fragment_del_members, container, false);
+        View mBaseView = inflater.inflate(R.layout.group_fragment_del_members, container, false);
         mMemberDelLayout = mBaseView.findViewById(R.id.group_member_del_layout);
         init();
         return mBaseView;

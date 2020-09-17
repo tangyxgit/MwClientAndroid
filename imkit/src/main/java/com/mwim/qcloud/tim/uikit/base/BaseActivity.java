@@ -30,7 +30,17 @@ public class BaseActivity extends TakePhotoActivity {
         }
     }
     public void logout() {
-        IMKitAgent.logout(null);
+        IMKitAgent.logout(new IUIKitCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+
+            }
+        });
         IMKitAgent.unInit();
         UserApi.instance().clear();
         Intent intent = new Intent();

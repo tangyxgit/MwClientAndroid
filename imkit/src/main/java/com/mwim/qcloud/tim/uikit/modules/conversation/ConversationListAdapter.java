@@ -56,7 +56,7 @@ public class ConversationListAdapter extends IConversationAdapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(TUIKit.getAppContext());
-        RecyclerView.ViewHolder holder = null;
+        ConversationBaseHolder holder;
         // 创建不同的 ViewHolder
         View view;
         // 根据ViewType来创建条目
@@ -67,9 +67,7 @@ public class ConversationListAdapter extends IConversationAdapter {
             view = inflater.inflate(R.layout.conversation_adapter, parent, false);
             holder = new ConversationCommonHolder(view);
         }
-        if (holder != null) {
-            ((ConversationBaseHolder) holder).setAdapter(this);
-        }
+        holder.setAdapter(this);
         return holder;
     }
 
@@ -77,30 +75,26 @@ public class ConversationListAdapter extends IConversationAdapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final ConversationInfo conversationInfo = getItem(position);
         ConversationBaseHolder baseHolder = (ConversationBaseHolder) holder;
+        if (getItemViewType(position) == ConversationInfo.TYPE_CUSTOM) {
 
-        switch (getItemViewType(position)) {
-            case ConversationInfo.TYPE_CUSTOM:
-                break;
-            default:
-                //设置点击和长按事件
-                if (mOnItemClickListener != null) {
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mOnItemClickListener.onItemClick(view, position, conversationInfo);
-                        }
-                    });
-                }
-                if (mOnItemLongClickListener != null) {
-                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View view) {
-                            mOnItemLongClickListener.OnItemLongClick(view, position, conversationInfo);
-                            return true;
-                        }
-                    });
-                }
-                break;
+        } else {//设置点击和长按事件
+            if (mOnItemClickListener != null) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mOnItemClickListener.onItemClick(view, position, conversationInfo);
+                    }
+                });
+            }
+            if (mOnItemLongClickListener != null) {
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        mOnItemLongClickListener.OnItemLongClick(view, position, conversationInfo);
+                        return true;
+                    }
+                });
+            }
         }
         baseHolder.layoutViews(conversationInfo, position);
     }

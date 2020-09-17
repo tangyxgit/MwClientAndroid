@@ -13,41 +13,52 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
+import com.mwim.qcloud.tim.uikit.business.dialog.GroupJoinTypeDialog;
 import com.mwim.qcloud.tim.uikit.modules.group.interfaces.IGroupMemberLayout;
+import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
+import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberRemindActivity;
 import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
+import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
+import com.tencent.imsdk.v2.V2TIMGroupMemberInfoResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
-import com.mwim.qcloud.tim.uikit.component.dialog.TUIKitDialog;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
+import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 
 public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout, View.OnClickListener {
 
-    private static final String TAG = GroupInfoLayout.class.getSimpleName();
     private TitleBarLayout mTitleBar;
     private LineControllerView mMemberView;
     private GroupInfoAdapter mMemberAdapter;
+    private GroupInfoAdminAdapter mMemberAdminAdapter;
     private IGroupMemberRouter mMemberPreviewListener;
     private LineControllerView mGroupTypeView;
     private LineControllerView mGroupIDView;
     private LineControllerView mGroupNameView;
-    private LineControllerView mGroupIcon;
     private LineControllerView mGroupNotice;
     private LineControllerView mNickView;
     private LineControllerView mJoinTypeView;
+    private LineControllerView mMutedSwitchView;
+    private LineControllerView mRevOptView;
     private LineControllerView mTopSwitchView;
+    private LineControllerView mTransferGroupView;
+    private LineControllerView mMemberAdminView;
     private Button mDissolveBtn;
 
     private GroupInfo mGroupInfo;
@@ -98,7 +109,7 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mGroupNameView.setOnClickListener(this);
         mGroupNameView.setCanNav(true);
         // 群头像
-        mGroupIcon = findViewById(R.id.group_icon);
+        LineControllerView mGroupIcon = findViewById(R.id.group_icon);
         mGroupIcon.setOnClickListener(this);
         mGroupIcon.setCanNav(false);
         // 群公告
@@ -114,6 +125,81 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mNickView = findViewById(R.id.self_nickname_bar);
         mNickView.setOnClickListener(this);
         mNickView.setCanNav(true);
+        //转让群主
+        mTransferGroupView = findViewById(R.id.transfer_group_owner);
+        mTransferGroupView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GroupMemberRemindActivity.startGroupMemberRemind(getContext(), mGroupInfo.getId(),getContext().getString(R.string.transfer_group_owner), new SelectionActivity.OnResultReturnListener() {
+                    @Override
+                    public void onReturn(Object res) {
+                        GroupMemberInfo memberInfo = (GroupMemberInfo) res;
+                        V2TIMManager.getGroupManager().transferGroupOwner(mGroupInfo.getId(), memberInfo.getAccount(), new V2TIMCallback() {
+                            @Override
+                            public void onError(int i, String s) {
+                                ToastUtil.error(getContext(),s);
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                ToastUtil.success(getContext(),"转让成功");
+                                ((Activity)getContext()).finish();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        // 管理员列表
+        mMemberAdminView = findViewById(R.id.group_member_admin);
+        GridView memberAdminList = findViewById(R.id.group_members_admin);
+        mMemberAdminAdapter = new GroupInfoAdminAdapter();
+        memberAdminList.setAdapter(mMemberAdminAdapter);
+        //消息免打扰
+        mRevOptView = findViewById(R.id.rev_opt);
+        mRevOptView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
+                V2TIMManager.getGroupManager().setReceiveMessageOpt(mGroupInfo.getId(), b ? V2TIMGroupInfo.V2TIM_GROUP_NOT_RECEIVE_MESSAGE : V2TIMGroupInfo.V2TIM_GROUP_RECEIVE_MESSAGE, new V2TIMCallback() {
+                    @Override
+                    public void onError(int i, String s) {
+                        SLog.e("消息免打扰:" + i + "|desc:" + s);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        SLog.e("消息免打扰设置:"+b);
+                        if(b){
+                            mGroupInfo.setRevOpt(V2TIMGroupInfo.V2TIM_GROUP_NOT_RECEIVE_MESSAGE);
+                        }else{
+                            mGroupInfo.setRevOpt(V2TIMGroupInfo.V2TIM_GROUP_RECEIVE_MESSAGE);
+                        }
+                    }
+                });
+            }
+        });
+        //全群禁言
+        mMutedSwitchView = findViewById(R.id.chat_muted);
+        mMutedSwitchView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                V2TIMGroupInfo v2TIMGroupInfo = new V2TIMGroupInfo();
+                v2TIMGroupInfo.setGroupID(mGroupInfo.getId());
+                v2TIMGroupInfo.setAllMuted(b);
+                V2TIMManager.getGroupManager().setGroupInfo(v2TIMGroupInfo, new V2TIMCallback() {
+                    @Override
+                    public void onError(int code, String desc) {
+                        SLog.e("全员禁言:" + code + "|desc:" + desc);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+//                    ToastUtil.toastLongMessage("修改群头像成功");
+                        SLog.e("全员禁言成功");
+                    }
+                });
+            }
+        });
         // 是否置顶
         mTopSwitchView = findViewById(R.id.chat_to_top_switch);
         mTopSwitchView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
@@ -132,9 +218,10 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
     @Override
     public void onClick(View v) {
         if (mGroupInfo == null) {
-            TUIKitLog.e(TAG, "mGroupInfo is NULL");
+            SLog.e("mGroupInfo is NULL");
             return;
         }
+        BaseActivity activity = (BaseActivity) getContext();
         if (v.getId() == R.id.group_member_bar) {
             if (mMemberPreviewListener != null) {
                 mMemberPreviewListener.forwardListMember(mGroupInfo);
@@ -160,13 +247,12 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             V2TIMManager.getGroupManager().setGroupInfo(v2TIMGroupInfo, new V2TIMCallback() {
                 @Override
                 public void onError(int code, String desc) {
-                    TUIKitLog.e(TAG, "modify group icon failed, code:" + code + "|desc:" + desc);
-                    ToastUtil.toastLongMessage("修改群头像失败, code = " + code + ", info = " + desc);
+                    SLog.e("modify group icon failed, code:" + code + "|desc:" + desc);
                 }
 
                 @Override
                 public void onSuccess() {
-                    ToastUtil.toastLongMessage("修改群头像成功");
+//                    ToastUtil.toastLongMessage("修改群头像成功");
                 }
             });
         } else if (v.getId() == R.id.group_notice) {
@@ -195,64 +281,87 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             });
         } else if (v.getId() == R.id.join_type_bar) {
             if (mGroupTypeView.getContent().equals("聊天室")) {
-                ToastUtil.toastLongMessage("加入聊天室为自动审批，暂不支持修改");
+                ToastUtil.info(getContext(),"加入聊天室为自动审批，暂不支持修改");
                 return;
             }
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.group_join_type));
             bundle.putStringArrayList(TUIKitConstants.Selection.LIST, mJoinTypes);
             bundle.putInt(TUIKitConstants.Selection.DEFAULT_SELECT_ITEM_INDEX, mGroupInfo.getJoinType());
-            SelectionActivity.startListSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
+//            SelectionActivity.startListSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
+//                @Override
+//                public void onReturn(final Object text) {
+//                    mPresenter.modifyGroupInfo((Integer) text, TUIKitConstants.Group.MODIFY_GROUP_JOIN_TYPE);
+//                    mJoinTypeView.setContent(mJoinTypes.get((Integer) text));
+//
+//                }
+//            });
+            GroupJoinTypeDialog groupJoinTypeDialog = new GroupJoinTypeDialog();
+            groupJoinTypeDialog.setJoinTypeIndex(mGroupInfo.getJoinType());
+            groupJoinTypeDialog.setJoinTypes(mJoinTypes);
+            groupJoinTypeDialog.setOnResultReturnListener(new SelectionActivity.OnResultReturnListener() {
                 @Override
-                public void onReturn(final Object text) {
+                public void onReturn(Object text) {
                     mPresenter.modifyGroupInfo((Integer) text, TUIKitConstants.Group.MODIFY_GROUP_JOIN_TYPE);
                     mJoinTypeView.setContent(mJoinTypes.get((Integer) text));
-
                 }
             });
+            groupJoinTypeDialog.show(activity.getSupportFragmentManager(),"join_type");
         } else if (v.getId() == R.id.group_dissolve_button) {
             if (mGroupInfo.isOwner() &&
                     (!mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_WORK)
                             || !mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_PRIVATE))) {
-                new TUIKitDialog(getContext())
-                        .builder()
-                        .setCancelable(true)
-                        .setCancelOutside(true)
-                        .setTitle("您确认解散该群?")
-                        .setDialogWidth(0.75f)
-                        .setPositiveButton("确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mPresenter.deleteGroup();
-                            }
-                        })
-                        .setNegativeButton("取消", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        })
-                        .show();
+//                new TUIKitDialog(getContext())
+//                        .builder()
+//                        .setCancelable(true)
+//                        .setCancelOutside(true)
+//                        .setTitle("您确认解散该群?")
+//                        .setDialogWidth(0.75f)
+//                        .setPositiveButton("确定", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                mPresenter.deleteGroup();
+//                            }
+//                        })
+//                        .setNegativeButton("取消", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//
+//                            }
+//                        })
+//                        .show();
+                new ConfirmDialog().setContent("您确认解散该群?").setOnConfirmListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mPresenter.deleteGroup();
+                    }
+                }).show(activity.getSupportFragmentManager(),"del_group");
             } else {
-                new TUIKitDialog(getContext())
-                        .builder()
-                        .setCancelable(true)
-                        .setCancelOutside(true)
-                        .setTitle("您确认退出该群？")
-                        .setDialogWidth(0.75f)
-                        .setPositiveButton("确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mPresenter.quitGroup();
-                            }
-                        })
-                        .setNegativeButton("取消", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        })
-                        .show();
+//                new TUIKitDialog(getContext())
+//                        .builder()
+//                        .setCancelable(true)
+//                        .setCancelOutside(true)
+//                        .setTitle("您确认退出该群？")
+//                        .setDialogWidth(0.75f)
+//                        .setPositiveButton("确定", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                mPresenter.quitGroup();
+//                            }
+//                        })
+//                        .setNegativeButton("取消", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//
+//                            }
+//                        })
+//                        .show();
+                new ConfirmDialog().setContent("您确认退出该群?").setOnConfirmListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mPresenter.quitGroup();
+                    }
+                }).show(activity.getSupportFragmentManager(),"quit_group");
             }
         }
     }
@@ -284,21 +393,47 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mGroupTypeView.setContent(convertGroupText(info.getGroupType()));
         mJoinTypeView.setContent(mJoinTypes.get(info.getJoinType()));
         mNickView.setContent(mPresenter.getNickName());
+        mMutedSwitchView.setChecked(mGroupInfo.isMuted());
         mTopSwitchView.setChecked(mGroupInfo.isTopChat());
-
+        mRevOptView.setChecked(mGroupInfo.getRevOpt()==V2TIMGroupInfo.V2TIM_GROUP_NOT_RECEIVE_MESSAGE);
         mDissolveBtn.setText(R.string.dissolve);
         if (mGroupInfo.isOwner()) {
             mGroupNotice.setVisibility(VISIBLE);
-            mJoinTypeView.setVisibility(VISIBLE);
+//            mJoinTypeView.setVisibility(VISIBLE);
             if (mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_WORK)
                     || mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_PRIVATE)) {
                 mDissolveBtn.setText(R.string.exit_group);
             }
         } else {
+            mTransferGroupView.setVisibility(GONE);
+            mMutedSwitchView.setVisibility(GONE);
             mGroupNotice.setVisibility(GONE);
-            mJoinTypeView.setVisibility(GONE);
+//            mJoinTypeView.setVisibility(GONE);
             mDissolveBtn.setText(R.string.exit_group);
         }
+        loadAdmin();
+    }
+
+    public void loadAdmin(){
+        V2TIMManager.getGroupManager().getGroupMemberList(mGroupInfo.getId(), V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_FILTER_ADMIN, 0, new V2TIMValueCallback<V2TIMGroupMemberInfoResult>() {
+            @Override
+            public void onError(int code, String desc) {
+                SLog.e("loadGroupMembers failed, code: " + code + "|desc: " + desc);
+            }
+
+            @Override
+            public void onSuccess(V2TIMGroupMemberInfoResult v2TIMGroupMemberInfoResult) {
+                List<GroupMemberInfo> members = new ArrayList<>();
+                for (int i = 0; i < v2TIMGroupMemberInfoResult.getMemberInfoList().size(); i++) {
+                    GroupMemberInfo member = new GroupMemberInfo();
+                    members.add(member.covertTIMGroupMemberInfo(v2TIMGroupMemberInfoResult.getMemberInfoList().get(i)));
+                }
+                mGroupInfo.setMemberAdminDetails(members);
+                mMemberAdminView.setContent(members.size()+"人");
+                mMemberAdminAdapter.setDataSource(mGroupInfo);
+
+            }
+        });
     }
 
     private String convertGroupText(String groupType) {
@@ -321,18 +456,18 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
     public void onGroupInfoModified(Object value, int type) {
         switch (type) {
             case TUIKitConstants.Group.MODIFY_GROUP_NAME:
-                ToastUtil.toastLongMessage(getResources().getString(R.string.modify_group_name_success));
+                ToastUtil.success(getContext(),getResources().getString(R.string.modify_group_name_success));
                 mGroupNameView.setContent(value.toString());
                 break;
             case TUIKitConstants.Group.MODIFY_GROUP_NOTICE:
                 mGroupNotice.setContent(value.toString());
-                ToastUtil.toastLongMessage(getResources().getString(R.string.modify_group_notice_success));
+                ToastUtil.success(getContext(),getResources().getString(R.string.modify_group_notice_success));
                 break;
             case TUIKitConstants.Group.MODIFY_GROUP_JOIN_TYPE:
                 mJoinTypeView.setContent(mJoinTypes.get((Integer) value));
                 break;
             case TUIKitConstants.Group.MODIFY_MEMBER_NAME:
-                ToastUtil.toastLongMessage(getResources().getString(R.string.modify_nickname_success));
+                ToastUtil.success(getContext(),getResources().getString(R.string.modify_nickname_success));
                 mNickView.setContent(value.toString());
                 break;
         }
@@ -341,6 +476,56 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
     public void setRouter(IGroupMemberRouter listener) {
         mMemberPreviewListener = listener;
         mMemberAdapter.setManagerCallBack(listener);
+        mMemberAdminAdapter.setManagerCallBack(new IGroupMemberRouter() {
+            @Override
+            public void forwardListMember(GroupInfo info) {
+
+            }
+
+            @Override
+            public void forwardAddMember(GroupInfo info) {
+                GroupMemberRemindActivity.startGroupMemberRemind(getContext(), mGroupInfo.getId(), "添加管理员", new SelectionActivity.OnResultReturnListener() {
+                    @Override
+                    public void onReturn(Object res) {
+                        GroupMemberInfo memberInfo = (GroupMemberInfo) res;
+                        V2TIMManager.getGroupManager().setGroupMemberRole(mGroupInfo.getId(), memberInfo.getAccount(), V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_ROLE_ADMIN, new V2TIMCallback() {
+                            @Override
+                            public void onError(int i, String s) {
+                                SLog.e(i+">>"+s);
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                ToastUtil.success(getContext(),"管理员设置成功");
+                                loadAdmin();
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void forwardDeleteMember(GroupInfo info) {
+                GroupMemberRemindActivity.startGroupMemberRemind(getContext(), mGroupInfo.getId(), "移除管理员",V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_ROLE_MEMBER, new SelectionActivity.OnResultReturnListener() {
+                    @Override
+                    public void onReturn(Object res) {
+                        GroupMemberInfo memberInfo = (GroupMemberInfo) res;
+                        V2TIMManager.getGroupManager().setGroupMemberRole(mGroupInfo.getId(), memberInfo.getAccount(), V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_ROLE_MEMBER, new V2TIMCallback() {
+                            @Override
+                            public void onError(int i, String s) {
+                                SLog.e(i+">>"+s);
+                            }
+
+                            @Override
+                            public void onSuccess() {
+                                ToastUtil.success(getContext(),"移除管理员成功");
+                                loadAdmin();
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     @Override

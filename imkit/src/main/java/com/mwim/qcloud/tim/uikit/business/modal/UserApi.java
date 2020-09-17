@@ -184,5 +184,12 @@ public class UserApi {
     public void clear(){
         SharedUtils.removeData(USER_ID);
         SharedUtils.removeData(USER_SIGN);
+        SharedUtils.removeData(USER_DEPARTMENT);
+        SharedUtils.removeData(USER_EMAIL);
+        SharedUtils.removeData(USER_PHONE);
+        SharedUtils.removeData(USER_POSITION);
+        SharedUtils.removeData(USER_CARD);
+        SharedUtils.removeData(USER_ICON);
+        SharedUtils.removeData(USER_NAME);
     }
 }

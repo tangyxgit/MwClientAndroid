@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -203,6 +204,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     Yz.getSession().update(registerReq,UserInfoActivity.this,R.id.modify_email);
                 }
             });
+        }else if(id == R.id.modify_phone){
+            startActivity(new Intent(this,UpdatePhoneActivity.class));
         }
     }
 

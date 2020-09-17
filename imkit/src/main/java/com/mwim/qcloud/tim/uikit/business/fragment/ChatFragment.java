@@ -12,6 +12,7 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
+import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.helper.ChatLayoutHelper;
 import com.mwim.qcloud.tim.uikit.component.AudioPlayer;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
@@ -28,7 +29,6 @@ public class ChatFragment extends BaseFragment {
 
     private View mBaseView;
     private ChatLayout mChatLayout;
-    private TitleBarLayout mTitleBar;
     private ChatInfo mChatInfo;
 
     @Nullable
@@ -51,12 +51,17 @@ public class ChatFragment extends BaseFragment {
         mChatLayout.setChatInfo(mChatInfo);
 
         //获取单聊面板的标题栏
-        mTitleBar = mChatLayout.getTitleBar();
+        TitleBarLayout mTitleBar = mChatLayout.getTitleBar();
 
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制
         mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(MwWorkActivity.instance==null){
+                    Intent intent = new Intent(getActivity(),MwWorkActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
                 getActivity().finish();
             }
         });

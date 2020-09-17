@@ -27,6 +27,7 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.AudioPlayer;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
 
 
 public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout {
@@ -307,7 +308,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                ToastUtil.toastLongMessage(errMsg);
+//                ToastUtil.toastLongMessage(errMsg);
                 if (lastMessage == null) {
                     setDataProvider(null);
                 }
@@ -338,7 +339,10 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                ToastUtil.toastLongMessage(errMsg);
+//                ToastUtil.toastLongMessage(errMsg);
+                if(errCode == 10017){
+                    ToastUtil.toastLongMessage("该群已禁言");
+                }
             }
         });
     }

@@ -173,7 +173,7 @@ public class ChatLayoutHelper {
                 layout.sendMessage(info, false);
             }
         });
-        inputLayout.addAction(unit);
+//        inputLayout.addAction(unit);
     }
 
     public static class CustomInputFragment extends BaseInputFragment {

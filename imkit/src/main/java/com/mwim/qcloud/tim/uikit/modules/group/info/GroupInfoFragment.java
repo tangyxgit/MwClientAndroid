@@ -20,7 +20,6 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 public class GroupInfoFragment extends BaseFragment {
 
     private View mBaseView;
-    private GroupInfoLayout mGroupInfoLayout;
 
     @Nullable
     @Override
@@ -31,7 +30,7 @@ public class GroupInfoFragment extends BaseFragment {
     }
 
     private void initView() {
-        mGroupInfoLayout = mBaseView.findViewById(R.id.group_info_layout);
+        GroupInfoLayout mGroupInfoLayout = mBaseView.findViewById(R.id.group_info_layout);
         mGroupInfoLayout.setGroupId(getArguments().getString(TUIKitConstants.Group.GROUP_ID));
         mGroupInfoLayout.setRouter(new IGroupMemberRouter() {
             @Override

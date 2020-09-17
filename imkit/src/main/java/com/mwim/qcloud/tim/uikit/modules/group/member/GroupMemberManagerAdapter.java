@@ -18,7 +18,7 @@ import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfoProvider;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,20 +62,29 @@ public class GroupMemberManagerAdapter extends BaseAdapter {
             holder = (MyViewHolder) view.getTag();
         }
         final GroupMemberInfo info = getItem(i);
-        if (!TextUtils.isEmpty(info.getIconUrl()))
-            GlideEngine.loadImage(holder.memberIcon, info.getIconUrl(), null);
-        holder.memberName.setText(info.getAccount());
+        if (!TextUtils.isEmpty(info.getIconUrl())){
+            GlideEngine.loadCornerImage(holder.memberIcon, info.getIconUrl(), null,10);
+        }else{
+            GlideEngine.loadImage(holder.memberIcon,R.drawable.default_head);
+        }
+        if(!TextUtils.isEmpty(info.getNameCard())){
+            holder.memberName.setText(info.getNameCard());
+        }else if(!TextUtils.isEmpty(info.getNickName())){
+            holder.memberName.setText(info.getNickName());
+        }else{
+            holder.memberName.setText(info.getAccount());
+        }
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (!mGroupInfo.isOwner())
                     return false;
-                TextView delete = new TextView(viewGroup.getContext());
+                final TextView delete = new TextView(viewGroup.getContext());
                 delete.setText(R.string.group_remove_member);
                 int padding = ScreenUtil.getPxByDp(10);
                 delete.setPadding(padding, padding, padding, padding);
                 delete.setBackgroundResource(R.drawable.text_border);
-                int location[] = new int[2];
+                int[] location = new int[2];
                 v.getLocationInWindow(location);
                 final PopupWindow window = PopWindowUtil.popupWindow(delete, viewGroup, location[0], location[1] + v.getMeasuredHeight() / 3);
                 delete.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +106,7 @@ public class GroupMemberManagerAdapter extends BaseAdapter {
 
                             @Override
                             public void onError(String module, int errCode, String errMsg) {
-                                ToastUtil.toastLongMessage("移除成员失败:errCode=" + errCode);
+                                ToastUtil.error(delete.getContext(),"移除成员失败:errCode=" + errCode);
                             }
                         });
                         window.dismiss();
@@ -122,7 +131,7 @@ public class GroupMemberManagerAdapter extends BaseAdapter {
         }
     }
 
-    private class MyViewHolder {
+    private static class MyViewHolder {
         private ImageView memberIcon;
         private TextView memberName;
     }

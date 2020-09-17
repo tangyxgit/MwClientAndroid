@@ -22,7 +22,6 @@ import java.util.List;
 public class MessageListAdapter extends RecyclerView.Adapter {
 
     public static final int MSG_TYPE_HEADER_VIEW = -99;
-    private static final String TAG = MessageListAdapter.class.getSimpleName();
     private boolean mLoading = true;
     private MessageLayout mRecycleView;
     private List<MessageInfo> mDataSource = new ArrayList<>();
@@ -44,8 +43,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = MessageEmptyHolder.Factory.getInstance(parent, this, viewType);
-        return holder;
+        return MessageEmptyHolder.Factory.getInstance(parent, this, viewType);
     }
 
     @Override
@@ -56,13 +54,6 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         switch (getItemViewType(position)) {
             case MSG_TYPE_HEADER_VIEW:
                 ((MessageHeaderHolder) baseHolder).setLoadingStatus(mLoading);
-                break;
-            case MessageInfo.MSG_TYPE_TEXT:
-            case MessageInfo.MSG_TYPE_IMAGE:
-            case MessageInfo.MSG_TYPE_VIDEO:
-            case MessageInfo.MSG_TYPE_CUSTOM_FACE:
-            case MessageInfo.MSG_TYPE_AUDIO:
-            case MessageInfo.MSG_TYPE_FILE:
                 break;
             default:
                 break;
@@ -162,7 +153,6 @@ public class MessageListAdapter extends RecyclerView.Adapter {
         if (position == 0 || mDataSource.size() == 0) {
             return null;
         }
-        MessageInfo info = mDataSource.get(position - 1);
-        return info;
+        return mDataSource.get(position - 1);
     }
 }

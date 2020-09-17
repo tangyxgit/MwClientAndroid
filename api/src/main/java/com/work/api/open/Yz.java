@@ -13,6 +13,7 @@ import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.RegisterReq;
 import com.work.api.open.model.SendSmsReq;
+import com.work.api.open.model.UpdateMobileReq;
 import com.work.api.open.model.UploadResp;
 import com.work.util.SLog;
 
@@ -68,8 +69,8 @@ public class Yz extends ApiClient {
     /**
      * 获取用户基本信息
      */
-    public void getUserByUserId(OnResultDataListener onResultDataListener){
-        requestPost(ModeApi.getUserByUserId,new BaseReq(),new LoginResp(),onResultDataListener);
+    public void getUserByUserId(LoginReq loginReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getUserByUserId,loginReq,new LoginResp(),onResultDataListener);
     }
     /**
      * 获取指定手机号的信息
@@ -82,6 +83,12 @@ public class Yz extends ApiClient {
      */
     public void getUserByParam(GetUserByParamReq getUserByParamReq,OnResultDataListener onResultDataListener){
         requestPost(ModeApi.getUserByParam,getUserByParamReq,new GetUserByParamResp(),onResultDataListener);
+    }
+    /**
+     * 修改手机号
+     */
+    public void updateMobile(UpdateMobileReq registerReq, OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.updateMobile,registerReq,new BaseResp(),onResultDataListener);
     }
     /**
      * 上传文件

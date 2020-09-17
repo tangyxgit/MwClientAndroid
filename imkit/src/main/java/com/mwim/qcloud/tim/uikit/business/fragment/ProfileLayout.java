@@ -23,6 +23,7 @@ import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.work.api.open.Yz;
+import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.client.OpenData;
 import com.work.util.StringUtils;
@@ -73,7 +74,9 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         mModifySettingView.setCanNav(true);
         mModifySettingView.setOnClickListener(this);
         updateProfile();
-        Yz.getSession().getUserByUserId(new OnResultDataListener() {
+        LoginReq loginReq = new LoginReq();
+        loginReq.setUserId(UserApi.instance().getUserId());
+        Yz.getSession().getUserByUserId(loginReq,new OnResultDataListener() {
             @Override
             public void onResult(RequestWork req, ResponseWork resp) {
                 if(resp.isSuccess() && resp instanceof LoginResp){

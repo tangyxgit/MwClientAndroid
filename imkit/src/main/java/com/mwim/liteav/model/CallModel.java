@@ -139,7 +139,7 @@ public class CallModel implements Cloneable, Serializable {
         }
         CallModel callModel = new CallModel();
         try {
-            Map<String, Object> extraMap = new Gson().fromJson(signalingInfo.getData(), Map.class);
+            Map extraMap = new Gson().fromJson(signalingInfo.getData(), Map.class);
             if (extraMap != null
                     && extraMap.containsKey(CallModel.SIGNALING_EXTRA_KEY_VERSION)
                     && ((Double)extraMap.get(CallModel.SIGNALING_EXTRA_KEY_VERSION)).intValue() > TUIKitConstants.version) {

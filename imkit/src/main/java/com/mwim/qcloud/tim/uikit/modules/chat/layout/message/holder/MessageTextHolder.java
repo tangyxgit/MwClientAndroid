@@ -3,6 +3,7 @@ package com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder;
 import android.view.View;
 import android.widget.TextView;
 
+import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.face.FaceManager;
@@ -29,7 +30,7 @@ public class MessageTextHolder extends MessageContentHolder {
     public void layoutVariableViews(MessageInfo msg, int position) {
         msgBodyText.setVisibility(View.VISIBLE);
         if (msg.getExtra() != null) {
-            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false);
+            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString().replace(Constants.CHAT_REMIND_S,""), false);
         }
         if (properties.getChatContextFontSize() != 0) {
             msgBodyText.setTextSize(properties.getChatContextFontSize());

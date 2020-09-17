@@ -2,7 +2,6 @@ package com.mwim.liteav;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,20 +17,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.google.android.flexbox.FlexboxItemDecoration;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.mwim.liteav.login.ProfileManager;
 import com.mwim.liteav.trtcaudiocalldemo.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocalldemo.ui.TRTCVideoCallActivity;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.utils.SoftKeyBoardUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
 import com.tencent.imsdk.v2.V2TIMGroupMemberInfoResult;
@@ -41,6 +40,7 @@ import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
+import com.work.util.SLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,29 +49,26 @@ import java.util.Map;
 
 /**
  * 用于选择联系人
+ *
  * @author guanyifeng
  */
-public class SelectContactActivity extends AppCompatActivity {
-
-    private static final String TAG  = SelectContactActivity.class.getSimpleName();
+public class SelectContactActivity extends BaseActivity {
 
     private static final String GROUP_ID = "group_id";
     private static final String CALL_TYPE = "call_type";
     public static final int RADIUS = 10;
 
-    private TextView                     mCompleteBtn;
-    private Toolbar mToolbar;
-    private EditText                     mSearchEt;
+    private TextView mCompleteBtn;
+    private EditText mSearchEt;
     private RelativeLayout mGroupMemberLoadingView;
-    private RecyclerView mSelectedMemberRv;
     private SelectedMemberListAdapter mSelectedMemberListAdapter;
     private List<UserModel> mSelectedModelList = new ArrayList<>();
-    private Map<String, UserModel>       mUserModelMap       = new HashMap<>();
+    private Map<String, UserModel> mUserModelMap = new HashMap<>();
     private RecyclerView mGroupMemberListRv;
     private GroupMemberListAdapter mGroupMemberListAdapter;
     private List<ContactEntity> mUserModelList = new ArrayList<>();
     private Map<String, ContactEntity> mGroupMemberList = new HashMap<>();
-    private UserModel                    mSelfModel;
+    private UserModel mSelfModel;
     private String mGroupId;
     private int mCallType = ITRTCAVCall.TYPE_AUDIO_CALL;
 
@@ -84,9 +81,8 @@ public class SelectContactActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.audiocall_activity_select_contact);
+    public void onInitView() throws Exception {
+        super.onInitView();
         mGroupId = getIntent().getStringExtra(GROUP_ID);
         mCallType = getIntent().getIntExtra(CALL_TYPE, ITRTCAVCall.TYPE_AUDIO_CALL);
         if (TextUtils.isEmpty(mGroupId)) {
@@ -100,20 +96,39 @@ public class SelectContactActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onInitValue() throws Exception {
+        super.onInitValue();
+        setTitleName("发起呼叫");
+    }
+
+    @Override
+    public View onCustomTitleRight(TextView view) {
+        view.setText("完成");
+        view.setBackgroundResource(R.drawable.bg_button_border);
+        view.setTextColor(ContextCompat.getColor(this,R.color.colorWhite));
+        mCompleteBtn = view;
+        return view;
+    }
+
+    @Override
+    public int onCustomContentId() {
+        return R.layout.audiocall_activity_select_contact;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
     private void initView() {
-        mCompleteBtn = (TextView) findViewById(R.id.btn_complete);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+//        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mSearchEt = (EditText) findViewById(R.id.et_search);
         mGroupMemberLoadingView = findViewById(R.id.rl_group_member_loading);
         // 设置已经选中的用户列表
-        mSelectedMemberRv = (RecyclerView) findViewById(R.id.rv_selected_member);
-        FlexboxLayoutManager  manager        = new FlexboxLayoutManager(this);
+        RecyclerView mSelectedMemberRv = (RecyclerView) findViewById(R.id.rv_selected_member);
+        FlexboxLayoutManager manager = new FlexboxLayoutManager(this);
         FlexboxItemDecoration itemDecoration = new FlexboxItemDecoration(this);
-        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_divider));
+        itemDecoration.setDrawable(ContextCompat.getDrawable(this,R.drawable.bg_divider));
         mSelectedMemberRv.addItemDecoration(itemDecoration);
         mSelectedMemberRv.setLayoutManager(manager);
         mSelectedMemberListAdapter = new SelectedMemberListAdapter(this, mSelectedModelList, new OnItemClickListener() {
@@ -129,11 +144,10 @@ public class SelectContactActivity extends AppCompatActivity {
         mSelectedMemberRv.setAdapter(mSelectedMemberListAdapter);
         // 设置底部搜索界面列表
         mGroupMemberListRv = (RecyclerView) findViewById(R.id.rv_group_member_list);
-        LinearLayoutManager layoutManager         = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        mGroupMemberListRv.addItemDecoration(dividerItemDecoration);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mGroupMemberListRv.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.background_color).build());
         mGroupMemberListRv.setLayoutManager(layoutManager);
-        mGroupMemberListAdapter = new GroupMemberListAdapter(this, mUserModelList, new OnItemClickListener() {
+        mGroupMemberListAdapter = new GroupMemberListAdapter( mUserModelList, new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 if (position < mUserModelList.size() && position >= 0) {
@@ -194,13 +208,6 @@ public class SelectContactActivity extends AppCompatActivity {
             }
         });
         completeBtnEnable();
-
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     @Override
@@ -228,7 +235,7 @@ public class SelectContactActivity extends AppCompatActivity {
                 mGroupMemberLoadingView.setVisibility(View.GONE);
                 mUserModelList.clear();
                 mGroupMemberListAdapter.notifyDataSetChanged();
-                TUIKitLog.e(TAG, "loadGroupMembers failed, module:" + module + "|errCode:" + errCode + "|errMsg:" + errMsg);
+                SLog.e("loadGroupMembers failed, module:" + module + "|errCode:" + errCode + "|errMsg:" + errMsg);
             }
         });
     }
@@ -237,7 +244,7 @@ public class SelectContactActivity extends AppCompatActivity {
         V2TIMManager.getGroupManager().getGroupMemberList(mGroupId, V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_FILTER_ALL, nextSeq, new V2TIMValueCallback<V2TIMGroupMemberInfoResult>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "loadGroupMembers failed, code: " + code + "|desc: " + desc);
+                SLog.e("loadGroupMembers failed, code: " + code + "|desc: " + desc);
                 callBack.onError(mGroupId, code, desc);
             }
 
@@ -250,7 +257,13 @@ public class SelectContactActivity extends AppCompatActivity {
                     }
                     UserModel userModel = new UserModel();
                     userModel.userId = info.getUserID();
-                    userModel.userName = TextUtils.isEmpty(info.getNameCard()) ? info.getUserID() : info.getNameCard();
+                    if(!TextUtils.isEmpty(info.getNameCard())){
+                        userModel.userName = info.getNameCard();
+                    }else if(!TextUtils.isEmpty(info.getNickName())){
+                        userModel.userName = info.getNickName();
+                    }else{
+                        userModel.userName = info.getUserID();
+                    }
                     userModel.userAvatar = info.getFaceUrl();
                     ContactEntity entity = new ContactEntity();
                     entity.isSelected = false;
@@ -329,23 +342,20 @@ public class SelectContactActivity extends AppCompatActivity {
 
     public static class SelectedMemberListAdapter extends
             RecyclerView.Adapter<SelectedMemberListAdapter.ViewHolder> {
-        private static final String              TAG = SelectedMemberListAdapter.class.getSimpleName();
-        private              Context             context;
-        private              List<UserModel>     list;
-        private              OnItemClickListener onItemClickListener;
+        private List<UserModel> list;
+        private OnItemClickListener onItemClickListener;
 
         public SelectedMemberListAdapter(Context context, List<UserModel> list,
                                          OnItemClickListener onItemClickListener) {
-            this.context = context;
             this.list = list;
             this.onItemClickListener = onItemClickListener;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Context        context  = parent.getContext();
+            Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
-            View           view     = inflater.inflate(R.layout.audiocall_item_selected_contact, parent, false);
+            View view = inflater.inflate(R.layout.audiocall_item_selected_contact, parent, false);
             return new ViewHolder(view);
         }
 
@@ -388,23 +398,19 @@ public class SelectContactActivity extends AppCompatActivity {
 
     public static class GroupMemberListAdapter extends
             RecyclerView.Adapter<GroupMemberListAdapter.ViewHolder> {
-        private static final String TAG = GroupMemberListAdapter.class.getSimpleName();
-
-        private Context                                   context;
         private List<SelectContactActivity.ContactEntity> list;
-        private OnItemClickListener                       onItemClickListener;
+        private OnItemClickListener onItemClickListener;
 
-        public GroupMemberListAdapter(Context context, List<SelectContactActivity.ContactEntity> list,
+        public GroupMemberListAdapter(List<SelectContactActivity.ContactEntity> list,
                                       OnItemClickListener onItemClickListener) {
-            this.context = context;
             this.list = list;
             this.onItemClickListener = onItemClickListener;
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            private Button    mContactCb;
+            private Button mContactCb;
             private ImageView mAvatarImg;
-            private TextView  mUserNameTv;
+            private TextView mUserNameTv;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -415,7 +421,12 @@ public class SelectContactActivity extends AppCompatActivity {
 
             public void bind(final SelectContactActivity.ContactEntity model,
                              final OnItemClickListener listener) {
-                GlideEngine.loadCornerImage(mAvatarImg, model.mUserModel.userAvatar, null, RADIUS);
+                if(TextUtils.isEmpty(model.mUserModel.userAvatar)){
+                    GlideEngine.loadImage(mAvatarImg,R.drawable.default_head);
+                }else{
+                    GlideEngine.loadCornerImage(mAvatarImg, model.mUserModel.userAvatar, null, RADIUS);
+                }
+
                 mUserNameTv.setText(model.mUserModel.userName);
                 if (model.isSelected) {
                     mContactCb.setActivated(true);
@@ -439,9 +450,9 @@ public class SelectContactActivity extends AppCompatActivity {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Context        context  = parent.getContext();
+            Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
-            View           view     = inflater.inflate(R.layout.audiocall_item_select_contact, parent, false);
+            View view = inflater.inflate(R.layout.audiocall_item_select_contact, parent, false);
             return new ViewHolder(view);
         }
 
@@ -463,6 +474,6 @@ public class SelectContactActivity extends AppCompatActivity {
 
     public static class ContactEntity {
         public UserModel mUserModel;
-        public boolean   isSelected;
+        public boolean isSelected;
     }
 }

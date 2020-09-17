@@ -8,8 +8,17 @@ package com.work.api.open.model;
 
 public class LoginReq extends BaseReq {
 
+    private String userId;
     private String mobile;
     private String password;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getMobile() {
         return mobile;

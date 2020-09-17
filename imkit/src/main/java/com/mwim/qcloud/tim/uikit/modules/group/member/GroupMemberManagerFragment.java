@@ -19,20 +19,18 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 public class GroupMemberManagerFragment extends BaseFragment {
 
     private GroupMemberManagerLayout mMemberLayout;
-    private View mBaseView;
-    private GroupInfo mGroupInfo;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mBaseView = inflater.inflate(R.layout.group_fragment_members, container, false);
+        View mBaseView = inflater.inflate(R.layout.group_fragment_members, container, false);
         mMemberLayout = mBaseView.findViewById(R.id.group_member_grid_layout);
         init();
         return mBaseView;
     }
 
     private void init() {
-        mGroupInfo = (GroupInfo) getArguments().getSerializable(TUIKitConstants.Group.GROUP_INFO);
+        GroupInfo mGroupInfo = (GroupInfo) getArguments().getSerializable(TUIKitConstants.Group.GROUP_INFO);
         mMemberLayout.setDataSource(mGroupInfo);
         mMemberLayout.getTitleBar().setOnLeftClickListener(new View.OnClickListener() {
             @Override

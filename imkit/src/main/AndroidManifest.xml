@@ -37,8 +37,7 @@
             android:name="com.mwim.liteav.SelectContactActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name="com.mwim.liteav.trtcaudiocalldemo.ui.TRTCAudioCallActivity"
             android:launchMode="singleTop"
@@ -94,6 +93,8 @@
         <activity android:name=".business.active.UpdatePwdActivity"/>
         <activity android:name=".business.active.SearchAddMoreActivity"
             android:windowSoftInputMode="stateVisible"/>
+        <activity android:name=".business.active.UpdatePhoneActivity"/>
+        <activity android:name=".modules.group.member.GroupMemberRemindActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

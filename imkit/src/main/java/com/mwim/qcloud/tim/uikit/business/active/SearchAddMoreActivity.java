@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
@@ -40,6 +41,7 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
         mSearch = findViewById(R.id.search);
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.background_color).build());
         mAdapter = new SearchAddMoreAdapter(null);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);

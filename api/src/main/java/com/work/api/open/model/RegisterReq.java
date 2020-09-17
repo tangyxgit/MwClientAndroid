@@ -18,6 +18,15 @@ public class RegisterReq extends BaseReq {
     private String smsCode;
     private String newPassword;
     private String oldPassword;
+    private String oldMobile;
+
+    public String getOldMobile() {
+        return oldMobile;
+    }
+
+    public void setOldMobile(String oldMobile) {
+        this.oldMobile = oldMobile;
+    }
 
     public String getDepartName() {
         return departName;

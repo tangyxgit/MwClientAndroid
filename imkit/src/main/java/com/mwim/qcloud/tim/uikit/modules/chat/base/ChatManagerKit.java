@@ -7,6 +7,7 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageRevokedManager;
+import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.v2.V2TIMAdvancedMsgListener;
 import com.tencent.imsdk.v2.V2TIMCallback;
@@ -20,8 +21,7 @@ import com.tencent.imsdk.v2.V2TIMSendCallback;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,9 +59,9 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
     }
 
     public void onReadReport(List<V2TIMMessageReceipt> receiptList) {
-        TUIKitLog.i(TAG, "onReadReport:" + receiptList.size());
+        SLog.i("onReadReport:" + receiptList.size());
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "onReadReport unSafetyCall");
+            SLog.w("onReadReport unSafetyCall");
             return;
         }
         if (receiptList.size() == 0) {
@@ -81,7 +81,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     @Override
     public void onRecvNewMessage(V2TIMMessage msg) {
-        TUIKitLog.i(TAG, "onRecvNewMessage msgID:" + msg.getMsgID());
+        SLog.i("onRecvNewMessage msgID:" + msg.getMsgID());
         int elemType = msg.getElemType();
         if (elemType == V2TIMMessage.V2TIM_ELEM_TYPE_CUSTOM) {
             if (MessageInfoUtil.isTyping(msg.getCustomElem().getData())) {
@@ -89,7 +89,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                 return;
             } else if (MessageInfoUtil.isOnlineIgnoredDialing(msg.getCustomElem().getData())) {
                 // 这类消息都是音视频通话邀请的在线消息，忽略
-                TUIKitLog.i(TAG, "ignore online invitee message");
+                SLog.i("ignore online invitee message");
                 return;
             }
         }
@@ -99,7 +99,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     private void notifyTyping() {
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "notifyTyping unSafetyCall");
+            SLog.w("notifyTyping unSafetyCall");
             return;
         }
         mCurrentProvider.notifyTyping();
@@ -121,7 +121,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     protected void onReceiveMessage(final V2TIMMessage msg) {
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "onReceiveMessage unSafetyCall");
+            SLog.w("onReceiveMessage unSafetyCall");
             return;
         }
         addMessage(msg);
@@ -131,7 +131,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     protected void addMessage(V2TIMMessage msg) {
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "addMessage unSafetyCall");
+            SLog.w("addMessage unSafetyCall");
             return;
         }
         final List<MessageInfo> list = MessageInfoUtil.TIMMessage2MessageInfo(msg);
@@ -167,24 +167,24 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                 V2TIMManager.getMessageManager().markGroupMessageAsRead(groupID, new V2TIMCallback() {
                     @Override
                     public void onError(int code, String desc) {
-                        TUIKitLog.e(TAG, "addMessage() markGroupMessageAsRead failed, code = " + code + ", desc = " + desc);
+                        SLog.e("addMessage() markGroupMessageAsRead failed, code = " + code + ", desc = " + desc);
                     }
 
                     @Override
                     public void onSuccess() {
-                        TUIKitLog.i(TAG, "addMessage() markGroupMessageAsRead success");
+                        SLog.i("addMessage() markGroupMessageAsRead success");
                     }
                 });
             } else {
                 V2TIMManager.getMessageManager().markC2CMessageAsRead(userID, new V2TIMCallback() {
                     @Override
                     public void onError(int code, String desc) {
-                        TUIKitLog.e(TAG, "addMessage() markC2CMessageAsRead failed, code = " + code + ", desc = " + desc);
+                        SLog.e("addMessage() markC2CMessageAsRead failed, code = " + code + ", desc = " + desc);
                     }
 
                     @Override
                     public void onSuccess() {
-                        TUIKitLog.i(TAG, "addMessage() markC2CMessageAsRead success");
+                        SLog.i("addMessage() markC2CMessageAsRead success");
                     }
                 });
             }
@@ -197,7 +197,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     public void deleteMessage(int position, MessageInfo messageInfo) {
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "deleteMessage unSafetyCall");
+            SLog.w("deleteMessage unSafetyCall");
             return;
         }
         if (messageInfo.remove()) {
@@ -207,7 +207,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     public void revokeMessage(final int position, final MessageInfo messageInfo) {
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "revokeMessage unSafetyCall");
+            SLog.w("revokeMessage unSafetyCall");
             return;
         }
         V2TIMManager.getMessageManager().revokeMessage(messageInfo.getTimMessage(), new V2TIMCallback() {
@@ -223,7 +223,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
             @Override
             public void onSuccess() {
                 if (!safetyCall()) {
-                    TUIKitLog.w(TAG, "revokeMessage unSafetyCall");
+                    SLog.w("revokeMessage unSafetyCall");
                     return;
                 }
                 mCurrentProvider.updateMessageRevoked(messageInfo.getId());
@@ -234,7 +234,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     public void sendMessage(final MessageInfo message, boolean retry, final IUIKitCallBack callBack) {
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "sendMessage unSafetyCall");
+            SLog.w("sendMessage unSafetyCall");
             return;
         }
         if (message == null || message.getStatus() == MessageInfo.MSG_STATUS_SENDING) {
@@ -279,13 +279,13 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
                     @Override
                     public void onError(int code, String desc) {
-                        TUIKitLog.v(TAG, "sendMessage fail:" + code + "=" + desc);
+                        SLog.v("sendMessage fail:" + code + "=" + desc);
                         if (!safetyCall()) {
-                            TUIKitLog.w(TAG, "sendMessage unSafetyCall");
+                            SLog.w("sendMessage unSafetyCall");
                             return;
                         }
                         if (callBack != null) {
-                            callBack.onError(TAG, code, desc);
+                            callBack.onError(TAG,code, desc);
                         }
                         message.setStatus(MessageInfo.MSG_STATUS_SEND_FAIL);
                         mCurrentProvider.updateMessageInfo(message);
@@ -293,9 +293,9 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
                     @Override
                     public void onSuccess(V2TIMMessage v2TIMMessage) {
-                        TUIKitLog.v(TAG, "sendMessage onSuccess:" + v2TIMMessage.getMsgID());
+                        SLog.v("sendMessage onSuccess:" + v2TIMMessage.getMsgID());
                         if (!safetyCall()) {
-                            TUIKitLog.w(TAG, "sendMessage unSafetyCall");
+                            SLog.w("sendMessage unSafetyCall");
                             return;
                         }
                         if (callBack != null) {
@@ -307,7 +307,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                 });
 
         //消息先展示，通过状态来确认发送是否成功
-        TUIKitLog.i(TAG, "sendMessage msgID:" + msgID);
+        SLog.i("sendMessage msgID:" + msgID);
         message.setId(msgID);
         if (message.getMsgType() < MessageInfo.MSG_TYPE_TIPS) {
             message.setStatus(MessageInfo.MSG_STATUS_SENDING);
@@ -325,7 +325,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
 
     public void loadChatMessages(MessageInfo lastMessage, final IUIKitCallBack callBack) {
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "loadLocalChatMessages unSafetyCall");
+            SLog.w("loadLocalChatMessages unSafetyCall");
             return;
         }
         if (mIsLoading) {
@@ -352,8 +352,8 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                 @Override
                 public void onError(int code, String desc) {
                     mIsLoading = false;
-                    callBack.onError(TAG, code, desc);
-                    TUIKitLog.e(TAG, "loadChatMessages getC2CHistoryMessageList failed, code = " + code + ", desc = " + desc);
+                    callBack.onError(TAG,code, desc);
+                    SLog.e("loadChatMessages getC2CHistoryMessageList failed, code = " + code + ", desc = " + desc);
                 }
 
                 @Override
@@ -366,8 +366,8 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                 @Override
                 public void onError(int code, String desc) {
                     mIsLoading = false;
-                    callBack.onError(TAG, code, desc);
-                    TUIKitLog.e(TAG, "loadChatMessages getGroupHistoryMessageList failed, code = " + code + ", desc = " + desc);
+                    callBack.onError(TAG,code, desc);
+                    SLog.e("loadChatMessages getGroupHistoryMessageList failed, code = " + code + ", desc = " + desc);
                 }
 
                 @Override
@@ -381,31 +381,31 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
     private void processHistoryMsgs(List<V2TIMMessage> v2TIMMessages, ChatInfo chatInfo, IUIKitCallBack callBack) {
         mIsLoading = false;
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "getLocalMessage unSafetyCall");
+            SLog.w("getLocalMessage unSafetyCall");
             return;
         }
         if (chatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
             V2TIMManager.getMessageManager().markC2CMessageAsRead(chatInfo.getId(), new V2TIMCallback() {
                 @Override
                 public void onError(int code, String desc) {
-                    TUIKitLog.e(TAG, "processHistoryMsgs setReadMessage failed, code = " + code + ", desc = " + desc);
+                    SLog.e("processHistoryMsgs setReadMessage failed, code = " + code + ", desc = " + desc);
                 }
 
                 @Override
                 public void onSuccess() {
-                    TUIKitLog.d(TAG, "processHistoryMsgs setReadMessage success");
+                    SLog.d("processHistoryMsgs setReadMessage success");
                 }
             });
         } else {
             V2TIMManager.getMessageManager().markGroupMessageAsRead(chatInfo.getId(), new V2TIMCallback() {
                 @Override
                 public void onError(int code, String desc) {
-                    TUIKitLog.e(TAG, "processHistoryMsgs markC2CMessageAsRead failed, code = " + code + ", desc = " + desc);
+                    SLog.e("processHistoryMsgs markC2CMessageAsRead failed, code = " + code + ", desc = " + desc);
                 }
 
                 @Override
                 public void onSuccess() {
-                    TUIKitLog.d(TAG, "processHistoryMsgs markC2CMessageAsRead success");
+                    SLog.d("processHistoryMsgs markC2CMessageAsRead success");
                 }
             });
         }
@@ -431,10 +431,10 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
     @Override
     public void handleInvoke(String msgID) {
         if (!safetyCall()) {
-            TUIKitLog.w(TAG, "handleInvoke unSafetyCall");
+            SLog.w("handleInvoke unSafetyCall");
             return;
         }
-        TUIKitLog.i(TAG, "handleInvoke msgID = " + msgID);
+        SLog.i("handleInvoke msgID = " + msgID);
         mCurrentProvider.updateMessageRevoked(msgID);
     }
 

@@ -2,7 +2,6 @@ package com.mwim.qcloud.tim.uikit.modules.group.member;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 
 import androidx.annotation.Nullable;
 
@@ -25,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupMemberInviteLayout extends LinearLayout implements IGroupMemberLayout {
-
-    private static final String TAG = GroupMemberInviteLayout.class.getSimpleName();
 
     private TitleBarLayout mTitleBar;
     private ContactListView mContactListView;
@@ -54,7 +51,6 @@ public class GroupMemberInviteLayout extends LinearLayout implements IGroupMembe
         mTitleBar = findViewById(R.id.group_invite_title_bar);
         mTitleBar.setTitle("确定", TitleBarLayout.POSITION.RIGHT);
         mTitleBar.setTitle("添加成员", TitleBarLayout.POSITION.MIDDLE);
-        mTitleBar.getRightTitle().setTextColor(Color.BLUE);
         mTitleBar.getRightIcon().setVisibility(View.GONE);
         mTitleBar.setOnRightClickListener(new OnClickListener() {
             @Override

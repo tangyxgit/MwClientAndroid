@@ -2,6 +2,7 @@ package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
@@ -21,7 +22,6 @@ public class ChatActivity extends IMBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_im_chat);
-
         chat(getIntent());
     }
 
@@ -52,6 +52,17 @@ public class ChatActivity extends IMBaseActivity {
             bundle.putSerializable(Constants.CHAT_INFO, mChatInfo);
         } else {
             mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
+            if(mChatInfo==null){
+                String chatId = bundle.getString(Constants.CHAT_INTO_ID);
+                int chatType = bundle.getInt(Constants.CHAT_INTO_TYPE,-1);
+                if(!TextUtils.isEmpty(chatId) && chatType!=-1){
+                    mChatInfo = new ChatInfo();
+                    mChatInfo.setId(chatId);
+                    mChatInfo.setType(chatType);
+                    mChatInfo.setChatName(bundle.getString(Constants.CHAT_INTO_NAME));
+                    bundle.putSerializable(Constants.CHAT_INFO, mChatInfo);
+                }
+            }
             if (mChatInfo == null) {
                 startSplashActivity(null);
                 return;
@@ -68,12 +79,13 @@ public class ChatActivity extends IMBaseActivity {
     }
 
     private void startSplashActivity(Bundle bundle) {
-//        Intent intent = new Intent(ChatActivity.this, SplashActivity.class);
-//        if (bundle != null) {
-//            intent.putExtras(bundle);
-//        }
-//        startActivity(intent);
-//        finish();
+        Intent intent = new Intent();
+        intent.setClassName(this,"com.work.mw.activity.SplashActivity");
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+        finish();
     }
 
     @Override

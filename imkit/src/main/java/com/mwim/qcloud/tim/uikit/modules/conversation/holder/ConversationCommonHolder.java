@@ -8,11 +8,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.business.Constants;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.utils.DateTimeUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.work.util.SLog;
 
 import java.util.Date;
 
@@ -62,7 +65,13 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         timelineText.setText("");
         if (lastMsg != null) {
             if (lastMsg.getExtra() != null) {
-                messageText.setText(Html.fromHtml(lastMsg.getExtra().toString()));
+                String msg = lastMsg.getExtra().toString();
+                if(msg.lastIndexOf(Constants.CHAT_REMIND_S)!=-1 && !lastMsg.isRead()){
+                    if(msg.contains(UserApi.instance().getNickName())){
+                        msg="<font color='#ff0000'>[有人@我]</font>"+msg;
+                    }
+                }
+                messageText.setText(Html.fromHtml(msg.replace(Constants.CHAT_REMIND_S,"")));
                 messageText.setTextColor(rootView.getResources().getColor(R.color.list_bottom_text_bg));
             }
             timelineText.setText(DateTimeUtil.getTimeFormatText(new Date(lastMsg.getMsgTime() * 1000)));

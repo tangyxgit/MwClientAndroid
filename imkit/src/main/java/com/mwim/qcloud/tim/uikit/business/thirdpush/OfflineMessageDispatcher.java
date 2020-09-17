@@ -16,12 +16,12 @@ import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageContainerBean;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
+import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageHelper;
 
@@ -30,15 +30,13 @@ import java.util.Set;
 
 public class OfflineMessageDispatcher {
 
-    private static final String TAG = OfflineMessageDispatcher.class.getSimpleName();
-
     public static OfflineMessageBean parseOfflineMessage(Intent intent) {
-        DemoLog.i(TAG, "intent: " + intent);
+        SLog.i( "intent: " + intent);
         if (intent == null) {
             return null;
         }
         Bundle bundle = intent.getExtras();
-        DemoLog.i(TAG, "bundle: " + bundle);
+        SLog.i( "bundle: " + bundle);
         if (bundle == null) {
 //            String ext = VIVOPushMessageReceiverImpl.getParams();
 //            if (!TextUtils.isEmpty(ext)) {
@@ -47,7 +45,7 @@ public class OfflineMessageDispatcher {
             return null;
         } else {
             String ext = bundle.getString("ext");
-            DemoLog.i(TAG, "push custom data ext: " + ext);
+            SLog.i( "push custom data ext: " + ext);
             if (TextUtils.isEmpty(ext)) {
                 if (BrandUtil.isBrandXiaoMi()) {
                     ext = getXiaomiMessage(bundle);
@@ -77,7 +75,7 @@ public class OfflineMessageDispatcher {
         if (set != null) {
             for (String key : set) {
                 Object value = bundle.get(key);
-                DemoLog.i(TAG, "push custom data key: " + key + " value: " + value);
+                SLog.i( "push custom data key: " + key + " value: " + value);
                 if (TextUtils.equals("entity", key)) {
                     return value.toString();
                 }
@@ -114,7 +112,7 @@ public class OfflineMessageDispatcher {
             PackageManager packageManager = IMKitAgent.instance().getPackageManager();
             String label = String.valueOf(packageManager.getApplicationLabel(IMKitAgent.instance().getApplicationInfo()));
             ToastUtil.toastLongMessage("您的应用 " + label + " 版本太低，不支持打开该离线消息");
-            DemoLog.e(TAG, "unknown version: " + bean.version + " or action: " + bean.action);
+            SLog.e("unknown version: " + bean.version + " or action: " + bean.action);
             return null;
         }
         return bean;
@@ -132,7 +130,7 @@ public class OfflineMessageDispatcher {
             return true;
         } else if (bean.action == OfflineMessageBean.REDIRECT_ACTION_CALL) {
             final CallModel model = new Gson().fromJson(bean.content, CallModel.class);
-            DemoLog.i(TAG, "bean: "+ bean + " model: " + model);
+            SLog.i("bean: "+ bean + " model: " + model);
             if (model != null) {
                 long timeout = System.currentTimeMillis() / 1000 - bean.sendTime;
                 if (timeout >= model.timeout) {
@@ -142,7 +140,7 @@ public class OfflineMessageDispatcher {
                         if (bean.chatType == TIMConversationType.C2C.value()) {
                             // c2c 登录之后会同步消息，所以不需要主动调用通话界面
                         } else {
-                            DemoLog.e(TAG, "group call but no group id");
+                            SLog.e("group call but no group id");
                         }
                     } else {
                         V2TIMSignalingInfo info = new V2TIMSignalingInfo();
@@ -154,7 +152,7 @@ public class OfflineMessageDispatcher {
 
                             @Override
                             public void onError(int code, String desc) {
-                                DemoLog.e(TAG, "addInvitedSignaling code: " + code + " desc: " + desc);
+                                SLog.e("addInvitedSignaling code: " + code + " desc: " + desc);
                             }
 
                             @Override

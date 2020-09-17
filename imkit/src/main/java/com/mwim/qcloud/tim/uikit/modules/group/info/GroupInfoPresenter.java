@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
 
 
 public class GroupInfoPresenter {
@@ -27,7 +27,7 @@ public class GroupInfoPresenter {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                TUIKitLog.e("loadGroupInfo", errCode + ":" + errMsg);
+                SLog.e(errCode + ":" + errMsg);
                 callBack.onError(module, errCode, errMsg);
                 ToastUtil.toastLongMessage(errMsg);
             }
@@ -43,7 +43,7 @@ public class GroupInfoPresenter {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                TUIKitLog.e("modifyGroupName", errCode + ":" + errMsg);
+                SLog.e(errCode + ":" + errMsg);
                 ToastUtil.toastLongMessage(errMsg);
             }
         });
@@ -58,7 +58,7 @@ public class GroupInfoPresenter {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                TUIKitLog.e("modifyGroupNotice", errCode + ":" + errMsg);
+                SLog.e(errCode + ":" + errMsg);
                 ToastUtil.toastLongMessage(errMsg);
             }
         });
@@ -82,7 +82,7 @@ public class GroupInfoPresenter {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                TUIKitLog.e("modifyMyGroupNickname", errCode + ":" + errMsg);
+                SLog.e(errCode + ":" + errMsg);
                 ToastUtil.toastLongMessage(errMsg);
             }
         });
@@ -97,7 +97,7 @@ public class GroupInfoPresenter {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                TUIKitLog.e("deleteGroup", errCode + ":" + errMsg);
+                SLog.e( errCode + ":" + errMsg);
                 ToastUtil.toastLongMessage(errMsg);
             }
         });
@@ -117,7 +117,7 @@ public class GroupInfoPresenter {
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 ((Activity) mInfoLayout.getContext()).finish();
-                TUIKitLog.e("quitGroup", errCode + ":" + errMsg);
+                SLog.e( errCode + ":" + errMsg);
             }
         });
     }

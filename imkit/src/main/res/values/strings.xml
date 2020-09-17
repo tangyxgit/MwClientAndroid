@@ -8,7 +8,7 @@
     <string name="add_friend" translatable="false">添加好友</string>
     <string name="add_group" translatable="false">添加群聊</string>
     <string name="start_conversation" translatable="false">发起会话</string>
-    <string name="create_group_chat" translatable="false">创建群聊</string>
+    <string name="create_group_chat" translatable="false">发起群聊</string>
     <string name="create_chat_room" translatable="false">创建聊天室</string>
     <string name="create_private_group" translatable="false">创建讨论组</string>
     <string name="hint_add_user_id" translatable="false">请输入ID</string>
@@ -59,11 +59,22 @@
     <string name="label_select_avatar" translatable="false">选择头像</string>
     <string name="user_select_camera" translatable="false">拍照</string>
     <string name="user_select_phone" translatable="false">相册</string>
+    <string name="user_update_phone" translatable="false">请输入新的手机号</string>
+    <string name="hint_sms_code" translatable="false">请输入验证码</string>
+    <string name="text_sending" translatable="false">正在发送</string>
+    <string name="text_sms_timer" translatable="false">剩余%1$d秒</string>
+    <string name="text_retry_sms" translatable="false">重新发送</string>
+    <string name="text_send_success" translatable="false">发送成功</string>
+    <string name="text_send_fail" translatable="false">发送失败</string>
+    <string name="text_get_sms_code" translatable="false">获取验证码</string>
+    <string name="text_compile" translatable="false">完成</string>
+    <string name="text_change_phone" translatable="false">修改手机号</string>
 
     // 群信息相关
     <string name="tips_empty_group_member" translatable="false">请选择群成员</string>
     <string name="tips_empty_group_type" translatable="false">请选择加群方式</string>
     <string name="no_friend_apply" translatable="false">暂无好友申请</string>
+    <string name="group_remind" translatable="false">选择提醒的人</string>
 
     // 新朋友
     <string name="request_agree" translatable="false">同意</string>
@@ -94,6 +105,8 @@
     <string name="typing" translatable="false">正在输入…</string>
 
     <string name="chat_to_top" translatable="false">置顶聊天</string>
+    <string name="chat_muted" translatable="false">全员禁言</string>
+    <string name="chat_rev_opt" translatable="false">消息免打扰</string>
     <string name="send" translatable="false">发送</string>
 
     <string name="group_id" translatable="false">群ID</string>
@@ -101,6 +114,7 @@
     <string name="group_icon" translatable="false">修改群头像</string>
     <string name="group_notice" translatable="false">群公告</string>
     <string name="group_members" translatable="false">群成员</string>
+    <string name="group_members_admin" translatable="false">管理员</string>
     <string name="group_type" translatable="false">群类型</string>
     <string name="add_group_member" translatable="false">添加成员</string>
     <string name="remove_group_member" translatable="false">移除成员</string>
@@ -110,6 +124,7 @@
     <string name="modify_group_name" translatable="false">修改群名称</string>
     <string name="modify_group_notice" translatable="false">修改群公告</string>
     <string name="modify_nick_name_in_goup" translatable="false">修改我的群昵称</string>
+    <string name="transfer_group_owner" translatable="false">转让群主</string>
 
     <string name="group_detail" translatable="false">群聊详情</string>
     <string name="accept" translatable="false">同意</string>
@@ -137,6 +152,7 @@
     <string name="conversation_wording_message" translatable="false">对方发来的验证码信息</string>
     <string name="conversation_wording_send" translatable="false">发送给对方的验证码信息</string>
     <string name="conversation_search_msg" translatable="false">手机号/昵称</string>
+    <string name="conversation_search_remind" translatable="false">请输入昵称</string>
 
     <!-- 好友资料 -->
     <string name="profile_detail" translatable="false">详细资料</string>
@@ -159,4 +175,5 @@
     <string name="toast_pwd_error" translatable="false">两次密码不一致</string>
     <string name="toast_pwd_success" translatable="false">修改成功</string>
     <string name="toast_add_more_friends" translatable="false">不能添加自己为好友</string>
+    <string name="toast_update_pwd_success" translatable="false">修改成功</string>
 </resources>

@@ -8,24 +8,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
-import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
-import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
-import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
+import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
+import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.work.util.SLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class GroupInfoAdapter extends BaseAdapter {
+public class GroupInfoAdminAdapter extends BaseAdapter {
 
     private static final int ADD_TYPE = -100;
     private static final int DEL_TYPE = -101;
@@ -87,7 +82,7 @@ public class GroupInfoAdapter extends BaseAdapter {
         view.setOnClickListener(null);
         holder.memberIcon.setBackground(null);
         if (info.getMemberType() == ADD_TYPE) {
-            holder.memberIcon.setImageResource(R.drawable.add_group_member);
+            GlideEngine.loadImage(holder.memberIcon,R.drawable.add_group_member);
             holder.memberIcon.setBackgroundResource(R.drawable.bottom_action_border);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,7 +111,7 @@ public class GroupInfoAdapter extends BaseAdapter {
     public void setDataSource(GroupInfo info) {
         mGroupInfo = info;
         mGroupMembers.clear();
-        List<GroupMemberInfo> members = info.getMemberDetails();
+        List<GroupMemberInfo> members = info.getMemberAdminDetails();
         if (members != null) {
             int shootMemberCount = 0;
             if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PRIVATE)
@@ -143,32 +138,21 @@ public class GroupInfoAdapter extends BaseAdapter {
             for (int i = 0; i < shootMemberCount; i++) {
                 mGroupMembers.add(members.get(i));
             }
-            if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PRIVATE)
-                    || TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_WORK)) {
-                // 公开群/聊天室 只有APP管理员可以邀请他人入群
+            if(mGroupInfo.isOwner()){
                 GroupMemberInfo add = new GroupMemberInfo();
                 add.setMemberType(ADD_TYPE);
                 mGroupMembers.add(add);
-            }
-            GroupMemberInfo self = null;
-            for (int i = 0; i < mGroupMembers.size(); i++) {
-                GroupMemberInfo memberInfo = mGroupMembers.get(i);
-                if (TextUtils.equals(memberInfo.getAccount(), V2TIMManager.getInstance().getLoginUser())) {
-                    self = memberInfo;
-                    break;
-                }
-            }
-            if (info.isOwner() || (self != null && self.getMemberType() == V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_ROLE_ADMIN)) {
+
                 GroupMemberInfo del = new GroupMemberInfo();
                 del.setMemberType(DEL_TYPE);
                 mGroupMembers.add(del);
+                BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
             }
-            BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    notifyDataSetChanged();
-                }
-            });
         }
 
     }

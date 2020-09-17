@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class GroupMemberInfo implements Serializable {
 
     private String iconUrl;
+    private String nickName;
     private String account;
     private String signature;
     private String location;
@@ -107,6 +108,14 @@ public class GroupMemberInfo implements Serializable {
         this.memberType = memberType;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public GroupMemberInfo covertTIMGroupMemberInfo(V2TIMGroupMemberInfo info) {
         if (info instanceof V2TIMGroupMemberFullInfo) {
             V2TIMGroupMemberFullInfo v2TIMGroupMemberFullInfo = (V2TIMGroupMemberFullInfo)info;
@@ -115,6 +124,8 @@ public class GroupMemberInfo implements Serializable {
         }
         setAccount(info.getUserID());
         setNameCard(info.getNameCard());
+        setNickName(info.getNickName());
+        setIconUrl(info.getFaceUrl());
         return this;
     }
 }

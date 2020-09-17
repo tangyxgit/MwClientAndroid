@@ -51,11 +51,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
             return;
         }
 
-        if (chatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
-            isGroup = false;
-        } else {
-            isGroup = true;
-        }
+        isGroup = chatInfo.getType() != V2TIMConversation.V2TIM_C2C;
 
         if (isGroup) {
             mGroupChatManager = GroupChatManagerKit.getInstance();
@@ -67,7 +63,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
             mGroupInfo = groupInfo;
             loadChatMessages(null);
             loadApplyList();
-            getTitleBar().getRightIcon().setImageResource(R.drawable.chat_group);
+            getTitleBar().getRightIcon().setImageResource(R.drawable.icon_more);
             getTitleBar().setOnRightClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -89,7 +85,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
                 }
             });
         } else {
-            getTitleBar().getRightIcon().setImageResource(R.drawable.chat_c2c);
+            getTitleBar().getRightIcon().setImageResource(R.drawable.icon_more);
             mC2CChatManager = C2CChatManagerKit.getInstance();
             mC2CChatManager.setCurrentChatInfo(chatInfo);
             loadChatMessages(null);
@@ -131,8 +127,10 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
     }
 
     @Override
-    public void onGroupNameChanged(String newName) {
+    public void onGroupNameChanged(final String newName) {
+        getChatInfo().setChatName(newName);
         getTitleBar().setTitle(newName, TitleBarLayout.POSITION.MIDDLE);
+
     }
 
     @Override

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -18,8 +20,13 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.mwim.qcloud.tim.uikit.business.Constants;
+import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
+import com.mwim.qcloud.tim.uikit.modules.chat.C2CChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment;
+import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
+import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberRemindActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
@@ -40,8 +47,9 @@ import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
+import com.work.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,7 +61,6 @@ import java.util.List;
 
 public class InputLayout extends InputLayoutUI implements View.OnClickListener, TextWatcher {
 
-    private static final String TAG = InputLayout.class.getSimpleName();
     private static final int STATE_NONE_INPUT = -1;
     private static final int STATE_SOFT_INPUT = 0;
     private static final int STATE_VOICE_INPUT = 1;
@@ -93,6 +100,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         mMoreInputButton.setOnClickListener(this);
         mSendTextButton.setOnClickListener(this);
         mTextInput.addTextChangedListener(this);
+        mTextInput.setFilters(new InputFilter[]{new ChatInputFilter()});
         mTextInput.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -117,9 +125,9 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                TUIKitLog.i(TAG, "mSendAudioButton onTouch action:" + motionEvent.getAction());
+                SLog.i("mSendAudioButton onTouch action:" + motionEvent.getAction());
                 if (!checkPermission(AUDIO_RECORD)) {
-                    TUIKitLog.i(TAG, "audio record checkPermission failed");
+                    SLog.i("audio record checkPermission failed");
                     return false;
                 }
                 switch (motionEvent.getAction()) {
@@ -178,9 +186,9 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     protected void startSendPhoto() {
-        TUIKitLog.i(TAG, "startSendPhoto");
+        SLog.i("startSendPhoto");
         if (!checkPermission(SEND_PHOTO)) {
-            TUIKitLog.i(TAG, "startSendPhoto checkPermission failed");
+            SLog.i( "startSendPhoto checkPermission failed");
             return;
         }
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -189,7 +197,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         mInputMoreFragment.setCallback(new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
-                TUIKitLog.i(TAG, "onSuccess: " + data);
+                SLog.i("onSuccess: " + data);
                 MessageInfo info = MessageInfoUtil.buildImageMessage((Uri) data, true);
                 if (mMessageHandler != null) {
                     mMessageHandler.sendMessage(info);
@@ -199,7 +207,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                TUIKitLog.i(TAG, "errCode: " + errCode);
+                SLog.i("errCode: " + errCode);
                 ToastUtil.toastLongMessage(errMsg);
             }
         });
@@ -208,9 +216,9 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     protected void startCapture() {
-        TUIKitLog.i(TAG, "startCapture");
+        SLog.i("startCapture");
         if (!checkPermission(CAPTURE)) {
-            TUIKitLog.i(TAG, "startCapture checkPermission failed");
+            SLog.i("startCapture checkPermission failed");
             return;
         }
         Intent captureIntent = new Intent(getContext(), CameraActivity.class);
@@ -236,9 +244,9 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     protected void startVideoRecord() {
-        TUIKitLog.i(TAG, "startVideoRecord");
+        SLog.i("startVideoRecord");
         if (!checkPermission(VIDEO_RECORD)) {
-            TUIKitLog.i(TAG, "startVideoRecord checkPermission failed");
+            SLog.i("startVideoRecord checkPermission failed");
             return;
         }
         Intent captureIntent = new Intent(getContext(), CameraActivity.class);
@@ -269,9 +277,9 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     protected void startSendFile() {
-        TUIKitLog.i(TAG, "startSendFile");
+        SLog.i("startSendFile");
         if (!checkPermission(SEND_FILE)) {
-            TUIKitLog.i(TAG, "startSendFile checkPermission failed");
+            SLog.i("startSendFile checkPermission failed");
             return;
         }
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -298,7 +306,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     @Override
     public void startAudioCall() {
         if (!PermissionUtils.checkPermission(mActivity, Manifest.permission.RECORD_AUDIO)) {
-            TUIKitLog.i(TAG, "startAudioCall checkPermission failed");
+            SLog.i("startAudioCall checkPermission failed");
             return;
         }
         if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_C2C) {
@@ -318,7 +326,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     protected void startVideoCall() {
         if (!(PermissionUtils.checkPermission(mActivity, Manifest.permission.CAMERA)
                 && PermissionUtils.checkPermission(mActivity, Manifest.permission.RECORD_AUDIO))) {
-            TUIKitLog.i(TAG, "startVideoCall checkPermission failed");
+            SLog.i("startVideoCall checkPermission failed");
             return;
         }
         if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_C2C) {
@@ -345,7 +353,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     public void onClick(View view) {
-        TUIKitLog.i(TAG, "onClick id:" + view.getId()
+        SLog.i("onClick id:" + view.getId()
                 + "|voice_input_switch:" + R.id.voice_input_switch
                 + "|face_btn:" + R.id.face_btn
                 + "|more_btn:" + R.id.more_btn
@@ -420,15 +428,20 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         } else if (view.getId() == R.id.send_btn) {
             if (mSendEnable) {
                 if (mMessageHandler != null) {
-                    mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(mTextInput.getText().toString().trim()));
+                    String message = mTextInput.getText().toString().trim();
+                    if(mRemindList.size()>0){
+                        message+= Constants.CHAT_REMIND_S;
+                    }
+                    mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(message));
                 }
                 mTextInput.setText("");
+                mRemindList.clear();
             }
         }
     }
 
     private void showSoftInput() {
-        TUIKitLog.v(TAG, "showSoftInput");
+        SLog.v("showSoftInput");
         hideInputMoreLayout();
         mAudioInputSwitchButton.setImageResource(R.drawable.action_audio_selector);
         mEmojiInputButton.setImageResource(R.drawable.ic_input_face_normal);
@@ -446,7 +459,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
     public void hideSoftInput() {
-        TUIKitLog.i(TAG, "hideSoftInput");
+        SLog.i("hideSoftInput");
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mTextInput.getWindowToken(), 0);
         mTextInput.clearFocus();
@@ -454,7 +467,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
     private void showFaceViewGroup() {
-        TUIKitLog.i(TAG, "showFaceViewGroup");
+        SLog.i("showFaceViewGroup");
         if (mFragmentManager == null) {
             mFragmentManager = mActivity.getFragmentManager();
         }
@@ -515,7 +528,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
     private void showCustomInputMoreFragment() {
-        TUIKitLog.i(TAG, "showCustomInputMoreFragment");
+        SLog.i("showCustomInputMoreFragment");
         if (mFragmentManager == null) {
             mFragmentManager = mActivity.getFragmentManager();
         }
@@ -534,7 +547,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
     private void showInputMoreLayout() {
-        TUIKitLog.i(TAG, "showInputMoreLayout");
+        SLog.i("showInputMoreLayout");
         if (mFragmentManager == null) {
             mFragmentManager = mActivity.getFragmentManager();
         }
@@ -563,7 +576,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     private void recordComplete(boolean success) {
         int duration = AudioPlayer.getInstance().getDuration();
-        TUIKitLog.i(TAG, "recordComplete duration:" + duration);
+        SLog.i( "recordComplete duration:" + duration);
         if (mChatInputHandler != null) {
             if (!success || duration == 0) {
                 mChatInputHandler.onRecordStatusChanged(ChatInputHandler.RECORD_FAILED);
@@ -601,7 +614,24 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             mSendEnable = false;
             showSendTextButton(View.GONE);
             showMoreInputButton(View.VISIBLE);
-        } else {
+        }else {
+            if(mChatLayout.getChatInfo().getType()==V2TIMConversation.V2TIM_GROUP && mInputContent.length()>s.length()){//说明在删除内容
+                String lastContent = mInputContent.substring(mTextInput.getSelectionStart(),mTextInput.getSelectionStart()+1);
+//                SLog.e("lastContent:"+lastContent.equals("\t"));
+                if(lastContent.equals("\t")){//@加上去的
+                    String remindUser = StringUtils.subStr(mInputContent,lastContent,"@",1);
+//                    SLog.e("remindUser:"+remindUser);
+                    if(!TextUtils.isEmpty(remindUser)){
+                        SLog.e(remindUser+">>>"+mRemindList+mRemindList.contains(remindUser.trim()));
+                        remindUser = "@"+remindUser;
+                        final int selection = mTextInput.getSelectionStart();
+                        Editable editable = mTextInput.getText();
+                        editable.delete(selection-remindUser.length(),selection);
+                        return;
+                    }
+                }
+
+            }
             mSendEnable = true;
             showSendTextButton(View.VISIBLE);
             showMoreInputButton(View.GONE);
@@ -623,6 +653,36 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     public interface MessageHandler {
         void sendMessage(MessageInfo msg);
+    }
+    private List<String> mRemindList = new ArrayList<>();
+    private class ChatInputFilter implements InputFilter {
+
+        @Override
+        public CharSequence filter(CharSequence source, int i, int i1, Spanned spanned, int i2, int i3) {
+            if (mChatLayout.getChatInfo().getType()==V2TIMConversation.V2TIM_GROUP && source.toString().equalsIgnoreCase("@")
+                    || source.toString().equalsIgnoreCase("＠")) {
+                GroupMemberRemindActivity.startGroupMemberRemind(getContext(), mChatLayout.getChatInfo().getId(),null, new SelectionActivity.OnResultReturnListener() {
+                    @Override
+                    public void onReturn(Object res) {
+                        GroupMemberInfo info = (GroupMemberInfo) res;
+                        if(info!=null){
+                            Editable editable = mTextInput.getText();
+                            String userName = info.getNameCard()+"\t";
+                            mRemindList.add(info.getNameCard());
+                            editable.insert(mTextInput.getSelectionStart(),userName);
+                            mTextInput.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showSoftInput();
+                                }
+                            },300);
+                        }
+                    }
+                });
+            }
+            return source;
+
+        }
     }
 
     public interface ChatInputHandler {

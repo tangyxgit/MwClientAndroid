@@ -1,27 +1,37 @@
 package com.mwim.qcloud.tim.uikit.modules.group.info;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 
 
-public class GroupInfoActivity extends Activity {
+public class GroupInfoActivity extends BaseActivity {
+
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.group_info_activity);
+    public void onInitView() throws Exception {
+        super.onInitView();
         GroupInfoFragment fragment = new GroupInfoFragment();
         fragment.setArguments(getIntent().getExtras());
         getFragmentManager().beginTransaction().replace(R.id.group_manager_base, fragment).commitAllowingStateLoss();
     }
 
     @Override
+    public int onCustomContentId() {
+        return R.layout.group_info_activity;
+    }
+
+    @Override
     public void finish() {
         super.finish();
         setResult(1001);
+    }
+
+    @Override
+    public boolean isShowTitleBar() {
+        return false;
     }
 }

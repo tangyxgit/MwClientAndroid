@@ -3,10 +3,12 @@ package com.mwim.qcloud.tim.uikit.business.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
@@ -14,20 +16,20 @@ import com.mwim.qcloud.tim.uikit.business.active.BlackListActivity;
 import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
 import com.mwim.qcloud.tim.uikit.business.active.GroupListActivity;
 import com.mwim.qcloud.tim.uikit.business.active.NewFriendActivity;
+import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
+import com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity;
 import com.mwim.qcloud.tim.uikit.business.helper.PopMenuHelper;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactLayout;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SLog;
 
 
 public class ContactFragment extends BaseFragment {
 
-    private static final String TAG = ContactFragment.class.getSimpleName();
     private ContactLayout mContactLayout;
-//    private Menu mMenu;
     private PopMenuHelper mMenu;
 
     @Nullable
@@ -42,16 +44,18 @@ public class ContactFragment extends BaseFragment {
     private void initViews(View view) {
         // 从布局文件中获取通讯录面板
         mContactLayout = view.findViewById(R.id.contact_layout);
-//        mMenu = new Menu(getActivity(), mContactLayout.getTitleBar(), Menu.MENU_TYPE_CONTACT);
-        mContactLayout.getTitleBar().getRightGroup().setVisibility(View.GONE);
-        mContactLayout.getTitleBar().setOnRightClickListener(new View.OnClickListener() {
+        mMenu = new PopMenuHelper(R.menu.chat_group, mContactLayout.getTitleBar().getRightIcon(), new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
-//                if (mMenu.isShowing()) {
-//                    mMenu.hide();
-//                } else {
-//                    mMenu.show();
-//                }
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.add_friends) {
+                    startActivity(new Intent(getActivity(), SearchAddMoreActivity.class));
+                }else if(item.getItemId() == R.id.add_group){
+                    Intent intent = new Intent(IMKitAgent.instance(), StartGroupChatActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
         mContactLayout.getContactListView().setOnItemClickListener(new ContactListView.OnItemClickListener() {
@@ -77,6 +81,16 @@ public class ContactFragment extends BaseFragment {
                 }
             }
         });
+        initTitleAction();
+    }
+
+    private void initTitleAction() {
+        mContactLayout.getTitleBar().setOnRightClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMenu.showMenu(getActivity());
+            }
+        });
     }
 
     private void refreshData() {
@@ -87,7 +101,7 @@ public class ContactFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        DemoLog.i(TAG, "onResume");
+        SLog.i("onResume");
         refreshData();
     }
 }

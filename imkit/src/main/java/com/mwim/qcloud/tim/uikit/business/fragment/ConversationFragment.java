@@ -17,6 +17,8 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
+import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
+import com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity;
 import com.mwim.qcloud.tim.uikit.business.helper.PopMenuHelper;
 import com.mwim.qcloud.tim.uikit.component.action.PopActionClickListener;
 import com.mwim.qcloud.tim.uikit.component.action.PopDialogAdapter;
@@ -26,6 +28,7 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationLayout;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationListLayout;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
+import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.mwim.qcloud.tim.uikit.R;
 
@@ -37,8 +40,6 @@ public class ConversationFragment extends BaseFragment {
 
     private View mBaseView;
     private ConversationLayout mConversationLayout;
-    private ListView mConversationPopList;
-    private PopDialogAdapter mConversationPopAdapter;
     private PopupWindow mConversationPopWindow;
     private List<PopMenuAction> mConversationPopActions = new ArrayList<>();
 //    private Menu mMenu;
@@ -55,10 +56,17 @@ public class ConversationFragment extends BaseFragment {
     private void initView() {
         // 从布局文件中获取会话列表面板
         mConversationLayout = mBaseView.findViewById(R.id.conversation_layout);
-//        mMenu = new Menu(getActivity(), (TitleBarLayout) mConversationLayout.getTitleBar(), Menu.MENU_TYPE_CONVERSATION);
-        mMenu = new PopMenuHelper(R.menu.map_group, mConversationLayout.getTitleBar().getRightIcon(), new PopupMenu.OnMenuItemClickListener() {
+        mMenu = new PopMenuHelper(R.menu.chat_group, mConversationLayout.getTitleBar().getRightIcon(), new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.add_friends) {
+                    startActivity(new Intent(getActivity(), SearchAddMoreActivity.class));
+                }else if(item.getItemId() == R.id.add_group){
+                    Intent intent = new Intent(IMKitAgent.instance(), StartGroupChatActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+                    startActivity(intent);
+                }
                 return false;
             }
         });
@@ -130,7 +138,7 @@ public class ConversationFragment extends BaseFragment {
         if (mConversationPopActions == null || mConversationPopActions.size() == 0)
             return;
         View itemPop = LayoutInflater.from(getActivity()).inflate(R.layout.pop_menu_layout, null);
-        mConversationPopList = itemPop.findViewById(R.id.pop_menu_list);
+        ListView mConversationPopList = itemPop.findViewById(R.id.pop_menu_list);
         mConversationPopList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -155,7 +163,7 @@ public class ConversationFragment extends BaseFragment {
 
             }
         }
-        mConversationPopAdapter = new PopDialogAdapter();
+        PopDialogAdapter mConversationPopAdapter = new PopDialogAdapter();
         mConversationPopList.setAdapter(mConversationPopAdapter);
         mConversationPopAdapter.setDataSource(mConversationPopActions);
         mConversationPopWindow = PopWindowUtil.popupWindow(itemPop, mBaseView, (int) locationX, (int) locationY);

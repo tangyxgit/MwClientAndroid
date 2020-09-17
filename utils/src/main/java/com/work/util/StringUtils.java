@@ -276,7 +276,7 @@ public class StringUtils {
         content = isback > 0 ? getRev(content) : content;
         begin = isback > 0 ? getRev(begin) : begin;
         end = isback > 0 ? getRev(end) : end;
-        String temp = begin.length() == 0 ? content : (content.indexOf(begin) >= 0 ? content.substring(content.indexOf(begin) + begin.length()) : "");
+        String temp = begin.length() == 0 ? content : (content.contains(begin) ? content.substring(content.indexOf(begin) + begin.length()) : "");
         String news = end.length() == 0 ? temp : ((end.length() > 0 && temp.indexOf(end) >= 0) ? news = temp.substring(0, temp.indexOf(end)) : "");
         return isback > 0 ? getRev(news) : news;
     }
