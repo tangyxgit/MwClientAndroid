@@ -14,7 +14,6 @@ import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,31 +112,7 @@ public class GroupInfoAdminAdapter extends BaseAdapter {
         mGroupMembers.clear();
         List<GroupMemberInfo> members = info.getMemberAdminDetails();
         if (members != null) {
-            int shootMemberCount = 0;
-            if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PRIVATE)
-                    || TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_WORK)) {
-                if (info.isOwner()) {
-                    shootMemberCount = members.size() > OWNER_PRIVATE_MAX_LIMIT ? OWNER_PRIVATE_MAX_LIMIT : members.size();
-                } else {
-                    shootMemberCount = members.size() > NORMAL_PRIVATE_MAX_LIMIT ? NORMAL_PRIVATE_MAX_LIMIT : members.size();
-                }
-            } else if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PUBLIC)) {
-                if (info.isOwner()) {
-                    shootMemberCount = members.size() > OWNER_PUBLIC_MAX_LIMIT ? OWNER_PUBLIC_MAX_LIMIT : members.size();
-                } else {
-                    shootMemberCount = members.size() > NORMAL_PUBLIC_MAX_LIMIT ? NORMAL_PUBLIC_MAX_LIMIT : members.size();
-                }
-            } else if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_CHAT_ROOM)
-                    || TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_MEETING)) {
-                if (info.isOwner()) {
-                    shootMemberCount = members.size() > OWNER_CHATROOM_MAX_LIMIT ? OWNER_CHATROOM_MAX_LIMIT : members.size();
-                } else {
-                    shootMemberCount = members.size() > NORMAL_CHATROOM_MAX_LIMIT ? NORMAL_CHATROOM_MAX_LIMIT : members.size();
-                }
-            }
-            for (int i = 0; i < shootMemberCount; i++) {
-                mGroupMembers.add(members.get(i));
-            }
+            mGroupMembers.addAll(members);
             if(mGroupInfo.isOwner()){
                 GroupMemberInfo add = new GroupMemberInfo();
                 add.setMemberType(ADD_TYPE);
@@ -146,18 +121,17 @@ public class GroupInfoAdminAdapter extends BaseAdapter {
                 GroupMemberInfo del = new GroupMemberInfo();
                 del.setMemberType(DEL_TYPE);
                 mGroupMembers.add(del);
-                BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notifyDataSetChanged();
-                    }
-                });
             }
+            BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    notifyDataSetChanged();
+                }
+            });
         }
-
     }
 
-    private class MyViewHolder {
+    private static class MyViewHolder {
         private ImageView memberIcon;
         private TextView memberName;
     }

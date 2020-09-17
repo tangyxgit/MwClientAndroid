@@ -5,15 +5,13 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <com.mwim.qcloud.tim.uikit.component.gatherimage.ShadeImageView
+    <ImageView
         android:id="@+id/group_member_icon"
         android:layout_width="@dimen/item_width"
         android:layout_height="@dimen/item_width"
         android:layout_margin="5dp"
         android:scaleType="centerInside"
-        android:src="@drawable/default_user_icon" />
-
-
+        android:src="@drawable/default_head" />
     <TextView
         android:id="@+id/group_member_name"
         android:layout_width="@dimen/item_width"

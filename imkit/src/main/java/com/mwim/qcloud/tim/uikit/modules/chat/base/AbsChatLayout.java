@@ -27,7 +27,6 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.AudioPlayer;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.work.util.SLog;
 
 
 public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout {
