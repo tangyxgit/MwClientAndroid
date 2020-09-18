@@ -229,9 +229,9 @@ public class GroupChatManagerKit extends ChatManagerKit {
     public void notifyJoinGroup(String groupID, final boolean isInvited) {
         if(mCurrentChatInfo!=null){
             if (isInvited) {
-                ToastUtil.info(IMKitAgent.instance(),"您已被邀请进群：" + mCurrentChatInfo.getChatName());
+                ToastUtil.info(IMKitAgent.instance(),"您已被邀请进群：" + mCurrentChatInfo.getGroupName());
             } else {
-                ToastUtil.info(IMKitAgent.instance(),"您已加入群：" + mCurrentChatInfo.getChatName());
+                ToastUtil.info(IMKitAgent.instance(),"您已加入群：" + mCurrentChatInfo.getGroupName());
             }
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {
@@ -240,9 +240,9 @@ public class GroupChatManagerKit extends ChatManagerKit {
                     mCurrentChatInfo = new GroupInfo();
                     mCurrentChatInfo.covertTIMGroupDetailInfo((V2TIMGroupInfoResult) data);
                     if (isInvited) {
-                        ToastUtil.info(IMKitAgent.instance(),"您已被邀请进群：" + mCurrentChatInfo.getChatName());
+                        ToastUtil.info(IMKitAgent.instance(),"您已被邀请进群：" + mCurrentChatInfo.getGroupName());
                     } else {
-                        ToastUtil.info(IMKitAgent.instance(),"您已加入群：" + mCurrentChatInfo.getChatName());
+                        ToastUtil.info(IMKitAgent.instance(),"您已加入群：" + mCurrentChatInfo.getGroupName());
                     }
                 }
 
@@ -256,14 +256,14 @@ public class GroupChatManagerKit extends ChatManagerKit {
 
     public void notifyJoinGroupRefused(String groupID) {
         if(mCurrentChatInfo!=null){
-            ToastUtil.info(IMKitAgent.instance(),"您被拒绝加入群：" + mCurrentChatInfo.getChatName());
+            ToastUtil.info(IMKitAgent.instance(),"您被拒绝加入群：" + mCurrentChatInfo.getGroupName());
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
                     mCurrentChatInfo = new GroupInfo();
                     mCurrentChatInfo.covertTIMGroupDetailInfo((V2TIMGroupInfoResult) data);
-                    ToastUtil.info(IMKitAgent.instance(),"您被拒绝加入群：" + mCurrentChatInfo.getChatName());
+                    ToastUtil.info(IMKitAgent.instance(),"您被拒绝加入群：" + mCurrentChatInfo.getGroupName());
                 }
 
                 @Override
@@ -276,14 +276,14 @@ public class GroupChatManagerKit extends ChatManagerKit {
 
     public void notifyKickedFromGroup(String groupID) {
         if(mCurrentChatInfo!=null){
-            ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + mCurrentChatInfo.getChatName());
+            ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + mCurrentChatInfo.getGroupName());
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
                     mCurrentChatInfo = new GroupInfo();
                     mCurrentChatInfo.covertTIMGroupDetailInfo((V2TIMGroupInfoResult) data);
-                    ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + mCurrentChatInfo.getChatName());
+                    ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + mCurrentChatInfo.getGroupName());
                 }
 
                 @Override
@@ -300,14 +300,15 @@ public class GroupChatManagerKit extends ChatManagerKit {
 
     public void notifyGroupDismissed(String groupID) {
         if(mCurrentChatInfo!=null){
-            ToastUtil.info(IMKitAgent.instance(),"您所在的群" + mCurrentChatInfo.getChatName() + "已解散");
+            ToastUtil.info(IMKitAgent.instance(),"您所在的群" + mCurrentChatInfo.getGroupName() + "已解散");
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
+                    SLog.e(">>loadGroupPublicInfo"+((V2TIMGroupInfoResult) data).getGroupInfo().getGroupName());
                     mCurrentChatInfo = new GroupInfo();
                     mCurrentChatInfo.covertTIMGroupDetailInfo((V2TIMGroupInfoResult) data);
-                    ToastUtil.info(IMKitAgent.instance(),"您所在的群" + mCurrentChatInfo.getChatName() + "已解散");
+                    ToastUtil.info(IMKitAgent.instance(),"您所在的群" + mCurrentChatInfo.getGroupName() + "已解散");
                 }
 
                 @Override

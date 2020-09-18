@@ -53,11 +53,11 @@ public class GroupListActivity extends IMBaseActivity {
         return R.layout.activity_im_group_list;
     }
 
-    @Override
-    public View onCustomTitleRight(TextView view) {
-        view.setText(R.string.add_group);
-        return view;
-    }
+//    @Override
+//    public View onCustomTitleRight(TextView view) {
+//        view.setText(R.string.add_group);
+//        return view;
+//    }
 
     @Override
     public void onRightClickListener(View view) {

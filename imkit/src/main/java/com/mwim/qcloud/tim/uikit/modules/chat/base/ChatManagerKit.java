@@ -385,17 +385,17 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
             return;
         }
         if (chatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
-            V2TIMManager.getMessageManager().markC2CMessageAsRead(chatInfo.getId(), new V2TIMCallback() {
-                @Override
-                public void onError(int code, String desc) {
-                    SLog.e("processHistoryMsgs setReadMessage failed, code = " + code + ", desc = " + desc);
-                }
-
-                @Override
-                public void onSuccess() {
-                    SLog.d("processHistoryMsgs setReadMessage success");
-                }
-            });
+//            V2TIMManager.getMessageManager().markC2CMessageAsRead(chatInfo.getId(), new V2TIMCallback() {
+//                @Override
+//                public void onError(int code, String desc) {
+//                    SLog.e("processHistoryMsgs setReadMessage failed, code = " + code + ", desc = " + desc);
+//                }
+//
+//                @Override
+//                public void onSuccess() {
+//                    SLog.d("processHistoryMsgs setReadMessage success");
+//                }
+//            });
         } else {
             V2TIMManager.getMessageManager().markGroupMessageAsRead(chatInfo.getId(), new V2TIMCallback() {
                 @Override
