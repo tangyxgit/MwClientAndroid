@@ -30,8 +30,6 @@ import com.work.util.SLog;
 
 public class MessageNotification {
 
-    private static final String TAG = MessageNotification.class.getSimpleName();
-
     private static final String NOTIFICATION_CHANNEL_COMMON = "tuikit_common_msg";
     private static final int NOTIFICATION_ID_COMMON = 520;
 
@@ -119,7 +117,6 @@ public class MessageNotification {
         } else {
             builder = new Notification.Builder(mContext);
         }
-
         String tickerStr = "新消息";
         builder.setTicker(tickerStr).setWhen(System.currentTimeMillis());
         V2TIMOfflinePushInfo v2TIMOfflinePushInfo = msg.getOfflinePushInfo();

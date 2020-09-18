@@ -17,12 +17,12 @@ import com.mwim.qcloud.tim.uikit.config.GeneralConfig;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.work.util.AppUtils;
+import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
@@ -143,12 +143,12 @@ public final class IMKitAgent {
         V2TIMManager.getOfflinePushManager().doForeground(new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                DemoLog.e("SLog", "doForeground err = " + code + ", desc = " + desc);
+                SLog.e("doForeground err = " + code + ", desc = " + desc);
             }
 
             @Override
             public void onSuccess() {
-                DemoLog.i("SLog", "doForeground success");
+                SLog.i( "doForeground success");
             }
         });
         removeIMEventListener(IMEventPushListener);
@@ -162,12 +162,12 @@ public final class IMKitAgent {
             V2TIMManager.getOfflinePushManager().doBackground(unReadCount, new V2TIMCallback() {
                 @Override
                 public void onError(int code, String desc) {
-                    DemoLog.e("SLog", "doBackground err = " + code + ", desc = " + desc);
+                    SLog.e("doBackground err = " + code + ", desc = " + desc);
                 }
 
                 @Override
                 public void onSuccess() {
-                    DemoLog.i("SLog", "doBackground success");
+                    SLog.i( "doBackground success");
                 }
             });
             // 应用退到后台，消息转化为系统通知

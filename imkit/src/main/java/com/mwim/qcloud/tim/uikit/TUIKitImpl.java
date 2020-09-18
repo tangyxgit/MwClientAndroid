@@ -15,7 +15,6 @@ import com.mwim.qcloud.tim.uikit.modules.message.MessageRevokedManager;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.NetWorkUtils;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tencent.imsdk.v2.V2TIMAdvancedMsgListener;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
@@ -35,6 +34,7 @@ import com.mwim.liteav.AVCallManager;
 import com.mwim.liteav.login.ProfileManager;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.qcloud.tim.uikit.component.face.FaceManager;
+import com.work.util.SLog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,22 +65,22 @@ public class TUIKitImpl {
         sConfigs.getGeneralConfig().setSDKAppId(sdkAppID);
         String dir = sConfigs.getGeneralConfig().getAppCacheDir();
         if (TextUtils.isEmpty(dir)) {
-            TUIKitLog.e(TAG, "appCacheDir is empty, use default dir");
+            SLog.e( "appCacheDir is empty, use default dir");
             sConfigs.getGeneralConfig().setAppCacheDir(context.getFilesDir().getPath());
         } else {
             File file = new File(dir);
             if (file.exists()) {
                 if (file.isFile()) {
-                    TUIKitLog.e(TAG, "appCacheDir is a file, use default dir");
+                    SLog.e( "appCacheDir is a file, use default dir");
                     sConfigs.getGeneralConfig().setAppCacheDir(context.getFilesDir().getPath());
                 } else if (!file.canWrite()) {
-                    TUIKitLog.e(TAG, "appCacheDir can not write, use default dir");
+                    SLog.e( "appCacheDir can not write, use default dir");
                     sConfigs.getGeneralConfig().setAppCacheDir(context.getFilesDir().getPath());
                 }
             } else {
                 boolean ret = file.mkdirs();
                 if (!ret) {
-                    TUIKitLog.e(TAG, "appCacheDir is invalid, use default dir");
+                    SLog.e( "appCacheDir is invalid, use default dir");
                     sConfigs.getGeneralConfig().setAppCacheDir(context.getFilesDir().getPath());
                 }
             }
@@ -98,7 +98,7 @@ public class TUIKitImpl {
         V2TIMManager.getInstance().login(userid, usersig, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                callback.onError(TAG, code, desc);
+                callback.onError("SLog", code, desc);
             }
 
             @Override
@@ -119,7 +119,7 @@ public class TUIKitImpl {
         V2TIMManager.getInstance().logout(new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                callback.onError(TAG, code, desc);
+                callback.onError( "SLog",code, desc);
             }
 
             @Override
@@ -216,7 +216,7 @@ public class TUIKitImpl {
         V2TIMManager.getInstance().setGroupListener(new V2TIMGroupListener() {
             @Override
             public void onMemberEnter(String groupID, List<V2TIMGroupMemberInfo> memberList) {
-                TUIKitLog.i(TAG, "onMemberEnter groupID:" + groupID + ", size:" + memberList.size());
+                SLog.i( "onMemberEnter groupID:" + groupID + ", size:" + memberList.size());
                 for (V2TIMGroupMemberInfo v2TIMGroupMemberInfo : memberList) {
                     if (v2TIMGroupMemberInfo.getUserID().equals(V2TIMManager.getInstance().getLoginUser())) {
                         GroupChatManagerKit.getInstance().notifyJoinGroup(groupID, false);
@@ -227,7 +227,7 @@ public class TUIKitImpl {
 
             @Override
             public void onMemberLeave(String groupID, V2TIMGroupMemberInfo member) {
-                TUIKitLog.i(TAG, "onMemberLeave groupID:" + groupID + ", memberID:" + member.getUserID());
+                SLog.i( "onMemberLeave groupID:" + groupID + ", memberID:" + member.getUserID());
             }
 
             @Override
@@ -299,7 +299,7 @@ public class TUIKitImpl {
 
             @Override
             public void onQuitFromGroup(String groupID) {
-                TUIKitLog.i(TAG, "onQuitFromGroup groupID:" + groupID);
+                SLog.i( "onQuitFromGroup groupID:" + groupID);
             }
 
             @Override
@@ -357,14 +357,14 @@ public class TUIKitImpl {
     }
 
     public static void addIMEventListener(IMEventListener listener) {
-        TUIKitLog.i(TAG, "addIMEventListener:" + sIMEventListeners.size() + "|l:" + listener);
+        SLog.i( "addIMEventListener:" + sIMEventListeners.size() + "|l:" + listener);
         if (listener != null && !sIMEventListeners.contains(listener)) {
             sIMEventListeners.add(listener);
         }
     }
 
     public static void removeIMEventListener(IMEventListener listener) {
-        TUIKitLog.i(TAG, "removeIMEventListener:" + sIMEventListeners.size() + "|l:" + listener);
+        SLog.i( "removeIMEventListener:" + sIMEventListeners.size() + "|l:" + listener);
         if (listener == null) {
             sIMEventListeners.clear();
         } else {

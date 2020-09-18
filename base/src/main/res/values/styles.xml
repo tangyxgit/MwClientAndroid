@@ -37,7 +37,7 @@
     </style>
     <!-- 透明主题-->
     <style name="Theme.AppCompat.Slider" parent="@style/AppThemeNoBar">
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
     <!-- 欢迎页面-->

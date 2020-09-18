@@ -21,7 +21,7 @@ import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageRevokedManager;
 import com.mwim.qcloud.tim.uikit.utils.SharedPreferenceUtils;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
+import com.work.util.SLog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
     }
 
     private void init() {
-        TUIKitLog.i(TAG, "init");
+        SLog.i( "init");
         MessageRevokedManager.getInstance().addHandler(this);
     }
 
@@ -63,7 +63,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param callBack
      */
     public void loadConversation(final IUIKitCallBack callBack) {
-        TUIKitLog.i(TAG, "loadConversation callBack:" + callBack);
+        SLog.i( "loadConversation callBack:" + callBack);
         mConversationPreferences = TUIKit.getAppContext().getSharedPreferences(
                 TUIKitConfigs.getConfigs().getGeneralConfig().getSDKAppId() + "-"
                         + V2TIMManager.getInstance().getLoginUser() + SP_NAME,
@@ -77,7 +77,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         V2TIMManager.getConversationManager().getConversationList(0, 100, new V2TIMValueCallback<V2TIMConversationResult>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.v(TAG, "loadConversation getConversationList error, code = " + code + ", desc = " + desc);
+                SLog.v( "loadConversation getConversationList error, code = " + code + ", desc = " + desc);
             }
 
             @Override
@@ -112,14 +112,14 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param v2TIMConversationList 需要刷新的会话列表
      */
     public void onRefreshConversation(List<V2TIMConversation> v2TIMConversationList) {
-        TUIKitLog.v(TAG, "onRefreshConversation conversations:" + v2TIMConversationList);
+        SLog.v( "onRefreshConversation conversations:" + v2TIMConversationList);
         if (mProvider == null) {
             return;
         }
         ArrayList<ConversationInfo> infos = new ArrayList<>();
         for (int i = 0; i < v2TIMConversationList.size(); i++) {
             V2TIMConversation v2TIMConversation = v2TIMConversationList.get(i);
-            TUIKitLog.v(TAG, "refreshConversation v2TIMConversation " + v2TIMConversation.toString());
+            SLog.v( "refreshConversation v2TIMConversation " + v2TIMConversation.toString());
             ConversationInfo conversationInfo = TIMConversation2ConversationInfo(v2TIMConversation);
             if (conversationInfo != null) {
                 infos.add(conversationInfo);
@@ -143,14 +143,14 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
                     //infos.remove(j);
                     //需同步更新未读计数
                     mUnreadTotal = mUnreadTotal - cacheInfo.getUnRead() + update.getUnRead();
-                    TUIKitLog.v(TAG, "onRefreshConversation after mUnreadTotal = " + mUnreadTotal);
+                    SLog.v( "onRefreshConversation after mUnreadTotal = " + mUnreadTotal);
                     exist = true;
                     break;
                 }
             }
             if (!exist) {
                 mUnreadTotal += update.getUnRead();
-                TUIKitLog.i(TAG, "onRefreshConversation exist = " + exist + ", mUnreadTotal = " + mUnreadTotal);
+                SLog.i( "onRefreshConversation exist = " + exist + ", mUnreadTotal = " + mUnreadTotal);
             }
         }
         updateUnreadTotal(mUnreadTotal);
@@ -172,7 +172,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         if (conversation == null) {
             return null;
         }
-        TUIKitLog.i(TAG, "TIMConversation2ConversationInfo id:" + conversation.getConversationID()
+        SLog.i( "TIMConversation2ConversationInfo id:" + conversation.getConversationID()
                 + "|name:" + conversation.getShowName()
                 + "|unreadNum:" + conversation.getUnreadCount());
         V2TIMMessage message = conversation.getLastMessage();
@@ -236,7 +236,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         V2TIMManager.getGroupManager().getGroupMemberList(groupID, V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_FILTER_ALL, 0, new V2TIMValueCallback<V2TIMGroupMemberInfoResult>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "getGroupMemberList failed! groupID:" + groupID + "|code:" + code + "|desc: " + desc);
+                SLog.e( "getGroupMemberList failed! groupID:" + groupID + "|code:" + code + "|desc: " + desc);
             }
 
             @Override
@@ -265,7 +265,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param conversation
      */
     public void setConversationTop(int index, ConversationInfo conversation) {
-        TUIKitLog.i(TAG, "setConversationTop index:" + index + "|conversation:" + conversation);
+        SLog.i( "setConversationTop index:" + index + "|conversation:" + conversation);
         if (!conversation.isTop()) {
             mTopLinkedList.remove(conversation);
             mTopLinkedList.addFirst(conversation);
@@ -285,7 +285,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param flag 是否置顶
      */
     public void setConversationTop(String id, boolean flag) {
-        TUIKitLog.i(TAG, "setConversationTop id:" + id + "|flag:" + flag);
+        SLog.i( "setConversationTop id:" + id + "|flag:" + flag);
         handleTopData(id, flag);
         mProvider.setDataSource(sortConversations(mProvider.getDataSource()));
         SharedPreferenceUtils.putListData(mConversationPreferences, TOP_LIST, mTopLinkedList);
@@ -348,16 +348,16 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param conversation 会话信息
      */
     public void deleteConversation(int index, ConversationInfo conversation) {
-        TUIKitLog.i(TAG, "deleteConversation index:" + index + "|conversation:" + conversation);
+        SLog.i( "deleteConversation index:" + index + "|conversation:" + conversation);
         V2TIMManager.getConversationManager().deleteConversation(conversation.getConversationId(), new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "deleteConversation error:" + code + ", desc:" + desc);
+                SLog.e( "deleteConversation error:" + code + ", desc:" + desc);
             }
 
             @Override
             public void onSuccess() {
-                TUIKitLog.i(TAG, "deleteConversation success");
+                SLog.i( "deleteConversation success");
             }
         });
         handleTopData(conversation.getId(), false);
@@ -371,7 +371,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param id C2C：对方的 userID；Group：群 ID
      */
     public void deleteConversation(String id, boolean isGroup) {
-        TUIKitLog.i(TAG, "deleteConversation id:" + id + "|isGroup:" + isGroup);
+        SLog.i( "deleteConversation id:" + id + "|isGroup:" + isGroup);
         handleTopData(id, false);
         List<ConversationInfo> conversationInfos = mProvider.getDataSource();
         for (int i = 0; i < conversationInfos.size(); i++) {
@@ -398,12 +398,12 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             V2TIMManager.getConversationManager().deleteConversation(conversationID, new V2TIMCallback() {
                 @Override
                 public void onError(int code, String desc) {
-                    TUIKitLog.i(TAG, "deleteConversation error:" + code + ", desc:" + desc);
+                    SLog.i( "deleteConversation error:" + code + ", desc:" + desc);
                 }
 
                 @Override
                 public void onSuccess() {
-                    TUIKitLog.i(TAG, "deleteConversation success");
+                    SLog.i( "deleteConversation success");
                 }
             });
         }
@@ -457,7 +457,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param unreadTotal
      */
     public void updateUnreadTotal(int unreadTotal) {
-        TUIKitLog.i(TAG, "updateUnreadTotal:" + unreadTotal);
+        SLog.i( "updateUnreadTotal:" + unreadTotal);
         mUnreadTotal = unreadTotal;
         for (int i = 0; i < mUnreadWatchers.size(); i++) {
             mUnreadWatchers.get(i).updateUnread(mUnreadTotal);
@@ -474,7 +474,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
     }
 
     public boolean isTopConversation(String groupId) {
-        TUIKitLog.i(TAG, "isTopConversation:" + groupId);
+        SLog.i( "isTopConversation:" + groupId);
         return isTop(groupId);
     }
 
@@ -485,7 +485,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      */
     @Override
     public void handleInvoke(String msgID) {
-        TUIKitLog.i(TAG, "handleInvoke msgID:" + msgID);
+        SLog.i( "handleInvoke msgID:" + msgID);
         if (mProvider != null) {
             loadConversation(null);
         }
@@ -498,7 +498,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param messageUnreadWatcher
      */
     public void addUnreadWatcher(MessageUnreadWatcher messageUnreadWatcher) {
-        TUIKitLog.i(TAG, "addUnreadWatcher:" + messageUnreadWatcher);
+        SLog.i( "addUnreadWatcher:" + messageUnreadWatcher);
         if (!mUnreadWatchers.contains(messageUnreadWatcher)) {
             mUnreadWatchers.add(messageUnreadWatcher);
             messageUnreadWatcher.updateUnread(mUnreadTotal);
@@ -511,7 +511,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param messageUnreadWatcher
      */
     public void removeUnreadWatcher(MessageUnreadWatcher messageUnreadWatcher) {
-        TUIKitLog.i(TAG, "removeUnreadWatcher:" + messageUnreadWatcher);
+        SLog.i( "removeUnreadWatcher:" + messageUnreadWatcher);
         if (messageUnreadWatcher == null) {
             mUnreadWatchers.clear();
         } else {
@@ -523,7 +523,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * 与UI做解绑操作，避免内存泄漏
      */
     public void destroyConversation() {
-        TUIKitLog.i(TAG, "destroyConversation");
+        SLog.i( "destroyConversation");
         if (mProvider != null) {
             mProvider.attachAdapter(null);
         }

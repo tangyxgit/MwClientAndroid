@@ -85,7 +85,7 @@ public class MessageInfoUtil {
         V2TIMMessage v2TIMMessage = V2TIMManager.getMessageManager().createImageMessage(path);
 
         info.setDataUri(uri);
-        int size[] = ImageUtil.getImageSize(uri);
+        int[] size = ImageUtil.getImageSize(uri);
         info.setDataPath(path);
         info.setImgWidth(size[0]);
         info.setImgHeight(size[1]);

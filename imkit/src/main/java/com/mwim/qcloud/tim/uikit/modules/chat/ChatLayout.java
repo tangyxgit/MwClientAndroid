@@ -22,6 +22,7 @@ import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SharedUtils;
 
 import java.util.List;
 
@@ -84,6 +85,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
                     getContext().startActivity(intent);
                 }
             });
+            SharedUtils.removeData(groupInfo.getId());
         } else {
             getTitleBar().getRightIcon().setImageResource(R.drawable.icon_more);
             mC2CChatManager = C2CChatManagerKit.getInstance();

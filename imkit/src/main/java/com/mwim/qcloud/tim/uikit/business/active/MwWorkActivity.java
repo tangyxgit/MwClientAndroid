@@ -48,28 +48,41 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
     public void onInitView() throws Exception {
         super.onInitView();
         instance = this;
-        initView();
         prepareThirdPushToken();
         //设置为必须要验证才能加好友
         V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
         v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
         V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo,null);
+
+        mConversationBtn = findViewById(R.id.conversation);
+        mContactBtn = findViewById(R.id.contact);
+        mProfileSelfBtn = findViewById(R.id.mine);
+        mMsgUnread = findViewById(R.id.msg_total_unread);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onInitValue() throws Exception {
+        super.onInitValue();
+        getFragmentManager().beginTransaction().replace(R.id.empty_view, new ConversationFragment()).commitAllowingStateLoss();
+        FileUtil.initPath(); // 从application移入到这里，原因在于首次装上app，需要获取一系列权限，如创建文件夹，图片下载需要指定创建好的文件目录，否则会下载本地失败，聊天页面从而获取不到图片、表情
+        // 未读消息监视器
+        ConversationManagerKit.getInstance().addUnreadWatcher(this);
+        GroupChatManagerKit.getInstance();
+        if (mLastTab == null) {
+            mLastTab = findViewById(R.id.conversation_btn_group);
+        } else {
+            // 初始化时，强制切换tab到上一次的位置
+            View tmp = mLastTab;
+            mLastTab = null;
+            tabClick(tmp);
+            mLastTab = tmp;
+        }
 
-    }
-
-    @Override
-    protected void onStop() {
-        ConversationManagerKit.getInstance().destroyConversation();
-        super.onStop();
     }
 
     @Override
     protected void onDestroy() {
+        ConversationManagerKit.getInstance().destroyConversation();
         mLastTab = null;
         instance = null;
         super.onDestroy();
@@ -131,27 +144,6 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
 
     }
 
-    private void initView() {
-        mConversationBtn = findViewById(R.id.conversation);
-        mContactBtn = findViewById(R.id.contact);
-        mProfileSelfBtn = findViewById(R.id.mine);
-        mMsgUnread = findViewById(R.id.msg_total_unread);
-        getFragmentManager().beginTransaction().replace(R.id.empty_view, new ConversationFragment()).commitAllowingStateLoss();
-        FileUtil.initPath(); // 从application移入到这里，原因在于首次装上app，需要获取一系列权限，如创建文件夹，图片下载需要指定创建好的文件目录，否则会下载本地失败，聊天页面从而获取不到图片、表情
-
-        // 未读消息监视器
-        ConversationManagerKit.getInstance().addUnreadWatcher(this);
-        GroupChatManagerKit.getInstance();
-        if (mLastTab == null) {
-            mLastTab = findViewById(R.id.conversation_btn_group);
-        } else {
-            // 初始化时，强制切换tab到上一次的位置
-            View tmp = mLastTab;
-            mLastTab = null;
-            tabClick(tmp);
-            mLastTab = tmp;
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -213,7 +205,6 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
 
     @Override
     public void updateUnread(int count) {
-//        SLog.e(">>>count:"+count);
         if (count > 0) {
             mMsgUnread.setVisibility(View.VISIBLE);
         } else {
@@ -233,4 +224,11 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+    }
 }

@@ -18,8 +18,9 @@ import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class GroupInfoProvider {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                TUIKitLog.e(TAG, "loadGroupPublicInfo failed, code: " + errCode + "|desc: " + errMsg);
+                SLog.e("loadGroupPublicInfo failed, code: " + errCode + "|desc: " + errMsg);
                 if (callBack != null) {
                     callBack.onError(module, errCode, errMsg);
                 }
@@ -79,8 +80,8 @@ public class GroupInfoProvider {
         V2TIMManager.getInstance().dismissGroup(mGroupInfo.getId(), new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                callBack.onError(TAG, code, desc);
-                TUIKitLog.e(TAG, "deleteGroup failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
+                SLog.e("deleteGroup failed, code: " + code + "|desc: " + desc);
             }
 
             @Override
@@ -100,8 +101,8 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().getGroupsInfo(groupList, new V2TIMValueCallback<List<V2TIMGroupInfoResult>>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "loadGroupPublicInfo failed, code: " + code + "|desc: " + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.e("loadGroupPublicInfo failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override
@@ -109,7 +110,7 @@ public class GroupInfoProvider {
                 if (v2TIMGroupInfoResults.size() > 0) {
                     V2TIMGroupInfoResult infoResult = v2TIMGroupInfoResults.get(0);
                     // TODO toString打印
-                    TUIKitLog.i(TAG, infoResult.toString());
+                    SLog.i(infoResult.toString());
                     callBack.onSuccess(infoResult);
                 }
             }
@@ -120,8 +121,8 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().getGroupMemberList(mGroupInfo.getId(), V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_FILTER_ALL, nextSeq, new V2TIMValueCallback<V2TIMGroupMemberInfoResult>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "loadGroupMembers failed, code: " + code + "|desc: " + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.e("loadGroupMembers failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override
@@ -159,8 +160,8 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().setGroupInfo(v2TIMGroupInfo, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.i(TAG, "modifyGroupInfo faild tyep| value| code| desc " + value + ":" + type + ":" + code + ":" + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.i("modifyGroupInfo faild tyep| value| code| desc " + value + ":" + type + ":" + code + ":" + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override
@@ -188,7 +189,7 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().setGroupMemberInfo(mGroupInfo.getId(), v2TIMGroupMemberFullInfo, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                callBack.onError(TAG, code, desc);
+                callBack.onError("SLog",code, desc);
                 ToastUtil.toastLongMessage("modifyMyGroupNickname fail: " + code + "=" + desc);
             }
 
@@ -222,8 +223,8 @@ public class GroupInfoProvider {
         V2TIMManager.getInstance().quitGroup(mGroupInfo.getId(), new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "quitGroup failed, code: " + code + "|desc: " + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.e("quitGroup failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override
@@ -244,8 +245,8 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().inviteUserToGroup(mGroupInfo.getId(), addMembers, new V2TIMValueCallback<List<V2TIMGroupMemberOperationResult>>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "addGroupMembers failed, code: " + code + "|desc: " + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.e("addGroupMembers failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override
@@ -282,8 +283,8 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().kickGroupMember(mGroupInfo.getId(), members, "", new V2TIMValueCallback<List<V2TIMGroupMemberOperationResult>>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "removeGroupMembers failed, code: " + code + "|desc: " + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.e("removeGroupMembers failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override
@@ -320,7 +321,7 @@ public class GroupInfoProvider {
             @Override
             public void onSuccess(Object data) {
                 if (mGroupInfo == null) {
-                    callBack.onError(TAG, 0, "no groupInfo");
+                    callBack.onError("SLog",0, "no groupInfo");
                     return;
                 }
                 String groupId = mGroupInfo.getId();
@@ -339,7 +340,7 @@ public class GroupInfoProvider {
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                TUIKitLog.e(TAG, "loadApplyInfo failed, code: " + errCode + "|desc: " + errMsg);
+                SLog.e("loadApplyInfo failed, code: " + errCode + "|desc: " + errMsg);
                 callBack.onError(module, errCode, errMsg);
             }
         });
@@ -351,8 +352,8 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().getGroupApplicationList(new V2TIMValueCallback<V2TIMGroupApplicationResult>() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "getGroupPendencyList failed, code: " + code + "|desc: " + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.e("getGroupPendencyList failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override
@@ -372,8 +373,8 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().acceptGroupApplication(item.getGroupApplication(), "", new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "acceptApply failed, code: " + code + "|desc: " + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.e("acceptApply failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override
@@ -388,8 +389,8 @@ public class GroupInfoProvider {
         V2TIMManager.getGroupManager().refuseGroupApplication(item.getGroupApplication(), "", new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "refuseApply failed, code: " + code + "|desc: " + desc);
-                callBack.onError(TAG, code, desc);
+                SLog.e("refuseApply failed, code: " + code + "|desc: " + desc);
+                callBack.onError("SLog",code, desc);
             }
 
             @Override

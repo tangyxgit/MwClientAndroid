@@ -12,6 +12,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
 
 public class ConversationLayout extends RelativeLayout implements IConversationLayout {
 

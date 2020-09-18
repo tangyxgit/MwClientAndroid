@@ -15,7 +15,7 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.utils.DateTimeUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.work.util.SLog;
+import com.work.util.SharedUtils;
 
 import java.util.Date;
 
@@ -66,10 +66,17 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         if (lastMsg != null) {
             if (lastMsg.getExtra() != null) {
                 String msg = lastMsg.getExtra().toString();
-                if(msg.lastIndexOf(Constants.CHAT_REMIND_S)!=-1 && !lastMsg.isRead()){
-                    if(msg.contains(UserApi.instance().getNickName())){
-                        msg="<font color='#ff0000'>[有人@我]</font>"+msg;
+                boolean isRemind = false;
+                if(conversation.isGroup() && msg.lastIndexOf(Constants.CHAT_REMIND_S)!=-1 && !lastMsg.isRead()){
+                    if(conversation.getUnRead() > 0 && msg.contains(UserApi.instance().getNickName())){
+                        SharedUtils.putData(conversation.getId(),true);
+                        isRemind = true;
                     }
+                }else{
+                    isRemind = SharedUtils.getBoolean(conversation.getId(),false);
+                }
+                if(isRemind){
+                    msg="<font color='#ff0000'>[有人@我]</font>"+msg;
                 }
                 messageText.setText(Html.fromHtml(msg.replace(Constants.CHAT_REMIND_S,"")));
                 messageText.setTextColor(rootView.getResources().getColor(R.color.list_bottom_text_bg));

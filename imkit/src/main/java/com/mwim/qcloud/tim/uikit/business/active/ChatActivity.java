@@ -68,7 +68,6 @@ public class ChatActivity extends IMBaseActivity {
                 return;
             }
         }
-
         if (V2TIMManager.getInstance().getLoginStatus() == V2TIM_STATUS_LOGINED) {
             ChatFragment mChatFragment = new ChatFragment();
             mChatFragment.setArguments(bundle);
