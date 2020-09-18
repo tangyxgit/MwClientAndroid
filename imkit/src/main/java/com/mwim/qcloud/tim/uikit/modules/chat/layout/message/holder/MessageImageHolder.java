@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.tencent.imsdk.v2.V2TIMDownloadCallback;
 import com.tencent.imsdk.v2.V2TIMElem;
@@ -26,8 +27,8 @@ import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.component.video.VideoViewActivity;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -155,14 +156,14 @@ public class MessageImageHolder extends MessageContentHolder {
                     img.downloadImage(path, new V2TIMDownloadCallback() {
                         @Override
                         public void onProgress(V2TIMElem.V2ProgressInfo progressInfo) {
-                            TUIKitLog.i("downloadImage progress current:",
+                            SLog.i("downloadImage progress current:"+
                                     progressInfo.getCurrentSize() + ", total:" + progressInfo.getTotalSize());
                         }
 
                         @Override
                         public void onError(int code, String desc) {
                             downloadEles.remove(img.getUUID());
-                            TUIKitLog.e("MessageListAdapter img getImage", code + ":" + desc);
+                            SLog.e("MessageListAdapter img getImage"+ code + ":" + desc);
                         }
 
                         @Override
@@ -229,13 +230,13 @@ public class MessageImageHolder extends MessageContentHolder {
             videoEle.downloadSnapshot(path, new V2TIMDownloadCallback() {
                 @Override
                 public void onProgress(V2TIMElem.V2ProgressInfo progressInfo) {
-                    TUIKitLog.i("downloadSnapshot progress current:", progressInfo.getCurrentSize() + ", total:" + progressInfo.getTotalSize());
+                    SLog.i("downloadSnapshot progress current:"+ progressInfo.getCurrentSize() + ", total:" + progressInfo.getTotalSize());
                 }
 
                 @Override
                 public void onError(int code, String desc) {
                     downloadEles.remove(videoEle.getSnapshotUUID());
-                    TUIKitLog.e("MessageListAdapter video getImage", code + ":" + desc);
+                    SLog.e("MessageListAdapter video getImage"+ code + ":" + desc);
                 }
 
                 @Override
@@ -304,7 +305,7 @@ public class MessageImageHolder extends MessageContentHolder {
         videoElem.downloadVideo(videoPath, new V2TIMDownloadCallback() {
             @Override
             public void onProgress(V2TIMElem.V2ProgressInfo progressInfo) {
-                TUIKitLog.i("downloadVideo progress current:", progressInfo.getCurrentSize() + ", total:" + progressInfo.getTotalSize());
+                SLog.i("downloadVideo progress current:"+ progressInfo.getCurrentSize() + ", total:" + progressInfo.getTotalSize());
             }
 
             @Override

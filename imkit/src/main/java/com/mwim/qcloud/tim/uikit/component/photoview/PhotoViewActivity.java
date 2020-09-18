@@ -18,6 +18,8 @@ import com.tencent.imsdk.v2.V2TIMDownloadCallback;
 import com.tencent.imsdk.v2.V2TIMElem;
 import com.tencent.imsdk.v2.V2TIMImageElem;
 import com.mwim.qcloud.tim.uikit.R;
+import com.workstation.view.MaterialMenuDrawable;
+import com.workstation.view.MaterialMenuView;
 
 import java.io.File;
 
@@ -94,8 +96,9 @@ public class PhotoViewActivity extends Activity {
 
             }
         }
-
-        findViewById(R.id.photo_view_back).setOnClickListener(new View.OnClickListener() {
+        MaterialMenuView mBack = findViewById(R.id.photo_view_back);
+        mBack.setState(MaterialMenuDrawable.IconState.X);
+        mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
