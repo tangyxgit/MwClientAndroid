@@ -15,18 +15,23 @@ import android.text.TextUtils;
 
 import com.mwim.liteav.model.CallModel;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
+import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfoProvider;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.imsdk.v2.V2TIMGroupInfoResult;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMOfflinePushInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.util.SLog;
+
+import java.util.HashMap;
 
 public class MessageNotification {
 
@@ -43,6 +48,8 @@ public class MessageNotification {
     private NotificationManager mManager;
     private Handler mHandler = new Handler();
     private Context mContext = IMKitAgent.instance();
+    private HashMap<String,String> mGroupNameMaps = new HashMap<>();
+    private GroupInfoProvider mGroupProvider;
 
     private MessageNotification() {
         mManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -88,7 +95,57 @@ public class MessageNotification {
             return;
         }
         mHandler.removeCallbacksAndMessages(null);
+        V2TIMOfflinePushInfo v2TIMOfflinePushInfo = msg.getOfflinePushInfo();
+        String title = null;
+        String desc = null;
+        if (v2TIMOfflinePushInfo != null) {
+            title = v2TIMOfflinePushInfo.getTitle();
+            desc = v2TIMOfflinePushInfo.getDesc();
+        }
+        if (TextUtils.isEmpty(title)) {
+            if (TextUtils.isEmpty(msg.getGroupID())) {
+                if (!TextUtils.isEmpty(msg.getFriendRemark())) {
+                    title = msg.getFriendRemark();
+                } else if (!TextUtils.isEmpty(msg.getNickName())) {
+                    title = msg.getNickName();
+                } else {
+                    title = msg.getUserID();
+                }
+                loadNotification(msg,title,desc);
+            } else {
+                title = msg.getGroupID();
+                if(mGroupNameMaps.get(title)!=null){
+                    loadNotification(msg,mGroupNameMaps.get(title),desc);
+                }else{
+                    loadGroupInfo(msg.getGroupID(),msg,desc);
+                }
+            }
+        }else{
+            loadNotification(msg,title,desc);
+        }
+    }
 
+    private void loadGroupInfo(String groupId, final V2TIMMessage msg, final String desc){
+        if(mGroupProvider==null){
+            mGroupProvider = new GroupInfoProvider();
+        }
+        mGroupProvider.loadGroupPublicInfo(groupId, new IUIKitCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+                V2TIMGroupInfoResult result = (V2TIMGroupInfoResult) data;
+                if(result!=null){
+                    loadNotification(msg,result.getGroupInfo().getGroupName(),desc);
+                }
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+
+            }
+        });
+    }
+
+    private void loadNotification(V2TIMMessage msg,String title,String desc){
         CallModel callModel = CallModel.convert2VideoCallData(msg);
         boolean isDialing = false;
         if (callModel != null && callModel.action == CallModel.VIDEO_CALL_ACTION_DIALING) {
@@ -119,26 +176,8 @@ public class MessageNotification {
         }
         String tickerStr = "新消息";
         builder.setTicker(tickerStr).setWhen(System.currentTimeMillis());
-        V2TIMOfflinePushInfo v2TIMOfflinePushInfo = msg.getOfflinePushInfo();
-        String title = null;
-        String desc = null;
-        if (v2TIMOfflinePushInfo != null) {
-            title = v2TIMOfflinePushInfo.getTitle();
-            desc = v2TIMOfflinePushInfo.getDesc();
-        }
-        if (TextUtils.isEmpty(title)) {
-            if (TextUtils.isEmpty(msg.getGroupID())) {
-                if (!TextUtils.isEmpty(msg.getFriendRemark())) {
-                    title = msg.getFriendRemark();
-                } else if (!TextUtils.isEmpty(msg.getNickName())) {
-                    title = msg.getNickName();
-                } else {
-                    title = msg.getUserID();
-                }
-            } else {
-                title = msg.getGroupID();
-            }
-        }
+
+
         builder.setContentTitle(title);
         if (TextUtils.isEmpty(desc)) {
             MessageInfo info = MessageInfoUtil.createMessageInfo(msg);
@@ -202,7 +241,6 @@ public class MessageNotification {
                 notification.defaults = Notification.DEFAULT_ALL;
             }
         }
-
         mManager.notify(tag, id, notification);
     }
 
