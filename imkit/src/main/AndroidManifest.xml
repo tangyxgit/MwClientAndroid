@@ -95,6 +95,7 @@
             android:windowSoftInputMode="stateVisible"/>
         <activity android:name=".business.active.UpdatePhoneActivity"/>
         <activity android:name=".modules.group.member.GroupMemberRemindActivity"/>
+        <activity android:name=".business.active.X5FileOpenActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

@@ -21,7 +21,7 @@ void loadAppProperties(){
         rootProject.ext.releaseHostName = properties.getProperty("releaseHostName")
         rootProject.ext.debugHostName = properties.getProperty("debugHostName")
 
-        rootProject.ext.abiFilters = ['armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'] //['armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64']
+        rootProject.ext.abiFilters = ['armeabi','armeabi-v7a', 'arm64-v8a'] //['armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64']
         rootProject.ext.arguments = "-DANDROID_STL=c++_static"
         rootProject.ext.cppFlags = "-std=c++11"
         println "当前的版本："+rootProject.ext.versionCode+">>"+rootProject.ext.versionName

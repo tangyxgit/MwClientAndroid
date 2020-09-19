@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.core.content.FileProvider;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.business.active.X5FileOpenActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.tencent.imsdk.v2.V2TIMDownloadCallback;
 import com.tencent.imsdk.v2.V2TIMElem;
@@ -18,6 +19,7 @@ import com.tencent.imsdk.v2.V2TIMMessage;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.SLog;
 
 import java.io.File;
 
@@ -58,16 +60,7 @@ public class MessageFileHolder extends MessageContentHolder {
         msgContentFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ToastUtil.toastLongMessage("文件路径:" + path);
-                Intent openIntent = new Intent(Intent.ACTION_VIEW);
-                openIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Uri contentUri = FileProvider.getUriForFile(IMKitAgent.instance(), IMKitAgent.instance().getApplicationContext().getPackageName() + ".fileProvider", new File(path));
-                    openIntent.setData(contentUri);
-                } else {
-                    openIntent.setData(Uri.fromFile(new File(path)));
-                }
-                IMKitAgent.instance().startActivity(openIntent);
+                X5FileOpenActivity.openX5File(IMKitAgent.instance(),path,fileElem.getFileName());
             }
         });
         if (msg.getStatus() == MessageInfo.MSG_STATUS_SEND_SUCCESS || msg.getStatus() == MessageInfo.MSG_STATUS_NORMAL) {

@@ -21,6 +21,7 @@ import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.smtt.sdk.QbSdk;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -60,6 +61,18 @@ public final class IMKitAgent {
     public static void init(Context context,String appKey){
         instance = context;
         TUIKit.init(context,AppId,getConfigs(context));
+        QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
+            @Override
+            public void onCoreInitFinished() {
+
+            }
+
+            @Override
+            public void onViewInitFinished(boolean b) {
+                SLog.e("x5 web init:"+b);
+            }
+        };
+        QbSdk.initX5Environment(context,cb);
     };
     private static TUIKitConfigs getConfigs(Context context) {
         GeneralConfig config = new GeneralConfig();

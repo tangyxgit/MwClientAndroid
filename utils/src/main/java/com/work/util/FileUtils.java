@@ -41,7 +41,7 @@ public class FileUtils {
 	/**
 	 * 保存Image的目录名
 	 */
-    public final static String FOLDER_NAME = "/cheoa";
+    public final static String FOLDER_NAME = "/yzmw";
 
 	public final static String IMAGE_NAME = "/cache";
 

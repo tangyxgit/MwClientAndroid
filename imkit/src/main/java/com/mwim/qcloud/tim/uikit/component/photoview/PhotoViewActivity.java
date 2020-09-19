@@ -28,7 +28,6 @@ public class PhotoViewActivity extends Activity {
 
     public static V2TIMImageElem.V2TIMImage mCurrentOriginalImage;
     private PhotoView mPhotoView;
-    private Matrix mCurrentDisplayMatrix = null;
     private TextView mViewOriginalBtn;
 
     @Override
@@ -41,7 +40,7 @@ public class PhotoViewActivity extends Activity {
         setContentView(R.layout.activity_photo_view);
         Uri uri = FileUtil.getUriFromPath(getIntent().getStringExtra(TUIKitConstants.IMAGE_DATA));
         boolean isSelf = getIntent().getBooleanExtra(TUIKitConstants.SELF_MESSAGE, false);
-        mCurrentDisplayMatrix = new Matrix();
+        Matrix mCurrentDisplayMatrix = new Matrix();
         mPhotoView = findViewById(R.id.photo_view);
         mPhotoView.setDisplayMatrix(mCurrentDisplayMatrix);
         mPhotoView.setOnMatrixChangeListener(new MatrixChangeListener());
