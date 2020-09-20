@@ -7,16 +7,24 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.LruCache;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SLog;
+import com.work.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -185,10 +193,26 @@ public class FaceManager {
 
 
     public static void handlerEmojiText(TextView comment, String content, boolean typing) {
-        SpannableStringBuilder sb = new SpannableStringBuilder(content);
-        String regex = "\\[(\\S+?)\\]";
+        String regex = "https?://(?:[-\\w.]|(?:%[\\da-fA-F]{2}))+[^\\u4e00-\\u9fa5]+[\\w-_/?&=#%:]{0}";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(content);
+        List<String> links = new ArrayList<>();
+        while(m.find()) {
+            String urlStr = m.group();
+            links.add(urlStr);
+        }
+//        SpannableStringBuilder sb = new SpannableStringBuilder(content);
+        SpannableStringBuilder sb = StringUtils.getClickSpan(content, links, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = (String) view.getTag();
+                WebActivity.startWebView(url);
+            }
+        }, ContextCompat.getColor(IMKitAgent.instance(),R.color.color_2da0f0));
+
+        regex = "\\[(\\S+?)\\]";
+        p = Pattern.compile(regex);
+        m = p.matcher(content);
         boolean imageFound = false;
         while (m.find()) {
             String emojiName = m.group();
@@ -207,6 +231,9 @@ public class FaceManager {
         comment.setText(sb);
         if (comment instanceof EditText) {
             ((EditText) comment).setSelection(selection);
+        }
+        if(links.size()>0){
+            comment.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 

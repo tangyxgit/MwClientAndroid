@@ -170,6 +170,9 @@
 
     <string name="label_confirm" translatable="false">确认</string>
     <string name="dialog_logout" translatable="false">确认退出账号吗？</string>
+    <string name="label_back" translatable="false">返回</string>
+    <string name="text_discover_error" translatable="false">数据加载失败啦~~\n点击任意地方可刷新。</string>
+    <string name="text_loading" translatable="false">加载中···</string>
 
     <string name="toast_user_message_empty" translatable="false">信息不能为空</string>
     <string name="toast_pwd_error" translatable="false">两次密码不一致</string>
