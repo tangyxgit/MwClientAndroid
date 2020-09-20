@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,7 +7,6 @@ import android.text.TextUtils;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
-import com.mwim.qcloud.tim.uikit.business.fragment.ChatFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.WebViewFragment;
 
 
