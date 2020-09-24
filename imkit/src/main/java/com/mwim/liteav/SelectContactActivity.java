@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,8 +25,8 @@ import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.google.android.flexbox.FlexboxItemDecoration;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.mwim.liteav.login.ProfileManager;
-import com.mwim.liteav.trtcaudiocalldemo.ui.TRTCAudioCallActivity;
-import com.mwim.liteav.trtcvideocalldemo.ui.TRTCVideoCallActivity;
+import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
+import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.utils.SoftKeyBoardUtil;

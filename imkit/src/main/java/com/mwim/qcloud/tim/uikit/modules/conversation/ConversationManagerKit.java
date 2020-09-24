@@ -31,9 +31,8 @@ import java.util.List;
 
 public class ConversationManagerKit implements MessageRevokedManager.MessageRevokeHandler {
 
-    private final static String TAG = ConversationManagerKit.class.getSimpleName();
     private final static String SP_NAME = "_top_conversion_list";
-    private final static String SP_IMAGE = "_conversation_group_face";
+    public final static String SP_IMAGE = "_conversation_group_face";
     private final static String TOP_LIST = "top_list";
 
     private static ConversationManagerKit instance = new ConversationManagerKit();

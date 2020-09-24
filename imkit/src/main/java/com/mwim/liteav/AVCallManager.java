@@ -2,8 +2,8 @@ package com.mwim.liteav;
 
 import android.content.Context;
 
-import com.mwim.liteav.trtcaudiocalldemo.ui.TRTCAudioCallActivity;
-import com.mwim.liteav.trtcvideocalldemo.ui.TRTCVideoCallActivity;
+import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
+import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.liteav.login.ProfileManager;

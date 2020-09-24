@@ -2,7 +2,6 @@ package com.mwim.qcloud.tim.uikit.modules.chat.layout.input;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,10 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
-import com.mwim.qcloud.tim.uikit.modules.chat.C2CChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
@@ -33,8 +32,8 @@ import com.tencent.imsdk.v2.V2TIMConversation;
 import com.mwim.liteav.SelectContactActivity;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
-import com.mwim.liteav.trtcaudiocalldemo.ui.TRTCAudioCallActivity;
-import com.mwim.liteav.trtcvideocalldemo.ui.TRTCVideoCallActivity;
+import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
+import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.AudioPlayer;
@@ -469,7 +468,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     private void showFaceViewGroup() {
         SLog.i("showFaceViewGroup");
         if (mFragmentManager == null) {
-            mFragmentManager = mActivity.getFragmentManager();
+            mFragmentManager = mActivity.getSupportFragmentManager();
         }
         if (mFaceFragment == null) {
             mFaceFragment = new FaceFragment();
@@ -530,7 +529,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     private void showCustomInputMoreFragment() {
         SLog.i("showCustomInputMoreFragment");
         if (mFragmentManager == null) {
-            mFragmentManager = mActivity.getFragmentManager();
+            mFragmentManager = mActivity.getSupportFragmentManager();
         }
         BaseInputFragment fragment = (BaseInputFragment) mMoreInputEvent;
         hideSoftInput();
@@ -549,7 +548,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     private void showInputMoreLayout() {
         SLog.i("showInputMoreLayout");
         if (mFragmentManager == null) {
-            mFragmentManager = mActivity.getFragmentManager();
+            mFragmentManager = mActivity.getSupportFragmentManager();
         }
         if (mInputMoreFragment == null) {
             mInputMoreFragment = new InputMoreFragment();

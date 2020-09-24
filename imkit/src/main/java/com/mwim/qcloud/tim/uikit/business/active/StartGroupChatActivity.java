@@ -56,7 +56,6 @@ public class StartGroupChatActivity extends IMBaseActivity {
         });
         mJoinType.setCanNav(true);
         mJoinType.setContent(mJoinTypes.get(mJoinTypeIndex));
-
         ContactListView mContactListView = findViewById(R.id.group_create_member_list);
         mContactListView.loadDataSource(ContactListView.DataSource.FRIEND_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
@@ -104,15 +103,16 @@ public class StartGroupChatActivity extends IMBaseActivity {
     }
 
     public void setGroupType(int type) {
+        mJoinType.setVisibility(View.GONE);
         mGroupType = type;
         switch (type) {
             case TUIKitConstants.GroupType.PUBLIC:
                 setTitleName(getResources().getString(R.string.create_group_chat));
-                mJoinType.setVisibility(View.VISIBLE);
+//                mJoinType.setVisibility(View.VISIBLE);
                 break;
             case TUIKitConstants.GroupType.CHAT_ROOM:
                 setTitleName(getResources().getString(R.string.create_chat_room));
-                mJoinType.setVisibility(View.VISIBLE);
+//                mJoinType.setVisibility(View.VISIBLE);
                 break;
             case TUIKitConstants.GroupType.PRIVATE:
             default:

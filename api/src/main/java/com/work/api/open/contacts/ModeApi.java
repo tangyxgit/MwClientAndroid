@@ -51,6 +51,10 @@ public final class ModeApi {
      */
     public final static String updateMobile="user/updateMobile";
     /**
+     * 工具箱接口
+     */
+    public final static String getToolListByUserId = "tool/getToolListByUserId";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

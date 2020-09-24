@@ -20,6 +20,7 @@
     // 主页Tab相关
     <string name="tab_contact_tab_text" translatable="false">通讯录</string>
     <string name="tab_conversation_tab_text" translatable="false">消息</string>
+    <string name="tab_work_tab_text" translatable="false">工作台</string>
     <string name="tab_profile_tab_text" translatable="false">我</string>
 
     // "我"相关
@@ -150,7 +151,7 @@
     <string name="contact_title" translatable="false">通讯录</string>
     <string name="conversation_title" translatable="false">消息列表</string>
     <string name="conversation_wording_message" translatable="false">对方发来的验证码信息</string>
-    <string name="conversation_wording_send" translatable="false">发送给对方的验证码信息</string>
+    <string name="conversation_wording_send" translatable="false">发送给对方的验证信息</string>
     <string name="conversation_search_msg" translatable="false">手机号/昵称</string>
     <string name="conversation_search_remind" translatable="false">请输入昵称</string>
 

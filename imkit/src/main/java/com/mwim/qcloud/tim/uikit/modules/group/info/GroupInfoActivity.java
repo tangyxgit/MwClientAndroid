@@ -1,22 +1,17 @@
 package com.mwim.qcloud.tim.uikit.modules.group.info;
 
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 
-
 public class GroupInfoActivity extends BaseActivity {
-
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
         GroupInfoFragment fragment = new GroupInfoFragment();
         fragment.setArguments(getIntent().getExtras());
-        getFragmentManager().beginTransaction().replace(R.id.group_manager_base, fragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().replace(R.id.group_manager_base, fragment).commitAllowingStateLoss();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.mwim.liteav.trtcvideocalldemo.ui.videolayout;
+package com.mwim.liteav.trtcvideocall.ui.videolayout;
 
 import android.content.Context;
 import android.text.TextUtils;

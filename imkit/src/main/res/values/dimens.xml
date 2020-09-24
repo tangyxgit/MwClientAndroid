@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="fixed_height_bottom_padding">5dp</dimen>
+
     <dimen name="chat_time_margin">13.33dp</dimen>
 
     <dimen name="page_title_height">45dp</dimen>

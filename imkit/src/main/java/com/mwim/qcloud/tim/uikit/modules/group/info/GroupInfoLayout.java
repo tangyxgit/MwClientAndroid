@@ -160,6 +160,9 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mRevOptView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
+                if(mGroupInfo==null){
+                    return;
+                }
                 V2TIMManager.getGroupManager().setReceiveMessageOpt(mGroupInfo.getId(), b ? V2TIMGroupInfo.V2TIM_GROUP_NOT_RECEIVE_MESSAGE : V2TIMGroupInfo.V2TIM_GROUP_RECEIVE_MESSAGE, new V2TIMCallback() {
                     @Override
                     public void onError(int i, String s) {
@@ -183,6 +186,9 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mMutedSwitchView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(mGroupInfo==null){
+                    return;
+                }
                 V2TIMGroupInfo v2TIMGroupInfo = new V2TIMGroupInfo();
                 v2TIMGroupInfo.setGroupID(mGroupInfo.getId());
                 v2TIMGroupInfo.setAllMuted(b);

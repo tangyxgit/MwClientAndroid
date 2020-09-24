@@ -1,10 +1,27 @@
 package com.mwim.qcloud.tim.uikit.modules.contact;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.tencent.imsdk.v2.V2TIMFriendInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
 import com.mwim.qcloud.tim.uikit.component.indexlib.IndexBar.bean.BaseIndexPinyinBean;
+import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
+import com.tencent.imsdk.v2.V2TIMGroupMemberInfoResult;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
+import com.work.util.SLog;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit.SP_IMAGE;
 
 public class ContactItemBean extends BaseIndexPinyinBean {
 
@@ -16,6 +33,7 @@ public class ContactItemBean extends BaseIndexPinyinBean {
     private String remark;
     private String nickname;
     private String avatarurl;
+    private List<Object> iconUrlList;
     private boolean isGroup;
     private boolean isFriend = true;
     private boolean isEnable = true;
@@ -106,6 +124,9 @@ public class ContactItemBean extends BaseIndexPinyinBean {
         setRemark(friendInfo.getFriendRemark());
         setNickname(friendInfo.getUserProfile().getNickName());
         setAvatarurl(friendInfo.getUserProfile().getFaceUrl());
+        List<Object> list = new ArrayList<>();
+        list.add(friendInfo.getUserProfile().getFaceUrl());
+        setIconUrlList(list);
         return this;
     }
 
@@ -141,14 +162,70 @@ public class ContactItemBean extends BaseIndexPinyinBean {
         this.avatarurl = avatarurl;
     }
 
-    public ContactItemBean covertTIMGroupBaseInfo(V2TIMGroupInfo group) {
+    public List<Object> getIconUrlList() {
+        return iconUrlList;
+    }
+
+    public void setIconUrlList(List<Object> iconUrlList) {
+        this.iconUrlList = iconUrlList;
+    }
+
+    public ContactItemBean covertTIMGroupBaseInfo(V2TIMGroupInfo group,ContactAdapter mAdapter) {
         if (group == null) {
             return this;
         }
         setId(group.getGroupID());
         setRemark(group.getGroupName());
-        setAvatarurl(group.getFaceUrl());
+//        setAvatarurl(group.getFaceUrl());
         setGroup(true);
+        if (TextUtils.isEmpty(group.getFaceUrl())) {
+            final String savedIcon = getGroupConversationAvatar(group.getGroupID());
+            if (TextUtils.isEmpty(savedIcon)) {
+                fillFaceUrlList(group.getGroupID(), this,mAdapter);
+            } else {
+                List<Object> list = new ArrayList<>();
+                list.add(savedIcon);
+                setIconUrlList(list);
+            }
+        } else {
+            List<Object> list = new ArrayList<>();
+            list.add(group.getFaceUrl());
+            setIconUrlList(list);
+        }
         return this;
+    }
+    public String getGroupConversationAvatar(String groupId) {
+        SharedPreferences sp = TUIKit.getAppContext().getSharedPreferences(
+                TUIKitConfigs.getConfigs().getGeneralConfig().getSDKAppId() + SP_IMAGE, Context.MODE_PRIVATE);
+        final String savedIcon = sp.getString(groupId, "");
+        if (!TextUtils.isEmpty(savedIcon) && new File(savedIcon).isFile() && new File(savedIcon).exists()) {
+            return savedIcon;
+        }
+        return "";
+    }
+    private void fillFaceUrlList(final String groupID, final ContactItemBean info, final ContactAdapter mAdapter) {
+        V2TIMManager.getGroupManager().getGroupMemberList(groupID, V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_FILTER_ALL, 0, new V2TIMValueCallback<V2TIMGroupMemberInfoResult>() {
+            @Override
+            public void onError(int code, String desc) {
+                SLog.e( "getGroupMemberList failed! groupID:" + groupID + "|code:" + code + "|desc: " + desc);
+            }
+
+            @Override
+            public void onSuccess(V2TIMGroupMemberInfoResult v2TIMGroupMemberInfoResult) {
+                List<V2TIMGroupMemberFullInfo> v2TIMGroupMemberFullInfoList = v2TIMGroupMemberInfoResult.getMemberInfoList();
+                int faceSize = v2TIMGroupMemberFullInfoList.size() > 9 ? 9 : v2TIMGroupMemberFullInfoList.size();
+                List<Object> urlList = new ArrayList<>();
+                for (int i = 0; i < faceSize; i++) {
+                    V2TIMGroupMemberFullInfo v2TIMGroupMemberFullInfo = v2TIMGroupMemberFullInfoList.get(i);
+                    if (TextUtils.isEmpty(v2TIMGroupMemberFullInfo.getFaceUrl())) {
+                        urlList.add(R.drawable.default_head);
+                    } else {
+                        urlList.add(v2TIMGroupMemberFullInfo.getFaceUrl());
+                    }
+                }
+                info.setIconUrlList(urlList);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

@@ -23,9 +23,9 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <com.mwim.liteav.trtcvideocalldemo.ui.videolayout.SquareImageView
+            <com.mwim.liteav.trtcvideocall.ui.videolayout.SquareImageView
                 android:id="@+id/img_avatar"
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_avatar" />
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:text="XXXX"
+                android:text="~~~"
                 android:textColor="#FFFFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold" />

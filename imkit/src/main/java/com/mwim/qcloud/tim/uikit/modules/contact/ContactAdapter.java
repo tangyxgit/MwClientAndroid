@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
 import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
@@ -99,8 +100,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         });
         holder.unreadText.setVisibility(View.GONE);
         if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.new_friend), contactBean.getId())) {
-            holder.avatar.setImageResource(R.drawable.group_new_friend);
-
+//            holder.avatar.setImageResource(R.drawable.group_new_friend);
+            holder.avatar.setDefaultImageResId(R.drawable.group_new_friend);
             V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
                 @Override
                 public void onError(int code, String desc) {
@@ -121,18 +122,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 }
             });
         } else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.group), contactBean.getId())) {
-            holder.avatar.setImageResource(R.drawable.group_common_list);
+//            holder.avatar.setImageResource(R.drawable.group_common_list);
+            holder.avatar.setDefaultImageResId(R.drawable.group_common_list);
         } else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.blacklist), contactBean.getId())) {
-            holder.avatar.setImageResource(R.drawable.group_black_list);
+//            holder.avatar.setImageResource(R.drawable.group_black_list);
+            holder.avatar.setDefaultImageResId(R.drawable.group_black_list);
         } else {
-            if (TextUtils.isEmpty(contactBean.getAvatarurl())) {
-                if (contactBean.isGroup()) {
-                    holder.avatar.setImageResource(R.drawable.default_head);
-                } else {
-                    holder.avatar.setImageResource(R.drawable.default_head);
-                }
+            if (contactBean.getIconUrlList()==null) {
+                holder.avatar.setDefaultImageResId(R.drawable.default_head);
             } else {
-                GlideEngine.loadCornerImage(holder.avatar, contactBean.getAvatarurl(),null,10);
+//                GlideEngine.loadCornerImage(holder.avatar, contactBean.getAvatarurl(),null,10);
+                holder.avatar.setIconUrls(contactBean.getIconUrlList());
             }
         }
 
@@ -141,8 +141,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public void onViewRecycled(ContactAdapter.ViewHolder holder) {
         if (holder != null) {
-            GlideEngine.clear(holder.avatar);
-            holder.avatar.setImageResource(0);
+//            GlideEngine.clear(holder.avatar);
+//            holder.avatar.setImageResource(0);
 
         }
         super.onViewRecycled(holder);
@@ -180,7 +180,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         TextView unreadText;
-        ImageView avatar;
+        ConversationIconView avatar;
         CheckBox ccSelect;
         View content;
         View line;

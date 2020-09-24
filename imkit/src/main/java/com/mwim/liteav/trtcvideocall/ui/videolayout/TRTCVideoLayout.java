@@ -1,4 +1,4 @@
-package com.mwim.liteav.trtcvideocalldemo.ui.videolayout;
+package com.mwim.liteav.trtcvideocall.ui.videolayout;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -73,11 +73,11 @@ public class TRTCVideoLayout extends RelativeLayout {
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.videocall_item_user_user_layout, this, true);
-        mTcCloudViewTrtc = (TXCloudVideoView) findViewById(R.id.trtc_tc_cloud_view);
-        mHeadImg = (SquareImageView) findViewById(R.id.img_avatar);
-        mUserNameTv = (TextView) findViewById(R.id.tv_user_name);
-        mFlNoVideo = (FrameLayout) findViewById(R.id.fl_no_video);
-        mAudioPb = (ProgressBar) findViewById(R.id.pb_audio);
+        mTcCloudViewTrtc = findViewById(R.id.trtc_tc_cloud_view);
+        mHeadImg = findViewById(R.id.img_avatar);
+        mUserNameTv = findViewById(R.id.tv_user_name);
+        mFlNoVideo = findViewById(R.id.fl_no_video);
+        mAudioPb = findViewById(R.id.pb_audio);
     }
 
     public boolean isMoveable() {

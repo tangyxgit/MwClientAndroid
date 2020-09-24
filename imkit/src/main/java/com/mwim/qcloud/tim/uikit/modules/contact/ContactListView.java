@@ -294,7 +294,7 @@ public class ContactListView extends LinearLayout {
                 mData.clear();
                 for (V2TIMGroupInfo info : v2TIMGroupInfos) {
                     ContactItemBean bean = new ContactItemBean();
-                    mData.add(bean.covertTIMGroupBaseInfo(info));
+                    mData.add(bean.covertTIMGroupBaseInfo(info,mAdapter));
                 }
                 setDataSource(mData);
             }

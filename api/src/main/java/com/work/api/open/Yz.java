@@ -7,6 +7,7 @@ import com.http.network.task.ConnectDataTask;
 import com.work.api.open.contacts.ModeApi;
 import com.work.api.open.model.BaseReq;
 import com.work.api.open.model.BaseResp;
+import com.work.api.open.model.GetToolListByUserIdResp;
 import com.work.api.open.model.GetUserByParamReq;
 import com.work.api.open.model.GetUserByParamResp;
 import com.work.api.open.model.LoginReq;
@@ -89,6 +90,12 @@ public class Yz extends ApiClient {
      */
     public void updateMobile(UpdateMobileReq registerReq, OnResultDataListener onResultDataListener){
         requestPost(ModeApi.updateMobile,registerReq,new BaseResp(),onResultDataListener);
+    }
+    /**
+     * 工具箱
+     */
+    public void getToolListByUserId(OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getToolListByUserId,new BaseReq(),new GetToolListByUserIdResp(),onResultDataListener);
     }
     /**
      * 上传文件

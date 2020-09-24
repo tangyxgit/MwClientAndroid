@@ -1,7 +1,8 @@
 package com.mwim.qcloud.tim.uikit.base;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class BaseFragment extends Fragment {
 
@@ -10,7 +11,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void forward(int viewId, Fragment fragment, String name, boolean hide) {
-        FragmentTransaction trans = getFragmentManager().beginTransaction();
+        FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
         if (hide) {
             trans.hide(this);
             trans.add(viewId, fragment);
@@ -23,6 +24,6 @@ public class BaseFragment extends Fragment {
     }
 
     public void backward() {
-        getFragmentManager().popBackStack();
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

@@ -11,7 +11,6 @@ import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageContainerBean;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageCustom;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.v2.V2TIMCallback;
@@ -27,6 +26,7 @@ import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 import com.tencent.trtc.TRTCCloudListener;
+import com.work.util.SLog;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -45,7 +45,6 @@ import java.util.Set;
  * 1. 为了方便您接入，在login中调用了initIM进行IM系统的初始化，如果您的项目中已经使用了IM，可以删除这里的初始化
  */
 public class TRTCAVCallImpl implements ITRTCAVCall {
-    private static final String TAG = "TRTCAVCallImpl";
     /**
      * 超时时间，单位秒
      */
@@ -58,7 +57,6 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
     private static final int ROOM_ID_MAX = Integer.MAX_VALUE;
 
     private static ITRTCAVCall sITRTCAVCall;
-    private final Context mContext;
     /**
      * 底层SDK调用实例
      */
@@ -144,7 +142,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
         @Override
         public void onInviteeAccepted(String inviteID, String invitee, String data) {
-            TUIKitLog.d(TAG, "onInviteeAccepted inviteID:" + inviteID + ", invitee:" + invitee);
+            SLog.d( "onInviteeAccepted inviteID:" + inviteID + ", invitee:" + invitee);
             mCurInvitedList.remove(invitee);
         }
 
@@ -165,7 +163,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                     }
                     preExitRoom(null);
                 } catch (JsonSyntaxException e) {
-                    TUIKitLog.e(TAG, "onReceiveNewInvitation JsonSyntaxException:" + e);
+                    SLog.e( "onReceiveNewInvitation JsonSyntaxException:" + e);
                 }
             }
         }
@@ -218,7 +216,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         try {
             extraMap = new Gson().fromJson(data, Map.class);
             if (extraMap == null) {
-                TUIKitLog.e(TAG, "onReceiveNewInvitation extraMap is null, ignore");
+                SLog.e( "onReceiveNewInvitation extraMap is null, ignore");
                 return;
             }
             if (extraMap.containsKey(CallModel.SIGNALING_EXTRA_KEY_VERSION)) {
@@ -236,7 +234,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                 callModel.roomId = ((Double)extraMap.get(CallModel.SIGNALING_EXTRA_KEY_ROOM_ID)).intValue();
             }
         } catch (JsonSyntaxException e) {
-            TUIKitLog.e(TAG, "onReceiveNewInvitation JsonSyntaxException:" + e);
+            SLog.e( "onReceiveNewInvitation JsonSyntaxException:" + e);
         }
         handleDialing(callModel, inviter);
 
@@ -251,7 +249,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
     private TRTCCloudListener mTRTCCloudListener = new TRTCCloudListener() {
         @Override
         public void onError(int errCode, String errMsg, Bundle extraInfo) {
-            TUIKitLog.e(TAG, "onError: " + errCode + " " + errMsg);
+            SLog.e( "onError: " + errCode + " " + errMsg);
             stopCall();
             if (mTRTCInteralListenerManager != null) {
                 mTRTCInteralListenerManager.onError(errCode, errMsg);
@@ -260,7 +258,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
         @Override
         public void onEnterRoom(long result) {
-            TUIKitLog.d(TAG, "onEnterRoom result:" + result);
+            SLog.d( "onEnterRoom result:" + result);
             if (result < 0) {
                 stopCall();
             } else {
@@ -270,12 +268,12 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
         @Override
         public void onExitRoom(int reason) {
-            TUIKitLog.d(TAG, "onExitRoom reason:" + reason);
+            SLog.d( "onExitRoom reason:" + reason);
         }
 
         @Override
         public void onRemoteUserEnterRoom(String userId) {
-            TUIKitLog.d(TAG, "onRemoteUserEnterRoom userId:" + userId);
+            SLog.d( "onRemoteUserEnterRoom userId:" + userId);
             mCurRoomRemoteUserSet.add(userId);
             // 只有单聊这个时间才是正确的，因为单聊只会有一个用户进群，群聊这个时间会被后面的人重置
             mEnterRoomTime = System.currentTimeMillis();
@@ -286,7 +284,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
         @Override
         public void onRemoteUserLeaveRoom(String userId, int reason) {
-            TUIKitLog.d(TAG, "onRemoteUserLeaveRoom userId:" + userId + ", reason:" + reason);
+            SLog.d( "onRemoteUserLeaveRoom userId:" + userId + ", reason:" + reason);
             mCurRoomRemoteUserSet.remove(userId);
             mCurInvitedList.remove(userId);
             // 远端用户退出房间，需要判断本次通话是否结束
@@ -298,7 +296,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
         @Override
         public void onUserVideoAvailable(String userId, boolean available) {
-            TUIKitLog.d(TAG, "onUserVideoAvailable userId:" + userId + ", available:" + available);
+            SLog.d( "onUserVideoAvailable userId:" + userId + ", available:" + available);
             if (mTRTCInteralListenerManager != null) {
                 mTRTCInteralListenerManager.onUserVideoAvailable(userId, available);
             }
@@ -306,7 +304,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
         @Override
         public void onUserAudioAvailable(String userId, boolean available) {
-            TUIKitLog.d(TAG, "onUserAudioAvailable userId:" + userId + ", available:" + available);
+            SLog.d( "onUserAudioAvailable userId:" + userId + ", available:" + available);
             if (mTRTCInteralListenerManager != null) {
                 mTRTCInteralListenerManager.onUserAudioAvailable(userId, available);
             }
@@ -356,7 +354,6 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
     }
 
     public TRTCAVCallImpl(Context context) {
-        mContext = context;
         mTIMManager = V2TIMManager.getInstance();
         mTRTCCloud = TRTCCloud.sharedInstance(context);
         mTRTCInteralListenerManager = new TRTCInteralListenerManager();
@@ -452,9 +449,9 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
     @Override
     public void login(int sdkAppId, final String userId, final String userSign, final ITRTCAVCall.ActionCallBack callback) {
-       TUIKitLog.i(TAG, "startTUIKitLogin, sdkAppId:" + sdkAppId + " userId:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
+       SLog.i( "startSLogin, sdkAppId:" + sdkAppId + " userId:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
         if (sdkAppId == 0 || TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSign)) {
-           TUIKitLog.e(TAG, "startTUIKitLogin fail. params invalid.");
+           SLog.e( "startSLogin fail. params invalid.");
             if (callback != null) {
                 callback.onError(-1, "login fail, params is invalid.");
             }
@@ -470,7 +467,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
         String loginUser = mTIMManager.getLoginUser();
         if (loginUser != null &&loginUser.equals(userId)) {
-            TUIKitLog.d(TAG, "IM已经登录过了：" +loginUser);
+            SLog.d( "IM已经登录过了：" +loginUser);
             mCurUserId =loginUser;
             mCurUserSig = userSign;
             if (callback != null) {
@@ -542,7 +539,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         }
 
         mCurInvitedList.addAll(filterInvitedList);
-        TUIKitLog.i(TAG, "groupCall: filter:" + filterInvitedList + " all:" + mCurInvitedList);
+        SLog.i( "groupCall: filter:" + filterInvitedList + " all:" + mCurInvitedList);
         // 填充通话信令的model
         mLastCallModel.action = CallModel.VIDEO_CALL_ACTION_DIALING;
         mLastCallModel.invitedList = mCurInvitedList;
@@ -568,7 +565,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
      * 在用户超时、拒绝、忙线、有人退出房间时需要进行判断
      */
     private void preExitRoom(String leaveUser) {
-        TUIKitLog.i(TAG, "preExitRoom: " + mCurRoomRemoteUserSet + " " + mCurInvitedList);
+        SLog.i( "preExitRoom: " + mCurRoomRemoteUserSet + " " + mCurInvitedList);
         if (mCurRoomRemoteUserSet.isEmpty() && mCurInvitedList.isEmpty() && mIsInRoom) {
             // 当没有其他用户在房间里了，则结束通话。
             if (!TextUtils.isEmpty(leaveUser)) {
@@ -621,7 +618,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
             encParam.enableAdjustRes = true;
             mTRTCCloud.setVideoEncoderParam(encParam);
         }
-        TUIKitLog.i(TAG, "enterTRTCRoom: " + mCurUserId + " room:" + mCurRoomID);
+        SLog.i( "enterTRTCRoom: " + mCurUserId + " room:" + mCurRoomID);
         TRTCCloudDef.TRTCParams TRTCParams = new TRTCCloudDef.TRTCParams(mSdkAppId, mCurUserId, mCurUserSig, mCurRoomID, "", "");
         TRTCParams.role = TRTCCloudDef.TRTCRoleAnchor;
         mTRTCCloud.enableAudioVolumeEvaluation(300);
@@ -719,6 +716,11 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         }
     }
 
+    @Override
+    public void setMuteLocalVideo(boolean mute) {
+        mTRTCCloud.muteLocalVideo(mute);
+    }
+
     private String sendModel(final String user, int action) {
         return sendModel(user, action, null);
     }
@@ -734,7 +736,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
 
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "getUsersInfo err code = " + code + ", desc = " + desc);
+                SLog.e( "getUsersInfo err code = " + code + ", desc = " + desc);
                 sendOnlineMessageWithOfflinePushInfo(user, null, model);
             }
 
@@ -785,18 +787,18 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         V2TIMMessage message = V2TIMManager.getMessageManager().createCustomMessage(new Gson().toJson(custom).getBytes());
 
         for (String receiver: invitedList) {
-            TUIKitLog.i(TAG, "sendOnlineMessage to " + receiver);
+            SLog.i( "sendOnlineMessage to " + receiver);
             V2TIMManager.getMessageManager().sendMessage(message, receiver, null, V2TIMMessage.V2TIM_PRIORITY_DEFAULT,
                     true, v2TIMOfflinePushInfo, new V2TIMSendCallback<V2TIMMessage>() {
 
                         @Override
                         public void onError(int code, String desc) {
-                            TUIKitLog.e(TAG, "sendOnlineMessage failed, code:" + code + ", desc:" + desc);
+                            SLog.e( "sendOnlineMessage failed, code:" + code + ", desc:" + desc);
                         }
 
                         @Override
                         public void onSuccess(V2TIMMessage v2TIMMessage) {
-                            TUIKitLog.i(TAG, "sendOnlineMessage msgId:" + v2TIMMessage.getMsgID());
+                            SLog.i( "sendOnlineMessage msgId:" + v2TIMMessage.getMsgID());
                         }
 
                         @Override
@@ -848,12 +850,12 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                     callID = V2TIMManager.getSignalingManager().inviteInGroup(groupId, realCallModel.invitedList, dialingDataStr, TIME_OUT_COUNT, new V2TIMCallback() {
                         @Override
                         public void onError(int code, String desc) {
-                            TUIKitLog.e(TAG, "inviteInGroup callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                            SLog.e( "inviteInGroup callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
                         }
 
                         @Override
                         public void onSuccess() {
-                            TUIKitLog.d(TAG, "inviteInGroup success:" + realCallModel);
+                            SLog.d( "inviteInGroup success:" + realCallModel);
                             realCallModel.callId = getCallId();
                             realCallModel.timeout = TIME_OUT_COUNT;
                             realCallModel.version = TUIKitConstants.version;
@@ -864,12 +866,12 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                     callID = V2TIMManager.getSignalingManager().invite(receiver, dialingDataStr, TIME_OUT_COUNT, new V2TIMCallback() {
                         @Override
                         public void onError(int code, String desc) {
-                            TUIKitLog.e(TAG, "invite  callID:" + realCallModel.callId + ",error:" + code + " desc:" + desc);
+                            SLog.e( "invite  callID:" + realCallModel.callId + ",error:" + code + " desc:" + desc);
                         }
 
                         @Override
                         public void onSuccess() {
-                            TUIKitLog.d(TAG, "invite success:" + realCallModel);
+                            SLog.d( "invite success:" + realCallModel);
                             realCallModel.callId = getCallId();
                             realCallModel.timeout = TIME_OUT_COUNT;
                             realCallModel.version = TUIKitConstants.version;
@@ -883,12 +885,12 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                 V2TIMManager.getSignalingManager().accept(realCallModel.callId, acceptDataStr, new V2TIMCallback() {
                     @Override
                     public void onError(int code, String desc) {
-                        TUIKitLog.e(TAG, "accept callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                        SLog.e( "accept callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
                     }
 
                     @Override
                     public void onSuccess() {
-                        TUIKitLog.d(TAG, "accept success callID:" + realCallModel.callId);
+                        SLog.d( "accept success callID:" + realCallModel.callId);
                     }
                 });
                 break;
@@ -898,12 +900,12 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                 V2TIMManager.getSignalingManager().reject(realCallModel.callId, rejectDataStr, new V2TIMCallback() {
                     @Override
                     public void onError(int code, String desc) {
-                        TUIKitLog.e(TAG, "reject callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                        SLog.e( "reject callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
                     }
 
                     @Override
                     public void onSuccess() {
-                        TUIKitLog.d(TAG, "reject success callID:" + realCallModel.callId);
+                        SLog.d( "reject success callID:" + realCallModel.callId);
                     }
                 });
                 break;
@@ -914,12 +916,12 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                 V2TIMManager.getSignalingManager().reject(realCallModel.callId, lineBusyMapStr, new V2TIMCallback() {
                     @Override
                     public void onError(int code, String desc) {
-                        TUIKitLog.e(TAG, "reject  callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                        SLog.e( "reject  callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
                     }
 
                     @Override
                     public void onSuccess() {
-                        TUIKitLog.d(TAG, "reject success callID:" + realCallModel.callId);
+                        SLog.d( "reject success callID:" + realCallModel.callId);
                     }
                 });
                 break;
@@ -929,12 +931,12 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                 V2TIMManager.getSignalingManager().cancel(realCallModel.callId, cancelMapStr, new V2TIMCallback() {
                     @Override
                     public void onError(int code, String desc) {
-                        TUIKitLog.e(TAG, "cancel callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                        SLog.e( "cancel callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
                     }
 
                     @Override
                     public void onSuccess() {
-                        TUIKitLog.d(TAG, "cancel success callID:" + realCallModel.callId);
+                        SLog.d( "cancel success callID:" + realCallModel.callId);
                     }
                 });
                 break;
@@ -946,24 +948,24 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                     V2TIMManager.getSignalingManager().inviteInGroup(groupId, realCallModel.invitedList, hangupMapStr, 0, new V2TIMCallback() {
                         @Override
                         public void onError(int code, String desc) {
-                            TUIKitLog.e(TAG, "inviteInGroup-->hangup callID: " + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                            SLog.e( "inviteInGroup-->hangup callID: " + realCallModel.callId + ", error:" + code + " desc:" + desc);
                         }
 
                         @Override
                         public void onSuccess() {
-                            TUIKitLog.d(TAG, "inviteInGroup-->hangup success callID:" + realCallModel.callId);
+                            SLog.d( "inviteInGroup-->hangup success callID:" + realCallModel.callId);
                         }
                     });
                 } else {
                     V2TIMManager.getSignalingManager().invite(receiver, hangupMapStr, 0, new V2TIMCallback() {
                         @Override
                         public void onError(int code, String desc) {
-                            TUIKitLog.e(TAG, "invite-->hangup callID: " + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                            SLog.e( "invite-->hangup callID: " + realCallModel.callId + ", error:" + code + " desc:" + desc);
                         }
 
                         @Override
                         public void onSuccess() {
-                            TUIKitLog.d(TAG, "invite-->hangup success callID:" + realCallModel.callId);
+                            SLog.d( "invite-->hangup success callID:" + realCallModel.callId);
                         }
                     });
                 }

@@ -44,7 +44,7 @@ public interface ITRTCAVCall {
     int TYPE_AUDIO_CALL = 1;
     int TYPE_VIDEO_CALL = 2;
 
-    public interface ActionCallBack {
+    interface ActionCallBack {
         void onError(int code, String msg);
 
         void onSuccess();
@@ -175,4 +175,9 @@ public interface ITRTCAVCall {
      * @param isHandsFree true:开启免提 false:关闭免提
      */
     void setHandsFree(boolean isHandsFree);
+    /**
+     * 暂停/恢复推送本地的视频数据
+     * true：暂停；false：恢复
+     */
+    void setMuteLocalVideo(boolean mute);
 }

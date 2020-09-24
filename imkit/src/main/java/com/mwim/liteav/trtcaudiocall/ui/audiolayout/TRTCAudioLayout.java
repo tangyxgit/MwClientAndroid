@@ -1,4 +1,4 @@
-package com.mwim.liteav.trtcaudiocalldemo.ui.audiolayout;
+package com.mwim.liteav.trtcaudiocall.ui.audiolayout;
 
 import android.content.Context;
 import android.graphics.Bitmap;

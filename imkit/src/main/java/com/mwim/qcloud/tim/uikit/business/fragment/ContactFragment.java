@@ -37,7 +37,6 @@ public class ContactFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View baseView = inflater.inflate(R.layout.fragment_im_contact, container, false);
         initViews(baseView);
-
         return baseView;
     }
 
@@ -93,7 +92,7 @@ public class ContactFragment extends BaseFragment {
         });
     }
 
-    private void refreshData() {
+    public void refreshData() {
         // 通讯录面板的默认UI和交互初始化
         mContactLayout.initDefault();
     }
@@ -102,6 +101,5 @@ public class ContactFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         SLog.i("onResume");
-        refreshData();
     }
 }

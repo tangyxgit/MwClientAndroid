@@ -31,7 +31,7 @@ public class WebActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString(WebActivity.class.getSimpleName(),url);
         webViewFragment.setArguments(bundle);
-        getFragmentManager().beginTransaction().replace(R.id.empty_view, webViewFragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().replace(R.id.empty_view, webViewFragment).commitAllowingStateLoss();
     }
 
     @Override

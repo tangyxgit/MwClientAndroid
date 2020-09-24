@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.AttributeSet;
 import android.view.View;
@@ -65,7 +66,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
      */
     protected EditText mTextInput;
 
-    protected Activity mActivity;
+    protected AppCompatActivity mActivity;
     protected View mInputMoreLayout;
     //    protected ShortcutArea mShortcutArea;
     protected View mInputMoreView;
@@ -95,7 +96,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     }
 
     private void initViews() {
-        mActivity = (Activity) getContext();
+        mActivity = (AppCompatActivity) getContext();
         inflate(mActivity, R.layout.chat_input_layout, this);
 //        mShortcutArea = findViewById(R.id.shortcut_area);
         mInputMoreView = findViewById(R.id.more_groups);
