@@ -17,7 +17,6 @@ import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.NoticeLayout;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
-import com.work.util.SLog;
 
 public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
 
@@ -30,6 +29,7 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
     private InputLayout mInputLayout;
     private NoticeLayout mNoticeLayout;
     private ChatInfo mChatInfo;
+    private TextView mChatAtInfoLayout;
 
     public ChatLayoutUI(Context context) {
         super(context);
@@ -58,7 +58,7 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
         mRecordingTips = findViewById(R.id.recording_tips);
         mGroupApplyLayout = findViewById(R.id.chat_group_apply_layout);
         mNoticeLayout = findViewById(R.id.chat_notice_layout);
-
+        mChatAtInfoLayout = findViewById(R.id.chat_at_text_view);
         init();
     }
 
@@ -84,6 +84,12 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
     @Override
     public ChatInfo getChatInfo() {
         return mChatInfo;
+    }
+
+
+    @Override
+    public TextView getAtInfoLayout() {
+        return mChatAtInfoLayout;
     }
 
     @Override

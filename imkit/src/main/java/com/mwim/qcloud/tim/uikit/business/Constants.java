@@ -16,6 +16,4 @@ public class Constants {
     public static final String CHAT_INTO_ID = "chatInfoId";
     public static final String CHAT_INTO_TYPE = "chatInfoType";
     public static final String CHAT_INTO_NAME = "chatInfoName";
-
-    public static final String CHAT_REMIND_S="!*~*!";
 }

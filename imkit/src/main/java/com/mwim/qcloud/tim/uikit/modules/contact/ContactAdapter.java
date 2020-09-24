@@ -71,12 +71,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         if (mOnSelectChangedListener != null) {
             holder.ccSelect.setVisibility(View.VISIBLE);
             holder.ccSelect.setChecked(contactBean.isSelected());
-            holder.ccSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mOnSelectChangedListener.onSelectChanged(getItem(position), isChecked);
-                }
-            });
         }
 
         holder.content.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +80,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                     return;
                 }
                 holder.ccSelect.setChecked(!holder.ccSelect.isChecked());
+                if (mOnSelectChangedListener != null) {
+                    mOnSelectChangedListener.onSelectChanged(getItem(position), holder.ccSelect.isChecked());
+                }
                 contactBean.setSelected(holder.ccSelect.isChecked());
                 if (mOnClickListener != null) {
                     mOnClickListener.onItemClick(position, contactBean);

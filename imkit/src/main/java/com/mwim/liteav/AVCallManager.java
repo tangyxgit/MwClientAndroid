@@ -5,18 +5,17 @@ import android.content.Context;
 import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.liteav.login.ProfileManager;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
 import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.liteav.model.TRTCAVCallListener;
+import com.work.util.SLog;
 
 import java.util.List;
 import java.util.Map;
 
 public class AVCallManager {
-    private final String TAG = "AVCallManager";
     private static class AVCallManagerHolder {
         private static final AVCallManager avCallManager = new AVCallManager();
     }
@@ -123,7 +122,7 @@ public class AVCallManager {
 
                         @Override
                         public void onFailed(int code, String msg) {
-                            TUIKitLog.e(TAG, "getUserInfoBatch failed:" + code + ", desc:" + msg);
+                            SLog.e( "getUserInfoBatch failed:" + code + ", desc:" + msg);
                         }
                     });
                 }
@@ -131,7 +130,7 @@ public class AVCallManager {
 
             @Override
             public void onFailed(int code, String msg) {
-                TUIKitLog.e(TAG, "getUserInfoByUserId failed:" + code + ", desc:" + msg);
+                SLog.e("getUserInfoByUserId failed:" + code + ", desc:" + msg);
             }
         });
     }
@@ -145,7 +144,7 @@ public class AVCallManager {
     }
 
     public void unInit() {
-        if(mITRTCAVCall!=null){
+        if (mITRTCAVCall != null) {
             mITRTCAVCall.removeListener(mTRTCAVCallListener);
         }
         TRTCAVCallImpl.destroySharedInstance();

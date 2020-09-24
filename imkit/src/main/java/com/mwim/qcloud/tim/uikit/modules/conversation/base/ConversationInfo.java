@@ -68,6 +68,10 @@ public class ConversationInfo implements Serializable, Comparable<ConversationIn
      * 最后一条消息，MessageInfo对象
      */
     private MessageInfo lastMessage;
+    /**
+     * 会话界面显示的@提示消息
+     */
+    private String atInfoText;
 
     public ConversationInfo() {
 
@@ -150,6 +154,14 @@ public class ConversationInfo implements Serializable, Comparable<ConversationIn
 
     public void setLastMessage(MessageInfo lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public void setAtInfoText(String atInfoText) {
+        this.atInfoText = atInfoText;
+    }
+
+    public String getAtInfoText() {
+        return atInfoText;
     }
 
     @Override

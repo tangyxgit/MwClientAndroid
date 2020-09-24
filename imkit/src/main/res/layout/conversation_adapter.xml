@@ -24,8 +24,8 @@
                 android:id="@+id/conversation_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="top|left"
-                android:layout_alignParentLeft="true"
+                android:gravity="start|top"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:ellipsize="end"
                 android:singleLine="true"
@@ -36,25 +36,38 @@
                 android:id="@+id/conversation_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:textColor="@color/conversation_time_color"
                 android:textSize="11.14sp" />
 
             <TextView
-                android:id="@+id/conversation_last_msg"
+                android:id="@+id/conversation_at_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="48dp"
                 android:layout_marginBottom="15.54dp"
                 android:layout_above="@+id/view_line"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/list_bottom_text_bg"
-                android:textSize="12.86sp" />
+                android:textSize="12.86sp"
+                android:visibility="gone"/>
 
+            <TextView
+                android:id="@+id/conversation_last_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="15.54dp"
+                android:layout_above="@+id/view_line"
+                android:layout_toEndOf="@+id/conversation_at_msg"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/list_bottom_text_bg"
+                android:textSize="12.86sp" />
 
             <com.mwim.qcloud.tim.uikit.component.UnreadCountTextView
                 android:id="@+id/conversation_unread"

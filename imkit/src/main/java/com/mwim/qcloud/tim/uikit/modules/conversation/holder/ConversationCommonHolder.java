@@ -27,6 +27,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
     protected TextView messageText;
     protected TextView timelineText;
     protected TextView unreadText;
+    protected TextView atInfoText;
 
     public ConversationCommonHolder(View itemView) {
         super(itemView);
@@ -36,6 +37,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         messageText = rootView.findViewById(R.id.conversation_last_msg);
         timelineText = rootView.findViewById(R.id.conversation_time);
         unreadText = rootView.findViewById(R.id.conversation_unread);
+        atInfoText = rootView.findViewById(R.id.conversation_at_msg);
     }
 
     public void layoutViews(ConversationInfo conversation, int position) {
@@ -53,37 +55,21 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
                 lastMsg.setExtra("对方撤回了一条消息");
             }
         }
-
         if (conversation.isTop()) {
             leftItemLayout.setBackgroundColor(rootView.getResources().getColor(R.color.conversation_top_color));
         } else {
             leftItemLayout.setBackgroundColor(Color.WHITE);
         }
-
         titleText.setText(conversation.getTitle());
         messageText.setText("");
         timelineText.setText("");
         if (lastMsg != null) {
             if (lastMsg.getExtra() != null) {
-                String msg = lastMsg.getExtra().toString();
-                boolean isRemind = false;
-                if(conversation.isGroup() && msg.lastIndexOf(Constants.CHAT_REMIND_S)!=-1 && !lastMsg.isRead()){
-                    if(conversation.getUnRead() > 0 && msg.contains(UserApi.instance().getNickName())){
-                        SharedUtils.putData(conversation.getId(),true);
-                        isRemind = true;
-                    }
-                }else{
-                    isRemind = SharedUtils.getBoolean(conversation.getId(),false);
-                }
-                if(isRemind){
-                    msg="<font color='#ff0000'>[有人@我]</font>"+msg;
-                }
-                messageText.setText(Html.fromHtml(msg.replace(Constants.CHAT_REMIND_S,"")));
+                messageText.setText(Html.fromHtml(lastMsg.getExtra().toString()));
                 messageText.setTextColor(rootView.getResources().getColor(R.color.list_bottom_text_bg));
             }
             timelineText.setText(DateTimeUtil.getTimeFormatText(new Date(lastMsg.getMsgTime() * 1000)));
         }
-
         if (conversation.getUnRead() > 0) {
             unreadText.setVisibility(View.VISIBLE);
             if (conversation.getUnRead() > 99) {
@@ -93,6 +79,14 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
             }
         } else {
             unreadText.setVisibility(View.GONE);
+        }
+
+        if (conversation.getAtInfoText().isEmpty()){
+            atInfoText.setVisibility(View.GONE);
+        } else {
+            atInfoText.setVisibility(View.VISIBLE);
+            atInfoText.setText(conversation.getAtInfoText());
+            atInfoText.setTextColor(Color.RED);
         }
 
         conversationIconView.setRadius(mAdapter.getItemAvatarRadius());
@@ -108,11 +102,9 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         if (!mAdapter.hasItemUnreadDot()) {
             unreadText.setVisibility(View.GONE);
         }
-
         if (conversation.getIconUrlList() != null) {
             conversationIconView.setConversation(conversation);
         }
-
         //// 由子类设置指定消息类型的views
         layoutVariableViews(conversation, position);
     }

@@ -25,6 +25,7 @@ import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.client.OpenData;
 import com.work.mw.R;
 import com.work.util.AppUtils;
+import com.work.util.KeyboardUtils;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 import com.workstation.permission.PermissionsResultAction;
@@ -180,6 +181,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 }
             }
         }else{
+            KeyboardUtils.hideSoftInput(this);
             ToastUtil.warning(this,resp.getMessage());
         }
     }

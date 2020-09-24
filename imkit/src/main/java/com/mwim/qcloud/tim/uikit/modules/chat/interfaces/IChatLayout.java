@@ -1,5 +1,7 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.interfaces;
 
+import android.widget.TextView;
+
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.base.ILayout;
 import com.mwim.qcloud.tim.uikit.component.NoticeLayout;
@@ -74,4 +76,6 @@ public interface IChatLayout extends ILayout {
      * @param retry 是否重试
      */
     void sendMessage(MessageInfo msg, boolean retry);
+
+    TextView getAtInfoLayout();
 }

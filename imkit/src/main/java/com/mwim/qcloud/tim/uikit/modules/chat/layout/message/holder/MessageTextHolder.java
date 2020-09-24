@@ -30,7 +30,7 @@ public class MessageTextHolder extends MessageContentHolder {
     public void layoutVariableViews(MessageInfo msg, int position) {
         msgBodyText.setVisibility(View.VISIBLE);
         if (msg.getExtra() != null) {
-            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString().replace(Constants.CHAT_REMIND_S,""), false);
+            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false);
         }
         if (properties.getChatContextFontSize() != 0) {
             msgBodyText.setTextSize(properties.getChatContextFontSize());

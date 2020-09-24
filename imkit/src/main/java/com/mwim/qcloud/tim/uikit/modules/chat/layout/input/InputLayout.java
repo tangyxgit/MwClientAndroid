@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -20,12 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
-import com.mwim.qcloud.tim.uikit.business.Constants;
-import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment;
-import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
-import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberRemindActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
@@ -48,11 +42,12 @@ import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.util.SLog;
-import com.work.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 聊天界面，底部发送图片、拍照、摄像、文件面板
@@ -78,6 +73,11 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     private float mStartRecordY;
     private String mInputContent;
 
+    private onStartActivityListener mStartActivityListener;
+
+    private Map<String,String> atUserInfoMap = new HashMap<>();
+    private String displayInputString;
+
     public InputLayout(Context context) {
         super(context);
     }
@@ -99,7 +99,6 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         mMoreInputButton.setOnClickListener(this);
         mSendTextButton.setOnClickListener(this);
         mTextInput.addTextChangedListener(this);
-        mTextInput.setFilters(new InputFilter[]{new ChatInputFilter()});
         mTextInput.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -175,6 +174,61 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                 return false;
             }
         });
+        mTextInput.setOnMentionInputListener(new TIMMentionEditText.OnMentionInputListener() {
+            @Override
+            public void onMentionCharacterInput(String tag) {
+                if (tag.equals(TIMMentionEditText.TIM_METION_TAG) && mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_GROUP) {
+                    mStartActivityListener.onStartGroupMemberSelectActivity();
+                }
+            }
+        });
+    }
+
+    public void updateInputText(String names, String ids){
+        if (names == null || ids == null || names.isEmpty() || ids.isEmpty()){
+            return;
+        }
+
+        updateAtUserInfoMap(names, ids);
+        if (mTextInput != null) {
+            mTextInput.setText(mTextInput.getText() + displayInputString);
+            mTextInput.setSelection(mTextInput.getText().length());
+        }
+    }
+
+    private void updateAtUserInfoMap(String names, String ids){
+        atUserInfoMap.clear();
+        displayInputString = "";
+
+        String[] listName = names.split(" ");
+        String[] listId = ids.split(" ");
+
+        //此处防止昵称和ID不对等
+        boolean isListName = (listName.length >= listId.length ? true : false);
+        int i = 0;
+        if (isListName) {
+            for (i =0; i < listId.length; i++) {
+                atUserInfoMap.put(listName[i], listId[i]);
+
+                //for display
+                displayInputString += listName[i];
+                displayInputString += " ";
+                displayInputString += TIMMentionEditText.TIM_METION_TAG;
+            }
+        }else {
+            for (i =0; i < listName.length; i++) {
+                atUserInfoMap.put(listName[i], listId[i]);
+
+                //for display
+                displayInputString += listName[i];
+                displayInputString += " ";
+                displayInputString += TIMMentionEditText.TIM_METION_TAG;
+            }
+        }
+
+        if(!displayInputString.isEmpty()) {
+            displayInputString = displayInputString.substring(0, displayInputString.length() - 1);
+        }
     }
 
     @Override
@@ -350,6 +404,10 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         this.mMessageHandler = handler;
     }
 
+    public void setStartActivityListener(onStartActivityListener listener) {
+        this.mStartActivityListener = listener;
+    }
+
     @Override
     public void onClick(View view) {
         SLog.i("onClick id:" + view.getId()
@@ -427,17 +485,38 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         } else if (view.getId() == R.id.send_btn) {
             if (mSendEnable) {
                 if (mMessageHandler != null) {
-                    String message = mTextInput.getText().toString().trim();
-                    if(mRemindList.size()>0){
-                        message+= Constants.CHAT_REMIND_S;
+                    if(mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_GROUP && !atUserInfoMap.isEmpty()) {
+                        //发送时通过获取输入框匹配上@的昵称list，去从map中获取ID list。
+                        List<String> atUserList = updateAtUserList(mTextInput.getMentionList(true));
+                        if (atUserList == null || atUserList.isEmpty()) {
+                            mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(mTextInput.getText().toString().trim()));
+                        }else {
+                            mMessageHandler.sendMessage(MessageInfoUtil.buildTextAtMessage(atUserList, mTextInput.getText().toString().trim()));
+                        }
+                    }else {
+                        mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(mTextInput.getText().toString().trim()));
                     }
-                    mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(message));
                 }
                 mTextInput.setText("");
-                mRemindList.clear();
             }
         }
     }
+
+    private List<String> updateAtUserList(List<String> atMentionList){
+        if (atMentionList == null || atMentionList.isEmpty()){
+            return null;
+        }
+
+        List<String> atUserIdList = new ArrayList<>();
+        for (String name : atMentionList){
+            if (atUserInfoMap.containsKey(name)){
+                atUserIdList.add(atUserInfoMap.get(name));
+            }
+        }
+
+        return atUserIdList;
+    }
+
 
     private void showSoftInput() {
         SLog.v("showSoftInput");
@@ -614,23 +693,6 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             showSendTextButton(View.GONE);
             showMoreInputButton(View.VISIBLE);
         }else {
-            if(mChatLayout.getChatInfo().getType()==V2TIMConversation.V2TIM_GROUP && mInputContent.length()>s.length()){//说明在删除内容
-                String lastContent = mInputContent.substring(mTextInput.getSelectionStart(),mTextInput.getSelectionStart()+1);
-//                SLog.e("lastContent:"+lastContent.equals("\t"));
-                if(lastContent.equals("\t")){//@加上去的
-                    String remindUser = StringUtils.subStr(mInputContent,lastContent,"@",1);
-//                    SLog.e("remindUser:"+remindUser);
-                    if(!TextUtils.isEmpty(remindUser)){
-                        SLog.e(remindUser+">>>"+mRemindList+mRemindList.contains(remindUser.trim()));
-                        remindUser = "@"+remindUser;
-                        final int selection = mTextInput.getSelectionStart();
-                        Editable editable = mTextInput.getText();
-                        editable.delete(selection-remindUser.length(),selection);
-                        return;
-                    }
-                }
-
-            }
             mSendEnable = true;
             showSendTextButton(View.VISIBLE);
             showMoreInputButton(View.GONE);
@@ -653,36 +715,6 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     public interface MessageHandler {
         void sendMessage(MessageInfo msg);
     }
-    private List<String> mRemindList = new ArrayList<>();
-    private class ChatInputFilter implements InputFilter {
-
-        @Override
-        public CharSequence filter(CharSequence source, int i, int i1, Spanned spanned, int i2, int i3) {
-            if (mChatLayout.getChatInfo().getType()==V2TIMConversation.V2TIM_GROUP && source.toString().equalsIgnoreCase("@")
-                    || source.toString().equalsIgnoreCase("＠")) {
-                GroupMemberRemindActivity.startGroupMemberRemind(getContext(), mChatLayout.getChatInfo().getId(),null, new SelectionActivity.OnResultReturnListener() {
-                    @Override
-                    public void onReturn(Object res) {
-                        GroupMemberInfo info = (GroupMemberInfo) res;
-                        if(info!=null){
-                            Editable editable = mTextInput.getText();
-                            String userName = info.getNameCard()+"\t";
-                            mRemindList.add(info.getNameCard());
-                            editable.insert(mTextInput.getSelectionStart(),userName);
-                            mTextInput.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showSoftInput();
-                                }
-                            },300);
-                        }
-                    }
-                });
-            }
-            return source;
-
-        }
-    }
 
     public interface ChatInputHandler {
 
@@ -696,5 +728,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
         void onRecordStatusChanged(int status);
     }
-
+    public interface onStartActivityListener {
+        void onStartGroupMemberSelectActivity();
+    }
 }

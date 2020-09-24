@@ -97,6 +97,7 @@
         <activity android:name=".modules.group.member.GroupMemberRemindActivity"/>
         <activity android:name=".business.active.WebActivity"/>
         <activity android:name=".business.active.X5FileOpenActivity"/>
+        <activity android:name=".modules.group.info.StartGroupMemberSelectActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

@@ -51,6 +51,18 @@ public class MessageInfoUtil {
         return info;
     }
 
+    public static MessageInfo buildTextAtMessage(List<String> atUserList, String message) {
+        MessageInfo info = new MessageInfo();
+        V2TIMMessage v2TIMMessage = V2TIMManager.getMessageManager().createTextAtMessage(message, atUserList);
+
+        info.setExtra(message);
+        info.setMsgTime(System.currentTimeMillis() / 1000);
+        info.setSelf(true);
+        info.setTimMessage(v2TIMMessage);
+        info.setFromUser(V2TIMManager.getInstance().getLoginUser());
+        info.setMsgType(MessageInfo.MSG_TYPE_TEXT);
+        return info;
+    }
 
     /**
      * 创建一条自定义表情的消息
@@ -247,7 +259,8 @@ public class MessageInfoUtil {
             String str = new String(data, "UTF-8");
             MessageCustom custom = new Gson().fromJson(str, MessageCustom.class);
             if (custom != null
-                    && TextUtils.equals(custom.businessID, MessageCustom.BUSINESS_ID_AV_CALL)) {
+                    && TextUtils.equals(custom.businessID, MessageCustom.BUSINESS_ID_AV_CALL)
+                    && custom.version <= TUIKitConstants.version) {
                 return true;
             }
             return false;
@@ -314,7 +327,7 @@ public class MessageInfoUtil {
                     return null;
                 }
                 SLog.i( "custom data:" + data);
-                String content = "";
+                String content = "[自定义消息]";
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_CUSTOM);
                 msgInfo.setExtra(content);
                 Gson gson = new Gson();
@@ -379,6 +392,8 @@ public class MessageInfoUtil {
                             }
                             if (isGroup) {
                                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_AV_CALL_NOTICE);
+                            }else{
+                                msgInfo.setMsgType(MessageInfo.MSG_TYPE_TEXT);
                             }
                             msgInfo.setExtra(content);
                         }
@@ -578,7 +593,7 @@ public class MessageInfoUtil {
             } else if (type == V2TIMMessage.V2TIM_ELEM_TYPE_VIDEO) {
                 V2TIMVideoElem videoEle = timMessage.getVideoElem();
                 if (msgInfo.isSelf() && !TextUtils.isEmpty(videoEle.getSnapshotPath())) {
-                    int size[] = ImageUtil.getImageSize(videoEle.getSnapshotPath());
+                    int[] size = ImageUtil.getImageSize(videoEle.getSnapshotPath());
                     msgInfo.setImgWidth(size[0]);
                     msgInfo.setImgHeight(size[1]);
                     msgInfo.setDataPath(videoEle.getSnapshotPath());

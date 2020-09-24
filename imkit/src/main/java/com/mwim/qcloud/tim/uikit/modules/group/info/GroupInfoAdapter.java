@@ -19,7 +19,6 @@ import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.work.util.SLog;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -170,6 +170,23 @@ public class ContactItemBean extends BaseIndexPinyinBean {
         this.iconUrlList = iconUrlList;
     }
 
+    public ContactItemBean covertTIMGroupMemberFullInfo(V2TIMGroupMemberFullInfo member) {
+        if (member == null) {
+            return this;
+        }
+        setId(member.getUserID());
+        if(TextUtils.isEmpty(member.getNickName())){
+            setRemark(member.getNameCard());
+            setNickname(member.getNameCard());
+        }else{
+            setRemark(member.getNickName());
+            setNickname(member.getNickName());
+        }
+        setAvatarurl(member.getFaceUrl());
+        setGroup(false);
+        return this;
+    }
+
     public ContactItemBean covertTIMGroupBaseInfo(V2TIMGroupInfo group,ContactAdapter mAdapter) {
         if (group == null) {
             return this;

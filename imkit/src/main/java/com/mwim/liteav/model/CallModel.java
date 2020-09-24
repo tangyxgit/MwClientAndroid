@@ -3,10 +3,10 @@ package com.mwim.liteav.model;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
+import com.work.util.SLog;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import java.util.Map;
  */
 public class CallModel implements Cloneable, Serializable {
 
-    private static final String TAG = CallModel.class.getSimpleName();
 
     /**
      * 系统错误
@@ -127,7 +126,7 @@ public class CallModel implements Cloneable, Serializable {
             }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
-            TUIKitLog.w(TAG, "clone: " + e.getLocalizedMessage());
+            SLog.w("clone: " + e.getLocalizedMessage());
         }
         return callModel;
     }
@@ -190,7 +189,7 @@ public class CallModel implements Cloneable, Serializable {
                 callModel.version = ((Double)extraMap.get(CallModel.SIGNALING_EXTRA_KEY_VERSION)).intValue();
             }
         } catch (Exception e) {
-            TUIKitLog.e(TAG, "convert2VideoCallData exception:" + e);
+            SLog.e("convert2VideoCallData exception:" + e);
         }
         return callModel;
     }
