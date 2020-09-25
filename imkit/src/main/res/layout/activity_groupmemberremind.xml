@@ -11,6 +11,7 @@
         android:textSize="@dimen/sp_14"
         android:padding="5dp"
         android:focusable="true"
+        android:lines="1"
         android:focusableInTouchMode="true"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="@dimen/dp_5"

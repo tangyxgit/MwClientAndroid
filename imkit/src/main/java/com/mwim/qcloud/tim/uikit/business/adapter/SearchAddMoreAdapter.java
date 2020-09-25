@@ -1,7 +1,9 @@
 package com.mwim.qcloud.tim.uikit.business.adapter;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -35,6 +37,12 @@ public class SearchAddMoreAdapter extends BaseQuickAdapter<OpenData, BaseViewHol
             GlideEngine.loadCornerImage(mAvatar,item.getUserIcon(),null,10);
         }
         helper.setText(R.id.name,item.getNickName());
-        helper.setText(R.id.description, StringUtils.hideStr(item.getMobile()));
+        TextView mDesc = helper.getView(R.id.description);
+        if(TextUtils.isEmpty(item.getMobile())){
+            mDesc.setVisibility(View.GONE);
+        }else{
+            mDesc.setVisibility(View.VISIBLE);
+            mDesc.setText(StringUtils.hideStr(item.getMobile()));
+        }
     }
 }

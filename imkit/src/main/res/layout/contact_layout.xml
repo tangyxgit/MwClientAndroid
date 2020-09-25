@@ -28,6 +28,29 @@
             android:layout_marginRight="@dimen/dp_15"
             android:src="@drawable/conversation_more"/>
     </RelativeLayout>
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/search"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/sp_10"
+            android:layout_marginBottom="@dimen/sp_10"
+            android:textSize="@dimen/sp_14"
+            android:padding="5dp"
+            android:focusable="false"
+            android:lines="1"
+            android:singleLine="true"
+            android:focusableInTouchMode="true"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="@dimen/dp_5"
+            android:background="@drawable/search_bg"
+            android:hint="@string/conversation_search_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
     <com.mwim.qcloud.tim.uikit.modules.contact.ContactListView
         android:id="@+id/contact_listview"
         android:layout_width="match_parent"

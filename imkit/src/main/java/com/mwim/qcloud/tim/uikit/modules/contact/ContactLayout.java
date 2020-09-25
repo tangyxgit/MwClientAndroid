@@ -3,22 +3,17 @@ package com.mwim.qcloud.tim.uikit.modules.contact;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
 
 import android.content.Intent;
 import android.util.AttributeSet;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
-import com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity;
-import com.mwim.qcloud.tim.uikit.business.helper.PopMenuHelper;
 import com.mwim.qcloud.tim.uikit.modules.contact.interfaces.IContactLayout;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 
 
 public class ContactLayout extends LinearLayout implements IContactLayout {
@@ -49,6 +44,13 @@ public class ContactLayout extends LinearLayout implements IContactLayout {
             @Override
             public void onClick(View view) {
                 getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
+            }
+        });
+        EditText mSearch = findViewById(R.id.search);
+        mSearch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchAddMoreActivity.startSearchMore(getContext(),0);
             }
         });
         mContactListView = findViewById(R.id.contact_listview);

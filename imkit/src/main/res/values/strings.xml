@@ -157,7 +157,8 @@
     <string name="conversation_wording_send" translatable="false">发送给对方的验证信息</string>
     <string name="conversation_search_msg" translatable="false">手机号/昵称</string>
     <string name="conversation_search_remind" translatable="false">请输入昵称</string>
-
+<!--  应用中心  -->
+    <string name="work_title" translatable="false">应用中心</string>
     <!-- 好友资料 -->
     <string name="profile_detail" translatable="false">详细资料</string>
     <string name="profile_id" translatable="false">帐号</string>

@@ -51,7 +51,8 @@
         <!--    业务逻辑    -->
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.business.active.ChatActivity"
             android:launchMode="singleTask"
@@ -98,6 +99,7 @@
         <activity android:name=".business.active.WebActivity"/>
         <activity android:name=".business.active.X5FileOpenActivity"/>
         <activity android:name=".modules.group.info.StartGroupMemberSelectActivity"/>
+
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

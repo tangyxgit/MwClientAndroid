@@ -1,6 +1,7 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,13 +16,23 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.business.adapter.SearchAddMoreAdapter;
+import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.ThreadHelper;
+import com.tencent.imsdk.v2.V2TIMFriendInfo;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.work.api.open.Yz;
 import com.work.api.open.model.GetUserByParamReq;
 import com.work.api.open.model.GetUserByParamResp;
 import com.work.api.open.model.client.OpenData;
+import com.work.util.SLog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tangyx
@@ -34,6 +45,7 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
     private EditText mSearch;
     private GetUserByParamReq mUserByParamReq;
     private SearchAddMoreAdapter mAdapter;
+    private int flag=-1;
 
     @Override
     public void onInitView() throws Exception {
@@ -50,6 +62,7 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
     @Override
     public void onInitValue() throws Exception {
         super.onInitValue();
+        flag = getIntent().getIntExtra(SearchAddMoreActivity.class.getSimpleName(),-1);
         mSearch.requestFocus();
         mSearch.addTextChangedListener(this);
         findViewById(R.id.cancel).setOnClickListener(this);
@@ -72,15 +85,63 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        if(mUserByParamReq == null){
-            mUserByParamReq = new GetUserByParamReq();
-        }
         if(TextUtils.isEmpty(charSequence)){
             mAdapter.clear();
         }else{
-            mUserByParamReq.setParam(charSequence.toString().trim());
-            Yz.getSession().getUserByParam(mUserByParamReq,this);
+            if(flag==0){
+                loadFriendListDataAsync();
+            }else{
+                if(mUserByParamReq == null){
+                    mUserByParamReq = new GetUserByParamReq();
+                }
+                mUserByParamReq.setParam(charSequence.toString().trim());
+                Yz.getSession().getUserByParam(mUserByParamReq,this);
+            }
         }
+    }
+
+    private void loadFriendListDataAsync() {
+        SLog.i("loadFriendListDataAsync");
+        ThreadHelper.INST.execute(new Runnable() {
+            @Override
+            public void run() {
+                // 压测时数据量比较大，query耗时比较久，所以这里使用新线程来处理
+                V2TIMManager.getFriendshipManager().getFriendList(new V2TIMValueCallback<List<V2TIMFriendInfo>>() {
+                    @Override
+                    public void onError(int code, String desc) {
+                        SLog.e("loadFriendListDataAsync err code:" + code + ", desc:" + desc);
+                    }
+
+                    @Override
+                    public void onSuccess(List<V2TIMFriendInfo> v2TIMFriendInfos) {
+                        if (v2TIMFriendInfos == null) {
+                            v2TIMFriendInfos = new ArrayList<>();
+                        }
+                        SLog.i("loadFriendListDataAsync->getFriendList:" + v2TIMFriendInfos.size());
+                        assembleFriendListData(v2TIMFriendInfos);
+                    }
+                });
+            }
+        });
+    }
+
+    private void assembleFriendListData(final List<V2TIMFriendInfo> timFriendInfoList) {
+        List<OpenData> data = new ArrayList<>();
+        String keyword = mSearch.getText().toString().trim();
+        for (V2TIMFriendInfo friendInfo : timFriendInfoList) {
+            String remark = friendInfo.getFriendRemark();
+            String name  = friendInfo.getUserProfile().getNickName();
+            if(!TextUtils.isEmpty(keyword)
+                    && (remark.contains(keyword) || name.contains(keyword))){
+                OpenData openData = new OpenData();
+                openData.setUserId(friendInfo.getUserID());
+                openData.setRemark(remark);
+                openData.setNickName(name);
+                openData.setUserIcon(friendInfo.getUserProfile().getFaceUrl());
+                data.add(openData);
+            }
+        }
+        mAdapter.setNewData(data);
     }
 
     @Override
@@ -106,10 +167,28 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         OpenData item = mAdapter.getItem(position);
         if(item!=null){
-            Intent intent = new Intent(this, FriendProfileActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(TUIKitConstants.ProfileType.CONTENT, item);
-            startActivity(intent);
+            if(flag==0){
+                ContactItemBean contact = new ContactItemBean();
+                contact.setAvatarurl(item.getUserIcon());
+                contact.setNickname(item.getNickName());
+                contact.setRemark(item.getRemark());
+                contact.setId(item.getUserId());
+                Intent intent = new Intent(IMKitAgent.instance(), FriendProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact);
+                IMKitAgent.instance().startActivity(intent);
+            }else{
+                Intent intent = new Intent(this, FriendProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(TUIKitConstants.ProfileType.CONTENT, item);
+                startActivity(intent);
+            }
         }
+    }
+
+    public static void startSearchMore(Context context,int flag){
+        Intent intent = new Intent(context,SearchAddMoreActivity.class);
+        intent.putExtra(SearchAddMoreActivity.class.getSimpleName(),flag);
+        context.startActivity(intent);
     }
 }

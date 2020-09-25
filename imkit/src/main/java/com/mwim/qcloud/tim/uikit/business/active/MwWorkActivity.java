@@ -305,10 +305,14 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
 
     }
     private void updateFragment(int position){
-        setStatusBar(ContextCompat.getColor(this, position==3?R.color.white:R.color.status_bar_color));
         BaseFragment fragment = mFragments.get(position);
         if(fragment instanceof ContactFragment){
             ((ContactFragment) fragment).refreshData();
+        }
+        if(fragment instanceof WorkFragment){
+            setStatusBar(ContextCompat.getColor(this,R.color.background_color));
+        }else{
+            setStatusBar(ContextCompat.getColor(this,R.color.white));
         }
     }
 }
