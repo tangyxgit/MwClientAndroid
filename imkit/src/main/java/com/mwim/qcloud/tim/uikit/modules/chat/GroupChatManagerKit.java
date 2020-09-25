@@ -1,5 +1,7 @@
 package com.mwim.qcloud.tim.uikit.modules.chat;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
@@ -299,7 +301,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
     }
 
     public void notifyGroupDismissed(String groupID) {
-        if(mCurrentChatInfo!=null){
+        if(mCurrentChatInfo!=null && !TextUtils.isEmpty(mCurrentChatInfo.getGroupName())){
             ToastUtil.info(IMKitAgent.instance(),"您所在的群" + mCurrentChatInfo.getGroupName() + "已解散");
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {

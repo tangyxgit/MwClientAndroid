@@ -5,6 +5,7 @@ import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupInfoResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
+import com.work.util.SLog;
 
 import java.util.List;
 
@@ -186,6 +187,7 @@ public class GroupInfo extends ChatInfo {
      * @return
      */
     public GroupInfo covertTIMGroupDetailInfo(V2TIMGroupInfoResult infoResult) {
+        SLog.e("infoResult.getResultCode():"+infoResult.getResultCode());
         if (infoResult.getResultCode() != 0) {
             return this;
         }

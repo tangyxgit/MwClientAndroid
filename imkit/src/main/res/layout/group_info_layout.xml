@@ -88,6 +88,7 @@
                 android:id="@+id/group_member_admin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:name="@string/group_members_admin" />
             <com.mwim.qcloud.tim.uikit.component.GridViewInScrollView
                 android:id="@+id/group_members_admin"

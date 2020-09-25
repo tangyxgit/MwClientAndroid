@@ -21,6 +21,7 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ public class StartGroupChatActivity extends IMBaseActivity {
         mGroupTypeValue.addAll(Arrays.asList(array));
         array = getResources().getStringArray(R.array.group_join_type);
         mJoinTypes.addAll(Arrays.asList(array));
+
+
         GroupMemberInfo memberInfo = new GroupMemberInfo();
         memberInfo.setAccount(V2TIMManager.getInstance().getLoginUser());
         memberInfo.setNameCard(UserApi.instance().getNickName());
@@ -56,6 +59,8 @@ public class StartGroupChatActivity extends IMBaseActivity {
         });
         mJoinType.setCanNav(true);
         mJoinType.setContent(mJoinTypes.get(mJoinTypeIndex));
+
+
         ContactListView mContactListView = findViewById(R.id.group_create_member_list);
         mContactListView.loadDataSource(ContactListView.DataSource.FRIEND_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
@@ -105,6 +110,7 @@ public class StartGroupChatActivity extends IMBaseActivity {
     public void setGroupType(int type) {
         mJoinType.setVisibility(View.GONE);
         mGroupType = type;
+        SLog.e(TUIKitConstants.GroupType.PUBLIC+">>>"+type);
         switch (type) {
             case TUIKitConstants.GroupType.PUBLIC:
                 setTitleName(getResources().getString(R.string.create_group_chat));
@@ -162,8 +168,9 @@ public class StartGroupChatActivity extends IMBaseActivity {
         groupInfo.setChatName(groupName.toString());
         groupInfo.setGroupName(groupName.toString());
         groupInfo.setMemberDetails(mMembers);
-        groupInfo.setGroupType(mGroupTypeValue.get(mGroupType));
-        groupInfo.setJoinType(mJoinTypeIndex);
+//        groupInfo.setGroupType(mGroupTypeValue.get(mGroupType));
+        groupInfo.setGroupType("Work");
+//        groupInfo.setJoinType(mJoinTypeIndex);
 
         mCreating = true;
         GroupChatManagerKit.createGroupChat(groupInfo, new IUIKitCallBack() {

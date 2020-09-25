@@ -155,6 +155,7 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         GridView memberAdminList = findViewById(R.id.group_members_admin);
         mMemberAdminAdapter = new GroupInfoAdminAdapter();
         memberAdminList.setAdapter(mMemberAdminAdapter);
+        memberAdminList.setVisibility(GONE);
         //消息免打扰
         mRevOptView = findViewById(R.id.rev_opt);
         mRevOptView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
@@ -317,25 +318,6 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             if (mGroupInfo.isOwner() &&
                     (!mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_WORK)
                             || !mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_PRIVATE))) {
-//                new TUIKitDialog(getContext())
-//                        .builder()
-//                        .setCancelable(true)
-//                        .setCancelOutside(true)
-//                        .setTitle("您确认解散该群?")
-//                        .setDialogWidth(0.75f)
-//                        .setPositiveButton("确定", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                mPresenter.deleteGroup();
-//                            }
-//                        })
-//                        .setNegativeButton("取消", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//
-//                            }
-//                        })
-//                        .show();
                 new ConfirmDialog().setContent("您确认解散该群?").setOnConfirmListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -343,25 +325,6 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
                     }
                 }).show(activity.getSupportFragmentManager(),"del_group");
             } else {
-//                new TUIKitDialog(getContext())
-//                        .builder()
-//                        .setCancelable(true)
-//                        .setCancelOutside(true)
-//                        .setTitle("您确认退出该群？")
-//                        .setDialogWidth(0.75f)
-//                        .setPositiveButton("确定", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                mPresenter.quitGroup();
-//                            }
-//                        })
-//                        .setNegativeButton("取消", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//
-//                            }
-//                        })
-//                        .show();
                 new ConfirmDialog().setContent("您确认退出该群?").setOnConfirmListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -412,12 +375,12 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             }
         } else {
             mTransferGroupView.setVisibility(GONE);
-            mMutedSwitchView.setVisibility(GONE);
             mGroupNotice.setVisibility(GONE);
 //            mJoinTypeView.setVisibility(GONE);
             mDissolveBtn.setText(R.string.exit_group);
         }
-        loadAdmin();
+        mMutedSwitchView.setVisibility(GONE);
+//        loadAdmin();
     }
 
     public void loadAdmin(){

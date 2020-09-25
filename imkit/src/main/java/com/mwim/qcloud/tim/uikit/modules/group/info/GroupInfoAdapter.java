@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
 import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
@@ -86,7 +84,7 @@ public class GroupInfoAdapter extends BaseAdapter {
         view.setOnClickListener(null);
         holder.memberIcon.setBackground(null);
         if (info.getMemberType() == ADD_TYPE) {
-            holder.memberIcon.setImageResource(R.drawable.add_group_member);
+            GlideEngine.loadImage(holder.memberIcon,R.drawable.add_group_member);
             holder.memberIcon.setBackgroundResource(R.drawable.bottom_action_border);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

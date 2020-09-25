@@ -110,7 +110,7 @@ public class GroupInfoProvider {
                 if (v2TIMGroupInfoResults.size() > 0) {
                     V2TIMGroupInfoResult infoResult = v2TIMGroupInfoResults.get(0);
                     // TODO toString打印
-                    SLog.i(infoResult.toString());
+                    SLog.i("loadGroupPublicInfo infoResult:>"+infoResult.toString());
                     callBack.onSuccess(infoResult);
                 }
             }
