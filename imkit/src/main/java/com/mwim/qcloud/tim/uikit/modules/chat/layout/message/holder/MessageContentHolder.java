@@ -146,14 +146,17 @@ public abstract class MessageContentHolder extends MessageEmptyHolder {
             if (properties.getRightBubble() != null && properties.getRightBubble().getConstantState() != null) {
                 msgContentFrame.setBackground(properties.getRightBubble().getConstantState().newDrawable());
             } else {
-                msgContentFrame.setBackgroundResource(R.drawable.chat_bubble_myself);
+//                msgContentFrame.setBackgroundResource(R.drawable.chat_bubble_myself);
+                msgContentFrame.setBackgroundResource(R.drawable.right_buble);
+
             }
         } else {
             if (properties.getLeftBubble() != null && properties.getLeftBubble().getConstantState() != null) {
                 msgContentFrame.setBackground(properties.getLeftBubble().getConstantState().newDrawable());
                 msgContentFrame.setLayoutParams(msgContentFrame.getLayoutParams());
             } else {
-                msgContentFrame.setBackgroundResource(R.drawable.chat_other_bg);
+//                msgContentFrame.setBackgroundResource(R.drawable.chat_other_bg);
+                msgContentFrame.setBackgroundResource(R.drawable.left_buble);
             }
         }
 

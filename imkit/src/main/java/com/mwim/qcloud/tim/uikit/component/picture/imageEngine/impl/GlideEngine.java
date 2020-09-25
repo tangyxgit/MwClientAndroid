@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.mwim.qcloud.tim.uikit.TUIKit;
@@ -31,6 +32,13 @@ public class GlideEngine implements ImageEngine {
                 .load(filePath)
                 .apply(options)
                 .listener(listener)
+                .into(imageView);
+    }
+
+    public static void loadCornerAvatar(ImageView imageView, String filePath) {
+        Glide.with(TUIKit.getAppContext())
+                .load(filePath)
+                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                 .into(imageView);
     }
 

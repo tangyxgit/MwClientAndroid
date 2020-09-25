@@ -120,4 +120,14 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     public TextView getRightTitle() {
         return mRightTitle;
     }
+
+    @Override
+    public MaterialMenuView getLeftIcon() {
+        return mLeftIcon;
+    }
+
+    @Override
+    public TextView mLeftTitle() {
+        return mLeftTitle();
+    }
 }

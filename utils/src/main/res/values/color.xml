@@ -2,8 +2,9 @@
 <resources>
     <color name="notification_bg">#90000000</color>
     <color name="holo_blue_light">#28a0e3</color>
-    <color name="status_bar_color">#EDEDED</color>
-    <color name="background_color">#EDEDED</color>
+<!--    <color name="status_bar_color">#EDEDED</color>-->
+    <color name="status_bar_color">#fff</color>
+    <color name="background_color">#f5f6fa</color>
 
     <color name="color_44A2FF">#44A2FF</color>
     <color name="color_4b5fae">#4b5fae</color>
@@ -132,4 +133,6 @@
     <color name="color_ededed">#ededed</color>
     <color name="color_f8f9fa">#f8f9fa</color>
     <color name="color_1473FB">#1473FB</color>
+    <color name="color_3a89f0">#3a89f0</color>
+    <color name="color_9eccfd">#9eccfd</color>
 </resources>

@@ -56,20 +56,20 @@ public class ConversationFragment extends BaseFragment {
     private void initView() {
         // 从布局文件中获取会话列表面板
         mConversationLayout = mBaseView.findViewById(R.id.conversation_layout);
-        mMenu = new PopMenuHelper(R.menu.chat_group, mConversationLayout.getTitleBar().getRightIcon(), new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.add_friends) {
-                    startActivity(new Intent(getActivity(), SearchAddMoreActivity.class));
-                }else if(item.getItemId() == R.id.add_group){
-                    Intent intent = new Intent(IMKitAgent.instance(), StartGroupChatActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
-                    startActivity(intent);
-                }
-                return false;
-            }
-        });
+//        mMenu = new PopMenuHelper(R.menu.chat_group, mConversationLayout.getTitleBar().getRightIcon(), new PopupMenu.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                if (item.getItemId() == R.id.add_friends) {
+//                    startActivity(new Intent(getActivity(), SearchAddMoreActivity.class));
+//                }else if(item.getItemId() == R.id.add_group){
+//                    Intent intent = new Intent(IMKitAgent.instance(), StartGroupChatActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+//                    startActivity(intent);
+//                }
+//                return false;
+//            }
+//        });
         // 会话列表面板的默认UI和交互初始化
         mConversationLayout.initDefault();
         // 通过API设置ConversataonLayout各种属性的样例，开发者可以打开注释，体验效果
@@ -92,12 +92,12 @@ public class ConversationFragment extends BaseFragment {
     }
 
     private void initTitleAction() {
-        mConversationLayout.getTitleBar().setOnRightClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMenu.showMenu(getActivity());
-            }
-        });
+//        mConversationLayout.getTitleBar().setOnRightClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mMenu.showMenu(getActivity());
+//            }
+//        });
     }
 
     private void initPopMenuAction() {

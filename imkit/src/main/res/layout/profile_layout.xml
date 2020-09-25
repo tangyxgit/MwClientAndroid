@@ -3,31 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/status_bar_color"
+    android:background="@color/background_color"
     android:orientation="vertical">
 
-    <com.mwim.qcloud.tim.uikit.component.TitleBarLayout
-        android:id="@+id/self_info_title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/page_title_height" />
+<!--    <com.mwim.qcloud.tim.uikit.component.TitleBarLayout-->
+<!--        android:id="@+id/self_info_title_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/page_title_height" />-->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <RelativeLayout
+                android:id="@+id/user_bg_layout"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="#fff"
-                android:gravity="center_vertical"
+                android:layout_height="156dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_15"
+                android:background="@drawable/shape_user_bg"
                 android:orientation="horizontal"
                 android:padding="@dimen/page_margin">
                 <ImageView
-                    android:layout_centerVertical="true"
                     android:id="@+id/self_icon"
                     android:layout_width="48dp"
                     android:layout_height="48dp" />
@@ -35,7 +38,6 @@
                     android:id="@+id/user_layout"
                     android:layout_toEndOf="@+id/self_icon"
                     android:layout_toStartOf="@+id/arrow_right"
-                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -46,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:textSize="18sp"
-                        android:textColor="@color/color_333333"/>
+                        android:textColor="@color/white"/>
                     <TextView
                         android:id="@+id/sub_message"
                         android:layout_width="wrap_content"
@@ -54,7 +56,7 @@
                         android:gravity="center_vertical"
                         android:layout_marginTop="@dimen/dp_5"
                         android:textSize="12sp"
-                        android:textColor="@color/color_999999" />
+                        android:textColor="@color/color_9eccfd" />
                 </LinearLayout>
 
                 <ImageView
@@ -64,19 +66,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/arrow_right"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/text_user_remark"
+                    android:layout_alignStart="@+id/self_icon"
+                    android:layout_alignParentBottom="true"/>
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical">
 
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
                     android:id="@+id/modify_department"
-                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:name="@string/im_department" />
+                    android:layout_marginTop="@dimen/dp_20"
+                    app:name="@string/im_department"
+                    app:isTop="true"/>
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
                     android:id="@+id/modify_position"
                     android:layout_width="match_parent"
@@ -92,13 +104,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:name="@string/im_email" />
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/background_color"/>
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
                     android:id="@+id/modify_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:name="@string/modify_setting" />
+                    app:name="@string/modify_setting"
+                    app:isTop="true"/>
 
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
                     android:id="@+id/modify_allow_type"

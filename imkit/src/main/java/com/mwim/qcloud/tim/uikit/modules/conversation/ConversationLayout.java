@@ -1,23 +1,32 @@
 package com.mwim.qcloud.tim.uikit.modules.conversation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.widget.PopupMenu;
+
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
+import com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity;
+import com.mwim.qcloud.tim.uikit.business.helper.PopMenuHelper;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationAdapter;
 import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationLayout;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
+import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.work.util.SLog;
 
 public class ConversationLayout extends RelativeLayout implements IConversationLayout {
 
-    private TitleBarLayout mTitleBarLayout;
+//    private TitleBarLayout mTitleBarLayout;
     private ConversationListLayout mConversationList;
+    private PopMenuHelper mMenu;
 
     public ConversationLayout(Context context) {
         super(context);
@@ -39,15 +48,38 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
      */
     private void init() {
         inflate(getContext(), R.layout.conversation_layout, this);
-        mTitleBarLayout = findViewById(R.id.conversation_title);
+//        mTitleBarLayout = findViewById(R.id.conversation_title);
         mConversationList = findViewById(R.id.conversation_list);
     }
 
     public void initDefault() {
-        mTitleBarLayout.setTitle(getResources().getString(R.string.conversation_title), TitleBarLayout.POSITION.MIDDLE);
-        mTitleBarLayout.getLeftGroup().setVisibility(View.GONE);
-        mTitleBarLayout.setRightIcon(R.drawable.conversation_more);
-
+//        mTitleBarLayout.setTitle(getResources().getString(R.string.conversation_title), TitleBarLayout.POSITION.LEFT);
+//        mTitleBarLayout.getLeftGroup().setVisibility(View.GONE);
+//        mTitleBarLayout.getLeftIcon().setVisibility(GONE);
+//        mTitleBarLayout.setRightIcon(R.drawable.conversation_more);
+        final View mAddMore = findViewById(R.id.add_more);
+        mAddMore.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mMenu==null){
+                    mMenu = new PopMenuHelper(R.menu.chat_group, mAddMore, new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getItemId() == R.id.add_friends) {
+                                getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
+                            }else if(item.getItemId() == R.id.add_group){
+                                Intent intent = new Intent(IMKitAgent.instance(), StartGroupChatActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+                                getContext().startActivity(intent);
+                            }
+                            return false;
+                        }
+                    });
+                }
+                mMenu.showMenu(getContext());
+            }
+        });
         final IConversationAdapter adapter = new ConversationListAdapter();
         mConversationList.setAdapter(adapter);
         ConversationManagerKit.getInstance().loadConversation(new IUIKitCallBack() {
@@ -64,7 +96,7 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
     }
 
     public TitleBarLayout getTitleBar() {
-        return mTitleBarLayout;
+        return null;
     }
 
     @Override

@@ -59,13 +59,8 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         mUserIcon = findViewById(R.id.self_icon);
         mNickname = findViewById(R.id.self_account);
         mSubMessage = findViewById(R.id.sub_message);
-        TitleBarLayout mTitleBar = findViewById(R.id.self_info_title_bar);
-        mTitleBar.setBackgroundColor(Color.WHITE);
-        mTitleBar.getLeftGroup().setVisibility(GONE);
-        mTitleBar.getRightGroup().setVisibility(GONE);
-        mTitleBar.setTitle(getResources().getString(R.string.profile), TitleBarLayout.POSITION.MIDDLE);
 
-        findViewById(R.id.user_layout).setOnClickListener(this);
+        findViewById(R.id.user_bg_layout).setOnClickListener(this);
         mDepartment = findViewById(R.id.modify_department);
         mPosition = findViewById(R.id.modify_position);
         mCard = findViewById(R.id.modify_card);
@@ -97,7 +92,7 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.user_layout){
+        if(v.getId() == R.id.user_bg_layout){
             getContext().startActivity(new Intent(getContext(), UserInfoActivity.class));
         }else if(v.getId() == R.id.modify_setting){
             getContext().startActivity(new Intent(getContext(), UserSettingActivity.class));
@@ -109,7 +104,7 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         // 头像
         String mIconUrl = userApi.getUserIcon();
         if (!TextUtils.isEmpty(mIconUrl)) {
-            GlideEngine.loadCornerImage(mUserIcon, mIconUrl,null,10);
+            GlideEngine.loadCornerAvatar(mUserIcon, mIconUrl);
         }else{
             GlideEngine.loadImage(mUserIcon, R.drawable.default_head);
         }

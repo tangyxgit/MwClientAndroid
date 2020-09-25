@@ -19,9 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SuspensionDecoration extends RecyclerView.ItemDecoration {
 
-    private static final String TAG = SuspensionDecoration.class.getSimpleName();
-    private static int COLOR_TITLE_BG = Color.parseColor("#FFEDEDED");
-    private static int COLOR_TITLE_BOTTOM_LINE = Color.parseColor("#FFCACACA");
+    private static int COLOR_TITLE_BG = Color.parseColor("#f5f6fa");
+    private static int COLOR_TITLE_BOTTOM_LINE = Color.parseColor("#f5f6fa");
     private static int COLOR_TITLE_FONT = Color.parseColor("#FF888888");
     private int mTitleFontSize;//title字体大小
     private List<? extends ISuspensionInterface> mDatas;

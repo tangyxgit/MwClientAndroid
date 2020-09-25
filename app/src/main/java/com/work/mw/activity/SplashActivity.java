@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
@@ -26,10 +28,10 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onInitValue() throws Exception {
         super.onInitValue();
+        setStatusBar(ContextCompat.getColor(this,R.color.background_color));
         mUserInfo = UserApi.instance();
         handleData();
     }
-
     private void handleData() {
         if (mUserInfo != null && !TextUtils.isEmpty(mUserInfo.getUserSign())) {
             login();

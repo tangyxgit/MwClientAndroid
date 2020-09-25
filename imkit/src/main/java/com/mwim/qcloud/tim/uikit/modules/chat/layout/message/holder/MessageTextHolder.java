@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -31,6 +32,11 @@ public class MessageTextHolder extends MessageContentHolder {
         msgBodyText.setVisibility(View.VISIBLE);
         if (msg.getExtra() != null) {
             FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false);
+        }
+        if(msg.isSelf()){
+            msgBodyText.setTextColor(Color.WHITE);
+        }else{
+            msgBodyText.setTextColor(Color.BLACK);
         }
         if (properties.getChatContextFontSize() != 0) {
             msgBodyText.setTextSize(properties.getChatContextFontSize());

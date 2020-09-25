@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.modules.chat.ChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationLayout;
+import com.workstation.view.MaterialMenuView;
 
 /**
  * 会话列表窗口 {@link ConversationLayout}、聊天窗口 {@link ChatLayout} 等都自带标题栏，<br>
@@ -86,6 +87,9 @@ public interface ITitleBarLayout {
      */
     TextView getRightTitle();
 
+    MaterialMenuView getLeftIcon();
+
+    TextView mLeftTitle();
     /**
      * 标题区域的枚举值
      */
