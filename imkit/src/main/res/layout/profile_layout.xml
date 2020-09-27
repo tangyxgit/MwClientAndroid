@@ -81,7 +81,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical">
-
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
                     android:id="@+id/modify_department"
                     android:layout_width="match_parent"

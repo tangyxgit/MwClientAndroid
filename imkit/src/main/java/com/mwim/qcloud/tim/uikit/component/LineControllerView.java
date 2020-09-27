@@ -2,6 +2,8 @@ package com.mwim.qcloud.tim.uikit.component;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
+
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SizeUtils;
 
 /**
  * 设置等页面条状控制或显示信息的控件
@@ -29,7 +35,10 @@ public class LineControllerView extends LinearLayout {
     private boolean mIsSwitch;
 
     private TextView mContentText;
+    private TextView mNameText;
     private ImageView mNavArrowView;
+    private View bottomLine;
+    private View topLine;
     private Switch mSwitchView;
 
     public LineControllerView(Context context, AttributeSet attrs) {
@@ -50,13 +59,13 @@ public class LineControllerView extends LinearLayout {
     }
 
     private void setUpView() {
-        TextView mNameText = findViewById(R.id.name);
+        mNameText = findViewById(R.id.name);
         mNameText.setText(mName);
         mContentText = findViewById(R.id.content);
         mContentText.setText(mContent);
-        View bottomLine = findViewById(R.id.bottomLine);
+        bottomLine = findViewById(R.id.bottomLine);
         bottomLine.setVisibility(mIsBottom ? VISIBLE : GONE);
-        View topLine = findViewById(R.id.topLine);
+        topLine = findViewById(R.id.topLine);
         topLine.setVisibility(mIsTop?GONE:VISIBLE);
         mNavArrowView = findViewById(R.id.rightArrow);
         mNavArrowView.setVisibility(mIsJump ? VISIBLE : GONE);
@@ -65,7 +74,18 @@ public class LineControllerView extends LinearLayout {
         mSwitchView = findViewById(R.id.btnSwitch);
         mSwitchView.setVisibility(mIsSwitch ? VISIBLE : GONE);
     }
-
+    public void setLeftDrawable(@DrawableRes int resId){
+        Drawable drawable = ContextCompat.getDrawable(getContext(),resId);
+        if(drawable!=null){
+            drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
+            drawable.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_E4E6E9), PorterDuff.Mode.SRC_ATOP);
+        }
+        mNameText.setCompoundDrawables(drawable,null,null,null);
+        LinearLayout.LayoutParams params = (LayoutParams) bottomLine.getLayoutParams();
+        params.setMargins(SizeUtils.dp2px(getContext(),55),0,0,0);
+        params = (LayoutParams) topLine.getLayoutParams();
+        params.setMargins(SizeUtils.dp2px(getContext(),55),0,0,0);
+    }
     /**
      * 获取内容
      */

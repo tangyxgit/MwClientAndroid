@@ -62,12 +62,17 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
 
         findViewById(R.id.user_bg_layout).setOnClickListener(this);
         mDepartment = findViewById(R.id.modify_department);
+        mDepartment.setLeftDrawable(R.drawable.icon_department_fill);
         mPosition = findViewById(R.id.modify_position);
+        mPosition.setLeftDrawable(R.drawable.icon_position_fill);
         mCard = findViewById(R.id.modify_card);
+        mCard.setLeftDrawable(R.drawable.icon_employee_id);
         mEmail = findViewById(R.id.modify_email);
+        mEmail.setLeftDrawable(R.drawable.icon_mail_fill);
         LineControllerView mModifySettingView = findViewById(R.id.modify_setting);
         mModifySettingView.setCanNav(true);
         mModifySettingView.setOnClickListener(this);
+        mModifySettingView.setLeftDrawable(R.drawable.icon_setting_fill);
         updateProfile();
         LoginReq loginReq = new LoginReq();
         loginReq.setUserId(UserApi.instance().getUserId());

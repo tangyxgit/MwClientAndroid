@@ -17,12 +17,11 @@ import com.wang.avi.AVLoadingIndicatorView;
  *
  */
 public class TRTCAudioLayout extends RelativeLayout {
-    private ImageView              mHeadImg;
-    private TextView               mNameTv;
-    private ProgressBar            mAudioPb;
-    private String                 mUserId;
+    private ImageView mHeadImg;
+    private TextView mNameTv;
+    private ProgressBar mAudioPb;
     private AVLoadingIndicatorView mViewLoading;
-    private FrameLayout            mShadeFl;
+    private FrameLayout mShadeFl;
 
     public TRTCAudioLayout(Context context) {
         this(context, null);
@@ -35,11 +34,11 @@ public class TRTCAudioLayout extends RelativeLayout {
     }
 
     private void initView() {
-        mHeadImg = (ImageView) findViewById(R.id.img_head);
-        mNameTv = (TextView) findViewById(R.id.tv_name);
-        mAudioPb = (ProgressBar) findViewById(R.id.pb_audio);
-        mViewLoading = (AVLoadingIndicatorView) findViewById(R.id.loading_view);
-        mShadeFl = (FrameLayout) findViewById(R.id.fl_shade);
+        mHeadImg = findViewById(R.id.img_head);
+        mNameTv = findViewById(R.id.tv_name);
+        mAudioPb = findViewById(R.id.pb_audio);
+        mViewLoading = findViewById(R.id.loading_view);
+        mShadeFl = findViewById(R.id.fl_shade);
     }
 
     public void setAudioVolume(int vol) {
@@ -47,8 +46,7 @@ public class TRTCAudioLayout extends RelativeLayout {
     }
 
     public void setUserId(String userId) {
-        mUserId = userId;
-        mNameTv.setText(mUserId);
+        mNameTv.setText(userId);
     }
 
     public void setBitmap(Bitmap bitmap) {

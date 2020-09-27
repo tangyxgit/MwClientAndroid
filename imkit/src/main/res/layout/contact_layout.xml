@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_15"
             android:layout_marginRight="@dimen/dp_15"
-            android:src="@drawable/conversation_more"/>
+            android:src="@drawable/icon_add_contact_stroke"/>
     </RelativeLayout>
     <LinearLayout
         android:background="@color/white"

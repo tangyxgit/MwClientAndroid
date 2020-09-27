@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,22 +11,19 @@ import java.util.Iterator;
  *
  */
 public class TRTCAudioLayoutManager extends RelativeLayout {
-    public static final  int                         MAX_USER   = 9;
-    private final static String                      TAG        = TRTCAudioLayoutManager.class.getSimpleName();
-    private              ArrayList<TRTCLayoutEntity> mLayoutEntityList;
-    private              boolean                     mInitParam = false;
-    private              ArrayList<LayoutParams>     mGrid1ParamList;
-    private              ArrayList<LayoutParams>     mGrid2ParamList;
-    private              ArrayList<LayoutParams>     mGrid3ParamList;
-    private              ArrayList<LayoutParams>     mGrid4ParamList;
-    private              ArrayList<LayoutParams>     mGrid9ParamList;
-    private              int                         mCount     = 0;
-    private              String                      mSelfUserId;
+    public static final int MAX_USER = 9;
+    private final static String TAG = TRTCAudioLayoutManager.class.getSimpleName();
+    private ArrayList<TRTCLayoutEntity> mLayoutEntityList;
+    private boolean mInitParam = false;
+    private ArrayList<LayoutParams> mGrid1ParamList;
+    private ArrayList<LayoutParams> mGrid2ParamList;
+    private ArrayList<LayoutParams> mGrid3ParamList;
+    private ArrayList<LayoutParams> mGrid4ParamList;
+    private ArrayList<LayoutParams> mGrid9ParamList;
+    private int mCount = 0;
+    private String mSelfUserId;
     private Context mContext;
 
-    /**
-     * ===============================View相关===============================
-     */
     public TRTCAudioLayoutManager(Context context) {
         super(context);
         initView(context);
@@ -47,10 +42,9 @@ public class TRTCAudioLayoutManager extends RelativeLayout {
     }
 
     private void initView(Context context) {
-       TUIKitLog.i(TAG, "initView: ");
         mContext = context;
         // 做成正方形
-        mLayoutEntityList = new ArrayList<TRTCLayoutEntity>();
+        mLayoutEntityList = new ArrayList<>();
         this.post(new Runnable() {
             @Override
             public void run() {
@@ -234,6 +228,6 @@ public class TRTCAudioLayoutManager extends RelativeLayout {
 
     private static class TRTCLayoutEntity {
         public TRTCAudioLayout layout;
-        public String          userId = "";
+        public String userId = "";
     }
 }

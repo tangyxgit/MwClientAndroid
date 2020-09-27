@@ -2,10 +2,12 @@ package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -31,12 +33,8 @@ import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
-import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
 import com.mwim.qcloud.tim.uikit.R;
-import com.tencent.imsdk.v2.V2TIMUserFullInfo;
-import com.work.util.SLog;
-import com.work.util.SharedUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +47,6 @@ import java.util.List;
 
 public class MwWorkActivity extends IMBaseActivity implements ConversationManagerKit.MessageUnreadWatcher,
         BottomNavigationBar.OnTabSelectedListener,ViewPager.OnPageChangeListener {
-//    private TextView mConversationBtn;
-//    private TextView mContactBtn;
-//    private TextView mProfileSelfBtn;
-//    private TextView mMsgUnread;
     private BottomNavigationBar mNavigationBar;
     private ViewPager mPager;
     private TabPagerAdapter mAdapter;
@@ -69,28 +63,48 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         instance = this;
         prepareThirdPushToken();
         //设置为必须要验证才能加好友
-        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
-        v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
-        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
+//        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
+//        v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
+//        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
 
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);
-        BottomNavigationItem messageItem = new BottomNavigationItem(R.drawable.conversation_selected,R.string.tab_conversation_tab_text).setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.conversation_normal));
+
+        BottomNavigationItem messageItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_chat_fill),R.string.tab_conversation_tab_text)
+                .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_chat_stroke))
+                .setActiveColorResource(R.color.defaultColorAccent);
         mMessageBadge = new TextBadgeItem();
         mMessageBadge.hide();
         messageItem.setBadgeItem(mMessageBadge);
         mNavigationBar.addItem(messageItem);
-        BottomNavigationItem contactItem = new BottomNavigationItem(R.drawable.contact_selected,R.string.tab_contact_tab_text).setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.contact_normal));
+
+        BottomNavigationItem contactItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_contact_fill),R.string.tab_contact_tab_text)
+                .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_contact_stroke))
+                .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(contactItem);
-        BottomNavigationItem workItem = new BottomNavigationItem(R.drawable.icon_work,R.string.tab_work_tab_text).setActiveColorResource(R.color.color_1473FB);
+
+        BottomNavigationItem workItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_tools_fill),R.string.tab_work_tab_text)
+                .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_tools_stroke))
+                .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(workItem);
-        BottomNavigationItem profileItem = new BottomNavigationItem(R.drawable.myself_selected,R.string.tab_profile_tab_text).setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.myself_normal));
+
+
+
+        BottomNavigationItem profileItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_user_fill),R.string.tab_profile_tab_text)
+                .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_user_stroke))
+                .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(profileItem);
-//        mConversationBtn = findViewById(R.id.conversation);
-//        mContactBtn = findViewById(R.id.contact);
-//        mProfileSelfBtn = findViewById(R.id.mine);
-//        mMsgUnread = findViewById(R.id.msg_total_unread);
+
+
         mNavigationBar.initialise();
         mNavigationBar.setTabSelectedListener(this);
+    }
+
+    private Drawable getSelectDrawable(@DrawableRes int resId){
+        Drawable drawable = ContextCompat.getDrawable(this,resId);
+        if(drawable!=null){
+            drawable.setColorFilter(ContextCompat.getColor(this,R.color.defaultColorAccent), PorterDuff.Mode.SRC_ATOP);
+        }
+        return drawable;
     }
 
     @Override
