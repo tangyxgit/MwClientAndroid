@@ -59,6 +59,31 @@ public class OpenData extends ClientModel {
     private String departName;
     private String companyName;
     private String remark;
+    /**
+     * orderNum : 0
+     * chargeMobile :
+     * toolDesc : 抖音短视频,一个旨在帮助大众用户表达自我,记录美好生活的短视频分享平台。为用户创造丰富多样的玩法,让用户在生活中轻松快速产出优质短视频。
+     * toolCode :
+     * deleteStatus : 0
+     * iconUrl : http://118.31.108.13:8008/toolicon/douyin.jpg
+     * id : 0
+     * chargeName :
+     * toolUrl : https://www.douyin.com/
+     * status : 0
+     * toolName : 抖音
+     */
+
+    private int orderNum;
+    private String chargeMobile;
+    private String toolDesc;
+    private String toolCode;
+    private int deleteStatus;
+    private String iconUrl;
+    private String chargeName;
+    private String toolUrl;
+    private int status;
+    private String toolName;
+
 
     public String getRemark() {
         return remark;
@@ -226,5 +251,85 @@ public class OpenData extends ClientModel {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public String getChargeMobile() {
+        return chargeMobile;
+    }
+
+    public void setChargeMobile(String chargeMobile) {
+        this.chargeMobile = chargeMobile;
+    }
+
+    public String getToolDesc() {
+        return toolDesc;
+    }
+
+    public void setToolDesc(String toolDesc) {
+        this.toolDesc = toolDesc;
+    }
+
+    public String getToolCode() {
+        return toolCode;
+    }
+
+    public void setToolCode(String toolCode) {
+        this.toolCode = toolCode;
+    }
+
+    public int getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(int deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
+
+    public String getChargeName() {
+        return chargeName;
+    }
+
+    public void setChargeName(String chargeName) {
+        this.chargeName = chargeName;
+    }
+
+    public String getToolUrl() {
+        return toolUrl;
+    }
+
+    public void setToolUrl(String toolUrl) {
+        this.toolUrl = toolUrl;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getToolName() {
+        return toolName;
+    }
+
+    public void setToolName(String toolName) {
+        this.toolName = toolName;
     }
 }
