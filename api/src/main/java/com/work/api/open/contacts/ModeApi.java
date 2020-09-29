@@ -55,6 +55,22 @@ public final class ModeApi {
      */
     public final static String getToolListByUserId = "tool/getToolListByUserId";
     /**
+     * 创建群
+     */
+    public final static String createGroup="group/createGroup";
+    /**
+     * 更新群资料
+     */
+    public final static String updateGroup="group/updateGroup";
+    /**
+     * 解散群组
+     */
+    public final static String destroyGroup = "group/destroyGroup";
+    /**
+     * 获取群信息
+     */
+    public final static String getGroupMsg = "group/getGroupMsg";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

@@ -3,6 +3,8 @@ package com.work.api.open.model.client;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.http.network.model.ClientModel;
 
+import java.util.List;
+
 /**
  * Created by tangyx
  * Date 2020/9/13
@@ -83,7 +85,8 @@ public class OpenData extends ClientModel {
     private String toolUrl;
     private int status;
     private String toolName;
-
+    public String GroupId;
+    public List<OpenGroupInfo> GroupInfo;
 
     public String getRemark() {
         return remark;

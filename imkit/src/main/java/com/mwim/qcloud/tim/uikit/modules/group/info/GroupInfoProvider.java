@@ -2,6 +2,9 @@ package com.mwim.qcloud.tim.uikit.modules.group.info;
 
 import android.text.TextUtils;
 
+import com.http.network.listener.OnResultDataListener;
+import com.http.network.model.RequestWork;
+import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.group.apply.GroupApplyInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
@@ -19,14 +22,17 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.api.open.Yz;
+import com.work.api.open.model.DestroyGroupReq;
+import com.work.api.open.model.GetGroupMsgReq;
+import com.work.api.open.model.GetGroupMsgResp;
+import com.work.api.open.model.client.OpenGroupInfo;
 import com.work.util.SLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GroupInfoProvider {
-
-    private static final String TAG = GroupInfoProvider.class.getSimpleName();
 
     private static final int PAGE = 50;
 
@@ -51,7 +57,7 @@ public class GroupInfoProvider {
         reset();
 
         // 串行异步加载群组信息
-        loadGroupPublicInfo(groupId, new IUIKitCallBack() {
+        loadGroupPublicInfo(groupId, false,new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
 
@@ -77,44 +83,74 @@ public class GroupInfoProvider {
     }
 
     public void deleteGroup(final IUIKitCallBack callBack) {
-        V2TIMManager.getInstance().dismissGroup(mGroupInfo.getId(), new V2TIMCallback() {
+//        V2TIMManager.getInstance().dismissGroup(mGroupInfo.getId(), new V2TIMCallback() {
+//            @Override
+//            public void onError(int code, String desc) {
+//                callBack.onError("SLog",code, desc);
+//                SLog.e("deleteGroup failed, code: " + code + "|desc: " + desc);
+//            }
+//
+//            @Override
+//            public void onSuccess() {
+//                callBack.onSuccess(null);
+//                ConversationManagerKit.getInstance().deleteConversation(mGroupInfo.getId(), true);
+//                GroupChatManagerKit.getInstance().onGroupForceExit();
+//            }
+//        });
+        DestroyGroupReq destroyGroupReq = new DestroyGroupReq();
+        destroyGroupReq.GroupId = mGroupInfo.getId();
+        Yz.getSession().destroyGroup(destroyGroupReq, new OnResultDataListener() {
             @Override
-            public void onError(int code, String desc) {
-                callBack.onError("SLog",code, desc);
-                SLog.e("deleteGroup failed, code: " + code + "|desc: " + desc);
-            }
-
-            @Override
-            public void onSuccess() {
-                callBack.onSuccess(null);
-                ConversationManagerKit.getInstance().deleteConversation(mGroupInfo.getId(), true);
-                GroupChatManagerKit.getInstance().onGroupForceExit();
-            }
-        });
-    }
-
-
-    public void loadGroupPublicInfo(String groupId, final IUIKitCallBack callBack) {
-        List<String> groupList = new ArrayList<>();
-        groupList.add(groupId);
-
-        V2TIMManager.getGroupManager().getGroupsInfo(groupList, new V2TIMValueCallback<List<V2TIMGroupInfoResult>>() {
-            @Override
-            public void onError(int code, String desc) {
-                SLog.e("loadGroupPublicInfo failed, code: " + code + "|desc: " + desc);
-                callBack.onError("SLog",code, desc);
-            }
-
-            @Override
-            public void onSuccess(List<V2TIMGroupInfoResult> v2TIMGroupInfoResults) {
-                if (v2TIMGroupInfoResults.size() > 0) {
-                    V2TIMGroupInfoResult infoResult = v2TIMGroupInfoResults.get(0);
-                    // TODO toString打印
-                    SLog.i("loadGroupPublicInfo infoResult:>"+infoResult.toString());
-                    callBack.onSuccess(infoResult);
+            public void onResult(RequestWork req, ResponseWork resp) {
+                if(resp.isSuccess()){
+                    callBack.onSuccess(null);
+                    ConversationManagerKit.getInstance().deleteConversation(mGroupInfo.getId(), true);
+                    GroupChatManagerKit.getInstance().onGroupForceExit();
+                }else{
+                    callBack.onError("SLog",-1, resp.getMessage());
+//                SLog.e("deleteGroup failed, code: " + code + "|desc: " + desc);
                 }
             }
         });
+    }
+    public void loadGroupPublicInfo(String groupId, final IUIKitCallBack callBack) {
+        loadGroupPublicInfo(groupId,false,callBack);
+    }
+
+    public void loadGroupPublicInfo(String groupId,boolean selfService, final IUIKitCallBack callBack) {
+        List<String> groupList = new ArrayList<>();
+        groupList.add(groupId);
+        if(selfService){
+            GetGroupMsgReq getGroupMsgReq = new GetGroupMsgReq();
+            getGroupMsgReq.GroupIdList = groupList;
+            Yz.getSession().getGroupMsg(getGroupMsgReq, new OnResultDataListener() {
+                @Override
+                public void onResult(RequestWork req, ResponseWork resp) {
+                    if(resp.isSuccess() && resp instanceof GetGroupMsgResp){
+                        OpenGroupInfo infoResult = ((GetGroupMsgResp) resp).getData().GroupInfo.get(0);
+                        callBack.onSuccess(infoResult);
+                    }
+                }
+            });
+        }else{
+            V2TIMManager.getGroupManager().getGroupsInfo(groupList, new V2TIMValueCallback<List<V2TIMGroupInfoResult>>() {
+                @Override
+                public void onError(int code, String desc) {
+                    SLog.e("loadGroupPublicInfo failed, code: " + code + "|desc: " + desc);
+                    callBack.onError("SLog",code, desc);
+                }
+
+                @Override
+                public void onSuccess(List<V2TIMGroupInfoResult> v2TIMGroupInfoResults) {
+                    if (v2TIMGroupInfoResults.size() > 0) {
+                        V2TIMGroupInfoResult infoResult = v2TIMGroupInfoResults.get(0);
+                        // TODO toString打印
+                        SLog.i("loadGroupPublicInfo infoResult:>"+infoResult.toString());
+                        callBack.onSuccess(infoResult);
+                    }
+                }
+            });
+        }
     }
 
     public void loadGroupMembers(long nextSeq, final IUIKitCallBack callBack) {

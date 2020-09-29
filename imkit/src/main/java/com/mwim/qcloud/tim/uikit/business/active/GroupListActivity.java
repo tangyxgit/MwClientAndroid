@@ -40,7 +40,7 @@ public class GroupListActivity extends IMBaseActivity {
                 startActivity(intent);
             }
         });
-        loadDataSource();
+//        loadDataSource();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class GroupListActivity extends IMBaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-//        loadDataSource();
+        loadDataSource();
     }
 
     public void loadDataSource() {

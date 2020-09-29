@@ -7,6 +7,11 @@ import com.http.network.task.ConnectDataTask;
 import com.work.api.open.contacts.ModeApi;
 import com.work.api.open.model.BaseReq;
 import com.work.api.open.model.BaseResp;
+import com.work.api.open.model.CreateGroupReq;
+import com.work.api.open.model.CreateGroupResp;
+import com.work.api.open.model.DestroyGroupReq;
+import com.work.api.open.model.GetGroupMsgReq;
+import com.work.api.open.model.GetGroupMsgResp;
 import com.work.api.open.model.GetToolListByUserIdResp;
 import com.work.api.open.model.GetUserByParamReq;
 import com.work.api.open.model.GetUserByParamResp;
@@ -96,6 +101,24 @@ public class Yz extends ApiClient {
      */
     public void getToolListByUserId(OnResultDataListener onResultDataListener){
         requestPost(ModeApi.getToolListByUserId,new BaseReq(),new GetToolListByUserIdResp(),onResultDataListener);
+    }
+    /**
+     * 创建群
+     */
+    public void createGroup(CreateGroupReq createGroupReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.createGroup,createGroupReq,new CreateGroupResp(),onResultDataListener);
+    }
+    /**
+     * 解散群组
+     */
+    public void destroyGroup(DestroyGroupReq destroyGroupReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.destroyGroup,destroyGroupReq,new BaseResp(),onResultDataListener);
+    }
+    /**
+     * 获取群信息
+     */
+    public void getGroupMsg(GetGroupMsgReq getGroupMsgReq, OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getGroupMsg,getGroupMsgReq,new GetGroupMsgResp(),onResultDataListener);
     }
     /**
      * 上传文件

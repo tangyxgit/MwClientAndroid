@@ -3,6 +3,9 @@ package com.mwim.qcloud.tim.uikit.modules.chat;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.http.network.listener.OnResultDataListener;
+import com.http.network.model.RequestWork;
+import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
@@ -14,7 +17,6 @@ import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageCustom;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
-import com.tencent.imsdk.v2.V2TIMCreateGroupMemberInfo;
 import com.tencent.imsdk.v2.V2TIMGroupChangeInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfoResult;
@@ -23,10 +25,15 @@ import com.tencent.imsdk.v2.V2TIMGroupTipsElem;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMSendCallback;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.work.api.open.Yz;
+import com.work.api.open.model.CreateGroupReq;
+import com.work.api.open.model.CreateGroupResp;
+import com.work.api.open.model.client.OpenData;
+import com.work.api.open.model.client.OpenGroupInfo;
+import com.work.api.open.model.client.OpenGroupMember;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
@@ -81,57 +88,102 @@ public class GroupChatManagerKit extends ChatManagerKit {
         v2TIMGroupInfo.setGroupName(chatInfo.getGroupName());
         v2TIMGroupInfo.setGroupAddOpt(chatInfo.getJoinType());
 
-        List<V2TIMCreateGroupMemberInfo> v2TIMCreateGroupMemberInfoList = new ArrayList<>();
+//        List<V2TIMCreateGroupMemberInfo> v2TIMCreateGroupMemberInfoList = new ArrayList<>();
+        List<OpenGroupMember> groupMembers = new ArrayList<>();
         for (int i = 0; i < chatInfo.getMemberDetails().size(); i++) {
             GroupMemberInfo groupMemberInfo = chatInfo.getMemberDetails().get(i);
-            V2TIMCreateGroupMemberInfo v2TIMCreateGroupMemberInfo = new V2TIMCreateGroupMemberInfo();
-            v2TIMCreateGroupMemberInfo.setUserID(groupMemberInfo.getAccount());
-            v2TIMCreateGroupMemberInfoList.add(v2TIMCreateGroupMemberInfo);
+//            V2TIMCreateGroupMemberInfo v2TIMCreateGroupMemberInfo = new V2TIMCreateGroupMemberInfo();
+//            v2TIMCreateGroupMemberInfo.setUserID(groupMemberInfo.getAccount());
+//            v2TIMCreateGroupMemberInfoList.add(v2TIMCreateGroupMemberInfo);
+            OpenGroupMember openGroupMember = new OpenGroupMember();
+            openGroupMember.Member_Account = groupMemberInfo.getAccount();
+            groupMembers.add(openGroupMember);
         }
-
-        V2TIMManager.getGroupManager().createGroup(v2TIMGroupInfo, v2TIMCreateGroupMemberInfoList, new V2TIMValueCallback<String>() {
+        CreateGroupReq createGroupReq = new CreateGroupReq();
+        createGroupReq.Name = chatInfo.getGroupName();
+        createGroupReq.Owner_Account = UserApi.instance().getUserId();
+        createGroupReq.MemberList = groupMembers;
+        Yz.getSession().createGroup(createGroupReq, new OnResultDataListener() {
             @Override
-            public void onError(int code, String desc) {
-                SLog.e("createGroup failed, code: " + code + "|desc: " + desc);
-                if (callBack != null) {
-                    callBack.onError("SLog",code, desc);
-                }
-            }
-
-            @Override
-            public void onSuccess(final String groupId) {
-                chatInfo.setId(groupId);
-                Gson gson = new Gson();
-                MessageCustom messageCustom = new MessageCustom();
-                messageCustom.version = TUIKitConstants.version;
-                messageCustom.businessID = MessageCustom.BUSINESS_ID_GROUP_CREATE;
-//                messageCustom.opUser = V2TIMManager.getInstance().getLoginUser();
-                messageCustom.opUser = UserApi.instance().getNickName();
-                messageCustom.content = "发起了群聊";
-                String data = gson.toJson(messageCustom);
-
-                V2TIMMessage createTips = MessageInfoUtil.buildGroupCustomMessage(data);
-
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                sendTipsMessage(groupId, createTips, new IUIKitCallBack() {
-                    @Override
-                    public void onSuccess(Object data) {
-                        if (callBack != null) {
-                            callBack.onSuccess(groupId);
+            public void onResult(RequestWork req, ResponseWork resp) {
+                if(resp.isSuccess() && resp instanceof CreateGroupResp){
+                    OpenData openData = ((CreateGroupResp) resp).getData();
+                    final String groupId = openData.GroupId;
+                    chatInfo.setId(groupId);
+                    Gson gson = new Gson();
+                    MessageCustom messageCustom = new MessageCustom();
+                    messageCustom.version = TUIKitConstants.version;
+                    messageCustom.businessID = MessageCustom.BUSINESS_ID_GROUP_CREATE;
+                    messageCustom.opUser = UserApi.instance().getNickName();
+                    messageCustom.content = "发起了群聊";
+                    String data = gson.toJson(messageCustom);
+                    V2TIMMessage createTips = MessageInfoUtil.buildGroupCustomMessage(data);
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    sendTipsMessage(groupId, createTips, new IUIKitCallBack() {
+                        @Override
+                        public void onSuccess(Object data) {
+                            if (callBack != null) {
+                                callBack.onSuccess(groupId);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(String module, int errCode, String errMsg) {
-                        SLog.e("sendTipsMessage failed, code: " + errCode + "|desc: " + errMsg);
-                    }
-                });
+                        @Override
+                        public void onError(String module, int errCode, String errMsg) {
+                            SLog.e("sendTipsMessage failed, code: " + errCode + "|desc: " + errMsg);
+                        }
+                    });
+                }else{
+                    ToastUtil.warning(IMKitAgent.instance(),resp.getMessage());
+                }
             }
         });
+        //原生创建的模式
+//        V2TIMManager.getGroupManager().createGroup(v2TIMGroupInfo, v2TIMCreateGroupMemberInfoList, new V2TIMValueCallback<String>() {
+//            @Override
+//            public void onError(int code, String desc) {
+//                SLog.e("createGroup failed, code: " + code + "|desc: " + desc);
+//                if (callBack != null) {
+//                    callBack.onError("SLog",code, desc);
+//                }
+//            }
+//
+//            @Override
+//            public void onSuccess(final String groupId) {
+//                chatInfo.setId(groupId);
+//                Gson gson = new Gson();
+//                MessageCustom messageCustom = new MessageCustom();
+//                messageCustom.version = TUIKitConstants.version;
+//                messageCustom.businessID = MessageCustom.BUSINESS_ID_GROUP_CREATE;
+//                messageCustom.opUser = UserApi.instance().getNickName();
+//                messageCustom.content = "发起了群聊";
+//                String data = gson.toJson(messageCustom);
+//
+//                V2TIMMessage createTips = MessageInfoUtil.buildGroupCustomMessage(data);
+//
+//                try {
+//                    Thread.sleep(200);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                sendTipsMessage(groupId, createTips, new IUIKitCallBack() {
+//                    @Override
+//                    public void onSuccess(Object data) {
+//                        if (callBack != null) {
+//                            callBack.onSuccess(groupId);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(String module, int errCode, String errMsg) {
+//                        SLog.e("sendTipsMessage failed, code: " + errCode + "|desc: " + errMsg);
+//                    }
+//                });
+//            }
+//        });
     }
 
     @Override
@@ -280,12 +332,12 @@ public class GroupChatManagerKit extends ChatManagerKit {
         if(mCurrentChatInfo!=null){
             ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + mCurrentChatInfo.getGroupName());
         }else{
-            mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {
+            mGroupInfoProvider.loadGroupPublicInfo(groupID,true, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
-                    mCurrentChatInfo = new GroupInfo();
-                    mCurrentChatInfo.covertTIMGroupDetailInfo((V2TIMGroupInfoResult) data);
-                    ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + mCurrentChatInfo.getGroupName());
+                    if(data instanceof OpenGroupInfo){
+                        ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + ((OpenGroupInfo) data).Name);
+                    }
                 }
 
                 @Override
@@ -304,13 +356,12 @@ public class GroupChatManagerKit extends ChatManagerKit {
         if(mCurrentChatInfo!=null && !TextUtils.isEmpty(mCurrentChatInfo.getGroupName())){
             ToastUtil.info(IMKitAgent.instance(),"您所在的群" + mCurrentChatInfo.getGroupName() + "已解散");
         }else{
-            mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {
+            mGroupInfoProvider.loadGroupPublicInfo(groupID,true, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
-                    SLog.e(">>loadGroupPublicInfo"+((V2TIMGroupInfoResult) data).getGroupInfo().getGroupName());
-                    mCurrentChatInfo = new GroupInfo();
-                    mCurrentChatInfo.covertTIMGroupDetailInfo((V2TIMGroupInfoResult) data);
-                    ToastUtil.info(IMKitAgent.instance(),"您所在的群" + mCurrentChatInfo.getGroupName() + "已解散");
+                    if(data instanceof OpenGroupInfo){
+                        ToastUtil.info(IMKitAgent.instance(),"您所在的群" + ((OpenGroupInfo) data).Name + "已解散");
+                    }
                 }
 
                 @Override
