@@ -73,6 +73,14 @@
     <string name="text_compile" translatable="false">完成</string>
     <string name="text_change_phone" translatable="false">修改手机号</string>
     <string name="text_user_remark" translatable="false">元知智能研究院</string>
+    <string name="text_change_audio" translatable="false">切换语音</string>
+    <string name="text_hangup_name" translatable="false">挂断</string>
+    <string name="text_dialing_name" translatable="false">接听</string>
+    <string name="text_change_camera" translatable="false">切换摄像头</string>
+    <string name="text_mute_open" translatable="false">开启静音</string>
+    <string name="text_mute_close" translatable="false">关闭静音</string>
+    <string name="text_handsfree_1" translatable="false">扬声器</string>
+    <string name="text_handsfree_2" translatable="false">听筒</string>
 
     // 群信息相关
     <string name="tips_empty_group_member" translatable="false">请选择群成员</string>
@@ -157,7 +165,7 @@
     <string name="conversation_wording_send" translatable="false">发送给对方的验证信息</string>
     <string name="conversation_search_msg" translatable="false">手机号/昵称</string>
     <string name="conversation_search_remind" translatable="false">请输入昵称</string>
-<!--  应用中心  -->
+    <!--  应用中心  -->
     <string name="work_title" translatable="false">应用中心</string>
     <!-- 好友资料 -->
     <string name="profile_detail" translatable="false">详细资料</string>

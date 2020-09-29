@@ -90,6 +90,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     private ITRTCAVCall mITRTCAVCall;
     private boolean isHandsFree = true;
     private boolean isMuteMic = false;
+    private boolean isCamera = true;
     private boolean isMuteVideo = false;
     private String mGroupId;
 
@@ -408,22 +409,23 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         mMuteLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                isMuteMic = !isMuteMic;
-//                mITRTCAVCall.setMicMute(isMuteMic);
-//                mMuteImg.setActivated(isMuteMic);
-//                ToastUtil.info(TRTCVideoCallActivity.this,isMuteMic ? "开启静音" : "关闭静音");
-                isMuteVideo = !isMuteVideo;
-                mITRTCAVCall.setMuteLocalVideo(isMuteVideo);
-//                mITRTCAVCall.switchCamera(false);
+                isMuteMic = !isMuteMic;
+                mITRTCAVCall.setMicMute(isMuteMic);
+                mMuteImg.setActivated(isMuteMic);
+                ToastUtil.info(TRTCVideoCallActivity.this,isMuteMic ? "开启静音" : "关闭静音");
+//                isMuteVideo = !isMuteVideo;
+//                mITRTCAVCall.setMuteLocalVideo(isMuteVideo);
             }
         });
         mHandsfreeLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isHandsFree = !isHandsFree;
-                mITRTCAVCall.setHandsFree(isHandsFree);
-                mHandsfreeImg.setActivated(isHandsFree);
-                ToastUtil.info(TRTCVideoCallActivity.this, isHandsFree ? "使用扬声器" : "使用听筒");
+                isCamera = !isCamera;
+                mITRTCAVCall.switchCamera(isCamera);
+//                isHandsFree = !isHandsFree;
+//                mITRTCAVCall.setHandsFree(isHandsFree);
+//                mHandsfreeImg.setActivated(isHandsFree);
+//                ToastUtil.info(TRTCVideoCallActivity.this, isHandsFree ? "使用扬声器" : "使用听筒");
             }
         });
         mMuteImg.setActivated(isMuteMic);

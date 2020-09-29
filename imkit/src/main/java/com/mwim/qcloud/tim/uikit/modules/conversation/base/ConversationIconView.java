@@ -2,10 +2,15 @@ package com.mwim.qcloud.tim.uikit.modules.conversation.base;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
 
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.gatherimage.SynthesizedImageView;
@@ -84,14 +89,26 @@ public class ConversationIconView extends RelativeLayout {
     }
 
     public void setDefaultImageResId(int resId) {
-        BitmapDrawable bd = (BitmapDrawable) getContext().getResources().getDrawable(resId);
-        mIconView.setImageBitmap(bd.getBitmap());
+        BitmapDrawable bd = (BitmapDrawable) ContextCompat.getDrawable(getContext(),resId);
+        if(bd!=null){
+            mIconView.setImageBitmap(bd.getBitmap());
+        }
+    }
+
+    public void setDefaultImageResId(@DrawableRes int resId, @ColorInt int color) {
+        BitmapDrawable bd = (BitmapDrawable) ContextCompat.getDrawable(getContext(),resId);
+        if(bd!=null){
+            bd.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+            mIconView.setImageDrawable(bd);
+        }
     }
 
     public void setBitmapResId(int resId) {
-        BitmapDrawable bd = (BitmapDrawable) getContext().getResources().getDrawable(resId);
-        Bitmap bitmap = ImageUtil.toRoundBitmap(bd.getBitmap());
-        mIconView.setImageBitmap(bitmap);
+        BitmapDrawable bd = (BitmapDrawable) ContextCompat.getDrawable(getContext(),resId);
+        if(bd!=null){
+            Bitmap bitmap = ImageUtil.toRoundBitmap(bd.getBitmap());
+            mIconView.setImageBitmap(bitmap);
+        }
     }
 }
 

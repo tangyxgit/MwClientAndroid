@@ -102,12 +102,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         holder.unreadText.setVisibility(View.GONE);
         if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.new_friend), contactBean.getId())) {
 //            holder.avatar.setImageResource(R.drawable.group_new_friend);
-//            holder.avatar.setDefaultImageResId(R.drawable.group_new_friend);
-            Drawable drawable = ContextCompat.getDrawable(holder.avatar.getContext(),R.drawable.icon_add_contact_stroke);
-            if(drawable!=null){
-                drawable.setColorFilter(ContextCompat.getColor(holder.avatar.getContext(),R.color.defaultColorAccent), PorterDuff.Mode.SRC_ATOP);
-            }
-            holder.avatar.setBackground(drawable);
+            holder.avatar.setDefaultImageResId(R.drawable.icon_add_contact_stroke,ContextCompat.getColor(holder.avatar.getContext(),R.color.defaultColorAccent));
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
             V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
@@ -132,21 +127,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         } else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.group), contactBean.getId())) {
 //            holder.avatar.setImageResource(R.drawable.group_common_list);
 //            holder.avatar.setDefaultImageResId(R.drawable.group_common_list);
-            Drawable drawable = ContextCompat.getDrawable(holder.avatar.getContext(),R.drawable.icon_chat_group_stroke);
-            if(drawable!=null){
-                drawable.setColorFilter(ContextCompat.getColor(holder.avatar.getContext(),R.color.color_fdac3b), PorterDuff.Mode.SRC_ATOP);
-            }
-            holder.avatar.setBackground(drawable);
+            holder.avatar.setDefaultImageResId(R.drawable.icon_chat_group_stroke,ContextCompat.getColor(holder.avatar.getContext(),R.color.color_fdac3b));
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
         } else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.blacklist), contactBean.getId())) {
 //            holder.avatar.setImageResource(R.drawable.group_black_list);
 //            holder.avatar.setDefaultImageResId(R.drawable.group_black_list);
-            Drawable drawable = ContextCompat.getDrawable(holder.avatar.getContext(),R.drawable.icon_block_fill);
-            if(drawable!=null){
-                drawable.setColorFilter(ContextCompat.getColor(holder.avatar.getContext(),R.color.color_999999), PorterDuff.Mode.SRC_ATOP);
-            }
-            holder.avatar.setBackground(drawable);
+            holder.avatar.setDefaultImageResId(R.drawable.icon_block_fill,ContextCompat.getColor(holder.avatar.getContext(),R.color.color_999999));
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
         } else {

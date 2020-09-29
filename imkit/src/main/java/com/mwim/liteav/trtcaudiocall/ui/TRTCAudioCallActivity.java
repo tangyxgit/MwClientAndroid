@@ -73,6 +73,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     private LinearLayout mHangupLl;
     private ImageView mHandsfreeImg;
     private LinearLayout mHandsfreeLl;
+    private TextView mHandsfreeName;
     private LinearLayout mDialingLl;
     private TRTCAudioLayoutManager mLayoutManagerTrtc;
     private Group mInvitingGroup;
@@ -98,7 +99,6 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     private boolean isMuteMic = false;
     private Vibrator mVibrator;
     private Ringtone mRingtone;
-
     /**
      * 拨号的回调
      */
@@ -430,6 +430,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 isHandsFree = !isHandsFree;
                 mITRTCAVCall.setHandsFree(isHandsFree);
                 mHandsfreeImg.setActivated(isHandsFree);
+                mHandsfreeName.setText(isHandsFree?R.string.text_handsfree_1:R.string.text_handsfree_2);
                 ToastUtil.info(TRTCAudioCallActivity.this, isHandsFree ? "使用扬声器" : "使用听筒");
             }
         });
@@ -489,6 +490,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         mHangupLl = findViewById(R.id.ll_hangup);
         mHandsfreeImg = findViewById(R.id.img_handsfree);
         mHandsfreeLl = findViewById(R.id.ll_handsfree);
+        mHandsfreeName = findViewById(R.id.handsfree_name);
         ImageView mDialingImg = (ImageView) findViewById(R.id.img_dialing);
         mDialingLl = findViewById(R.id.ll_dialing);
         mLayoutManagerTrtc = findViewById(R.id.trtc_layout_manager);

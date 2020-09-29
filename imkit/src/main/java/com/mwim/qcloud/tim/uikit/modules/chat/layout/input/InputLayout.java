@@ -205,7 +205,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
         //此处防止昵称和ID不对等
         boolean isListName = (listName.length >= listId.length ? true : false);
-        int i = 0;
+        int i;
         if (isListName) {
             for (i =0; i < listId.length; i++) {
                 atUserInfoMap.put(listName[i], listId[i]);

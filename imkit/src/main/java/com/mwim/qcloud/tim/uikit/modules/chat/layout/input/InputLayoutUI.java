@@ -72,7 +72,6 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     protected View mInputMoreView;
     protected List<InputMoreActionUnit> mInputMoreActionList = new ArrayList<>();
     protected List<InputMoreActionUnit> mInputMoreCustomActionList = new ArrayList<>();
-    private AlertDialog mPermissionDialog;
     private boolean mSendPhotoDisable;
     private boolean mCaptureDisable;
     private boolean mVideoRecordDisable;
