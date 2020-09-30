@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.component.video;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,16 +9,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.component.video.proxy.IPlayer;
 import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.R;
+import com.workstation.view.MaterialMenuDrawable;
+import com.workstation.view.MaterialMenuView;
 
-public class VideoViewActivity extends Activity {
-
-    private static final String TAG = VideoViewActivity.class.getSimpleName();
+public class VideoViewActivity extends BaseActivity {
 
     private UIKitVideoView mVideoView;
     private int videoWidth = 0;
@@ -27,13 +26,16 @@ public class VideoViewActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        TUIKitLog.i(TAG, "onCreate start");
-        super.onCreate(savedInstanceState);
         //去除标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //去除状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_video_view);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onInitView() throws Exception {
+        super.onInitView();
         mVideoView = findViewById(R.id.video_play_view);
 
         String imagePath = getIntent().getStringExtra(TUIKitConstants.CAMERA_IMAGE_PATH);
@@ -62,7 +64,8 @@ public class VideoViewActivity extends Activity {
                 }
             }
         });
-
+        MaterialMenuView mBack = findViewById(R.id.photo_view_back);
+        mBack.setState(MaterialMenuDrawable.IconState.X);
         findViewById(R.id.video_view_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,20 +73,25 @@ public class VideoViewActivity extends Activity {
                 finish();
             }
         });
-        TUIKitLog.i(TAG, "onCreate end");
     }
 
+    @Override
+    public int onCustomContentId() {
+        return R.layout.activity_video_view;
+    }
+
+    @Override
+    public boolean isShowTitleBar() {
+        return false;
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        TUIKitLog.i(TAG, "onConfigurationChanged start");
         super.onConfigurationChanged(newConfig);
         updateVideoView();
-        TUIKitLog.i(TAG, "onConfigurationChanged end");
     }
 
     private void updateVideoView() {
-        TUIKitLog.i(TAG, "updateVideoView videoWidth: " + videoWidth + " videoHeight: " + videoHeight);
         if (videoWidth <= 0 && videoHeight <= 0) {
             return;
         }
@@ -102,7 +110,6 @@ public class VideoViewActivity extends Activity {
             deviceHeight = Math.max(ScreenUtil.getScreenWidth(this), ScreenUtil.getScreenHeight(this));
         }
         int[] scaledSize = ScreenUtil.scaledSize(deviceWidth, deviceHeight, videoWidth, videoHeight);
-        TUIKitLog.i(TAG, "scaled width: " + scaledSize[0] + " height: " + scaledSize[1]);
         ViewGroup.LayoutParams params = mVideoView.getLayoutParams();
         params.width = scaledSize[0];
         params.height = scaledSize[1];
@@ -111,7 +118,6 @@ public class VideoViewActivity extends Activity {
 
     @Override
     protected void onStop() {
-        TUIKitLog.i(TAG, "onStop");
         super.onStop();
         if (mVideoView != null) {
             mVideoView.stop();

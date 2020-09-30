@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.component.video;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.video.listener.ClickListener;
 import com.mwim.qcloud.tim.uikit.component.video.listener.ErrorListener;
@@ -17,26 +17,29 @@ import com.mwim.qcloud.tim.uikit.component.video.listener.JCameraListener;
 import com.mwim.qcloud.tim.uikit.component.video.util.DeviceUtil;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
-public class CameraActivity extends Activity {
+public class CameraActivity extends BaseActivity {
 
-    private static final String TAG = CameraActivity.class.getSimpleName();
     public static IUIKitCallBack mCallBack;
     private JCameraView jCameraView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        TUIKitLog.i(TAG, "onCreate");
-        super.onCreate(savedInstanceState);
         //去除标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //去除状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_im_camera);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onInitView() throws Exception {
+        super.onInitView();
+
         jCameraView = findViewById(R.id.jcameraview);
         //设置视频保存路径
         //jCameraView.setSaveVideoPath(Environment.getExternalStorageDirectory().getPath() + File.separator + "JCamera");
@@ -54,7 +57,7 @@ public class CameraActivity extends Activity {
             @Override
             public void onError() {
                 //错误监听
-                TUIKitLog.i(TAG, "camera error");
+                SLog.i( "camera error");
                 Intent intent = new Intent();
                 setResult(103, intent);
                 finish();
@@ -62,7 +65,7 @@ public class CameraActivity extends Activity {
 
             @Override
             public void AudioPermissionError() {
-                ToastUtil.toastShortMessage("给点录音权限可以?");
+                ToastUtil.info(CameraActivity.this,"给点录音权限可以?");
             }
         });
         //JCameraView监听
@@ -108,16 +111,25 @@ public class CameraActivity extends Activity {
         jCameraView.setRightClickListener(new ClickListener() {
             @Override
             public void onClick() {
-                ToastUtil.toastShortMessage("Right");
             }
         });
         //jCameraView.setVisibility(View.GONE);
-        TUIKitLog.i(TAG, DeviceUtil.getDeviceModel());
+        SLog.i( DeviceUtil.getDeviceModel());
+    }
+
+    @Override
+    public boolean isShowTitleBar() {
+        return false;
     }
 
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public int onCustomContentId() {
+        return R.layout.activity_im_camera;
     }
 
     @Override
@@ -142,21 +154,21 @@ public class CameraActivity extends Activity {
 
     @Override
     protected void onResume() {
-        TUIKitLog.i(TAG, "onResume");
+        SLog.i( "onResume");
         super.onResume();
         jCameraView.onResume();
     }
 
     @Override
     protected void onPause() {
-        TUIKitLog.i(TAG, "onPause");
+        SLog.i( "onPause");
         super.onPause();
         jCameraView.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        TUIKitLog.i(TAG, "onDestroy");
+        SLog.i( "onDestroy");
         super.onDestroy();
         mCallBack = null;
     }

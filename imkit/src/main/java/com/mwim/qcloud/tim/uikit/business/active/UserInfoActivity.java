@@ -178,7 +178,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_card));
             bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getCard());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 20);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {
@@ -193,7 +193,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_email));
             bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getEmail());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 30);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {

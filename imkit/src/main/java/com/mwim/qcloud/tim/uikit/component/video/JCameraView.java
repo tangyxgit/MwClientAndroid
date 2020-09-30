@@ -142,7 +142,7 @@ public class JCameraView extends FrameLayout implements CameraInterface.CameraOp
         setFlashRes();
         mCaptureLayout = view.findViewById(R.id.capture_layout);
         mCaptureLayout.setDuration(duration);
-        mCaptureLayout.setIconSrc(iconLeft, iconRight);
+        mCaptureLayout.setIconSrc(iconLeft, 0);
         mFoucsView = view.findViewById(R.id.fouce_view);
         mVideoView.getHolder().addCallback(this);
         //切换摄像头
