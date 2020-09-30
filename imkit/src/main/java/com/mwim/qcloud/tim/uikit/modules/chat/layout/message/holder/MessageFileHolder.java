@@ -99,8 +99,8 @@ public class MessageFileHolder extends MessageContentHolder {
                             msgContentFrame.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ToastUtil.toastLongMessage("文件路径:" + path);
-
+//                                    ToastUtil.toastLongMessage("文件路径:" + path);
+                                    X5FileOpenActivity.openX5File(IMKitAgent.instance(),path,fileElem.getFileName());
                                 }
                             });
                         }
