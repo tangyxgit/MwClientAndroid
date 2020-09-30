@@ -1,13 +1,8 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.core.content.FileProvider;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.active.X5FileOpenActivity;
@@ -19,9 +14,6 @@ import com.tencent.imsdk.v2.V2TIMMessage;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.work.util.SLog;
-
-import java.io.File;
 
 public class MessageFileHolder extends MessageContentHolder {
 
