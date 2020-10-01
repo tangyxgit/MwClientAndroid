@@ -34,8 +34,10 @@ import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
+import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
 import com.mwim.qcloud.tim.uikit.R;
+import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +66,9 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         instance = this;
         prepareThirdPushToken();
         //设置为必须要验证才能加好友
-//        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
-//        v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
-//        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
+        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
+        v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
+        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
 
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);
 
