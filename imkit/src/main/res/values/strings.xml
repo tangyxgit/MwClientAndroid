@@ -81,6 +81,7 @@
     <string name="text_mute_close" translatable="false">关闭静音</string>
     <string name="text_handsfree_1" translatable="false">扬声器</string>
     <string name="text_handsfree_2" translatable="false">听筒</string>
+    <string name="text_login_remark" translatable="false">在元信与你的同事和朋友进行沟通与协作</string>
 
     // 群信息相关
     <string name="tips_empty_group_member" translatable="false">请选择群成员</string>
