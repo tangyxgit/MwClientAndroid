@@ -2,6 +2,7 @@ package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -57,8 +58,9 @@ public class NewFriendActivity extends IMBaseActivity implements BaseQuickAdapte
 
     @Override
     public View onCustomTitleRight(TextView view) {
-        view.setText(R.string.add_friend);
-        return view;
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(R.drawable.icon_add_contact_stroke);
+        return imageView;
     }
 
     @Override

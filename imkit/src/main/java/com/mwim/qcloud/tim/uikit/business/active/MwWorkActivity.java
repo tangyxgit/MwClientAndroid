@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -69,28 +70,28 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
 
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);
 
-        BottomNavigationItem messageItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_chat_fill),R.string.tab_conversation_tab_text)
-                .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_chat_stroke))
+        BottomNavigationItem messageItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_chat_fill,R.color.defaultColorAccent),R.string.tab_conversation_tab_text)
+                .setInactiveIcon(getSelectDrawable(R.drawable.icon_chat_stroke,R.color.color_E4E6E9))
                 .setActiveColorResource(R.color.defaultColorAccent);
         mMessageBadge = new TextBadgeItem();
         mMessageBadge.hide();
         messageItem.setBadgeItem(mMessageBadge);
         mNavigationBar.addItem(messageItem);
 
-        BottomNavigationItem contactItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_contact_fill),R.string.tab_contact_tab_text)
-                .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_contact_stroke))
+        BottomNavigationItem contactItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_contact_fill,R.color.defaultColorAccent),R.string.tab_contact_tab_text)
+                .setInactiveIcon(getSelectDrawable(R.drawable.icon_contact_stroke,R.color.color_E4E6E9))
                 .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(contactItem);
 
-        BottomNavigationItem workItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_tools_fill),R.string.tab_work_tab_text)
-                .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_tools_stroke))
+        BottomNavigationItem workItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_tools_fill,R.color.defaultColorAccent),R.string.tab_work_tab_text)
+                .setInactiveIcon(getSelectDrawable(R.drawable.icon_tools_stroke,R.color.color_E4E6E9))
                 .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(workItem);
 
 
 
-        BottomNavigationItem profileItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_user_fill),R.string.tab_profile_tab_text)
-                .setInactiveIcon(ContextCompat.getDrawable(this,R.drawable.icon_user_stroke))
+        BottomNavigationItem profileItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_user_fill,R.color.defaultColorAccent),R.string.tab_profile_tab_text)
+                .setInactiveIcon(getSelectDrawable(R.drawable.icon_user_stroke,R.color.color_E4E6E9))
                 .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(profileItem);
 
@@ -99,10 +100,10 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         mNavigationBar.setTabSelectedListener(this);
     }
 
-    private Drawable getSelectDrawable(@DrawableRes int resId){
+    private Drawable getSelectDrawable(@DrawableRes int resId, int color){
         Drawable drawable = ContextCompat.getDrawable(this,resId);
         if(drawable!=null){
-            drawable.setColorFilter(ContextCompat.getColor(this,R.color.defaultColorAccent), PorterDuff.Mode.SRC_ATOP);
+            drawable.setColorFilter(ContextCompat.getColor(this,color), PorterDuff.Mode.SRC_ATOP);
         }
         return drawable;
     }
