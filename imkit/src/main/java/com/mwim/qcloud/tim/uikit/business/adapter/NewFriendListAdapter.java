@@ -55,7 +55,7 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
         if(TextUtils.isEmpty(item.getFaceUrl())){
             GlideEngine.loadImage(mAvatar, R.drawable.default_head);
         }else{
-            GlideEngine.loadCornerImage(mAvatar, item.getFaceUrl(),null,10);
+            GlideEngine.loadCornerAvatar(mAvatar, item.getFaceUrl());
         }
         helper.setText(R.id.name,TextUtils.isEmpty(item.getNickname()) ? item.getUserID() : item.getNickname());
         TextView mDesc = helper.getView(R.id.description);

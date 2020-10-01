@@ -327,7 +327,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         }
 
         if (!TextUtils.isEmpty(bean.getAvatarurl())) {
-            GlideEngine.loadCornerImage(mHeadImageView, bean.getAvatarurl(), null, 10);
+            GlideEngine.loadCornerAvatar(mHeadImageView, bean.getAvatarurl());
         }else{
             GlideEngine.loadImage(mHeadImageView,R.drawable.default_head);
         }

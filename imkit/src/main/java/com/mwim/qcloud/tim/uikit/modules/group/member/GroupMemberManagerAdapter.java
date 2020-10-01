@@ -63,7 +63,7 @@ public class GroupMemberManagerAdapter extends BaseAdapter {
         }
         final GroupMemberInfo info = getItem(i);
         if (!TextUtils.isEmpty(info.getIconUrl())){
-            GlideEngine.loadCornerImage(holder.memberIcon, info.getIconUrl(), null,10);
+            GlideEngine.loadCornerAvatar(holder.memberIcon, info.getIconUrl());
         }else{
             GlideEngine.loadImage(holder.memberIcon,R.drawable.default_head);
         }

@@ -379,7 +379,7 @@ public class SelectContactActivity extends BaseActivity {
 
             public void bind(final UserModel model,
                              final OnItemClickListener listener) {
-                GlideEngine.loadCornerImage(mAvatarImg, model.userAvatar, null, RADIUS);
+                GlideEngine.loadCornerAvatar(mAvatarImg, model.userAvatar);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -423,7 +423,7 @@ public class SelectContactActivity extends BaseActivity {
                 if(TextUtils.isEmpty(model.mUserModel.userAvatar)){
                     GlideEngine.loadImage(mAvatarImg,R.drawable.default_head);
                 }else{
-                    GlideEngine.loadCornerImage(mAvatarImg, model.mUserModel.userAvatar, null, RADIUS);
+                    GlideEngine.loadCornerAvatar(mAvatarImg, model.mUserModel.userAvatar);
                 }
 
                 mUserNameTv.setText(model.mUserModel.userName);
