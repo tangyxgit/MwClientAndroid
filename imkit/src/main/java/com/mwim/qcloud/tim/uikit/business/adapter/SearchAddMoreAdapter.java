@@ -34,7 +34,7 @@ public class SearchAddMoreAdapter extends BaseQuickAdapter<OpenData, BaseViewHol
         if(TextUtils.isEmpty(item.getUserIcon())){
             GlideEngine.loadImage(mAvatar,R.drawable.default_head);
         }else{
-            GlideEngine.loadCornerImage(mAvatar,item.getUserIcon(),null,10);
+            GlideEngine.loadCornerAvatar(mAvatar,item.getUserIcon());
         }
         helper.setText(R.id.name,item.getNickName());
         TextView mDesc = helper.getView(R.id.description);

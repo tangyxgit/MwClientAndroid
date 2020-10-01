@@ -42,7 +42,7 @@ public abstract class MessageBaseHolder extends RecyclerView.ViewHolder {
 
             LayoutInflater inflater = LayoutInflater.from(TUIKit.getAppContext());
             RecyclerView.ViewHolder holder = null;
-            View view = null;
+            View view;
 
             // 头部的holder
             if (viewType == MessageListAdapter.MSG_TYPE_HEADER_VIEW) {

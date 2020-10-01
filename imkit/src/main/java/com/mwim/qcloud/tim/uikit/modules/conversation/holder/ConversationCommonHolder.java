@@ -75,7 +75,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
             if (conversation.getUnRead() > 99) {
                 unreadText.setText("99+");
             } else {
-                unreadText.setText("" + conversation.getUnRead());
+                unreadText.setText(String.valueOf(conversation.getUnRead()));
             }
         } else {
             unreadText.setVisibility(View.GONE);

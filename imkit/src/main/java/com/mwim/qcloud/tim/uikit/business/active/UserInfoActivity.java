@@ -89,7 +89,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             GlideEngine.loadImage(mUserIcon, R.drawable.default_head);
         } else {
             v2TIMUserFullInfo.setFaceUrl(userIcon);
-            GlideEngine.loadCornerImage(mUserIcon, userIcon,null,10);
+            GlideEngine.loadCornerAvatar(mUserIcon, userIcon);
         }
         mNickname.setContent(userApi.getNickName());
         v2TIMUserFullInfo.setNickname(userApi.getNickName());
@@ -248,5 +248,11 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         super.onSelectImageCallback(imagePath, property);
         showProgressLoading(false,false);
         Yz.getSession().upload(imagePath,this);
+    }
+
+    @Override
+    public CropProperty onAttrCropImage(CropProperty cropProperty) {
+        cropProperty.setCropShape(CropProperty.OVAL);
+        return super.onAttrCropImage(cropProperty);
     }
 }

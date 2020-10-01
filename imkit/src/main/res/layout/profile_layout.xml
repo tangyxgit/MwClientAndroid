@@ -29,11 +29,11 @@
                 android:layout_marginRight="@dimen/dp_15"
                 android:background="@drawable/shape_user_bg"
                 android:orientation="horizontal"
-                android:padding="@dimen/page_margin">
+                android:padding="16dp">
                 <ImageView
                     android:id="@+id/self_icon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp" />
+                    android:layout_width="56dp"
+                    android:layout_height="56dp" />
                 <LinearLayout
                     android:id="@+id/user_layout"
                     android:layout_toEndOf="@+id/self_icon"

@@ -268,7 +268,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                 if (resp.isSuccess() && resp instanceof LoginResp) {
                     OpenData data = ((LoginResp) resp).getData();
                     if (!TextUtils.isEmpty(data.getUserIcon())) {
-                        GlideEngine.loadCornerImage(mHeadImageView, data.getUserIcon(), null, 10);
+                        GlideEngine.loadCornerAvatar(mHeadImageView, data.getUserIcon());
                     }else{
                         GlideEngine.loadImage(mHeadImageView,R.drawable.default_head);
                     }
