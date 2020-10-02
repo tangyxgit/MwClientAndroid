@@ -1,125 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
+
     <LinearLayout
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:padding="25dp"
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_20"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="25dp">
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_launcher" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_20"
                 android:text="@string/we_come"
-                android:textSize="24sp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_999999"
+                android:layout_marginTop="@dimen/dp_4"
                 android:text="@string/text_login_remark"
-                android:layout_marginTop="@dimen/dp_4"/>
+                android:textColor="@color/color_999999" />
         </LinearLayout>
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/phone"
+
+<!--        <com.rengwuxian.materialedittext.MaterialEditText-->
+<!--            android:id="@+id/phone"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginEnd="25dp"-->
+<!--            android:hint="@string/hint_account"-->
+<!--            android:inputType="number"-->
+<!--            android:maxLength="18"-->
+<!--            android:textSize="16sp"-->
+<!--            app:met_baseColor="@color/color_e6e6e6"-->
+<!--            app:met_clearButton="true"-->
+<!--            app:met_floatingLabelAlwaysShown="true"-->
+<!--            app:met_floatingLabelTextColor="@color/color_333333"-->
+<!--            app:met_iconLeft="@mipmap/login_phone_s"-->
+<!--            app:met_iconPadding="0dp"-->
+<!--            app:met_primaryColor="@color/defaultColorAccent"-->
+<!--            app:met_textColor="@color/defaultColorAccent"-->
+<!--            app:met_textColorHint="@color/color_cccccc"-->
+<!--            app:met_underlineColor="@color/color_e6e6e6" />-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:background="@drawable/shape_border_editor"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_20"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:met_iconLeft="@mipmap/login_phone_s"
-            app:met_primaryColor="@color/defaultColorAccent"
-            app:met_baseColor="@color/color_e6e6e6"
-            app:met_textColor="@color/defaultColorAccent"
-            app:met_underlineColor="@color/color_e6e6e6"
-            app:met_textColorHint="@color/color_cccccc"
-            app:met_clearButton="true"
-            app:met_iconPadding="0dp"
-            app:met_floatingLabelTextColor="@color/color_333333"
-            app:met_floatingLabelAlwaysShown="true"
-            android:maxLength="18"
-            android:textSize="16sp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="25dp"
-            android:inputType="number"
-            android:hint="@string/hint_account"/>
-        <com.rengwuxian.materialedittext.MaterialEditText
+            android:gravity="center_vertical"
+            android:layout_height="48dp">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/text_china_phone"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:textSize="@dimen/sp_16"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:background="@color/color_E4E6E9"
+                android:layout_height="match_parent"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/phone"
+                style="@style/EditorStyle"
+                android:layout_marginRight="0dp"
+                android:layout_marginLeft="0dp"
+                android:inputType="number"
+                android:hint="@string/hint_account"
+                android:background="@color/transparent"/>
+        </LinearLayout>
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:met_iconLeft="@mipmap/icon_password"
-            app:met_primaryColor="@color/defaultColorAccent"
-            app:met_baseColor="@color/color_e6e6e6"
-            app:met_textColor="@color/defaultColorAccent"
-            app:met_underlineColor="@color/color_e6e6e6"
-            app:met_textColorHint="@color/color_cccccc"
-            app:met_iconPadding="0dp"
-            android:textSize="16sp"
-            android:maxLength="18"
+            android:layout_marginTop="@dimen/dp_10"
+            android:hint="@string/hint_password"
             android:inputType="textPassword"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginTop="10dp"
-            android:hint="@string/hint_password"/>
+            style="@style/EditorStyle"/>
+<!--        <com.rengwuxian.materialedittext.MaterialEditText-->
+<!--            android:id="@+id/password"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="25dp"-->
+<!--            android:hint="@string/hint_password"-->
+<!--            android:inputType="textPassword"-->
+<!--            android:maxLength="18"-->
+<!--            android:textSize="16sp"-->
+<!--            app:met_baseColor="@color/color_e6e6e6"-->
+<!--            app:met_iconLeft="@mipmap/icon_password"-->
+<!--            app:met_iconPadding="0dp"-->
+<!--            app:met_primaryColor="@color/defaultColorAccent"-->
+<!--            app:met_textColor="@color/defaultColorAccent"-->
+<!--            app:met_textColorHint="@color/color_cccccc"-->
+<!--            app:met_underlineColor="@color/color_e6e6e6" />-->
+
         <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/submit"
             android:layout_width="match_parent"
             android:layout_height="44dp"
+            android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/text_manager_login"
             android:textColor="@color/white"
-            app:pb_textProgress="@string/text_login_ing"
-            app:pb_cornerRadius="5dp"
-            app:pb_colorNormal="@color/color_2da0f0"
+            app:pb_colorNormal="@color/defaultColorAccent"
             app:pb_colorPressed="@color/defaultColorAccent"
-            android:text="@string/text_manager_login"/>
+            app:pb_cornerRadius="5dp"
+            app:pb_textProgress="@string/text_login_ing" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/defaultColorAccent"
-                android:paddingRight="25dp"
-                android:paddingLeft="25dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="15dp"
+                android:paddingRight="20dp"
                 android:paddingBottom="15dp"
-                android:textSize="13sp"
-                android:text="@string/text_register"/>
+                android:text="@string/text_register"
+                android:textColor="@color/defaultColorAccent"
+                android:textSize="13sp" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/forget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_999999"
-                android:paddingRight="25dp"
-                android:paddingLeft="25dp"
+                android:layout_alignParentEnd="true"
+                android:paddingLeft="20dp"
                 android:paddingTop="15dp"
+                android:paddingRight="20dp"
                 android:paddingBottom="15dp"
-                android:textSize="13sp"
                 android:text="@string/text_forget_password"
-                android:layout_alignParentEnd="true" />
+                android:textColor="@color/color_999999"
+                android:textSize="13sp" />
         </RelativeLayout>
     </LinearLayout>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="25dp"
         android:text="@string/app_name"
-        android:textSize="@dimen/sp_12"
         android:textColor="@color/color_666666"
-        android:layout_marginBottom="25dp"/>
+        android:textSize="@dimen/sp_12" />
 </FrameLayout>

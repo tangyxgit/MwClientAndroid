@@ -3,11 +3,11 @@ package com.mwim.qcloud.tim.uikit.modules.chat.base;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageRevokedManager;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.v2.V2TIMAdvancedMsgListener;
 import com.tencent.imsdk.v2.V2TIMCallback;
@@ -22,6 +22,7 @@ import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,14 +112,14 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
         if (timFriendInfoList == null || timFriendInfoList.size() == 0) {
             return;
         }
-//        StringBuilder stringBuilder = new StringBuilder();
-//        stringBuilder.append("已和");
-//        for (V2TIMFriendInfo v2TIMFriendInfo : timFriendInfoList) {
-//            stringBuilder.append(v2TIMFriendInfo.getUserID()).append(",");
-//        }
-//        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-//        stringBuilder.append("成为好友");
-//        ToastUtil.toastLongMessage(stringBuilder.toString());
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("已和");
+        for (V2TIMFriendInfo v2TIMFriendInfo : timFriendInfoList) {
+            stringBuilder.append(v2TIMFriendInfo.getUserProfile().getNickName()).append(",");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        stringBuilder.append("成为好友");
+        ToastUtil.info(IMKitAgent.instance(),stringBuilder.toString());
     }
 
     protected void onReceiveMessage(final V2TIMMessage msg) {
@@ -229,9 +230,9 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
             @Override
             public void onError(int code, String desc) {
                 if (code == REVOKE_TIME_OUT) {
-                    ToastUtil.toastLongMessage("消息发送已超过2分钟");
+                    ToastUtil.info(IMKitAgent.instance(),"消息发送已超过2分钟");
                 } else {
-                    ToastUtil.toastLongMessage("撤回失败:" + code + "=" + desc);
+                    ToastUtil.info(IMKitAgent.instance(),"撤回失败:" + code + "=" + desc);
                 }
             }
 
@@ -298,6 +299,9 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                         if (!safetyCall()) {
                             SLog.w("sendMessage unSafetyCall");
                             return;
+                        }
+                        if(code==20009){//不是好友
+                            ToastUtil.error(IMKitAgent.instance(),"您和对方不是好友，发送失败");
                         }
                         if (callBack != null) {
                             callBack.onError(TAG,code, desc);

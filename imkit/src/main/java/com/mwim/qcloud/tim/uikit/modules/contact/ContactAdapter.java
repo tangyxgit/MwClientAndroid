@@ -1,14 +1,10 @@
 package com.mwim.qcloud.tim.uikit.modules.contact;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,7 +14,6 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
-import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.util.SizeUtils;
 
@@ -120,7 +115,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                             holder.unreadText.setVisibility(View.GONE);
                         } else {
                             holder.unreadText.setVisibility(View.VISIBLE);
-                            holder.unreadText.setText("" + pendingRequest);
+                            holder.unreadText.setText(String.valueOf(pendingRequest));
                         }
                     }
                 }

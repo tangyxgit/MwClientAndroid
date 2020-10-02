@@ -47,7 +47,7 @@
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="@dimen/dp_5"
             android:background="@drawable/search_bg"
-            android:hint="@string/conversation_search_msg"
+            android:hint="@string/conversation_search_friends"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

@@ -11,6 +11,7 @@ import java.util.List;
  */
 
 public class CreateGroupReq extends BaseReq {
+    public String GroupId;
     public String Owner_Account;
     public String Type="Private";
     public String Name;

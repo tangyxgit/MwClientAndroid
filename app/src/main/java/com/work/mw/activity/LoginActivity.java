@@ -82,6 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 }
             });
         }
+        setStatusBar(ContextCompat.getColor(this,R.color.background_color));
     }
 
     private void setSubEnable(boolean enable){

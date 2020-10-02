@@ -39,8 +39,13 @@ public class WorkFragment extends BaseFragment implements OnResultDataListener {
         mAdapter = new WorkAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).colorResId(R.color.transparent).sizeResId(R.dimen.dp_10).build());
-        Yz.getSession().getToolListByUserId(this);
         return baseView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Yz.getSession().getToolListByUserId(this);
     }
 
     @Override

@@ -16,7 +16,7 @@ public abstract class IConversationAdapter extends RecyclerView.Adapter {
      * @param provider
      */
     public abstract void setDataProvider(IConversationProvider provider);
-
+    public abstract void clearData();
     /**
      * 获取适配器的条目数据，返回的是ConversationInfo对象或其子对象
      *

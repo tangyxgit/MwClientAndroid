@@ -105,7 +105,38 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             }
         });
     }
+    private ConversationProvider mSearchProvide;
+    public void loadConversation(final String keyword, final IUIKitCallBack callBack){
+        V2TIMManager.getConversationManager().getConversationList(0, 100, new V2TIMValueCallback<V2TIMConversationResult>() {
+            @Override
+            public void onError(int code, String desc) {
+                SLog.v( "loadConversation getConversationList error, code = " + code + ", desc = " + desc);
+            }
 
+            @Override
+            public void onSuccess(V2TIMConversationResult v2TIMConversationResult) {
+                ArrayList<ConversationInfo> infos = new ArrayList<>();
+                List<V2TIMConversation> v2TIMConversationList = v2TIMConversationResult.getConversationList();
+                for (V2TIMConversation v2TIMConversation : v2TIMConversationList) {
+                    //将 imsdk v2TIMConversation 转换为 UIKit ConversationInfo
+                    ConversationInfo conversationInfo = TIMConversation2ConversationInfo(v2TIMConversation);
+                    if (conversationInfo != null && conversationInfo.getTitle().contains(keyword)) {
+                        conversationInfo.setType(ConversationInfo.TYPE_COMMON);
+                        infos.add(conversationInfo);
+                    }
+                }
+                if(mSearchProvide==null){
+                    mSearchProvide = new ConversationProvider();
+                }
+                mSearchProvide.setDataSource(infos);
+                //排序，imsdk加载处理的已按时间排序，但应用层有置顶会话操作，所有需根据置顶标识再次排序（置顶可考虑做到imsdk同步到服务器？）
+                //更新消息未读总数
+                if (callBack != null) {
+                    callBack.onSuccess(mSearchProvide);
+                }
+            }
+        });
+    }
     /**
      * 部分会话刷新（包括多终端已读上报同步）
      *
@@ -208,7 +239,6 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
                 break;
 
         }
-
         info.setTitle(conversation.getShowName());
         if (isGroup) {
             fillConversationUrlForGroup(conversation, info);
@@ -306,6 +336,9 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
                 }
                 info.setIconUrlList(urlList);
                 mProvider.updateAdapter(info.getConversationId());
+                if(mSearchProvide!=null){
+                    mSearchProvide.updateAdapter(info.getConversationId());
+                }
             }
         });
     }
@@ -584,6 +617,13 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         }
     }
 
+    public void destroyConversationSearch(){
+        if(mSearchProvide!=null){
+            mSearchProvide.attachAdapter(null);
+            mSearchProvide = null;
+        }
+    }
+
     public String getGroupConversationAvatar(String groupId) {
         SharedPreferences sp = TUIKit.getAppContext().getSharedPreferences(
                 TUIKitConfigs.getConfigs().getGeneralConfig().getSDKAppId() + SP_IMAGE, Context.MODE_PRIVATE);
@@ -601,12 +641,20 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         editor.putString(groupId, url);
         editor.apply();
     }
-
+    /**
+     * 通讯录变化
+     */
+    public void updateContacts(){
+        for (int i = 0; i < mUnreadWatchers.size(); i++) {
+            mUnreadWatchers.get(i).updateContacts();
+        }
+    }
     /**
      * 会话未读计数变化监听器
      */
     public interface MessageUnreadWatcher {
         void updateUnread(int count);
+        void updateContacts();
     }
 
 }

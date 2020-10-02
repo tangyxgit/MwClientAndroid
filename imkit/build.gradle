@@ -68,7 +68,7 @@ dependencies {
     // MEIZU push sdk
     implementation 'com.meizu.flyme.internet:push-internal:3.9.7'
     //输入框
-    api 'com.rengwuxian.materialedittext:library:2.1.4'
+//    api 'com.rengwuxian.materialedittext:library:2.1.4'
     //底部菜单选项
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.2.0'
     //按钮

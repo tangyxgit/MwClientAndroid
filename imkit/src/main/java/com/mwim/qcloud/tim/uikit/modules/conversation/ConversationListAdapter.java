@@ -52,6 +52,14 @@ public class ConversationListAdapter extends IConversationAdapter {
         notifyDataSetChanged();
     }
 
+    @Override
+    public void clearData() {
+        if(mDataSource!=null){
+            mDataSource.clear();
+            notifyDataSetChanged();
+        }
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

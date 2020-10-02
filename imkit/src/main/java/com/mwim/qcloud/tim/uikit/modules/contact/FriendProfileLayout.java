@@ -239,7 +239,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                                     ToastUtil.info(getContext(), "对方已禁止加好友");
                                     break;
                                 case BaseConstants.ERR_SVR_FRIENDSHIP_IN_PEER_BLACKLIST:
-                                    ToastUtil.info(getContext(), "您已被被对方设置为黑名单");
+                                    ToastUtil.info(getContext(), "您已被对方设置为黑名单");
                                     break;
                                 case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_NEED_CONFIRM:
                                     ToastUtil.info(getContext(), "等待好友审核同意");

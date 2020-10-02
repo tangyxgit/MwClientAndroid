@@ -51,6 +51,11 @@ public final class IMKitAgent {
             // 华为离线推送角标
             HUAWEIHmsMessageService.updateBadge(instance(), count);
         }
+
+        @Override
+        public void updateContacts() {
+
+        }
     };
     private static Context instance;
 

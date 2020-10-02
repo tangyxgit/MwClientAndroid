@@ -18,10 +18,19 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
+import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.adapter.SearchAddMoreAdapter;
+import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
+import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationListAdapter;
+import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationListLayout;
+import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
+import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationProvider;
+import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ThreadHelper;
+import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMFriendInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
@@ -30,6 +39,7 @@ import com.work.api.open.model.GetUserByParamReq;
 import com.work.api.open.model.GetUserByParamResp;
 import com.work.api.open.model.client.OpenData;
 import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,24 +55,48 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
     private EditText mSearch;
     private GetUserByParamReq mUserByParamReq;
     private SearchAddMoreAdapter mAdapter;
+    private ConversationListAdapter mConversationAdapter;
     private int flag=-1;
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
+        flag = getIntent().getIntExtra(SearchAddMoreActivity.class.getSimpleName(),-1);
         mSearch = findViewById(R.id.search);
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.background_color).build());
-        mAdapter = new SearchAddMoreAdapter(null);
-        mAdapter.setOnItemClickListener(this);
-        mRecyclerView.setAdapter(mAdapter);
+        if(flag==1){
+            mConversationAdapter = new ConversationListAdapter();
+            mConversationAdapter.setOnItemClickListener(new ConversationListLayout.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position, ConversationInfo conversationInfo) {
+                    ChatInfo chatInfo = new ChatInfo();
+                    chatInfo.setType(conversationInfo.isGroup() ? V2TIMConversation.V2TIM_GROUP : V2TIMConversation.V2TIM_C2C);
+                    chatInfo.setId(conversationInfo.getId());
+                    chatInfo.setChatName(conversationInfo.getTitle());
+                    Intent intent = new Intent(IMKitAgent.instance(), ChatActivity.class);
+                    intent.putExtra(Constants.CHAT_INFO, chatInfo);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    IMKitAgent.instance().startActivity(intent);
+                }
+            });
+            mRecyclerView.setAdapter(mConversationAdapter);
+        }else{
+            mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.background_color).build());
+            mAdapter = new SearchAddMoreAdapter(null);
+            mAdapter.setOnItemClickListener(this);
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 
     @Override
     public void onInitValue() throws Exception {
         super.onInitValue();
-        flag = getIntent().getIntExtra(SearchAddMoreActivity.class.getSimpleName(),-1);
+        if(flag==0){
+            mSearch.setHint(R.string.conversation_search_friends);
+        }else if(flag == 1){
+            mSearch.setHint(R.string.conversation_search_hf);
+        }
         mSearch.requestFocus();
         mSearch.addTextChangedListener(this);
         findViewById(R.id.cancel).setOnClickListener(this);
@@ -86,10 +120,17 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if(TextUtils.isEmpty(charSequence)){
-            mAdapter.clear();
+            if(mAdapter!=null){
+                mAdapter.clear();
+            }
+            if(mConversationAdapter!=null){
+                mConversationAdapter.clearData();
+            }
         }else{
             if(flag==0){
                 loadFriendListDataAsync();
+            }else if(flag==1){
+                loadConversationAsync();
             }else{
                 if(mUserByParamReq == null){
                     mUserByParamReq = new GetUserByParamReq();
@@ -98,6 +139,20 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
                 Yz.getSession().getUserByParam(mUserByParamReq,this);
             }
         }
+    }
+
+    private void loadConversationAsync(){
+        ConversationManagerKit.getInstance().loadConversation(mSearch.getText().toString().trim(),new IUIKitCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+                mConversationAdapter.setDataProvider((ConversationProvider) data);
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+                ToastUtil.error(IMKitAgent.instance(),"加载消息失败");
+            }
+        });
     }
 
     private void loadFriendListDataAsync() {
@@ -186,7 +241,13 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
         }
     }
 
-    public static void startSearchMore(Context context,int flag){
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ConversationManagerKit.getInstance().destroyConversationSearch();
+    }
+
+    public static void startSearchMore(Context context, int flag){
         Intent intent = new Intent(context,SearchAddMoreActivity.class);
         intent.putExtra(SearchAddMoreActivity.class.getSimpleName(),flag);
         context.startActivity(intent);

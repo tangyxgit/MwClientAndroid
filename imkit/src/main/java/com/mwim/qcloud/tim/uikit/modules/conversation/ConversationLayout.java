@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.PopupMenu;
@@ -20,11 +21,10 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.ToastUtil;
 
 public class ConversationLayout extends RelativeLayout implements IConversationLayout {
 
-//    private TitleBarLayout mTitleBarLayout;
     private ConversationListLayout mConversationList;
     private PopMenuHelper mMenu;
 
@@ -48,15 +48,17 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
      */
     private void init() {
         inflate(getContext(), R.layout.conversation_layout, this);
-//        mTitleBarLayout = findViewById(R.id.conversation_title);
+        EditText mSearch = findViewById(R.id.search);
+        mSearch.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchAddMoreActivity.startSearchMore(getContext(),1);
+            }
+        });
         mConversationList = findViewById(R.id.conversation_list);
     }
 
     public void initDefault() {
-//        mTitleBarLayout.setTitle(getResources().getString(R.string.conversation_title), TitleBarLayout.POSITION.LEFT);
-//        mTitleBarLayout.getLeftGroup().setVisibility(View.GONE);
-//        mTitleBarLayout.getLeftIcon().setVisibility(GONE);
-//        mTitleBarLayout.setRightIcon(R.drawable.conversation_more);
         final View mAddMore = findViewById(R.id.add_more);
         mAddMore.setOnClickListener(new OnClickListener() {
             @Override
@@ -90,7 +92,7 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                ToastUtil.toastLongMessage("加载消息失败");
+                ToastUtil.error(IMKitAgent.instance(),"加载消息失败");
             }
         });
     }

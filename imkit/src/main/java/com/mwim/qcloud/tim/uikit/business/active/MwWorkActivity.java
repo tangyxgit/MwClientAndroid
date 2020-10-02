@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -48,15 +47,15 @@ import java.util.List;
  * email tangyx@live.com
  */
 
-public class MwWorkActivity extends IMBaseActivity implements ConversationManagerKit.MessageUnreadWatcher,
-        BottomNavigationBar.OnTabSelectedListener,ViewPager.OnPageChangeListener {
+public class MwWorkActivity extends IMBaseActivity implements
+        ConversationManagerKit.MessageUnreadWatcher,
+        BottomNavigationBar.OnTabSelectedListener,
+        ViewPager.OnPageChangeListener {
     private BottomNavigationBar mNavigationBar;
     private ViewPager mPager;
-    private TabPagerAdapter mAdapter;
     private TextBadgeItem mMessageBadge;
     private List<BaseFragment> mFragments;
 
-    private View mLastTab;
     private CallModel mCallModel;
     public static Context instance;
 
@@ -120,30 +119,20 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         mFragments.add(new ProfileFragment());
         mPager = findViewById(R.id.pager);
         mPager.addOnPageChangeListener(this);
-        mAdapter = new TabPagerAdapter(this.getSupportFragmentManager(), mFragments);
+        TabPagerAdapter mAdapter = new TabPagerAdapter(this.getSupportFragmentManager(), mFragments);
         mPager.setAdapter(mAdapter);
         mPager.setOffscreenPageLimit(mFragments.size());
-//        getFragmentManager().beginTransaction().replace(R.id.empty_view, new ConversationFragment()).commitAllowingStateLoss();
         FileUtil.initPath(); // 从application移入到这里，原因在于首次装上app，需要获取一系列权限，如创建文件夹，图片下载需要指定创建好的文件目录，否则会下载本地失败，聊天页面从而获取不到图片、表情
 //        // 未读消息监视器
         ConversationManagerKit.getInstance().addUnreadWatcher(this);
         GroupChatManagerKit.getInstance();
-//        if (mLastTab == null) {
-//            mLastTab = findViewById(R.id.conversation_btn_group);
-//        } else {
-//            // 初始化时，强制切换tab到上一次的位置
-//            View tmp = mLastTab;
-//            mLastTab = null;
-//            tabClick(tmp);
-//            mLastTab = tmp;
-//        }
+
 
     }
 
     @Override
     protected void onDestroy() {
         ConversationManagerKit.getInstance().destroyConversation();
-        mLastTab = null;
         instance = null;
         super.onDestroy();
     }
@@ -222,46 +211,6 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         }
     }
 
-    public void tabClick(View view) {
-//        if (mLastTab != null && mLastTab.getId() == view.getId()) {
-//            return;
-//        }
-//        mLastTab = view;
-//        resetMenuState();
-//        Fragment current = null;
-//        int id = view.getId();
-//        if (id == R.id.conversation_btn_group) {
-//            current = new ConversationFragment();
-//            mConversationBtn.setTextColor(getResources().getColor(R.color.tab_text_selected_color));
-//            mConversationBtn.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.conversation_selected), null, null);
-//            setStatusBar(ContextCompat.getColor(this, R.color.status_bar_color));
-//        } else if (id == R.id.contact_btn_group) {
-//            current = new ContactFragment();
-//            mContactBtn.setTextColor(getResources().getColor(R.color.tab_text_selected_color));
-//            mContactBtn.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.contact_selected), null, null);
-//            setStatusBar(ContextCompat.getColor(this, R.color.status_bar_color));
-//        } else if (id == R.id.myself_btn_group) {
-//            current = new ProfileFragment();
-//            mProfileSelfBtn.setTextColor(getResources().getColor(R.color.tab_text_selected_color));
-//            mProfileSelfBtn.setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(this, R.drawable.myself_selected), null, null);
-//            setStatusBar(ContextCompat.getColor(this, R.color.white));
-//        }
-//
-//        if (current != null && !current.isAdded()) {
-//            getFragmentManager().beginTransaction().replace(R.id.empty_view, current).commitAllowingStateLoss();
-//            getFragmentManager().executePendingTransactions();
-//        }
-    }
-
-    private void resetMenuState() {
-//        mConversationBtn.setTextColor(getResources().getColor(R.color.tab_text_normal_color));
-//        mConversationBtn.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.conversation_normal), null, null);
-//        mContactBtn.setTextColor(getResources().getColor(R.color.tab_text_normal_color));
-//        mContactBtn.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.contact_normal), null, null);
-//        mProfileSelfBtn.setTextColor(getResources().getColor(R.color.tab_text_normal_color));
-//        mProfileSelfBtn.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.myself_normal), null, null);
-    }
-
     @Override
     public void updateUnread(int count) {
         if (count > 0) {
@@ -276,6 +225,11 @@ public class MwWorkActivity extends IMBaseActivity implements ConversationManage
         mMessageBadge.setText(unreadStr);
 //        // 华为离线推送角标
         HUAWEIHmsMessageService.updateBadge(this, count);
+    }
+
+    @Override
+    public void updateContacts() {
+        updateFragment(1);
     }
 
     @Override

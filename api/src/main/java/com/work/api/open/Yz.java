@@ -121,6 +121,12 @@ public class Yz extends ApiClient {
         requestPost(ModeApi.getGroupMsg,getGroupMsgReq,new GetGroupMsgResp(),onResultDataListener);
     }
     /**
+     * 修改群信息
+     */
+    public void updateGroup(CreateGroupReq createGroupReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.updateGroup,createGroupReq,new BaseResp(),onResultDataListener);
+    }
+    /**
      * 上传文件
      */
     public void upload(String path,OnResultDataListener onResultDataListener){

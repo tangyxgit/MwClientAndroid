@@ -19,6 +19,7 @@ import com.tencent.imsdk.v2.V2TIMAdvancedMsgListener;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMConversationListener;
+import com.tencent.imsdk.v2.V2TIMFriendApplication;
 import com.tencent.imsdk.v2.V2TIMFriendInfo;
 import com.tencent.imsdk.v2.V2TIMFriendshipListener;
 import com.tencent.imsdk.v2.V2TIMGroupChangeInfo;
@@ -312,7 +313,33 @@ public class TUIKitImpl {
             @Override
             public void onFriendListAdded(List<V2TIMFriendInfo> users) {
                 C2CChatManagerKit.getInstance().notifyNewFriend(users);
+                ConversationManagerKit.getInstance().updateContacts();
             }
+
+            @Override
+            public void onFriendApplicationListAdded(List<V2TIMFriendApplication> applicationList) {
+                super.onFriendApplicationListAdded(applicationList);
+                ConversationManagerKit.getInstance().updateContacts();
+            }
+
+            @Override
+            public void onFriendApplicationListDeleted(List<String> userIDList) {
+                super.onFriendApplicationListDeleted(userIDList);
+                ConversationManagerKit.getInstance().updateContacts();
+            }
+
+            @Override
+            public void onBlackListDeleted(List<String> userList) {
+                super.onBlackListDeleted(userList);
+                ConversationManagerKit.getInstance().updateContacts();
+            }
+
+            @Override
+            public void onBlackListAdd(List<V2TIMFriendInfo> infoList) {
+                super.onBlackListAdd(infoList);
+                ConversationManagerKit.getInstance().updateContacts();
+            }
+
         });
 
         V2TIMManager.getMessageManager().addAdvancedMsgListener(new V2TIMAdvancedMsgListener() {

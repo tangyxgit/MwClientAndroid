@@ -15,7 +15,6 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.RegisterReq;
@@ -33,7 +32,7 @@ import com.work.util.ToastUtil;
 public class RegisterActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
 
     private ActionProcessButton mSubmit;
-    private MaterialEditText mPhone;
+    private EditText mPhone;
     private EditText mSmsCode;
     private TextView mSend;
     private EditText mPassword;
