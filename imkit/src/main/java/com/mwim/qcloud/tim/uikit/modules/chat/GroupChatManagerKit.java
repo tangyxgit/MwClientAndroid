@@ -106,6 +106,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
         Yz.getSession().createGroup(createGroupReq, new OnResultDataListener() {
             @Override
             public void onResult(RequestWork req, ResponseWork resp) {
+
                 if(resp.isSuccess() && resp instanceof CreateGroupResp){
                     OpenData openData = ((CreateGroupResp) resp).getData();
                     final String groupId = openData.GroupId;
@@ -335,7 +336,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
             mGroupInfoProvider.loadGroupPublicInfo(groupID,true, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
-                    if(data instanceof OpenGroupInfo){
+                    if(data instanceof OpenGroupInfo && !TextUtils.isEmpty(((OpenGroupInfo) data).Name)){
                         ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + ((OpenGroupInfo) data).Name);
                     }
                 }
@@ -359,7 +360,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
             mGroupInfoProvider.loadGroupPublicInfo(groupID,true, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
-                    if(data instanceof OpenGroupInfo){
+                    if(data instanceof OpenGroupInfo && !TextUtils.isEmpty(((OpenGroupInfo) data).Name)){
                         ToastUtil.info(IMKitAgent.instance(),"您所在的群" + ((OpenGroupInfo) data).Name + "已解散");
                     }
                 }

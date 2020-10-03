@@ -68,6 +68,7 @@ public class LineControllerView extends LinearLayout {
         topLine = findViewById(R.id.topLine);
         topLine.setVisibility(mIsTop?GONE:VISIBLE);
         mNavArrowView = findViewById(R.id.rightArrow);
+        mNavArrowView.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_E4E6E9), PorterDuff.Mode.SRC_ATOP);
         mNavArrowView.setVisibility(mIsJump ? VISIBLE : GONE);
         RelativeLayout contentLayout = findViewById(R.id.contentText);
         contentLayout.setVisibility(mIsSwitch ? GONE : VISIBLE);

@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.Html;
 import android.text.TextUtils;
 
 import com.mwim.liteav.model.CallModel;
@@ -184,9 +185,9 @@ public class MessageNotification {
             if(info==null){
                 return;
             }
-            builder.setContentText(info.getExtra().toString());
+            builder.setContentText(Html.fromHtml(info.getExtra().toString()));
         } else {
-            builder.setContentText(desc);
+            builder.setContentText(Html.fromHtml(desc));
         }
         builder.setSmallIcon(R.drawable.default_user_icon);
         Intent launch;

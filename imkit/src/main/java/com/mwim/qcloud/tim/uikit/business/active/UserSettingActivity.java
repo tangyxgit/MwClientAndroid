@@ -6,6 +6,9 @@ import android.view.View;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
+import com.mwim.qcloud.tim.uikit.component.LineControllerView;
+import com.work.util.AppUtils;
+import com.work.util.CacheUtil;
 
 /**
  * Created by tangyx
@@ -14,11 +17,23 @@ import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
  */
 
 public class UserSettingActivity extends BaseActivity implements View.OnClickListener {
+
+    private LineControllerView mCache;
+
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
         findViewById(R.id.update_pwd).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
+        LineControllerView mVersion = findViewById(R.id.modify_version);
+        AppUtils.AppInfo appInfo = AppUtils.getAppInfo(this);
+        if(appInfo!=null){
+            mVersion.setContent(getString(R.string.text_version,appInfo.getVersionName()));
+        }
+        mVersion.setOnClickListener(this);
+        mCache = findViewById(R.id.modify_cache);
+        mCache.setContent(CacheUtil.getTotalCacheSize(this));
+        mCache.setOnClickListener(this);
     }
 
     @Override
@@ -38,6 +53,14 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
                     logout();
                 }
             }).show(getSupportFragmentManager(),"logout");
+        }else if(view.getId() == R.id.modify_cache){
+            CacheUtil.clearAllCache(this);
+            try {
+                String c = 0+"K";
+                mCache.setContent(c);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

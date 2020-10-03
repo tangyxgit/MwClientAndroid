@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="we_come" translatable="false">欢迎使用元信</string>
+    <string name="text_version" translatable="false">版本号 %1$s</string>
 
     <string name="chat_top" translatable="false">置顶聊天</string>
     <string name="chat_delete" translatable="false">删除聊天</string>

@@ -162,8 +162,8 @@ public class StartGroupChatActivity extends IMBaseActivity {
         for (int i = 1; i < mMembers.size(); i++) {
             groupName.append("、").append(mMembers.get(i).getNameCard());
         }
-        if (groupName.length() > 20) {
-            groupName = new StringBuilder(groupName.substring(0, 17) + "...");
+        if (groupName.length() > 9) {
+            groupName = new StringBuilder(groupName.substring(0, 9) + "...");
         }
         groupInfo.setChatName(groupName.toString());
         groupInfo.setGroupName(groupName.toString());

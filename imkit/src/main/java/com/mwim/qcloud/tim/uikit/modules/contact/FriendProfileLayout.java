@@ -124,6 +124,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
     }
 
     public void initData(Object data) {
+        SLog.e("friendProfile data:"+data);
         if (data instanceof ChatInfo) {
             ChatInfo mChatInfo = (ChatInfo) data;
             mId = mChatInfo.getId();
@@ -316,10 +317,11 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         });
         mId = bean.getId();
         mNickname = bean.getNickname();
+        SLog.e("isFriend:"+bean.isFriend());
         if (bean.isFriend()) {
             mRemarkView.setVisibility(VISIBLE);
             mRemarkView.setContent(bean.getRemark());
-            mAddBlackView.setVisibility(VISIBLE);
+//            mAddBlackView.setVisibility(VISIBLE);
             mAddBlackView.setChecked(bean.isBlackList());
             mAddBlackView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -334,7 +336,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             mDeleteView.setVisibility(VISIBLE);
         } else {
             mRemarkView.setVisibility(GONE);
-            mAddBlackView.setVisibility(GONE);
+//            mAddBlackView.setVisibility(GONE);
             mDeleteView.setVisibility(GONE);
         }
 
