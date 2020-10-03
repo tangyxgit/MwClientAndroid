@@ -501,6 +501,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             public void onSuccess(List<V2TIMFriendOperationResult> v2TIMFriendOperationResults) {
                 SLog.i("deleteFriends success");
                 ConversationManagerKit.getInstance().deleteConversation(mId, false);
+                ConversationManagerKit.getInstance().updateContacts();
                 if (mListener != null) {
                     mListener.onDeleteFriendClick(mId);
                 }
