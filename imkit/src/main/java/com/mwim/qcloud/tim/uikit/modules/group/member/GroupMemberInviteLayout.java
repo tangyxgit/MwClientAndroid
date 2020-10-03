@@ -18,7 +18,7 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfoProvider;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +61,9 @@ public class GroupMemberInviteLayout extends LinearLayout implements IGroupMembe
                     @Override
                     public void onSuccess(Object data) {
                         if (data instanceof String) {
-                            ToastUtil.toastLongMessage(data.toString());
+                            ToastUtil.info(getContext(),data.toString());
                         } else {
-                            ToastUtil.toastLongMessage("邀请成员成功");
+                            ToastUtil.info(getContext(),"邀请成员成功");
                         }
                         mInviteMembers.clear();
                         finish();
@@ -71,7 +71,7 @@ public class GroupMemberInviteLayout extends LinearLayout implements IGroupMembe
 
                     @Override
                     public void onError(String module, int errCode, String errMsg) {
-                        ToastUtil.toastLongMessage("邀请成员失败:" + errCode + "=" + errMsg);
+                        ToastUtil.error(getContext(),"邀请成员失败:" + errCode + "=" + errMsg);
                     }
                 });
             }
