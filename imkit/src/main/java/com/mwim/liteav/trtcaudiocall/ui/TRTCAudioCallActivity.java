@@ -507,7 +507,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         //1. 展示对方的画面
         TRTCAudioLayout layout = mLayoutManagerTrtc.allocAudioCallLayout(mSponsorUserModel.userId);
         layout.setUserId(mSponsorUserModel.userName);
-        GlideEngine.loadCornerImage(layout.getImageView(), mSponsorUserModel.userAvatar, null, RADIUS);
+        GlideEngine.loadCornerAvatar(layout.getImageView(), mSponsorUserModel.userAvatar);
         updateUserView(mSponsorUserModel, layout);
         //2. 展示电话对应界面
         mHangupLl.setVisibility(View.VISIBLE);
@@ -654,7 +654,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     private TRTCAudioLayout addUserToManager(final UserModel userModel) {
         final TRTCAudioLayout layout = mLayoutManagerTrtc.allocAudioCallLayout(userModel.userId);
         layout.setUserId(userModel.userName);
-        GlideEngine.loadCornerImage(layout.getImageView(), userModel.userAvatar, null, RADIUS);
+        GlideEngine.loadCornerAvatar(layout.getImageView(), userModel.userAvatar);
         updateUserView(userModel, layout);
         return layout;
     }
@@ -685,9 +685,9 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 }
                 userModel.userAvatar = v2TIMUserFullInfos.get(0).getFaceUrl();
                 if (layout instanceof TRTCAudioLayout) {
-                    GlideEngine.loadCornerImage(((TRTCAudioLayout) layout).getImageView(), userModel.userAvatar, null, RADIUS);
+                    GlideEngine.loadCornerAvatar(((TRTCAudioLayout) layout).getImageView(), userModel.userAvatar);
                 } else if (layout instanceof ImageView) {
-                    GlideEngine.loadCornerImage((ImageView) layout, userModel.userAvatar, null, RADIUS);
+                    GlideEngine.loadCornerAvatar((ImageView) layout, userModel.userAvatar);
                 }
             }
         });

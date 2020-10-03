@@ -83,6 +83,8 @@
     <string name="text_handsfree_2" translatable="false">听筒</string>
     <string name="text_login_remark" translatable="false">在元信与你的同事和朋友进行沟通与协作</string>
     <string name="text_china_phone" translatable="false">+86</string>
+    <string name="text_video_tag" translatable="false">正在等待对方接受邀请...</string>
+    <string name="text_video_tag_show" translatable="false">邀请您进行视频通话...</string>
 
     // 群信息相关
     <string name="tips_empty_group_member" translatable="false">请选择群成员</string>
@@ -179,6 +181,7 @@
     <string name="profile_black" translatable="false">加入黑名单</string>
     <string name="profile_remark_edit" translatable="false">修改备注</string>
     <string name="profile_chat" translatable="false">发送消息</string>
+    <string name="profile_chat_video_audio" translatable="false">音视频通话</string>
     <string name="profile_del" translatable="false">删除好友</string>
 
     <string name="search_call_hint" translatable="false">输入群成员名称</string>

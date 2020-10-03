@@ -16,6 +16,7 @@ import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserSettingActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
@@ -78,7 +79,10 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         loginReq.setUserId(UserApi.instance().getUserId());
         Yz.getSession().getUserByUserId(loginReq,new OnResultDataListener() {
             @Override
-            public void onResult(RequestWork req, ResponseWork resp) {
+            public void onResult(RequestWork req, ResponseWork resp) throws Exception{
+                if(getContext() instanceof BaseActivity){
+                    ((BaseActivity) getContext()).onResult(req,resp);
+                }
                 if(resp.isSuccess() && resp instanceof LoginResp){
                     OpenData data = ((LoginResp) resp).getData();
                     UserApi userApi = UserApi.instance();

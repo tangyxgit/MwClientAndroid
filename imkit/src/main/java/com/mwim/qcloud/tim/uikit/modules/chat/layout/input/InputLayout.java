@@ -204,7 +204,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         String[] listId = ids.split(" ");
 
         //此处防止昵称和ID不对等
-        boolean isListName = (listName.length >= listId.length ? true : false);
+        boolean isListName = (listName.length >= listId.length);
         int i;
         if (isListName) {
             for (i =0; i < listId.length; i++) {

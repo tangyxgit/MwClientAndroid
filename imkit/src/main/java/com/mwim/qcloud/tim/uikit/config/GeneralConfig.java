@@ -9,7 +9,6 @@ public class GeneralConfig {
 
     public final static int DEFAULT_AUDIO_RECORD_MAX_TIME = 60;
     public final static int DEFAULT_VIDEO_RECORD_MAX_TIME = 15;
-    private static final String TAG = GeneralConfig.class.getSimpleName();
     private String appCacheDir;
     private int audioRecordMaxTime = DEFAULT_AUDIO_RECORD_MAX_TIME;
     private int videoRecordMaxTime = DEFAULT_VIDEO_RECORD_MAX_TIME;

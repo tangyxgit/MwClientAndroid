@@ -1,6 +1,7 @@
 package com.mwim.qcloud.tim.uikit.modules.contact;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +21,13 @@ import android.widget.TextView;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
+import com.mwim.liteav.login.UserModel;
+import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
+import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
+import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
 import com.tencent.imsdk.BaseConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMFriendAddApplication;
@@ -67,12 +75,14 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
     private LineControllerView mChatTopView;
     private TextView mDeleteView;
     private TextView mChatView;
+    private TextView mChatAudioVideo;
 
     private ContactItemBean mContactInfo;
     private V2TIMFriendApplication mFriendApplication;
     private OnButtonClickListener mListener;
     private String mId;
     private String mNickname;
+    private AlertDialog mDialog;
 
     public FriendProfileLayout(Context context) {
         super(context);
@@ -104,6 +114,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         mDeleteView.setOnClickListener(this);
         mChatView = findViewById(R.id.btnChat);
         mChatView.setOnClickListener(this);
+        mChatAudioVideo = findViewById(R.id.btnAudioVideo);
+        mChatAudioVideo.setOnClickListener(this);
+        mChatAudioVideo.setVisibility(GONE);
         mDepartment = findViewById(R.id.modify_department);
         mPosition = findViewById(R.id.modify_position);
         mCard = findViewById(R.id.modify_card);
@@ -124,6 +137,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             });
             findViewById(R.id.add_wording_layout).setVisibility(GONE);
             findViewById(R.id.dep_layout).setVisibility(VISIBLE);
+            mChatAudioVideo.setVisibility(VISIBLE);
             loadUserProfile();
             loadUser();
             return;
@@ -146,6 +160,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             });
             findViewById(R.id.add_wording_layout).setVisibility(GONE);
             findViewById(R.id.dep_layout).setVisibility(VISIBLE);
+            mChatAudioVideo.setVisibility(VISIBLE);
             loadUser();
         } else if (data instanceof V2TIMFriendApplication) {
             mFriendApplication = (V2TIMFriendApplication) data;
@@ -264,7 +279,10 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         loginReq.setUserId(mId);
         Yz.getSession().getUserByUserId(loginReq, new OnResultDataListener() {
             @Override
-            public void onResult(RequestWork req, ResponseWork resp) {
+            public void onResult(RequestWork req, ResponseWork resp) throws Exception{
+                if(getContext() instanceof BaseActivity){
+                    ((BaseActivity) getContext()).onResult(req,resp);
+                }
                 if (resp.isSuccess() && resp instanceof LoginResp) {
                     OpenData data = ((LoginResp) resp).getData();
                     if (!TextUtils.isEmpty(data.getUserIcon())) {
@@ -502,7 +520,57 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
     public void onClick(View v) {
         if (v.getId() == R.id.btnChat) {
             chat();
-        } else if (v.getId() == R.id.btnDel) {
+        } else if(v.getId() == R.id.btnAudioVideo){
+            if (mDialog == null) {
+                mDialog = PopWindowUtil.buildFullScreenDialog((Activity) getContext());
+                View moreActionView = inflate(getContext(), R.layout.chat_audio_video_pop_menu, null);
+                moreActionView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                    }
+                });
+                Button addBtn = moreActionView.findViewById(R.id.video_call);
+                addBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        List<UserModel> contactList = new ArrayList<>();
+                        UserModel model = new UserModel();
+                        model.userId = mId;
+                        model.userName = mNickname;
+                        model.userSig = TUIKitConfigs.getConfigs().getGeneralConfig().getUserSig();
+                        contactList.add(model);
+                        TRTCVideoCallActivity.startCallSomeone(getContext(), contactList);
+                        mDialog.dismiss();
+
+                    }
+                });
+                Button deleteBtn = moreActionView.findViewById(R.id.audio_call);
+                deleteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        List<UserModel> contactList = new ArrayList<>();
+                        UserModel model = new UserModel();
+                        model.userId = mId;
+                        model.userName = mNickname;
+                        model.userSig = TUIKitConfigs.getConfigs().getGeneralConfig().getUserSig();
+                        contactList.add(model);
+                        TRTCAudioCallActivity.startCallSomeone(getContext(), contactList);
+                        mDialog.dismiss();
+                    }
+                });
+                Button cancelBtn = moreActionView.findViewById(R.id.cancel);
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                    }
+                });
+                mDialog.setContentView(moreActionView);
+            } else {
+                mDialog.show();
+            }
+        }else if (v.getId() == R.id.btnDel) {
             delete();
         } else if (v.getId() == R.id.remark) {
             Bundle bundle = new Bundle();

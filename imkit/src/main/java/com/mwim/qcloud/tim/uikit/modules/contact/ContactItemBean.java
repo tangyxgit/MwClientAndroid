@@ -183,6 +183,9 @@ public class ContactItemBean extends BaseIndexPinyinBean {
             setNickname(member.getNickName());
         }
         setAvatarurl(member.getFaceUrl());
+        List<Object> list = new ArrayList<>();
+        list.add(member.getFaceUrl());
+        setIconUrlList(list);
         setGroup(false);
         return this;
     }

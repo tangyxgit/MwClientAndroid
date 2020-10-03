@@ -22,16 +22,14 @@ import java.util.ArrayList;
 
 public class StartGroupMemberSelectActivity extends BaseActivity {
 
-    private ContactListView mContactListView;
     private ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
         mMembers.clear();
-
         GroupInfo groupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
-        mContactListView = findViewById(R.id.group_create_member_list);
+        ContactListView mContactListView = findViewById(R.id.group_create_member_list);
         mContactListView.setGroupInfo(groupInfo);
         mContactListView.loadDataSource(ContactListView.DataSource.GROUP_MEMBER_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
@@ -53,6 +51,12 @@ public class StartGroupMemberSelectActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    public void onInitValue() throws Exception {
+        super.onInitValue();
+        setTitleName("选择提醒的人");
+    }
 
     @Override
     public View onCustomTitleRight(TextView view) {

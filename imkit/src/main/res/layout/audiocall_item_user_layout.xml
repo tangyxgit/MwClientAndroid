@@ -20,7 +20,7 @@
         android:id="@+id/fl_shade"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#70000000"
+        android:background="@drawable/fl_shade_bg"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -39,7 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/pb_audio"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/username_border"
         android:gravity="center"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"

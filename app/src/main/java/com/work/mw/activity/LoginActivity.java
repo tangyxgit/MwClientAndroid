@@ -165,10 +165,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     userApi.setEmail(data.getEmail());
                     LoginReq loginReq = (LoginReq) req;
                     userApi.setMobile(loginReq.getMobile());
+                    userApi.setToken(((LoginResp) resp).getToken());
+                    showProgressLoading(false,false);
                     IMKitAgent.login(userApi.getUserId(), userApi.getUserSign(), new IUIKitCallBack() {
                         @Override
                         public void onSuccess(Object data) {
                             SLog.e("im success:"+data);
+                            dismissProgress();
                             Intent intent = new Intent(LoginActivity.this, MwWorkActivity.class);
                             startActivity(intent);
                             finish();
@@ -176,6 +179,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                         @Override
                         public void onError(String module, final int errCode, final String errMsg) {
+                            dismissProgress();
                             SLog.e("登录失败, errCode = " + errCode + "errInfo = " + errMsg);
                         }
                     });

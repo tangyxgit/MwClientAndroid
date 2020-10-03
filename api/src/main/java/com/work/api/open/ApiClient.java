@@ -10,6 +10,7 @@ import com.http.network.task.ConnectDataTask;
 import com.http.network.task.ObjectMapperFactory;
 import com.work.api.open.model.DownFileReq;
 import com.work.util.SLog;
+import com.work.util.SharedUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -182,6 +183,7 @@ public class ApiClient {
         params.resp = responseWork;
         params.addHeader("Accept", "application/json");
         params.addHeader("Content-Type", "application/json;charset=UTF-8");
+        params.addHeader("token", SharedUtils.getString("userToken"));
         if(requestWork!=null){
             Map<String,String> header = requestWork.getRequestHeader();
             if(header!=null && header.size()>0){

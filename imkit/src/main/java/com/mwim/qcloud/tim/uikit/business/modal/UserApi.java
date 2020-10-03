@@ -20,6 +20,7 @@ public class UserApi {
     private final static String USER_POSITION="userPosition";
     private final static String USER_EMAIL="userEmailKey";
     private final static String USER_DEPARTMENT="userDepartment";
+    private final static String USER_TOKEN="userToken";
     private static UserApi INSTANCE;
     private String userId;
     @JsonIgnore
@@ -48,6 +49,7 @@ public class UserApi {
 
     private UserApi() {
     }
+
 
     public String getUserId() {
         if(TextUtils.isEmpty(userId)){
@@ -82,11 +84,15 @@ public class UserApi {
     }
 
     public String getToken() {
+        if(TextUtils.isEmpty(token)){
+            token = SharedUtils.getString(USER_TOKEN);
+        }
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
+        SharedUtils.putData(USER_TOKEN,token);
     }
 
     public String getStore() {
@@ -181,6 +187,7 @@ public class UserApi {
         SharedUtils.putData(USER_DEPARTMENT,USER_DEPARTMENT);
     }
 
+
     public void clear(){
         SharedUtils.removeData(USER_ID);
         SharedUtils.removeData(USER_SIGN);
@@ -191,5 +198,6 @@ public class UserApi {
         SharedUtils.removeData(USER_CARD);
         SharedUtils.removeData(USER_ICON);
         SharedUtils.removeData(USER_NAME);
+        SharedUtils.removeData(USER_TOKEN);
     }
 }

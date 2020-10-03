@@ -11,6 +11,11 @@ import com.work.api.open.model.client.OpenData;
 public class LoginResp extends BaseResp {
 
     private OpenData data;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
 
     public OpenData getData() {
         return data;
