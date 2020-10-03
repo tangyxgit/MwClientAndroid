@@ -299,7 +299,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
 
     private void fillConversationUrlForGroup(final V2TIMConversation conversation, final ConversationInfo info) {
         if (TextUtils.isEmpty(conversation.getFaceUrl())) {
-            final String savedIcon = getGroupConversationAvatar(conversation.getConversationID());
+            String savedIcon = getGroupConversationAvatar(conversation.getConversationID());
             if (TextUtils.isEmpty(savedIcon)) {
                 fillFaceUrlList(conversation.getGroupID(), info);
             } else {

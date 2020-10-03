@@ -54,8 +54,8 @@ public class HUAWEIHmsMessageService extends HmsMessageService {
         DemoLog.i(TAG, "huawei badge = " + number);
         try {
             Bundle extra = new Bundle();
-            extra.putString("package", "com.tencent.qcloud.tim.tuikit");
-            extra.putString("class", "com.tencent.qcloud.tim.demo.SplashActivity");
+            extra.putString("package", "com.work.mw");
+            extra.putString("class", "com.work.mw.activity.SplashActivity");
             extra.putInt("badgenumber", number);
             context.getContentResolver().call(Uri.parse("content://com.huawei.android.launcher.settings/badge/"), "change_badge", null, extra);
         } catch (Exception e) {

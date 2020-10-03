@@ -233,6 +233,7 @@ public class TUIKitImpl {
 
             @Override
             public void onMemberInvited(String groupID, V2TIMGroupMemberInfo opUser, List<V2TIMGroupMemberInfo> memberList) {
+                ConversationManagerKit.getInstance().setGroupConversationAvatar("group_"+groupID,null);
                 for (V2TIMGroupMemberInfo v2TIMGroupMemberInfo : memberList) {
                     if (v2TIMGroupMemberInfo.getUserID().equals(V2TIMManager.getInstance().getLoginUser())) {
                         GroupChatManagerKit.getInstance().notifyJoinGroup(groupID, true);
@@ -243,6 +244,7 @@ public class TUIKitImpl {
 
             @Override
             public void onMemberKicked(String groupID, V2TIMGroupMemberInfo opUser, List<V2TIMGroupMemberInfo> memberList) {
+                ConversationManagerKit.getInstance().setGroupConversationAvatar("group_"+groupID,null);
                 for (V2TIMGroupMemberInfo v2TIMGroupMemberInfo : memberList) {
                     if (v2TIMGroupMemberInfo.getUserID().equals(V2TIMManager.getInstance().getLoginUser())) {
                         GroupChatManagerKit.getInstance().notifyKickedFromGroup(groupID);
