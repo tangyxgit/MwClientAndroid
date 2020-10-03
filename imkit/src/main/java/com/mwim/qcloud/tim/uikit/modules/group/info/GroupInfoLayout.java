@@ -371,7 +371,7 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
 //            mJoinTypeView.setVisibility(VISIBLE);
             if (mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_WORK)
                     || mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_PRIVATE)) {
-                mDissolveBtn.setText(R.string.exit_group);
+                mDissolveBtn.setText(R.string.dissolve);
             }
         } else {
             mTransferGroupView.setVisibility(GONE);
