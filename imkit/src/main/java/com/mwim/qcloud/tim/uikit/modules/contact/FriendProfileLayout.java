@@ -319,26 +319,29 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         mId = bean.getId();
         mNickname = bean.getNickname();
         SLog.e("isFriend:"+bean.isFriend());
+        mAddBlackView.setCheckListener(null);
+        mAddBlackView.setChecked(bean.isBlackList());
+        mAddBlackView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    addBlack();
+                }else{
+                    deleteBlack();
+                }
+            }
+        });
         if (bean.isFriend()) {
             mRemarkView.setVisibility(VISIBLE);
             mRemarkView.setContent(bean.getRemark());
 //            mAddBlackView.setVisibility(VISIBLE);
-            mAddBlackView.setChecked(bean.isBlackList());
-            mAddBlackView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        addBlack();
-                    } else {
-                        deleteBlack();
-                    }
-                }
-            });
             mDeleteView.setVisibility(VISIBLE);
         } else {
             mRemarkView.setVisibility(GONE);
 //            mAddBlackView.setVisibility(GONE);
             mDeleteView.setVisibility(GONE);
+            mChatAudioVideo.setVisibility(GONE);
+            mChatView.setVisibility(GONE);
         }
 
         if (!TextUtils.isEmpty(mNickname)) {
