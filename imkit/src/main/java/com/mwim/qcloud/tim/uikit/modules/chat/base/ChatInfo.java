@@ -15,7 +15,7 @@ public class ChatInfo implements Serializable {
     private int type = V2TIMConversation.V2TIM_C2C;
     private String id;
     private boolean isTopChat;
-    private static List<V2TIMGroupAtInfo> atInfoList;
+    private List<V2TIMGroupAtInfo> atInfoList;
 
     public ChatInfo() {
 

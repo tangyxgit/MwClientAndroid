@@ -569,7 +569,7 @@ public class MessageInfoUtil {
                 String localPath = imageEle.getPath();
                 if (msgInfo.isSelf() && !TextUtils.isEmpty(localPath)) {
                     msgInfo.setDataPath(localPath);
-                    int size[] = ImageUtil.getImageSize(localPath);
+                    int[] size = ImageUtil.getImageSize(localPath);
                     msgInfo.setImgWidth(size[0]);
                     msgInfo.setImgHeight(size[1]);
                 }

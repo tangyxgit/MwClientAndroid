@@ -191,7 +191,8 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
         updateAtUserInfoMap(names, ids);
         if (mTextInput != null) {
-            mTextInput.setText(mTextInput.getText() + displayInputString);
+            String text = mTextInput.getText() + displayInputString;
+            mTextInput.setText(text);
             mTextInput.setSelection(mTextInput.getText().length());
         }
     }

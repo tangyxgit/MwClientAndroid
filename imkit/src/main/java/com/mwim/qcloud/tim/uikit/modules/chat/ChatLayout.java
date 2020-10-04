@@ -27,7 +27,7 @@ import com.work.util.SharedUtils;
 import java.util.List;
 
 
-public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.GroupNotifyHandler {
+public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.GroupNotifyHandler, C2CChatManagerKit.Chat2C2Handler {
 
     private GroupInfo mGroupInfo;
     private GroupChatManagerKit mGroupChatManager;
@@ -90,6 +90,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
             getTitleBar().getRightIcon().setImageResource(R.drawable.icon_more);
             mC2CChatManager = C2CChatManagerKit.getInstance();
             mC2CChatManager.setCurrentChatInfo(chatInfo);
+            mC2CChatManager.setChat2C2Handler(this);
             loadChatMessages(null);
         }
     }
@@ -143,5 +144,11 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
             mGroupApplyLayout.getContent().setText(getContext().getString(R.string.group_apply_tips, size));
             mGroupApplyLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onChatRemarkChange(String name) {
+        getChatInfo().setChatName(name);
+        getTitleBar().setTitle(name, TitleBarLayout.POSITION.MIDDLE);
     }
 }

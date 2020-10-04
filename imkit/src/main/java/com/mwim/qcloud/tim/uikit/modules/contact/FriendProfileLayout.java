@@ -26,6 +26,7 @@ import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.mwim.qcloud.tim.uikit.modules.chat.C2CChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
 import com.tencent.imsdk.BaseConstants;
@@ -597,7 +598,8 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         V2TIMFriendInfo v2TIMFriendInfo = new V2TIMFriendInfo();
         v2TIMFriendInfo.setUserID(mId);
         v2TIMFriendInfo.setFriendRemark(txt);
-
+        C2CChatManagerKit.getInstance().onChat2C2RemarkChange(txt);
+        ConversationManagerKit.getInstance().updateContacts();
         V2TIMManager.getFriendshipManager().setFriendInfo(v2TIMFriendInfo, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {

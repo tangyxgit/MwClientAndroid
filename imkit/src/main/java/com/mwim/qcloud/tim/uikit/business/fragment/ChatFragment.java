@@ -121,7 +121,7 @@ public class ChatFragment extends BaseFragment {
                 startActivityForResult(intent, 1);
             }
         });
-        if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {
+        if (mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP) {
             V2TIMConversation v2TIMConversation = V2TIMManager.getConversationManager().getConversation(mChatInfo.getId());
             if (v2TIMConversation == null){
                 SLog.d("getConversation failed");
@@ -138,19 +138,20 @@ public class ChatFragment extends BaseFragment {
                     final List<V2TIMGroupAtInfo> atInfoList = mChatInfo.getAtInfoList();
                     if (atInfoList == null || atInfoList.isEmpty()) {
                         mChatLayout.getAtInfoLayout().setVisibility(GONE);
-                        return;
                     } else {
                         mChatLayout.getChatManager().getAtInfoChatMessages(atInfoList.get(atInfoList.size() - 1).getSeq(), lastMessage, new IUIKitCallBack() {
                             @Override
                             public void onSuccess(Object data) {
                                 mChatLayout.getMessageLayout().scrollToPosition((int) atInfoList.get(atInfoList.size() - 1).getSeq());
                                 LinearLayoutManager mLayoutManager = (LinearLayoutManager) mChatLayout.getMessageLayout().getLayoutManager();
-                                mLayoutManager.scrollToPositionWithOffset((int) atInfoList.get(atInfoList.size() - 1).getSeq(), 0);
+                                if(mLayoutManager!=null){
+                                    mLayoutManager.scrollToPositionWithOffset((int) atInfoList.get(atInfoList.size() - 1).getSeq(), 0);
 
-                                atInfoList.remove(atInfoList.size() - 1);
-                                mChatInfo.setAtInfoList(atInfoList);
+                                    atInfoList.remove(atInfoList.size() - 1);
+                                    mChatInfo.setAtInfoList(atInfoList);
 
-                                updateAtInfoLayout();
+                                    updateAtInfoLayout();
+                                }
                             }
 
                             @Override

@@ -214,7 +214,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
 
     @Override
     protected void addGroupMessage(MessageInfo msgInfo) {
-        V2TIMGroupTipsElem groupTips = null;
+        V2TIMGroupTipsElem groupTips;
         if (msgInfo.getMsgType() == MessageInfo.MSG_TYPE_GROUP_JOIN
                 || msgInfo.getMsgType() == MessageInfo.MSG_TYPE_GROUP_QUITE
                 || msgInfo.getMsgType() == MessageInfo.MSG_TYPE_GROUP_KICK
