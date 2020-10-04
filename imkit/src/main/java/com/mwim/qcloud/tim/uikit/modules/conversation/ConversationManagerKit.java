@@ -263,7 +263,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
     }
 
     private int getAtInfoType(V2TIMConversation conversation){
-        int atInfoType = -1;
+        int atInfoType;
         boolean atMe = false;
         boolean atAll = false;
 
@@ -280,7 +280,6 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             }
             if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL){
                 atAll = true;
-                continue;
             }
         }
 

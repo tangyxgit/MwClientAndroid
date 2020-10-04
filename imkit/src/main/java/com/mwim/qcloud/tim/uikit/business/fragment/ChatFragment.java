@@ -187,7 +187,7 @@ public class ChatFragment extends BaseFragment {
     }
 
     private int getAtInfoType(List<V2TIMGroupAtInfo> atInfoList) {
-        int atInfoType = -1;
+        int atInfoType;
         boolean atMe = false;
         boolean atAll = false;
 
@@ -202,7 +202,6 @@ public class ChatFragment extends BaseFragment {
             }
             if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL) {
                 atAll = true;
-                continue;
             }
         }
 
