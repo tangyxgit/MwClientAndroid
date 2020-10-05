@@ -210,8 +210,7 @@ public class MessageInfoUtil {
      * @return
      */
     public static V2TIMMessage buildGroupCustomMessage(String customMessage) {
-        V2TIMMessage v2TIMMessage = V2TIMManager.getMessageManager().createCustomMessage(customMessage.getBytes());
-        return v2TIMMessage;
+        return V2TIMManager.getMessageManager().createCustomMessage(customMessage.getBytes());
     }
 
     /**

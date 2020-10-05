@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
-import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.tencent.imsdk.v2.V2TIMFriendInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
 import com.mwim.qcloud.tim.uikit.component.indexlib.IndexBar.bean.BaseIndexPinyinBean;

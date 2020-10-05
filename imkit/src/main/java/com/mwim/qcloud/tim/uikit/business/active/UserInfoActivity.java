@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.core.content.ContextCompat;
+
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
@@ -26,6 +28,8 @@ import com.work.api.open.model.client.OpenData;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 import com.workstation.crop.config.CropProperty;
+
+import java.util.HashMap;
 
 /**
  * Created by tangyx
@@ -54,6 +58,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         mPosition = findViewById(R.id.modify_position);
         mCard = findViewById(R.id.modify_card);
         mEmail = findViewById(R.id.modify_email);
+        ImageView mRightView = findViewById(R.id.icon_arrow_right);
+        mRightView.setColorFilter(ContextCompat.getColor(this,R.color.color_E4E6E9));
     }
 
     @Override
@@ -98,6 +104,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         mPosition.setContent(userApi.getPosition());
         mCard.setContent(userApi.getCard());
         mEmail.setContent(userApi.getEmail());
+        HashMap<String,byte[]> customMap = new HashMap<>();
+        customMap.put("mobile",userApi.getMobile().getBytes());
+        v2TIMUserFullInfo.setCustomInfo(customMap);
         V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
