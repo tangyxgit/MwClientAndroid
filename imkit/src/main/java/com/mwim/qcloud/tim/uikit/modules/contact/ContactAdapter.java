@@ -14,8 +14,8 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.util.SizeUtils;
+import com.work.util.ToastUtil;
 
 import java.util.List;
 
@@ -104,7 +104,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
                 @Override
                 public void onError(int code, String desc) {
-                    ToastUtil.toastShortMessage("Error code = " + code + ", desc = " + desc);
+                    ToastUtil.error(holder.avatar.getContext(),"Error code = " + code + ", desc = " + desc);
                 }
 
                 @Override

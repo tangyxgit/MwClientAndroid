@@ -15,7 +15,7 @@ import com.tencent.imsdk.v2.V2TIMFileElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
+import com.work.util.ToastUtil;
 
 public class MessageFileHolder extends MessageContentHolder {
 
@@ -88,7 +88,7 @@ public class MessageFileHolder extends MessageContentHolder {
 
                         @Override
                         public void onError(int code, String desc) {
-                            ToastUtil.toastLongMessage("getToFile fail:" + code + "=" + desc);
+                            ToastUtil.info(fileNameText.getContext(),"getToFile fail:" + code + "=" + desc);
                             fileStatusText.setText(R.string.un_download);
                             sendingProgress.setVisibility(View.GONE);
                         }
@@ -102,7 +102,6 @@ public class MessageFileHolder extends MessageContentHolder {
                             msgContentFrame.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-//                                    ToastUtil.toastLongMessage("文件路径:" + path);
                                     X5FileOpenActivity.openX5File(IMKitAgent.instance(),path,fileElem.getFileName());
                                 }
                             });
