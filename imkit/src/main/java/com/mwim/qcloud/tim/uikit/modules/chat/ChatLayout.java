@@ -149,6 +149,6 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
     @Override
     public void onChatRemarkChange(String name) {
         getChatInfo().setChatName(name);
-        getTitleBar().setTitle(name, TitleBarLayout.POSITION.MIDDLE);
+        getTitleBar().setTitle(getChatInfo().getChatName(), TitleBarLayout.POSITION.MIDDLE);
     }
 }

@@ -277,6 +277,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
     }
 
     private void loadUser() {
+        if(getContext() instanceof BaseActivity){
+            ((BaseActivity) getContext()).showProgressLoading(false,false);
+        }
         LoginReq loginReq = new LoginReq();
         loginReq.setUserId(mId);
         Yz.getSession().getUserByUserId(loginReq, new OnResultDataListener() {
@@ -284,6 +287,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             public void onResult(RequestWork req, ResponseWork resp) throws Exception{
                 if(getContext() instanceof BaseActivity){
                     ((BaseActivity) getContext()).onResult(req,resp);
+                    ((BaseActivity) getContext()).dismissProgress();
                 }
                 if (resp.isSuccess() && resp instanceof LoginResp) {
                     OpenData data = ((LoginResp) resp).getData();
@@ -601,7 +605,11 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         V2TIMFriendInfo v2TIMFriendInfo = new V2TIMFriendInfo();
         v2TIMFriendInfo.setUserID(mId);
         v2TIMFriendInfo.setFriendRemark(txt);
-        C2CChatManagerKit.getInstance().onChat2C2RemarkChange(txt);
+        if(TextUtils.isEmpty(txt)){
+            C2CChatManagerKit.getInstance().onChat2C2RemarkChange(mNickNameView.getText().toString());
+        }else{
+            C2CChatManagerKit.getInstance().onChat2C2RemarkChange(txt);
+        }
         ConversationManagerKit.getInstance().updateContacts();
         V2TIMManager.getFriendshipManager().setFriendInfo(v2TIMFriendInfo, new V2TIMCallback() {
             @Override
