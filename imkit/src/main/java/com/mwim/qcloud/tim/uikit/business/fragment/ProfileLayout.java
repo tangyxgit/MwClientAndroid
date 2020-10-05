@@ -3,6 +3,7 @@ package com.mwim.qcloud.tim.uikit.business.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
@@ -60,7 +62,8 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         mUserIcon = findViewById(R.id.self_icon);
         mNickname = findViewById(R.id.self_account);
         mSubMessage = findViewById(R.id.sub_message);
-
+        ImageView mArrowRight = findViewById(R.id.arrow_right);
+        mArrowRight.setColorFilter(ContextCompat.getColor(getContext(),R.color.white), PorterDuff.Mode.SRC_ATOP);
         findViewById(R.id.user_bg_layout).setOnClickListener(this);
         mDepartment = findViewById(R.id.modify_department);
         mDepartment.setLeftDrawable(R.drawable.icon_department_fill);

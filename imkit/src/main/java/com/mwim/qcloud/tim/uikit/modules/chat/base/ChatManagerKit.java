@@ -31,8 +31,7 @@ import java.util.List;
 public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements MessageRevokedManager.MessageRevokeHandler {
 
     protected static final int MSG_PAGE_COUNT = 20;
-    protected static final int REVOKE_TIME_OUT = 6223;
-    private static final String TAG = ChatManagerKit.class.getSimpleName();
+    protected static final int REVOKE_TIME_OUT = 10031;
     protected ChatProvider mCurrentProvider;
 
     protected boolean mIsMore;
@@ -304,7 +303,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                             ToastUtil.error(IMKitAgent.instance(),"您和对方不是好友，发送失败");
                         }
                         if (callBack != null) {
-                            callBack.onError(TAG,code, desc);
+                            callBack.onError("SLog",code, desc);
                         }
                         message.setStatus(MessageInfo.MSG_STATUS_SEND_FAIL);
                         mCurrentProvider.updateMessageInfo(message);
@@ -393,7 +392,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                 @Override
                 public void onError(int code, String desc) {
                     mIsLoading = false;
-                    callBack.onError(TAG,code, desc);
+                    callBack.onError("SLog",code, desc);
                     SLog.e("loadChatMessages getC2CHistoryMessageList failed, code = " + code + ", desc = " + desc);
                 }
 
@@ -407,7 +406,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                 @Override
                 public void onError(int code, String desc) {
                     mIsLoading = false;
-                    callBack.onError(TAG,code, desc);
+                    callBack.onError("SLog",code, desc);
                     SLog.e("loadChatMessages getGroupHistoryMessageList failed, code = " + code + ", desc = " + desc);
                 }
 
