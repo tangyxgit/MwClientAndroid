@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.active.X5FileOpenActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
@@ -47,6 +49,15 @@ public class MessageFileHolder extends MessageContentHolder {
         final V2TIMFileElem fileElem = message.getFileElem();
         final String path = msg.getDataPath();
         fileNameText.setText(fileElem.getFileName());
+        if(msg.isSelf()){
+            fileNameText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
+            fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
+            fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
+        }else{
+            fileNameText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.black_font_color));
+            fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.black_font_color));
+            fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.black_font_color));
+        }
         String size = FileUtil.FormetFileSize(fileElem.getFileSize());
         fileSizeText.setText(size);
         msgContentFrame.setOnClickListener(new View.OnClickListener() {
