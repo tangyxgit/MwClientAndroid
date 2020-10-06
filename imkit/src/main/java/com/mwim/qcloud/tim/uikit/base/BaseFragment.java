@@ -11,6 +11,9 @@ public class BaseFragment extends Fragment {
     }
 
     public void forward(int viewId, Fragment fragment, String name, boolean hide) {
+        if(getActivity()==null){
+            return;
+        }
         FragmentTransaction trans = getActivity().getSupportFragmentManager().beginTransaction();
         if (hide) {
             trans.hide(this);
@@ -24,6 +27,8 @@ public class BaseFragment extends Fragment {
     }
 
     public void backward() {
-        getActivity().getSupportFragmentManager().popBackStack();
+        if(getActivity()!=null){
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
     }
 }

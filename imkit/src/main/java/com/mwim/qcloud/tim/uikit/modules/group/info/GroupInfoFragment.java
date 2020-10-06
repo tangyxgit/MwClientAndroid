@@ -30,6 +30,9 @@ public class GroupInfoFragment extends BaseFragment {
     }
 
     private void initView() {
+        if(getArguments()==null){
+            return;
+        }
         GroupInfoLayout mGroupInfoLayout = mBaseView.findViewById(R.id.group_info_layout);
         mGroupInfoLayout.setGroupId(getArguments().getString(TUIKitConstants.Group.GROUP_ID));
         mGroupInfoLayout.setRouter(new IGroupMemberRouter() {

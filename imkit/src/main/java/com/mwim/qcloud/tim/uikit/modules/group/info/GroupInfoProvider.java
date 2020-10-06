@@ -168,6 +168,7 @@ public class GroupInfoProvider {
                     GroupMemberInfo member = new GroupMemberInfo();
                     members.add(member.covertTIMGroupMemberInfo(v2TIMGroupMemberInfoResult.getMemberInfoList().get(i)));
                 }
+                mGroupMembers.clear();
                 mGroupMembers.addAll(members);
                 mGroupInfo.setMemberDetails(mGroupMembers);
                 if (v2TIMGroupMemberInfoResult.getNextSeq() != 0){

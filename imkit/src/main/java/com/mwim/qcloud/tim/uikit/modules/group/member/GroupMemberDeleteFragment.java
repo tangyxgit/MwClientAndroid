@@ -28,7 +28,11 @@ public class GroupMemberDeleteFragment extends BaseFragment {
     }
 
     private void init() {
-        mMemberDelLayout.setDataSource((GroupInfo) getArguments().getSerializable(TUIKitConstants.Group.GROUP_INFO));
+        Bundle bundle = getArguments();
+        if(bundle==null){
+            return;
+        }
+        mMemberDelLayout.setDataSource((GroupInfo) bundle.getSerializable(TUIKitConstants.Group.GROUP_INFO));
         mMemberDelLayout.getTitleBar().setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

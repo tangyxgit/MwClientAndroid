@@ -13,7 +13,6 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 public class GroupApplyManagerActivity extends Activity {
 
     private GroupApplyManagerLayout mManagerLayout;
-    private GroupInfo mGroupInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +24,7 @@ public class GroupApplyManagerActivity extends Activity {
         }
         mManagerLayout = findViewById(R.id.group_apply_manager_layout);
 
-        mGroupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
+        GroupInfo mGroupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
         mManagerLayout.setDataSource(mGroupInfo);
     }
 

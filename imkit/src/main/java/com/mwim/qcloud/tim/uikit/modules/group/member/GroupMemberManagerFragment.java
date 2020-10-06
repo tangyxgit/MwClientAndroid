@@ -30,7 +30,11 @@ public class GroupMemberManagerFragment extends BaseFragment {
     }
 
     private void init() {
-        GroupInfo mGroupInfo = (GroupInfo) getArguments().getSerializable(TUIKitConstants.Group.GROUP_INFO);
+        Bundle bundle = getArguments();
+        if(bundle==null){
+            return;
+        }
+        GroupInfo mGroupInfo = (GroupInfo) bundle.getSerializable(TUIKitConstants.Group.GROUP_INFO);
         mMemberLayout.setDataSource(mGroupInfo);
         mMemberLayout.getTitleBar().setOnLeftClickListener(new View.OnClickListener() {
             @Override

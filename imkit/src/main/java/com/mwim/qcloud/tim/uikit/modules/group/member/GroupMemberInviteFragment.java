@@ -17,12 +17,11 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 public class GroupMemberInviteFragment extends BaseFragment {
 
     private GroupMemberInviteLayout mInviteLayout;
-    private View mBaseView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mBaseView = inflater.inflate(R.layout.group_fragment_invite_members, container, false);
+        View mBaseView = inflater.inflate(R.layout.group_fragment_invite_members, container, false);
         mInviteLayout = mBaseView.findViewById(R.id.group_member_invite_layout);
         mInviteLayout.setParentLayout(this);
         init();
@@ -30,7 +29,11 @@ public class GroupMemberInviteFragment extends BaseFragment {
     }
 
     private void init() {
-        mInviteLayout.setDataSource((GroupInfo) getArguments().getSerializable(TUIKitConstants.Group.GROUP_INFO));
+        Bundle bundle = getArguments();
+        if(bundle==null){
+            return;
+        }
+        mInviteLayout.setDataSource((GroupInfo) bundle.getSerializable(TUIKitConstants.Group.GROUP_INFO));
         mInviteLayout.getTitleBar().setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
