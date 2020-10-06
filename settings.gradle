@@ -1,3 +1,4 @@
+include ':update_app'
 include ':recycler_view_helper'
 include ':netwrok'
 include ':api'

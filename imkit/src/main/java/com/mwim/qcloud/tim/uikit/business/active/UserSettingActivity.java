@@ -6,6 +6,7 @@ import android.view.View;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
+import com.mwim.qcloud.tim.uikit.business.dialog.UpdateAppDialog;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.work.util.AppUtils;
 import com.work.util.CacheUtil;
@@ -61,6 +62,8 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else if(view.getId() == R.id.modify_version){
+            UpdateAppDialog.showUpdateDialog(this,true);
         }
     }
 }

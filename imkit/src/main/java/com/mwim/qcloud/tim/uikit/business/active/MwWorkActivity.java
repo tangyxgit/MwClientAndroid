@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.view.View;
 
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
@@ -23,10 +22,12 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.adapter.TabPagerAdapter;
+import com.mwim.qcloud.tim.uikit.business.dialog.UpdateAppDialog;
 import com.mwim.qcloud.tim.uikit.business.fragment.ContactFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.ConversationFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.ProfileFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.WorkFragment;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.ThirdPushTokenMgr;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
@@ -39,6 +40,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -67,6 +69,9 @@ public class MwWorkActivity extends IMBaseActivity implements
         //设置为必须要验证才能加好友
         V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
         v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
+        HashMap<String,byte[]> customMap = new HashMap<>();
+        customMap.put("mobile", UserApi.instance().getMobile().getBytes());
+        v2TIMUserFullInfo.setCustomInfo(customMap);
         V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
 
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);
@@ -99,6 +104,7 @@ public class MwWorkActivity extends IMBaseActivity implements
 
         mNavigationBar.initialise();
         mNavigationBar.setTabSelectedListener(this);
+        UpdateAppDialog.showUpdateDialog(this,false);
     }
 
     private Drawable getSelectDrawable(@DrawableRes int resId, int color){

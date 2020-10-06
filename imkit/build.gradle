@@ -76,6 +76,7 @@ dependencies {
     //x5 内核
     implementation 'com.tencent.tbs.tbssdk:sdk:43939'
     api project(path: ':base')
+    implementation project(path: ':update_app')
     // vivo push sdk
 //    implementation(name:'vivo_pushsdk-v2.9.0.0', ext:'aar')
     // oppo push sdk

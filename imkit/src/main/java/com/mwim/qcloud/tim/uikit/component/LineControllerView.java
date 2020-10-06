@@ -16,6 +16,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
@@ -121,13 +122,13 @@ public class LineControllerView extends LinearLayout {
             params.width = ScreenUtil.getPxByDp(120);
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             mContentText.setLayoutParams(params);
-            mContentText.setTextIsSelectable(false);
+//            mContentText.setTextIsSelectable(false);
         } else {
             ViewGroup.LayoutParams params = mContentText.getLayoutParams();
             params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             mContentText.setLayoutParams(params);
-            mContentText.setTextIsSelectable(true);
+//            mContentText.setTextIsSelectable(true);
         }
     }
 

@@ -201,4 +201,8 @@
     <string name="toast_add_more_friends" translatable="false">不能添加自己为好友</string>
     <string name="toast_update_pwd_success" translatable="false">修改成功</string>
 
+    <string name="label_update_app_title" translatable="false">版本更新</string>
+    <string name="label_update_app_next" translatable="false">稍后提醒</string>
+    <string name="label_update_app" translatable="false">马上体验</string>
+    <string name="toast_app_version_up" translatable="false">已经是最新版本了！</string>
 </resources>

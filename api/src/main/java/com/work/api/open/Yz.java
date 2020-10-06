@@ -15,6 +15,7 @@ import com.work.api.open.model.GetGroupMsgResp;
 import com.work.api.open.model.GetToolListByUserIdResp;
 import com.work.api.open.model.GetUserByParamReq;
 import com.work.api.open.model.GetUserByParamResp;
+import com.work.api.open.model.GetVersionResp;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.RegisterReq;
@@ -125,6 +126,12 @@ public class Yz extends ApiClient {
      */
     public void updateGroup(CreateGroupReq createGroupReq,OnResultDataListener onResultDataListener){
         requestPost(ModeApi.updateGroup,createGroupReq,new BaseResp(),onResultDataListener);
+    }
+    /**
+     * 获取版本信息
+     */
+    public void getVersion(OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getVersion,new BaseReq(),new GetVersionResp(),onResultDataListener);
     }
     /**
      * 上传文件

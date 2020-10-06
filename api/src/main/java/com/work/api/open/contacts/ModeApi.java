@@ -71,6 +71,10 @@ public final class ModeApi {
      */
     public final static String getGroupMsg = "group/getGroupMsg";
     /**
+     * 获取版本信息
+     */
+    public final static String getVersion = "api/getVersion";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";
