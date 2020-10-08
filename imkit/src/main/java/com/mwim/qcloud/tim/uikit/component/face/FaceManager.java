@@ -208,7 +208,7 @@ public class FaceManager {
                 String url = (String) view.getTag();
                 WebActivity.startWebView(url);
             }
-        }, ContextCompat.getColor(IMKitAgent.instance(),R.color.color_2da0f0));
+        }, ContextCompat.getColor(IMKitAgent.instance(),R.color.color_E4E6E9));
 
         regex = "\\[(\\S+?)\\]";
         p = Pattern.compile(regex);

@@ -21,12 +21,14 @@ import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
+import java.util.HashMap;
 
 /**
  * Created by tangyx
@@ -66,6 +68,10 @@ public final class IMKitAgent {
     public static void init(Context context,String appKey){
         instance = context;
         TUIKit.init(context,AppId,getConfigs(context));
+        HashMap<String,Object> map = new HashMap();
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
+        QbSdk.initTbsSettings(map);
         QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
             @Override
             public void onCoreInitFinished() {

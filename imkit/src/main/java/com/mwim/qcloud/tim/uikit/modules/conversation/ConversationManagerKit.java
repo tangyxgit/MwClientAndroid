@@ -160,7 +160,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             return;
         }
         List<ConversationInfo> dataSource = mProvider.getDataSource();
-        ArrayList exists = new ArrayList();
+        ArrayList<ConversationInfo> exists = new ArrayList();
         for (int j = 0; j < infos.size(); j++) {
             ConversationInfo update = infos.get(j);
             boolean exist = false;
@@ -323,7 +323,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             @Override
             public void onSuccess(V2TIMGroupMemberInfoResult v2TIMGroupMemberInfoResult) {
                 List<V2TIMGroupMemberFullInfo> v2TIMGroupMemberFullInfoList = v2TIMGroupMemberInfoResult.getMemberInfoList();
-                int faceSize = v2TIMGroupMemberFullInfoList.size() > 9 ? 9 : v2TIMGroupMemberFullInfoList.size();
+                int faceSize = Math.min(v2TIMGroupMemberFullInfoList.size(), 9);
                 List<Object> urlList = new ArrayList<>();
                 for (int i = 0; i < faceSize; i++) {
                     V2TIMGroupMemberFullInfo v2TIMGroupMemberFullInfo = v2TIMGroupMemberFullInfoList.get(i);

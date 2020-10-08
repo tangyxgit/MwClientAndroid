@@ -7,19 +7,25 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.mwim.qcloud.tim.uikit.R;
+import com.tencent.smtt.export.external.extension.proxy.ProxyWebChromeClientExtension;
+import com.tencent.smtt.export.external.interfaces.WebResourceError;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.sdk.DownloadListener;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.work.util.PhoneUtils;
+import com.work.util.SLog;
 import com.work.util.SizeUtils;
 import com.work.util.StringUtils;
 
@@ -113,8 +119,8 @@ public class WebViewProgress extends WebView {
             }
 
             @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                super.onReceivedError(view, request, error);
+            public void onReceivedError(WebView webView, WebResourceRequest webResourceRequest, WebResourceError webResourceError) {
+                super.onReceivedError(webView, webResourceRequest, webResourceError);
                 isWebError = true;
                 if(onWebLoadListener!=null){
                     onWebLoadListener.onReceivedError();
@@ -127,9 +133,17 @@ public class WebViewProgress extends WebView {
             }
         });
         setWebChromeClient(new WebChromeClient());
+        setWebChromeClientExtension(new ProxyWebChromeClientExtension(){
+            @Override
+            public void openFileChooser(android.webkit.ValueCallback<Uri[]> valueCallback, String s, String s1) {
+                super.openFileChooser(valueCallback, s, s1);
+                SLog.e("多选文件...");
+            }
+        });
         setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String s, String s1, String s2, String s3, long l) {
+                SLog.e("下载文件："+s+">"+s1+">"+s2+">"+s3+">"+l);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
                 intent.setData(Uri.parse(s));
@@ -137,7 +151,7 @@ public class WebViewProgress extends WebView {
             }
         });
     }
-    public class WebChromeClient extends android.webkit.WebChromeClient {
+    public class WebChromeClient extends com.tencent.smtt.sdk.WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             onWebProgressChanged(newProgress);
@@ -153,6 +167,22 @@ public class WebViewProgress extends WebView {
                 }
                 onWebLoadListener.onWebTitleChange(title);
             }
+        }
+
+        @Override
+        public void openFileChooser(ValueCallback<Uri> valueCallback, String s, String s1) {
+            super.openFileChooser(valueCallback, s, s1);
+            SLog.e("单选文件...");
+        }
+
+        @Override
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> valueCallback, FileChooserParams fileChooserParams) {
+            SLog.e("onShowFileChooser...");
+            fileValueCallback = valueCallback;
+            if(onWebLoadListener!=null){
+                onWebLoadListener.onShowFileChooser();
+            }
+            return super.onShowFileChooser(webView, valueCallback, fileChooserParams);
         }
     }
     public void onWebProgressChanged(int newProgress){
@@ -195,11 +225,12 @@ public class WebViewProgress extends WebView {
         webSetting.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSetting.setTextZoom(100);//设置字体比例
         webSetting.setDefaultTextEncodingName("utf-8");
-        webSetting.setUserAgentString("cheoaAndroid");
         clearCache(true);
         webSetting.setJavaScriptEnabled(true);
         webSetting.setDomStorageEnabled(true);
         webSetting.setGeolocationEnabled(true);
+
+        getSettingsExtension().setDisplayCutoutEnable(true);
     }
 
     /**
@@ -247,6 +278,20 @@ public class WebViewProgress extends WebView {
         void onWebTitleChange(String title);
         void onLoadResource(String url);
         void onReceivedError();
+        void onShowFileChooser();
+    }
+    private ValueCallback<Uri[]> fileValueCallback;
+    public void fileValueCallbackResult(int requestCode, int resultCode, @Nullable Intent data){
+        SLog.e("文件选择完成:"+resultCode+">"+data);
+        if(fileValueCallback==null){
+            return;
+        }
+        if(resultCode == AppCompatActivity.RESULT_OK && data!=null){
+            Uri fileUri = data.getData();
+            fileValueCallback.onReceiveValue(new Uri[]{fileUri});
+        }else if(resultCode == AppCompatActivity.RESULT_CANCELED){
+            fileValueCallback.onReceiveValue(null);
+        }
     }
 
     public static Context getFixedContext(Context context) {

@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -133,12 +134,26 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
         mErrorText.setText(R.string.text_discover_error);
     }
 
+    @Override
+    public void onShowFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent,0);
+    }
+
     public void reload(){
         if(mWeb!=null){
             mErrorLayout.setVisibility(View.VISIBLE);
             mErrorText.setText(R.string.text_loading);
             mWeb.reload();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mWeb.fileValueCallbackResult(requestCode,resultCode,data);
     }
 
     @Override
