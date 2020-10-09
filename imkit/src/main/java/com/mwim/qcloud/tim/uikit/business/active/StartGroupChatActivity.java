@@ -21,7 +21,6 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.R;
-import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -110,7 +109,6 @@ public class StartGroupChatActivity extends IMBaseActivity {
     public void setGroupType(int type) {
         mJoinType.setVisibility(View.GONE);
         mGroupType = type;
-        SLog.e(TUIKitConstants.GroupType.PUBLIC+">>>"+type);
         switch (type) {
             case TUIKitConstants.GroupType.PUBLIC:
                 setTitleName(getResources().getString(R.string.create_group_chat));
