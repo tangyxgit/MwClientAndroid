@@ -69,9 +69,9 @@ public class MwWorkActivity extends IMBaseActivity implements
         //设置为必须要验证才能加好友
         V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
         v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
-        HashMap<String,byte[]> customMap = new HashMap<>();
-        customMap.put("mobile", UserApi.instance().getMobile().getBytes());
-        v2TIMUserFullInfo.setCustomInfo(customMap);
+//        HashMap<String,byte[]> customMap = new HashMap<>();
+//        customMap.put("mobile", UserApi.instance().getMobile().getBytes());
+//        v2TIMUserFullInfo.setCustomInfo(customMap);
         V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
 
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);

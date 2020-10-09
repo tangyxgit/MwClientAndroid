@@ -23,6 +23,7 @@ import com.work.api.open.model.SendSmsReq;
 import com.work.api.open.model.UpdateMobileReq;
 import com.work.api.open.model.UploadResp;
 import com.work.util.SLog;
+import com.work.util.SharedUtils;
 
 import java.io.File;
 
@@ -144,7 +145,9 @@ public class Yz extends ApiClient {
         params.resp = new UploadResp();
         if(SLog.debug)SLog.e("Upload File:"+path);
         params.addFileParam("file",new File(path));
-        params.addTextParam("token",path);
+        String token = SharedUtils.getString("userToken");
+        params.addTextParam("token",token);
+        params.addHeader("token",token);
         ConnectDataTask dataTask = new ConnectDataTask(params);
         dataTask.uploadFile();
     }

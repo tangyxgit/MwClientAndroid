@@ -40,26 +40,6 @@
                 android:textColor="@color/color_999999" />
         </LinearLayout>
 
-<!--        <com.rengwuxian.materialedittext.MaterialEditText-->
-<!--            android:id="@+id/phone"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="20dp"-->
-<!--            android:layout_marginEnd="25dp"-->
-<!--            android:hint="@string/hint_account"-->
-<!--            android:inputType="number"-->
-<!--            android:maxLength="18"-->
-<!--            android:textSize="16sp"-->
-<!--            app:met_baseColor="@color/color_e6e6e6"-->
-<!--            app:met_clearButton="true"-->
-<!--            app:met_floatingLabelAlwaysShown="true"-->
-<!--            app:met_floatingLabelTextColor="@color/color_333333"-->
-<!--            app:met_iconLeft="@mipmap/login_phone_s"-->
-<!--            app:met_iconPadding="0dp"-->
-<!--            app:met_primaryColor="@color/defaultColorAccent"-->
-<!--            app:met_textColor="@color/defaultColorAccent"-->
-<!--            app:met_textColorHint="@color/color_cccccc"-->
-<!--            app:met_underlineColor="@color/color_e6e6e6" />-->
         <LinearLayout
             android:orientation="horizontal"
             android:background="@drawable/shape_border_editor"
@@ -96,24 +76,6 @@
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             style="@style/EditorStyle"/>
-<!--        <com.rengwuxian.materialedittext.MaterialEditText-->
-<!--            android:id="@+id/password"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="20dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginEnd="25dp"-->
-<!--            android:hint="@string/hint_password"-->
-<!--            android:inputType="textPassword"-->
-<!--            android:maxLength="18"-->
-<!--            android:textSize="16sp"-->
-<!--            app:met_baseColor="@color/color_e6e6e6"-->
-<!--            app:met_iconLeft="@mipmap/icon_password"-->
-<!--            app:met_iconPadding="0dp"-->
-<!--            app:met_primaryColor="@color/defaultColorAccent"-->
-<!--            app:met_textColor="@color/defaultColorAccent"-->
-<!--            app:met_textColorHint="@color/color_cccccc"-->
-<!--            app:met_underlineColor="@color/color_e6e6e6" />-->
 
         <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/submit"

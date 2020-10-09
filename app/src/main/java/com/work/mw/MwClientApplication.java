@@ -11,6 +11,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.work.api.open.ApiClient;
 import com.work.util.SharedUtils;
 
@@ -25,6 +26,7 @@ public class MwClientApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         onChannel();
+        CrashReport.initCrashReport(getApplicationContext(), "42df9d7107", false);
         SharedUtils.init(this);
         MultiDex.install(this);
         IMKitAgent.init(this,"");

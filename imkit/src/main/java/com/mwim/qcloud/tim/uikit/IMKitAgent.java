@@ -38,7 +38,7 @@ import java.util.HashMap;
 
 public final class IMKitAgent {
 
-    private static final int AppId = 1400425549;
+    private static final int AppId = 1400432221;
 
     private static IMEventListener IMEventPushListener = new IMEventListener() {
         @Override

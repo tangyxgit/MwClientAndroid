@@ -104,9 +104,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         mPosition.setContent(userApi.getPosition());
         mCard.setContent(userApi.getCard());
         mEmail.setContent(userApi.getEmail());
-        HashMap<String,byte[]> customMap = new HashMap<>();
-        customMap.put("mobile",userApi.getMobile().getBytes());
-        v2TIMUserFullInfo.setCustomInfo(customMap);
+//        HashMap<String,byte[]> customMap = new HashMap<>();
+//        customMap.put("mobile",userApi.getMobile().getBytes());
+//        v2TIMUserFullInfo.setCustomInfo(customMap);
         V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
