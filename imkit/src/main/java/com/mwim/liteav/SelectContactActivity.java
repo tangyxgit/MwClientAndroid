@@ -30,7 +30,6 @@ import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.utils.SoftKeyBoardUtil;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
 import com.tencent.imsdk.v2.V2TIMGroupMemberInfoResult;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -40,6 +39,7 @@ import com.mwim.liteav.model.ITRTCAVCall;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public class SelectContactActivity extends BaseActivity {
         mGroupId = getIntent().getStringExtra(GROUP_ID);
         mCallType = getIntent().getIntExtra(CALL_TYPE, ITRTCAVCall.TYPE_AUDIO_CALL);
         if (TextUtils.isEmpty(mGroupId)) {
-            ToastUtil.toastShortMessage("群ID为空");
+            ToastUtil.error(this,"群ID为空");
             finish();
             return;
         }
@@ -127,7 +127,7 @@ public class SelectContactActivity extends BaseActivity {
         RecyclerView mSelectedMemberRv = (RecyclerView) findViewById(R.id.rv_selected_member);
         FlexboxLayoutManager manager = new FlexboxLayoutManager(this);
         FlexboxItemDecoration itemDecoration = new FlexboxItemDecoration(this);
-        itemDecoration.setDrawable(ContextCompat.getDrawable(this,R.drawable.bg_divider));
+        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.bg_divider));
         mSelectedMemberRv.addItemDecoration(itemDecoration);
         mSelectedMemberRv.setLayoutManager(manager);
         mSelectedMemberListAdapter = new SelectedMemberListAdapter(this, mSelectedModelList, new OnItemClickListener() {
@@ -195,7 +195,7 @@ public class SelectContactActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (mSelectedModelList.isEmpty()) {
-                    ToastUtil.toastShortMessage("请先选择通话用户");
+                    ToastUtil.info(SelectContactActivity.this,"请先选择通话用户");
                     return;
                 }
                 if (mCallType == ITRTCAVCall.TYPE_AUDIO_CALL) {
@@ -326,7 +326,7 @@ public class SelectContactActivity extends BaseActivity {
         String userId = entity.mUserModel.userId;
         //1.1 判断这个contact是不是自己
         if (userId.equals(mSelfModel.userId)) {
-            ToastUtil.toastShortMessage("不能添加自己");
+            ToastUtil.info(this,"不能添加自己");
             return;
         }
         if (!mUserModelMap.containsKey(userId)) {
