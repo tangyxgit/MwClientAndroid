@@ -71,7 +71,7 @@ public class MultiImageData {
 
     public int size() {
         if (null != imageUrls) {
-            return imageUrls.size() > maxSize ? maxSize : imageUrls.size();
+            return Math.min(imageUrls.size(), maxSize);
         } else {
             return 0;
         }

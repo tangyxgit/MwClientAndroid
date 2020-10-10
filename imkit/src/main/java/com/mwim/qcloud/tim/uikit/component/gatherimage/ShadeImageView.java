@@ -25,7 +25,6 @@ public class ShadeImageView extends ImageView {
 
     private static SparseArray<Bitmap> sRoundBitmapArray = new SparseArray();
     private Paint mShadePaint = new Paint();
-    private Bitmap mRoundBitmap;
     private int radius = ScreenUtil.getPxByDp(5);
 
     public ShadeImageView(Context context) {
@@ -51,7 +50,7 @@ public class ShadeImageView extends ImageView {
         super.onDraw(canvas);
         mShadePaint.setColor(Color.RED);
         mShadePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        mRoundBitmap = sRoundBitmapArray.get(getMeasuredWidth() + radius);
+        Bitmap mRoundBitmap = sRoundBitmapArray.get(getMeasuredWidth() + radius);
         if (mRoundBitmap == null) {
             mRoundBitmap = getRoundBitmap();
             sRoundBitmapArray.put(getMeasuredWidth() + radius, mRoundBitmap);
