@@ -28,9 +28,6 @@ import com.work.api.open.model.client.OpenData;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 import com.workstation.crop.config.CropProperty;
-
-import java.util.HashMap;
-
 /**
  * Created by tangyx
  * Date 2020/9/14
@@ -261,7 +258,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public CropProperty onAttrCropImage(CropProperty cropProperty) {
-        cropProperty.setCropShape(CropProperty.OVAL);
+//        cropProperty.setCropShape(CropProperty.OVAL);
         return super.onAttrCropImage(cropProperty);
     }
 }
