@@ -153,10 +153,7 @@ public class TeamHeadSynthesizer implements Synthesizer {
             try {
                 Bitmap bitmap = asyncLoadImage(imageUrls.get(i), targetImageSize);
                 multiImageData.putBitmap(bitmap, i);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                multiImageData.putBitmap(defaultIcon, i);
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
                 multiImageData.putBitmap(defaultIcon, i);
             }
@@ -217,7 +214,7 @@ public class TeamHeadSynthesizer implements Synthesizer {
             } else if (size == 7) {
                 if (i == 0) {
                     drawBitmapAtPosition(canvas, center, mGap, center + targetImageSize, mGap + targetImageSize, bitmap);
-                } else if (i > 0 && i < 4) {
+                } else if (i < 4) {
                     drawBitmapAtPosition(canvas, mGap * i + targetImageSize * (i - 1), center, mGap * i + targetImageSize * i, center + targetImageSize, bitmap);
                 } else {
                     drawBitmapAtPosition(canvas, mGap * (i - 3) + targetImageSize * (i - 4), t_center + targetImageSize / 2, mGap * (i - 3) + targetImageSize * (i - 3), t_center + targetImageSize / 2 + targetImageSize, bitmap);
@@ -227,7 +224,7 @@ public class TeamHeadSynthesizer implements Synthesizer {
                     drawBitmapAtPosition(canvas, r_center - targetImageSize, mGap, r_center, mGap + targetImageSize, bitmap);
                 } else if (i == 1) {
                     drawBitmapAtPosition(canvas, l_center, mGap, l_center + targetImageSize, mGap + targetImageSize, bitmap);
-                } else if (i > 1 && i < 5) {
+                } else if (i < 5) {
                     drawBitmapAtPosition(canvas, mGap * (i - 1) + targetImageSize * (i - 2), center, mGap * (i - 1) + targetImageSize * (i - 1), center + targetImageSize, bitmap);
                 } else {
                     drawBitmapAtPosition(canvas, mGap * (i - 4) + targetImageSize * (i - 5), t_center + targetImageSize / 2, mGap * (i - 4) + targetImageSize * (i - 4), t_center + targetImageSize / 2 + targetImageSize, bitmap);
@@ -347,10 +344,10 @@ public class TeamHeadSynthesizer implements Synthesizer {
 
     public String buildTargetSynthesizedId() {
         int size = multiImageData.size();
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (int i = 0; i < size; i++) {
             Object imageUrl = multiImageData.getImageUrls().get(i);
-            buffer.append(i + "" + imageUrl);
+            buffer.append(i).append(imageUrl);
         }
         return MD5Utils.getMD5String(buffer.toString());
     }
