@@ -315,10 +315,7 @@ public class MessageInfoUtil {
             if (data.equals(MessageCustom.BUSINESS_ID_GROUP_CREATE)) {
                 // 兼容4.7版本以前的 tuikit
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_CREATE);
-                String message = TUIKitConstants.covert2HTMLString(
-                        TextUtils.isEmpty(msgInfo.getGroupNameCard())
-                                ? msgInfo.getFromUser()
-                                : msgInfo.getGroupNameCard()) + "创建群组";
+                String message =  (TextUtils.isEmpty(msgInfo.getTimMessage().getNameCard())?msgInfo.getTimMessage().getNickName():msgInfo.getTimMessage().getNameCard())+ " 发起了群聊";
                 msgInfo.setExtra(message);
             } else {
                 if (isTyping(customElem.getData())) {
