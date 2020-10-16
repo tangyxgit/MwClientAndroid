@@ -26,7 +26,6 @@ import com.work.api.open.Yz;
 import com.work.api.open.model.DestroyGroupReq;
 import com.work.api.open.model.GetGroupMsgReq;
 import com.work.api.open.model.GetGroupMsgResp;
-import com.work.api.open.model.client.OpenGroupInfo;
 import com.work.util.SLog;
 
 import java.util.ArrayList;
@@ -127,8 +126,11 @@ public class GroupInfoProvider {
                 @Override
                 public void onResult(RequestWork req, ResponseWork resp) {
                     if(resp.isSuccess() && resp instanceof GetGroupMsgResp){
-                        OpenGroupInfo infoResult = ((GetGroupMsgResp) resp).getData().GroupInfo.get(0);
-                        callBack.onSuccess(infoResult);
+                        if(TextUtils.isEmpty(((GetGroupMsgResp) resp).getData().Name)){
+                            callBack.onSuccess(((GetGroupMsgResp) resp).getData().GroupInfo.get(0));
+                        }else{
+                            callBack.onSuccess(((GetGroupMsgResp) resp).getData().Name);
+                        }
                     }
                 }
             });

@@ -1,8 +1,6 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.layout.input;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
@@ -15,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IInputLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreActionUnit;
 import com.mwim.qcloud.tim.uikit.R;
@@ -70,6 +69,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     protected View mInputMoreLayout;
     //    protected ShortcutArea mShortcutArea;
     protected View mInputMoreView;
+    protected ChatInfo mChatInfo;
     protected List<InputMoreActionUnit> mInputMoreActionList = new ArrayList<>();
     protected List<InputMoreActionUnit> mInputMoreCustomActionList = new ArrayList<>();
     private boolean mSendPhotoDisable;
@@ -345,5 +345,13 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
     public void clearCustomActionList() {
         mInputMoreCustomActionList.clear();
+    }
+
+    public void setChatInfo(ChatInfo chatInfo) {
+        mChatInfo = chatInfo;
+    }
+
+    public ChatInfo getChatInfo() {
+        return mChatInfo;
     }
 }

@@ -20,16 +20,14 @@ import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder.ICustomMessa
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMCustomElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SLog;
 
 public class ChatLayoutHelper {
-
-    private static final String TAG = ChatLayoutHelper.class.getSimpleName();
 
     private Context mContext;
 
@@ -234,15 +232,15 @@ public class ChatLayoutHelper {
             try {
                 data = new Gson().fromJson(new String(elem.getData()), CustomHelloMessage.class);
             } catch (Exception e) {
-                DemoLog.w(TAG, "invalid json: " + new String(elem.getData()) + " " + e.getMessage());
+                SLog.w("invalid json: " + new String(elem.getData()) + " " + e.getMessage());
             }
             if (data == null) {
-                DemoLog.e(TAG, "No Custom Data: " + new String(elem.getData()));
+                SLog.e( "No Custom Data: " + new String(elem.getData()));
             } else if (data.version == TUIKitConstants.JSON_VERSION_1
                     || (data.version == TUIKitConstants.JSON_VERSION_4 && data.businessID.equals("text_link"))) {
                 CustomHelloTIMUIController.onDraw(parent, data);
             } else {
-                DemoLog.w(TAG, "unsupported version: " + data);
+                SLog.w("unsupported version: " + data);
             }
         }
     }

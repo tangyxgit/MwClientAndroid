@@ -68,7 +68,7 @@ public final class IMKitAgent {
     public static void init(Context context,String appKey){
         instance = context;
         TUIKit.init(context,AppId,getConfigs(context));
-        HashMap<String,Object> map = new HashMap();
+        HashMap<String,Object> map = new HashMap<>();
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
         QbSdk.initTbsSettings(map);

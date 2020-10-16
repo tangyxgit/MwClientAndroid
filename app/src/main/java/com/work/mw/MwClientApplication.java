@@ -1,6 +1,7 @@
 package com.work.mw;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -11,7 +12,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
-import com.tencent.bugly.crashreport.CrashReport;
+//import com.tencent.bugly.crashreport.CrashReport;
 import com.work.api.open.ApiClient;
 import com.work.util.SharedUtils;
 
@@ -25,13 +26,30 @@ public class MwClientApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        if(!getApplicationContext().getPackageName().equals
+                (getCurrentProcessName())){
+            return;
+        }
         onChannel();
-        CrashReport.initCrashReport(getApplicationContext(), "42df9d7107", false);
+//        CrashReport.initCrashReport(getApplicationContext(), "42df9d7107", false);
         SharedUtils.init(this);
         MultiDex.install(this);
         IMKitAgent.init(this,"");
         IMKitAgent.registerPush();
         registerActivityLifecycleCallbacks(new StatisticActivityLifecycleCallback());
+    }
+
+    private String getCurrentProcessName() {
+        int pid = android.os.Process.myPid();
+        String processName = "";
+        ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService
+                (Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo process : manager.getRunningAppProcesses()) {
+            if (process.pid == pid) {
+                processName = process.processName;
+            }
+        }
+        return processName;
     }
 
     /**

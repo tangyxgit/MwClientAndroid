@@ -13,6 +13,8 @@ import com.work.api.open.model.DestroyGroupReq;
 import com.work.api.open.model.GetGroupMsgReq;
 import com.work.api.open.model.GetGroupMsgResp;
 import com.work.api.open.model.GetToolListByUserIdResp;
+import com.work.api.open.model.GetToolTokenReq;
+import com.work.api.open.model.GetToolTokenResp;
 import com.work.api.open.model.GetUserByParamReq;
 import com.work.api.open.model.GetUserByParamResp;
 import com.work.api.open.model.GetVersionResp;
@@ -133,6 +135,12 @@ public class Yz extends ApiClient {
      */
     public void getVersion(OnResultDataListener onResultDataListener){
         requestPost(ModeApi.getVersion,new BaseReq(),new GetVersionResp(),onResultDataListener);
+    }
+    /**
+     * 获取token
+     */
+    public void getToolToken(GetToolTokenReq getToolTokenReq,OnResultDataListener onResultDataListener,Object... objects){
+        requestPost(ModeApi.getToolToken,getToolTokenReq,new GetToolTokenResp(),onResultDataListener,objects);
     }
     /**
      * 上传文件

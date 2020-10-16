@@ -12,9 +12,9 @@ import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageContainerBean;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageCustom;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.BaseConstants;
-import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMOfflinePushInfo;
@@ -225,6 +225,10 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
     private boolean isCallingData(String data){
         try{
             JSONObject jsonObject = new JSONObject(data);
+            if (jsonObject.has(CallModel.SIGNALING_EXTRA_KEY_BUSINESS_ID)
+                    && jsonObject.getString(CallModel.SIGNALING_EXTRA_KEY_BUSINESS_ID).equals(CallModel.SIGNALING_EXTRA_VALUE_BUSINESS_ID)) {
+                return true;
+            }
             if (jsonObject.has(CallModel.SIGNALING_EXTRA_KEY_CALL_TYPE)) {
                 return true;
             }
@@ -236,8 +240,6 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
     }
 
     public void processInvite(String inviteID, String inviter, String groupID, List<String> inviteeList, String data) {
-        // 收到来电，开始监听 trtc 的消息
-        mTRTCCloud.setListener(mTRTCCloudListener);
         CallModel callModel = new CallModel();
         callModel.callId = inviteID;
         callModel.groupId = groupID;
@@ -547,8 +549,6 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
      * @param groupId    群组通话的group id，如果是C2C需要传 ""
      */
     private void internalCall(final List<String> userIdList, int type, String groupId) {
-        // 主动拨打电话，开始监听trtc的消息
-        mTRTCCloud.setListener(mTRTCCloudListener);
         final boolean isGroupCall = !TextUtils.isEmpty(groupId);
         if (!isOnCalling) {
             // 首次拨打电话，生成id，并进入trtc房间
@@ -661,6 +661,8 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         mTRTCCloud.enableAudioVolumeEvaluation(300);
         mTRTCCloud.setAudioRoute(TRTCCloudDef.TRTC_AUDIO_ROUTE_SPEAKER);
         mTRTCCloud.startLocalAudio();
+        // 进房前，开始监听trtc的消息
+        mTRTCCloud.setListener(mTRTCCloudListener);
         mTRTCCloud.enterRoom(TRTCParams, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
     }
 
@@ -761,40 +763,32 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
     private String sendModel(final String user, int action) {
         return sendModel(user, action, null);
     }
-
-    private void sendOnlineMessageWithOfflinePushInfo(final String user, final CallModel model) {
-        List<String> users = new ArrayList<String>();
-        users.add(V2TIMManager.getInstance().getLoginUser());
-        if (!TextUtils.isEmpty(TUIKitConfigs.getConfigs().getGeneralConfig().getUserNickname())) {
-            sendOnlineMessageWithOfflinePushInfo(user, TUIKitConfigs.getConfigs().getGeneralConfig().getUserNickname(), model);
-            return;
+    private void sendOnlineMessageWithOfflinePushInfoForGroupCall(final CallModel model){
+        V2TIMOfflinePushInfo v2TIMOfflinePushInfo = getOfflinePushInfo(model);
+        MessageCustom custom = new MessageCustom();
+        custom.businessID = MessageCustom.BUSINESS_ID_AV_CALL;
+        custom.version = TUIKitConstants.version;
+        V2TIMMessage message = V2TIMManager.getMessageManager().createCustomMessage(new Gson().toJson(custom).getBytes());
+        for (String receiver: model.invitedList) {
+            SLog.i("sendOnlineMessage to " + receiver);
+            V2TIMManager.getMessageManager().sendMessage(message, receiver, null, V2TIMMessage.V2TIM_PRIORITY_DEFAULT,
+                    true, v2TIMOfflinePushInfo, new V2TIMSendCallback<V2TIMMessage>() {
+                        @Override
+                        public void onError(int code, String desc) {
+                            SLog.e( "sendOnlineMessage failed, code:" + code + ", desc:" + desc);
+                        }
+                        @Override
+                        public void onSuccess(V2TIMMessage v2TIMMessage) {
+                            SLog.i("sendOnlineMessage msgId:" + v2TIMMessage.getMsgID());
+                        }
+                        @Override
+                        public void onProgress(int progress) {
+                        }
+                    });
         }
-        V2TIMManager.getInstance().getUsersInfo(users, new V2TIMValueCallback<List<V2TIMUserFullInfo>>() {
-
-            @Override
-            public void onError(int code, String desc) {
-                SLog.e( "getUsersInfo err code = " + code + ", desc = " + desc);
-                sendOnlineMessageWithOfflinePushInfo(user, null, model);
-            }
-
-            @Override
-            public void onSuccess(List<V2TIMUserFullInfo> v2TIMUserFullInfos) {
-                if (v2TIMUserFullInfos == null || v2TIMUserFullInfos.size() == 0) {
-                    sendOnlineMessageWithOfflinePushInfo(user, null, model);
-                    return;
-                }
-                TUIKitConfigs.getConfigs().getGeneralConfig().setUserNickname(v2TIMUserFullInfos.get(0).getNickName());
-                TUIKitConfigs.getConfigs().getGeneralConfig().setUserFaceUrl(v2TIMUserFullInfos.get(0).getFaceUrl());
-                sendOnlineMessageWithOfflinePushInfo(user, v2TIMUserFullInfos.get(0).getNickName(), model);
-            }
-        });
     }
 
-    private String getCallId() {
-        return mCurCallID;
-    }
-
-    private void sendOnlineMessageWithOfflinePushInfo(String userId, String nickname, CallModel model) {
+    private V2TIMOfflinePushInfo getOfflinePushInfo(CallModel model) {
         OfflineMessageContainerBean containerBean = new OfflineMessageContainerBean();
         OfflineMessageBean entity = new OfflineMessageBean();
         entity.content = new Gson().toJson(model);
@@ -804,47 +798,19 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         entity.nickname = TUIKitConfigs.getConfigs().getGeneralConfig().getUserNickname();
         entity.faceUrl = TUIKitConfigs.getConfigs().getGeneralConfig().getUserFaceUrl();
         containerBean.entity = entity;
-        List<String> invitedList = new ArrayList<>();
-        final boolean isGroup = (!TextUtils.isEmpty(model.groupId));
-        if (isGroup) {
-            entity.chatType = TIMConversationType.Group.value();
-            invitedList.addAll(model.invitedList);
-        } else {
-            invitedList.add(userId);
-        }
+        entity.chatType = V2TIMConversation.V2TIM_GROUP;
 
         V2TIMOfflinePushInfo v2TIMOfflinePushInfo = new V2TIMOfflinePushInfo();
         v2TIMOfflinePushInfo.setExt(new Gson().toJson(containerBean).getBytes());
         // OPPO必须设置ChannelID才可以收到推送消息，这个channelID需要和控制台一致
         v2TIMOfflinePushInfo.setAndroidOPPOChannelID("tuikit");
         v2TIMOfflinePushInfo.setDesc("您有一个通话请求");
-        v2TIMOfflinePushInfo.setTitle(nickname);
-        MessageCustom custom = new MessageCustom();
-        custom.businessID = MessageCustom.BUSINESS_ID_AV_CALL;
-        custom.version = TUIKitConstants.version;
-        V2TIMMessage message = V2TIMManager.getMessageManager().createCustomMessage(new Gson().toJson(custom).getBytes());
 
-        for (String receiver: invitedList) {
-            SLog.i( "sendOnlineMessage to " + receiver);
-            V2TIMManager.getMessageManager().sendMessage(message, receiver, null, V2TIMMessage.V2TIM_PRIORITY_DEFAULT,
-                    true, v2TIMOfflinePushInfo, new V2TIMSendCallback<V2TIMMessage>() {
+        return v2TIMOfflinePushInfo;
+    }
 
-                        @Override
-                        public void onError(int code, String desc) {
-                            SLog.e( "sendOnlineMessage failed, code:" + code + ", desc:" + desc);
-                        }
-
-                        @Override
-                        public void onSuccess(V2TIMMessage v2TIMMessage) {
-                            SLog.i( "sendOnlineMessage msgId:" + v2TIMMessage.getMsgID());
-                        }
-
-                        @Override
-                        public void onProgress(int progress) {
-
-                        }
-                    });
-        }
+    private String getCallId() {
+        return mCurCallID;
     }
 
     /**
@@ -876,50 +842,65 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         } else {
             receiver = user;
         }
-        Map<String, Object> customMap = new HashMap();
+        Map<String, Object> customMap = new HashMap<>();
         customMap.put(CallModel.SIGNALING_EXTRA_KEY_VERSION, TUIKitConstants.version);
         customMap.put(CallModel.SIGNALING_EXTRA_KEY_CALL_TYPE, realCallModel.callType);
+        customMap.put(CallModel.SIGNALING_EXTRA_KEY_BUSINESS_ID, CallModel.SIGNALING_EXTRA_VALUE_BUSINESS_ID);
         // signalling
         switch (realCallModel.action) {
             case CallModel.VIDEO_CALL_ACTION_DIALING:
                 customMap.put(CallModel.SIGNALING_EXTRA_KEY_ROOM_ID, realCallModel.roomId);
                 String dialingDataStr = new Gson().toJson(customMap);
                 if (isGroup) {
-                    callID = V2TIMManager.getSignalingManager().inviteInGroup(groupId, realCallModel.invitedList, dialingDataStr, TIME_OUT_COUNT, new V2TIMCallback() {
+//                    callID = V2TIMManager.getSignalingManager().inviteInGroup(groupId, realCallModel.invitedList, dialingDataStr, TIME_OUT_COUNT, new V2TIMCallback() {
+//                        @Override
+//                        public void onError(int code, String desc) {
+//                            SLog.e( "inviteInGroup callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
+//                        }
+//
+//                        @Override
+//                        public void onSuccess() {
+//                            SLog.d( "inviteInGroup success:" + realCallModel);
+//                            realCallModel.callId = getCallId();
+//                            realCallModel.timeout = TIME_OUT_COUNT;
+//                            realCallModel.version = TUIKitConstants.version;
+//                            sendOnlineMessageWithOfflinePushInfo(user, realCallModel);
+//                        }
+//                    });
+                    callID = V2TIMManager.getSignalingManager().inviteInGroup(groupId, realCallModel.invitedList, dialingDataStr, false, TIME_OUT_COUNT, new V2TIMCallback() {
                         @Override
                         public void onError(int code, String desc) {
                             SLog.e( "inviteInGroup callID:" + realCallModel.callId + ", error:" + code + " desc:" + desc);
                         }
-
                         @Override
                         public void onSuccess() {
-                            SLog.d( "inviteInGroup success:" + realCallModel);
+                            SLog.d("inviteInGroup success:" + realCallModel);
                             realCallModel.callId = getCallId();
                             realCallModel.timeout = TIME_OUT_COUNT;
                             realCallModel.version = TUIKitConstants.version;
-                            sendOnlineMessageWithOfflinePushInfo(user, realCallModel);
+                            sendOnlineMessageWithOfflinePushInfoForGroupCall(realCallModel);
                         }
                     });
                 } else {
-                    callID = V2TIMManager.getSignalingManager().invite(receiver, dialingDataStr, TIME_OUT_COUNT, new V2TIMCallback() {
+                    realCallModel.callId = getCallId();
+                    realCallModel.timeout = TIME_OUT_COUNT;
+                    realCallModel.version = TUIKitConstants.version;
+                    V2TIMOfflinePushInfo offlinePushInfo = getOfflinePushInfo(realCallModel);
+                    callID = V2TIMManager.getSignalingManager().invite(receiver, dialingDataStr, false, offlinePushInfo, TIME_OUT_COUNT, new V2TIMCallback() {
                         @Override
                         public void onError(int code, String desc) {
                             SLog.e( "invite  callID:" + realCallModel.callId + ",error:" + code + " desc:" + desc);
                         }
-
                         @Override
                         public void onSuccess() {
-                            SLog.d( "invite success:" + realCallModel);
-                            realCallModel.callId = getCallId();
-                            realCallModel.timeout = TIME_OUT_COUNT;
-                            realCallModel.version = TUIKitConstants.version;
-                            sendOnlineMessageWithOfflinePushInfo(user, realCallModel);
+                            SLog.d("invite success:" + realCallModel);
                         }
                     });
                 }
                 break;
             case CallModel.VIDEO_CALL_ACTION_ACCEPT:
                 String acceptDataStr = new Gson().toJson(customMap);
+                SLog.e("acceptDataStr>>>>"+acceptDataStr+">"+realCallModel.callId);
                 V2TIMManager.getSignalingManager().accept(realCallModel.callId, acceptDataStr, new V2TIMCallback() {
                     @Override
                     public void onError(int code, String desc) {
@@ -983,27 +964,25 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                 customMap.put(CallModel.SIGNALING_EXTRA_KEY_CALL_END, realCallModel.duration);
                 String hangupMapStr = new Gson().toJson(customMap);
                 if (isGroup) {
-                    V2TIMManager.getSignalingManager().inviteInGroup(groupId, realCallModel.invitedList, hangupMapStr, 0, new V2TIMCallback() {
+                    V2TIMManager.getSignalingManager().inviteInGroup(groupId, realCallModel.invitedList, hangupMapStr, false, 0, new V2TIMCallback() {
                         @Override
                         public void onError(int code, String desc) {
-                            SLog.e( "inviteInGroup-->hangup callID: " + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                            SLog.e("inviteInGroup-->hangup callID: " + realCallModel.callId + ", error:" + code + " desc:" + desc);
                         }
-
                         @Override
                         public void onSuccess() {
-                            SLog.d( "inviteInGroup-->hangup success callID:" + realCallModel.callId);
+                            SLog.d("inviteInGroup-->hangup success callID:" + realCallModel.callId);
                         }
                     });
                 } else {
-                    V2TIMManager.getSignalingManager().invite(receiver, hangupMapStr, 0, new V2TIMCallback() {
+                    V2TIMManager.getSignalingManager().invite(receiver, hangupMapStr, false, null, 0, new V2TIMCallback() {
                         @Override
                         public void onError(int code, String desc) {
-                            SLog.e( "invite-->hangup callID: " + realCallModel.callId + ", error:" + code + " desc:" + desc);
+                            SLog.e("invite-->hangup callID: " + realCallModel.callId + ", error:" + code + " desc:" + desc);
                         }
-
                         @Override
                         public void onSuccess() {
-                            SLog.d( "invite-->hangup success callID:" + realCallModel.callId);
+                            SLog.d("invite-->hangup success callID:" + realCallModel.callId);
                         }
                     });
                 }

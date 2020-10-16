@@ -31,6 +31,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.work.util.SLog;
 
 import java.util.List;
@@ -49,10 +50,16 @@ public class ChatFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mBaseView = inflater.inflate(R.layout.fragment_im_chat, container, false);
+        initView();
         return mBaseView;
     }
 
     private void initView() {
+        Bundle bundle = getArguments();
+        mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
+        if (mChatInfo == null) {
+            return;
+        }
         //从布局文件中获取聊天面板组件
         mChatLayout = mBaseView.findViewById(R.id.chat_layout);
 
@@ -120,46 +127,54 @@ public class ChatFragment extends BaseFragment {
                 intent.putExtra(TUIKitConstants.Group.GROUP_INFO, groupInfo);
                 startActivityForResult(intent, 1);
             }
+
         });
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP) {
-            V2TIMConversation v2TIMConversation = V2TIMManager.getConversationManager().getConversation(mChatInfo.getId());
-            if (v2TIMConversation == null){
-                SLog.d("getConversation failed");
-                return;
-            }
-            mChatInfo.setAtInfoList(v2TIMConversation.getGroupAtInfoList());
-
-            final V2TIMMessage lastMessage = v2TIMConversation.getLastMessage();
-
-            updateAtInfoLayout();
-            mChatLayout.getAtInfoLayout().setOnClickListener(new View.OnClickListener() {
+            V2TIMManager.getConversationManager().getConversation(mChatInfo.getId(), new V2TIMValueCallback<V2TIMConversation>() {
                 @Override
-                public void onClick(View v) {
-                    final List<V2TIMGroupAtInfo> atInfoList = mChatInfo.getAtInfoList();
-                    if (atInfoList == null || atInfoList.isEmpty()) {
-                        mChatLayout.getAtInfoLayout().setVisibility(GONE);
-                    } else {
-                        mChatLayout.getChatManager().getAtInfoChatMessages(atInfoList.get(atInfoList.size() - 1).getSeq(), lastMessage, new IUIKitCallBack() {
-                            @Override
-                            public void onSuccess(Object data) {
-                                mChatLayout.getMessageLayout().scrollToPosition((int) atInfoList.get(atInfoList.size() - 1).getSeq());
-                                LinearLayoutManager mLayoutManager = (LinearLayoutManager) mChatLayout.getMessageLayout().getLayoutManager();
-                                if(mLayoutManager!=null){
-                                    mLayoutManager.scrollToPositionWithOffset((int) atInfoList.get(atInfoList.size() - 1).getSeq(), 0);
+                public void onError(int i, String s) {
+                    SLog.e("getConversation error:"+i+",desc:"+s);
+                }
 
-                                    atInfoList.remove(atInfoList.size() - 1);
-                                    mChatInfo.setAtInfoList(atInfoList);
-
-                                    updateAtInfoLayout();
-                                }
-                            }
-
-                            @Override
-                            public void onError(String module, int errCode, String errMsg) {
-                                SLog.d("getAtInfoChatMessages failed");
-                            }
-                        });
+                @Override
+                public void onSuccess(V2TIMConversation v2TIMConversation) {
+                    if (v2TIMConversation == null){
+                        SLog.d("getConversation failed");
+                        return;
                     }
+                    mChatInfo.setAtInfoList(v2TIMConversation.getGroupAtInfoList());
+
+                    final V2TIMMessage lastMessage = v2TIMConversation.getLastMessage();
+
+                    updateAtInfoLayout();
+                    mChatLayout.getAtInfoLayout().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final List<V2TIMGroupAtInfo> atInfoList = mChatInfo.getAtInfoList();
+                            if (atInfoList == null || atInfoList.isEmpty()) {
+                                mChatLayout.getAtInfoLayout().setVisibility(GONE);
+                            } else {
+                                mChatLayout.getChatManager().getAtInfoChatMessages(atInfoList.get(atInfoList.size() - 1).getSeq(), lastMessage, new IUIKitCallBack() {
+                                    @Override
+                                    public void onSuccess(Object data) {
+                                        mChatLayout.getMessageLayout().scrollToPosition((int) atInfoList.get(atInfoList.size() - 1).getSeq());
+                                        LinearLayoutManager mLayoutManager = (LinearLayoutManager) mChatLayout.getMessageLayout().getLayoutManager();
+                                        mLayoutManager.scrollToPositionWithOffset((int) atInfoList.get(atInfoList.size() - 1).getSeq(), 0);
+
+                                        atInfoList.remove(atInfoList.size() - 1);
+                                        mChatInfo.setAtInfoList(atInfoList);
+
+                                        updateAtInfoLayout();
+                                    }
+
+                                    @Override
+                                    public void onError(String module, int errCode, String errMsg) {
+                                        SLog.d("getAtInfoChatMessages failed");
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
             });
         }
@@ -233,14 +248,7 @@ public class ChatFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        Bundle bundle = getArguments();
-        mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
-        if (mChatInfo == null) {
-            return;
-        }
-        initView();
-
+        SLog.e("chat fragment resume");
         // TODO 通过api设置ChatLayout各种属性的样例
         ChatLayoutHelper helper = new ChatLayoutHelper(getActivity());
         helper.customizeChatLayout(mChatLayout);

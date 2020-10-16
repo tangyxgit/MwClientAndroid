@@ -8,6 +8,7 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.fragment.WebViewFragment;
+import com.work.util.SLog;
 
 
 /**
@@ -23,6 +24,7 @@ public class WebActivity extends BaseActivity {
     public void onInitValue() throws Exception {
         super.onInitValue();
         String url = getIntent().getStringExtra(WebActivity.class.getSimpleName());
+        SLog.e("web url:"+url);
         if(TextUtils.isEmpty(url)){
             finish();
             return;

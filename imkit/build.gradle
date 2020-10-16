@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 group='com.mwim.qcloud.tim.uikit'
 
 android {
@@ -12,10 +14,6 @@ android {
         versionName rootProject.ext.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters = []
-            abiFilters.addAll(rootProject.ext.abiFilters)
-        }
     }
 
     sourceSets {
@@ -40,6 +38,13 @@ android {
 
 }
 
+
+repositories {
+    maven {
+        url 'https://storage.googleapis.com/download.flutter.io'
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -61,7 +66,7 @@ dependencies {
     implementation 'com.google.android:flexbox:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'com.tencent.liteav:LiteAVSDK_TRTC:7.8.9518'
-    implementation 'com.tencent.imsdk:imsdk:5.0.6'
+    implementation 'com.tencent.imsdk:imsdk:5.0.10'
 
     // HUAWEI push sdk
     implementation 'com.huawei.hms:push:5.0.0.300'
@@ -75,6 +80,9 @@ dependencies {
     api 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     //x5 内核
     implementation 'com.tencent.tbs.tbssdk:sdk:43939'
+    //腾讯会议
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
+    implementation "com.tencent.wemeet:sdk-interface:0.0.41"
     api project(path: ':base')
     implementation project(path: ':update_app')
     // vivo push sdk

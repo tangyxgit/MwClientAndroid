@@ -8,10 +8,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.http.network.listener.OnResultDataListener;
+import com.http.network.model.RequestWork;
+import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
+import com.mwim.qcloud.tim.uikit.business.helper.WemeetSdkHelper;
+import com.work.api.open.Yz;
+import com.work.api.open.model.GetToolTokenReq;
+import com.work.api.open.model.GetToolTokenResp;
 import com.work.api.open.model.client.OpenData;
 import com.work.api.open.model.client.OpenWork;
+import com.work.util.ToastUtil;
 
 import java.util.List;
 
@@ -21,7 +31,7 @@ import java.util.List;
  * email tangyx@live.com
  */
 
-public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> {
+public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> implements OnResultDataListener{
 
     public WorkAdapter(@Nullable List<OpenWork> data) {
         super(R.layout.adapter_work_item,data);
@@ -41,12 +51,46 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> {
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     OpenData data = (OpenData) adapter.getItem(position);
                     if(data!=null){
-                        WebActivity.startWebView("https://sz131.apps.aliyunpds.com/index");
+                        if("code001".equals(data.getToolCode()) //腾讯会议
+                                || "code002".equals(data.getToolCode())){//网盘
+                            if(getContext() instanceof BaseActivity){
+                                ((BaseActivity) getContext()).showProgressLoading(false,false);
+                            }
+                            if("code001".equals(data.getToolCode())){
+                                WemeetSdkHelper.init(getContext());
+                            }
+                            GetToolTokenReq getToolTokenReq = new GetToolTokenReq();
+                            getToolTokenReq.setToolCode(data.getToolCode());
+                            getToolTokenReq.setUserName(UserApi.instance().getNickName());
+                            Yz.getSession().getToolToken(getToolTokenReq, WorkAdapter.this,data.getToolUrl());
+                        }else{
+                            WebActivity.startWebView(data.getToolUrl());
+                        }
                     }
                 }
             });
         }else{
             mAdapter.setNewData(item.getToolDataList());
+        }
+    }
+
+    @Override
+    public void onResult(RequestWork req, ResponseWork resp) throws Exception{
+        if(getContext() instanceof BaseActivity){
+            ((BaseActivity) getContext()).onResult(req,resp);
+        }
+        if(resp.isSuccess()){
+            if(req instanceof GetToolTokenReq && resp instanceof GetToolTokenResp){
+                String token = ((GetToolTokenResp) resp).getData();
+                if("code001".equals(((GetToolTokenReq) req).getToolCode())){//腾讯会议
+//                    WemeetSdkHelper.startAuth(token);
+                }else if("code002".equals(((GetToolTokenReq) req).getToolCode())){//网盘
+                    String url = resp.getPositionParams(0);
+                    WebActivity.startWebView(url+"?token="+token);
+                }
+            }
+        }else{
+            ToastUtil.warning(getContext(),resp.getMessage());
         }
     }
 }

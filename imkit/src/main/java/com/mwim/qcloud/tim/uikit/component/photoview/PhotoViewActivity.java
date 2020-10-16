@@ -49,7 +49,12 @@ public class PhotoViewActivity extends BaseActivity {
         mPhotoView = findViewById(R.id.photo_view);
         mPhotoView.setDisplayMatrix(mCurrentDisplayMatrix);
         mPhotoView.setOnMatrixChangeListener(new MatrixChangeListener());
-        mPhotoView.setOnPhotoTapListener(new PhotoTapListener());
+        mPhotoView.setOnPhotoTapListener(new OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(ImageView view, float x, float y) {
+                finish();
+            }
+        });
         mPhotoView.setOnSingleFlingListener(new SingleFlingListener());
         mViewOriginalBtn = findViewById(R.id.view_original_btn);
         if (isSelf || mCurrentOriginalImage == null) {
@@ -59,8 +64,7 @@ public class PhotoViewActivity extends BaseActivity {
             File file = new File(path);
             if (file.exists()) {
                 mPhotoView.setImageURI(FileUtil.getUriFromPath(file.getPath()));
-            }
-            else {
+            }else {
                 mPhotoView.setImageURI(uri);
                 mViewOriginalBtn.setVisibility(View.VISIBLE);
                 mViewOriginalBtn.setOnClickListener(new View.OnClickListener() {
@@ -116,15 +120,6 @@ public class PhotoViewActivity extends BaseActivity {
     @Override
     public boolean isShowTitleBar() {
         return false;
-    }
-
-    private static class PhotoTapListener implements OnPhotoTapListener {
-
-        @Override
-        public void onPhotoTap(ImageView view, float x, float y) {
-            float xPercentage = x * 100f;
-            float yPercentage = y * 100f;
-        }
     }
 
 

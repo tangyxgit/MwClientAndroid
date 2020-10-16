@@ -17,7 +17,6 @@ import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.NoticeLayout;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
-import com.work.util.SLog;
 
 public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
 
@@ -96,6 +95,7 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
     @Override
     public void setChatInfo(ChatInfo chatInfo) {
         mChatInfo = chatInfo;
+        mInputLayout.setChatInfo(chatInfo);
         if (chatInfo == null) {
             return;
         }

@@ -75,7 +75,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     private onStartActivityListener mStartActivityListener;
 
-    private Map<String,String> atUserInfoMap = new HashMap<>();
+    private Map<String, String> atUserInfoMap = new HashMap<>();
     private String displayInputString;
 
     public InputLayout(Context context) {
@@ -184,8 +184,8 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         });
     }
 
-    public void updateInputText(String names, String ids){
-        if (names == null || ids == null || names.isEmpty() || ids.isEmpty()){
+    public void updateInputText(String names, String ids) {
+        if (names == null || ids == null || names.isEmpty() || ids.isEmpty()) {
             return;
         }
 
@@ -197,7 +197,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         }
     }
 
-    private void updateAtUserInfoMap(String names, String ids){
+    private void updateAtUserInfoMap(String names, String ids) {
         atUserInfoMap.clear();
         displayInputString = "";
 
@@ -208,7 +208,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         boolean isListName = (listName.length >= listId.length);
         int i;
         if (isListName) {
-            for (i =0; i < listId.length; i++) {
+            for (i = 0; i < listId.length; i++) {
                 atUserInfoMap.put(listName[i], listId[i]);
 
                 //for display
@@ -216,8 +216,8 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                 displayInputString += " ";
                 displayInputString += TIMMentionEditText.TIM_METION_TAG;
             }
-        }else {
-            for (i =0; i < listName.length; i++) {
+        } else {
+            for (i = 0; i < listName.length; i++) {
                 atUserInfoMap.put(listName[i], listId[i]);
 
                 //for display
@@ -227,7 +227,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             }
         }
 
-        if(!displayInputString.isEmpty()) {
+        if (!displayInputString.isEmpty()) {
             displayInputString = displayInputString.substring(0, displayInputString.length() - 1);
         }
     }
@@ -242,7 +242,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     protected void startSendPhoto() {
         SLog.i("startSendPhoto");
         if (!checkPermission(SEND_PHOTO)) {
-            SLog.i( "startSendPhoto checkPermission failed");
+            SLog.i("startSendPhoto checkPermission failed");
             return;
         }
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -486,15 +486,15 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         } else if (view.getId() == R.id.send_btn) {
             if (mSendEnable) {
                 if (mMessageHandler != null) {
-                    if(mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_GROUP && !atUserInfoMap.isEmpty()) {
+                    if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_GROUP && !atUserInfoMap.isEmpty()) {
                         //发送时通过获取输入框匹配上@的昵称list，去从map中获取ID list。
                         List<String> atUserList = updateAtUserList(mTextInput.getMentionList(true));
                         if (atUserList == null || atUserList.isEmpty()) {
                             mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(mTextInput.getText().toString().trim()));
-                        }else {
+                        } else {
                             mMessageHandler.sendMessage(MessageInfoUtil.buildTextAtMessage(atUserList, mTextInput.getText().toString().trim()));
                         }
-                    }else {
+                    } else {
                         mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(mTextInput.getText().toString().trim()));
                     }
                 }
@@ -503,14 +503,14 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         }
     }
 
-    private List<String> updateAtUserList(List<String> atMentionList){
-        if (atMentionList == null || atMentionList.isEmpty()){
+    private List<String> updateAtUserList(List<String> atMentionList) {
+        if (atMentionList == null || atMentionList.isEmpty()) {
             return null;
         }
 
         List<String> atUserIdList = new ArrayList<>();
-        for (String name : atMentionList){
-            if (atUserInfoMap.containsKey(name)){
+        for (String name : atMentionList) {
+            if (atUserInfoMap.containsKey(name)) {
                 atUserIdList.add(atUserInfoMap.get(name));
             }
         }
@@ -655,7 +655,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     private void recordComplete(boolean success) {
         int duration = AudioPlayer.getInstance().getDuration();
-        SLog.i( "recordComplete duration:" + duration);
+        SLog.i("recordComplete duration:" + duration);
         if (mChatInputHandler != null) {
             if (!success || duration == 0) {
                 mChatInputHandler.onRecordStatusChanged(ChatInputHandler.RECORD_FAILED);
@@ -693,7 +693,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             mSendEnable = false;
             showSendTextButton(View.GONE);
             showMoreInputButton(View.VISIBLE);
-        }else {
+        } else {
             mSendEnable = true;
             showSendTextButton(View.VISIBLE);
             showMoreInputButton(View.GONE);
@@ -729,6 +729,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
         void onRecordStatusChanged(int status);
     }
+
     public interface onStartActivityListener {
         void onStartGroupMemberSelectActivity();
     }

@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.gson.Gson;
+import com.mwim.qcloud.tim.uikit.base.GroupListenerConstants;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.config.GeneralConfig;
@@ -40,14 +44,14 @@ import com.work.util.SLog;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TUIKitImpl {
-
-    private static final String TAG = "TUIKit";
 
     private static Context sAppContext;
     private static TUIKitConfigs sConfigs;
     private static List<IMEventListener> sIMEventListeners = new ArrayList<>();
+    private static Gson sGson;
 
     /**
      * TUIKit的初始化函数
@@ -66,22 +70,22 @@ public class TUIKitImpl {
         sConfigs.getGeneralConfig().setSDKAppId(sdkAppID);
         String dir = sConfigs.getGeneralConfig().getAppCacheDir();
         if (TextUtils.isEmpty(dir)) {
-            SLog.e( "appCacheDir is empty, use default dir");
+            SLog.e("appCacheDir is empty, use default dir");
             sConfigs.getGeneralConfig().setAppCacheDir(context.getFilesDir().getPath());
         } else {
             File file = new File(dir);
             if (file.exists()) {
                 if (file.isFile()) {
-                    SLog.e( "appCacheDir is a file, use default dir");
+                    SLog.e("appCacheDir is a file, use default dir");
                     sConfigs.getGeneralConfig().setAppCacheDir(context.getFilesDir().getPath());
                 } else if (!file.canWrite()) {
-                    SLog.e( "appCacheDir can not write, use default dir");
+                    SLog.e("appCacheDir can not write, use default dir");
                     sConfigs.getGeneralConfig().setAppCacheDir(context.getFilesDir().getPath());
                 }
             } else {
                 boolean ret = file.mkdirs();
                 if (!ret) {
-                    SLog.e( "appCacheDir is invalid, use default dir");
+                    SLog.e("appCacheDir is invalid, use default dir");
                     sConfigs.getGeneralConfig().setAppCacheDir(context.getFilesDir().getPath());
                 }
             }
@@ -120,7 +124,7 @@ public class TUIKitImpl {
         V2TIMManager.getInstance().logout(new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                callback.onError( "SLog",code, desc);
+                callback.onError("SLog", code, desc);
             }
 
             @Override
@@ -135,7 +139,7 @@ public class TUIKitImpl {
         });
     }
 
-    private static void initIM(Context context, int sdkAppID) {
+    private static void initIM(final Context context, int sdkAppID) {
         V2TIMSDKConfig sdkConfig = sConfigs.getSdkConfig();
         if (sdkConfig == null) {
             sdkConfig = new V2TIMSDKConfig();
@@ -143,6 +147,7 @@ public class TUIKitImpl {
         }
         GeneralConfig generalConfig = sConfigs.getGeneralConfig();
         sdkConfig.setLogLevel(generalConfig.getLogLevel());
+        sGson = new Gson();
         V2TIMManager.getInstance().initSDK(context, sdkAppID, sdkConfig, new V2TIMSDKListener() {
             @Override
             public void onConnecting() {
@@ -217,7 +222,13 @@ public class TUIKitImpl {
         V2TIMManager.getInstance().setGroupListener(new V2TIMGroupListener() {
             @Override
             public void onMemberEnter(String groupID, List<V2TIMGroupMemberInfo> memberList) {
-                SLog.i( "onMemberEnter groupID:" + groupID + ", size:" + memberList.size());
+                SLog.i("onMemberEnter groupID:" + groupID + ", size:" + memberList.size());
+                Intent intent = new Intent(GroupListenerConstants.ACTION);
+                intent.putExtra(GroupListenerConstants.KEY_METHOD, GroupListenerConstants.METHOD_ON_MEMBER_ENTER);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_ID, groupID);
+                intent.putExtra(GroupListenerConstants.KEY_MEMBER, sGson.toJson(memberList));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
                 for (V2TIMGroupMemberInfo v2TIMGroupMemberInfo : memberList) {
                     if (v2TIMGroupMemberInfo.getUserID().equals(V2TIMManager.getInstance().getLoginUser())) {
                         GroupChatManagerKit.getInstance().notifyJoinGroup(groupID, false);
@@ -228,12 +239,17 @@ public class TUIKitImpl {
 
             @Override
             public void onMemberLeave(String groupID, V2TIMGroupMemberInfo member) {
-                SLog.i( "onMemberLeave groupID:" + groupID + ", memberID:" + member.getUserID());
+                SLog.i("onMemberLeave groupID:" + groupID + ", memberID:" + member.getUserID());
+                Intent intent = new Intent(GroupListenerConstants.ACTION);
+                intent.putExtra(GroupListenerConstants.KEY_METHOD, GroupListenerConstants.METHOD_ON_MEMBER_LEAVE);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_ID, groupID);
+                intent.putExtra(GroupListenerConstants.KEY_MEMBER, sGson.toJson(member));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
 
             @Override
             public void onMemberInvited(String groupID, V2TIMGroupMemberInfo opUser, List<V2TIMGroupMemberInfo> memberList) {
-                ConversationManagerKit.getInstance().setGroupConversationAvatar("group_"+groupID,null);
+                ConversationManagerKit.getInstance().setGroupConversationAvatar("group_" + groupID, null);
                 for (V2TIMGroupMemberInfo v2TIMGroupMemberInfo : memberList) {
                     if (v2TIMGroupMemberInfo.getUserID().equals(V2TIMManager.getInstance().getLoginUser())) {
                         GroupChatManagerKit.getInstance().notifyJoinGroup(groupID, true);
@@ -244,7 +260,7 @@ public class TUIKitImpl {
 
             @Override
             public void onMemberKicked(String groupID, V2TIMGroupMemberInfo opUser, List<V2TIMGroupMemberInfo> memberList) {
-                ConversationManagerKit.getInstance().setGroupConversationAvatar("group_"+groupID,null);
+                ConversationManagerKit.getInstance().setGroupConversationAvatar("group_" + groupID, null);
                 for (V2TIMGroupMemberInfo v2TIMGroupMemberInfo : memberList) {
                     if (v2TIMGroupMemberInfo.getUserID().equals(V2TIMManager.getInstance().getLoginUser())) {
                         GroupChatManagerKit.getInstance().notifyKickedFromGroup(groupID);
@@ -265,17 +281,31 @@ public class TUIKitImpl {
 
             @Override
             public void onGroupDismissed(String groupID, V2TIMGroupMemberInfo opUser) {
+                Intent intent = new Intent(GroupListenerConstants.ACTION);
+                intent.putExtra(GroupListenerConstants.KEY_METHOD, GroupListenerConstants.METHOD_ON_GROUP_DISMISSED);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_ID, groupID);
+                intent.putExtra(GroupListenerConstants.KEY_OP_USER, sGson.toJson(opUser));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                 GroupChatManagerKit.getInstance().notifyGroupDismissed(groupID);
             }
 
             @Override
             public void onGroupRecycled(String groupID, V2TIMGroupMemberInfo opUser) {
+                Intent intent = new Intent(GroupListenerConstants.ACTION);
+                intent.putExtra(GroupListenerConstants.KEY_METHOD, GroupListenerConstants.METHOD_ON_GROUP_RECYCLED);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_ID, groupID);
+                intent.putExtra(GroupListenerConstants.KEY_OP_USER, sGson.toJson(opUser));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                 GroupChatManagerKit.getInstance().notifyGroupDismissed(groupID);
             }
 
             @Override
             public void onGroupInfoChanged(String groupID, List<V2TIMGroupChangeInfo> changeInfos) {
-
+                Intent intent = new Intent(GroupListenerConstants.ACTION);
+                intent.putExtra(GroupListenerConstants.KEY_METHOD, GroupListenerConstants.METHOD_ON_GROUP_INFO_CHANGED);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_ID, groupID);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_INFO, sGson.toJson(changeInfos));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
 
             @Override
@@ -302,12 +332,26 @@ public class TUIKitImpl {
 
             @Override
             public void onQuitFromGroup(String groupID) {
-                SLog.i( "onQuitFromGroup groupID:" + groupID);
+                SLog.i("onQuitFromGroup groupID:" + groupID);
             }
 
             @Override
             public void onReceiveRESTCustomData(String groupID, byte[] customData) {
+                Intent intent = new Intent(GroupListenerConstants.ACTION);
+                intent.putExtra(GroupListenerConstants.KEY_METHOD, GroupListenerConstants.METHOD_ON_REV_CUSTOM_DATA);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_ID, groupID);
+                intent.putExtra(GroupListenerConstants.KEY_CUSTOM_DATA, customData);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                 GroupChatManagerKit.getInstance().notifyGroupRESTCustomSystemData(groupID, customData);
+            }
+
+            @Override
+            public void onGroupAttributeChanged(String groupID, Map<String, String> groupAttributeMap) {
+                Intent intent = new Intent(GroupListenerConstants.ACTION);
+                intent.putExtra(GroupListenerConstants.KEY_METHOD, GroupListenerConstants.METHOD_ON_GROUP_ATTRS_CHANGED);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_ID, groupID);
+                intent.putExtra(GroupListenerConstants.KEY_GROUP_ATTR, sGson.toJson(groupAttributeMap));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
 
@@ -386,14 +430,14 @@ public class TUIKitImpl {
     }
 
     public static void addIMEventListener(IMEventListener listener) {
-        SLog.i( "addIMEventListener:" + sIMEventListeners.size() + "|l:" + listener);
+        SLog.i("addIMEventListener:" + sIMEventListeners.size() + "|l:" + listener);
         if (listener != null && !sIMEventListeners.contains(listener)) {
             sIMEventListeners.add(listener);
         }
     }
 
     public static void removeIMEventListener(IMEventListener listener) {
-        SLog.i( "removeIMEventListener:" + sIMEventListeners.size() + "|l:" + listener);
+        SLog.i("removeIMEventListener:" + sIMEventListeners.size() + "|l:" + listener);
         if (listener == null) {
             sIMEventListeners.clear();
         } else {

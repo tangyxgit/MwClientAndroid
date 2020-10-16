@@ -1,6 +1,6 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.base;
 
-import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.v2.V2TIMConversation;
 
 import androidx.annotation.NonNull;
 
@@ -10,7 +10,7 @@ public class OfflineMessageBean {
     public static final int REDIRECT_ACTION_CALL = 2;
 
     public int version = 1;
-    public int chatType = TIMConversationType.C2C.value();
+    public int chatType = V2TIMConversation.V2TIM_C2C;
     public int action = REDIRECT_ACTION_CHAT;
     public String sender = "";
     public String nickname = "";

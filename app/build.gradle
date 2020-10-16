@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -15,7 +14,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
+        ndk {
+            abiFilters = []
+            abiFilters.addAll(rootProject.ext.abiFilters)
+        }
+
         buildConfigField "String", "HOST_NAME", "\"" + rootProject.ext.releaseHostName + "\""
+
     }
 
     signingConfigs {
@@ -112,18 +117,32 @@ android {
             assets.srcDirs = ['src/main/assets', 'src/main/assets/']
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+}
+
+apply plugin: 'caster'
+caster {
+    enableJarTransform true
+    transformerConfigs {
+        xcastPatch {
+            enableJarTransform true
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'com.google.code.gson:gson:2.8.6'
     //im
     implementation project(path: ':imkit')
     // bugly sdk
-    implementation 'com.tencent.bugly:crashreport:3.2.422'
-    implementation 'com.tencent.bugly:nativecrashreport:3.7.471'
+//    implementation 'com.tencent.bugly:crashreport:3.2.422'
+//    implementation 'com.tencent.bugly:nativecrashreport:3.7.471'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

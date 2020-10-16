@@ -75,6 +75,10 @@ public final class ModeApi {
      */
     public final static String getVersion = "api/getVersion";
     /**
+     * 获取应用的token
+     */
+    public final static String getToolToken = "tool/getToolToken";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

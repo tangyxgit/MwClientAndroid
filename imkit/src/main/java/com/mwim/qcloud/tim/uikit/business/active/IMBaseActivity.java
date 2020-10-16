@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
+import com.mwim.qcloud.tim.uikit.utils.ClickUtils;
 import com.work.util.ToastUtil;
 
 /**
@@ -47,6 +48,7 @@ public abstract class IMBaseActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        ClickUtils.clear();
         super.onResume();
     }
 
