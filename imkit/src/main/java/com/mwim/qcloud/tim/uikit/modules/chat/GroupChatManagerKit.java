@@ -360,8 +360,8 @@ public class GroupChatManagerKit extends ChatManagerKit {
             mGroupInfoProvider.loadGroupPublicInfo(groupID,true, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
-                    if(data instanceof OpenGroupInfo && !TextUtils.isEmpty(((OpenGroupInfo) data).Name)){
-                        ToastUtil.info(IMKitAgent.instance(),"您所在的群" + ((OpenGroupInfo) data).Name + "已解散");
+                    if(data instanceof String){
+                        ToastUtil.info(IMKitAgent.instance(),"您所在的群" + data + "已解散");
                     }
                 }
 
