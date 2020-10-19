@@ -76,6 +76,7 @@ public final class IMKitAgent {
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
         QbSdk.initTbsSettings(map);
+        QbSdk.setDownloadWithoutWifi(true);
         QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
             @Override
             public void onCoreInitFinished() {

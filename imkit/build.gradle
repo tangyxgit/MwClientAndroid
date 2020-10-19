@@ -81,6 +81,7 @@ dependencies {
     //腾讯会议
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
     implementation "com.tencent.wemeet:sdk-interface:0.0.41"
+//    implementation "com.tencent.wemeet:sdk-interface:0.0.25"
     //umeng统计
     implementation "com.umeng.umsdk:common:9.1.0"
     implementation "com.umeng.umsdk:asms:1.1.3" // asms包依赖(必选)

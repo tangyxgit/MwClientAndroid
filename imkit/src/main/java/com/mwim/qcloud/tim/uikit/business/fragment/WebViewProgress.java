@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.smtt.export.external.extension.proxy.ProxyWebChromeClientExtension;
+import com.tencent.smtt.export.external.interfaces.IX5WebSettings;
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.DownloadListener;

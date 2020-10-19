@@ -70,6 +70,7 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
             return;
         }
         String url = bundle.getString(WebActivity.class.getSimpleName());
+//        mWeb.loadUrl("http://soft.imtt.qq.com/browser/tes/feedback.html");
         mWeb.loadUrl(url);
     }
 
