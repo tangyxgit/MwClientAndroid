@@ -83,7 +83,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
             if(req instanceof GetToolTokenReq && resp instanceof GetToolTokenResp){
                 String token = ((GetToolTokenResp) resp).getData();
                 if("code001".equals(((GetToolTokenReq) req).getToolCode())){//腾讯会议
-//                    WemeetSdkHelper.startAuth(token);
+                    WemeetSdkHelper.startAuth(token);
                 }else if("code002".equals(((GetToolTokenReq) req).getToolCode())){//网盘
                     String url = resp.getPositionParams(0);
                     WebActivity.startWebView(url+"?token="+token);
