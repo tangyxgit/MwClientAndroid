@@ -17,6 +17,7 @@ import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.helper.WemeetSdkHelper;
 import com.work.api.open.Yz;
+import com.work.api.open.model.GetCarWebViewUrlResp;
 import com.work.api.open.model.GetToolTokenReq;
 import com.work.api.open.model.GetToolTokenResp;
 import com.work.api.open.model.client.OpenData;
@@ -63,6 +64,11 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                             getToolTokenReq.setToolCode(data.getToolCode());
                             getToolTokenReq.setUserName(UserApi.instance().getNickName());
                             Yz.getSession().getToolToken(getToolTokenReq, WorkAdapter.this,data.getToolUrl());
+                        }else if("code003".equals(data.getToolCode())){//打车
+                            if(getContext() instanceof BaseActivity){
+                                ((BaseActivity) getContext()).showProgressLoading(false,false);
+                            }
+                            Yz.getSession().getCarWebViewUrl(data.getToolUrl(),WorkAdapter.this);
                         }else{
                             WebActivity.startWebView(data.getToolUrl());
                         }
@@ -87,6 +93,11 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                 }else if("code002".equals(((GetToolTokenReq) req).getToolCode())){//网盘
                     String url = resp.getPositionParams(0);
                     WebActivity.startWebView(url+"?token="+token);
+                }
+            }else if(resp instanceof GetCarWebViewUrlResp){
+                OpenData result = ((GetCarWebViewUrlResp) resp).Result;
+                if(result!=null){
+                    WebActivity.startWebView(result.getUrl());
                 }
             }
         }else{

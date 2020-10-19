@@ -45,6 +45,12 @@ public class WorkFragment extends BaseFragment implements OnResultDataListener {
     @Override
     public void onResume() {
         super.onResume();
+        if(mAdapter!=null){
+            refreshTool();
+        }
+    }
+
+    public void refreshTool(){
         Yz.getSession().getToolListByUserId(this);
     }
 

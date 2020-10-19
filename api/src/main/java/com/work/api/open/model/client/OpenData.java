@@ -86,12 +86,12 @@ public class OpenData extends ClientModel {
     private int status;
     private String toolName;
     public String GroupId;
-    private String sdkToken;
     public String Name;
     public List<OpenGroupInfo> GroupInfo;
+    private String url;
 
-    public String getSdkToken() {
-        return sdkToken;
+    public String getUrl() {
+        return url;
     }
 
     public String getRemark() {

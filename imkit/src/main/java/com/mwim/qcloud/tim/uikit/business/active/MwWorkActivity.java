@@ -285,6 +285,8 @@ public class MwWorkActivity extends IMBaseActivity implements
         BaseFragment fragment = mFragments.get(position);
         if(fragment instanceof ContactFragment){
             ((ContactFragment) fragment).refreshData();
+        }else if(fragment instanceof WorkFragment){
+            ((WorkFragment) fragment).refreshTool();
         }
         if(fragment instanceof WorkFragment){
             setStatusBar(ContextCompat.getColor(this,R.color.background_color));

@@ -10,6 +10,7 @@ import com.work.api.open.model.BaseResp;
 import com.work.api.open.model.CreateGroupReq;
 import com.work.api.open.model.CreateGroupResp;
 import com.work.api.open.model.DestroyGroupReq;
+import com.work.api.open.model.GetCarWebViewUrlResp;
 import com.work.api.open.model.GetGroupMsgReq;
 import com.work.api.open.model.GetGroupMsgResp;
 import com.work.api.open.model.GetToolListByUserIdResp;
@@ -141,6 +142,18 @@ public class Yz extends ApiClient {
      */
     public void getToolToken(GetToolTokenReq getToolTokenReq,OnResultDataListener onResultDataListener,Object... objects){
         requestPost(ModeApi.getToolToken,getToolTokenReq,new GetToolTokenResp(),onResultDataListener,objects);
+    }
+    /**
+     * 获取打车链接
+     */
+    public void getCarWebViewUrl(String url,OnResultDataListener onResultDataListener){
+        RequestParams params = new RequestParams();
+        params.url = url;
+        params.onResultDataListener = onResultDataListener;
+        params.req = new BaseReq();
+        params.resp = new GetCarWebViewUrlResp();
+        ConnectDataTask dataTask = new ConnectDataTask(params);
+        dataTask.doGet();
     }
     /**
      * 上传文件
