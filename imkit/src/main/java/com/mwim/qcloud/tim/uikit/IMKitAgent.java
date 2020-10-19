@@ -23,6 +23,8 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -67,6 +69,8 @@ public final class IMKitAgent {
 
     public static void init(Context context,String appKey){
         instance = context;
+        UMConfigure.init(context, "5f8d583980455950e4af10d9", "Yz", UMConfigure.DEVICE_TYPE_PHONE, "");
+        MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         TUIKit.init(context,AppId,getConfigs(context));
         HashMap<String,Object> map = new HashMap<>();
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
