@@ -82,6 +82,7 @@
             android:id="@+id/sms_code"
             android:hint="@string/hint_sms_code"
             style="@style/EditorStyle"
+            android:inputType="number"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"/>
         <androidx.appcompat.widget.AppCompatTextView
