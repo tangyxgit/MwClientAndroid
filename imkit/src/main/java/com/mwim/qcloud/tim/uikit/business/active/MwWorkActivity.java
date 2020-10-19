@@ -27,7 +27,6 @@ import com.mwim.qcloud.tim.uikit.business.fragment.ContactFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.ConversationFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.ProfileFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.WorkFragment;
-import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.ThirdPushTokenMgr;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;

@@ -66,11 +66,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:name=".MwClientApplication"
         android:theme="@style/Theme.AppCompat.Slider">
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/Theme.AppCompat.Welcome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
