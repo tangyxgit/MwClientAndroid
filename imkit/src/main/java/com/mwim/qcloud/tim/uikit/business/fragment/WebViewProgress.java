@@ -7,7 +7,14 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -15,15 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mwim.qcloud.tim.uikit.R;
-import com.tencent.smtt.export.external.extension.proxy.ProxyWebChromeClientExtension;
-import com.tencent.smtt.export.external.interfaces.WebResourceError;
-import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
-import com.tencent.smtt.sdk.DownloadListener;
-import com.tencent.smtt.sdk.ValueCallback;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
-import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.work.util.PhoneUtils;
 import com.work.util.SLog;
 import com.work.util.SizeUtils;
@@ -119,27 +117,23 @@ public class WebViewProgress extends WebView {
             }
 
             @Override
-            public void onReceivedError(WebView webView, WebResourceRequest webResourceRequest, WebResourceError webResourceError) {
-                super.onReceivedError(webView, webResourceRequest, webResourceError);
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
                 isWebError = true;
                 if(onWebLoadListener!=null){
                     onWebLoadListener.onReceivedError();
                 }
             }
 
-            @Override
-            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                super.onReceivedHttpError(view, request, errorResponse);
-            }
         });
         setWebChromeClient(new WebChromeClient());
-        setWebChromeClientExtension(new ProxyWebChromeClientExtension(){
-            @Override
-            public void openFileChooser(android.webkit.ValueCallback<Uri[]> valueCallback, String s, String s1) {
-                super.openFileChooser(valueCallback, s, s1);
-                SLog.e("多选文件...");
-            }
-        });
+//        setWebChromeClientExtension(new ProxyWebChromeClientExtension(){
+//            @Override
+//            public void openFileChooser(android.webkit.ValueCallback<Uri[]> valueCallback, String s, String s1) {
+//                super.openFileChooser(valueCallback, s, s1);
+//                SLog.e("多选文件...");
+//            }
+//        });
         setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String s, String s1, String s2, String s3, long l) {
@@ -151,7 +145,7 @@ public class WebViewProgress extends WebView {
             }
         });
     }
-    public class WebChromeClient extends com.tencent.smtt.sdk.WebChromeClient {
+    public class WebChromeClient extends android.webkit.WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             onWebProgressChanged(newProgress);
@@ -170,19 +164,13 @@ public class WebViewProgress extends WebView {
         }
 
         @Override
-        public void openFileChooser(ValueCallback<Uri> valueCallback, String s, String s1) {
-            super.openFileChooser(valueCallback, s, s1);
-            SLog.e("单选文件...");
-        }
-
-        @Override
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> valueCallback, FileChooserParams fileChooserParams) {
             SLog.e("onShowFileChooser...");
             fileValueCallback = valueCallback;
             if(onWebLoadListener!=null){
                 onWebLoadListener.onShowFileChooser();
             }
-            return super.onShowFileChooser(webView, valueCallback, fileChooserParams);
+            return true;
         }
     }
     public void onWebProgressChanged(int newProgress){
@@ -230,7 +218,6 @@ public class WebViewProgress extends WebView {
         webSetting.setDomStorageEnabled(true);
         webSetting.setGeolocationEnabled(true);
 
-        getSettingsExtension().setDisplayCutoutEnable(true);
     }
 
     /**
