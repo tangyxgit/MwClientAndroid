@@ -3,6 +3,8 @@
     <string name="activity_forgetpassword" translatable="false">忘记密码</string>
     <string name="activity_register" translatable="false">注册</string>
 
+    <string name="text_agreement" translatable="false">https://yinsi.yzmetax.com/agreement.html</string>
+    <string name="text_conceal" translatable="false">https://yinsi.yzmetax.com/conceal.html</string>
     <string name="text_login_ing" translatable="false">登录中...</string>
     <string name="text_please_wait" translatable="false">请稍等...</string>
     <string name="text_manager_login" translatable="false">登录</string>

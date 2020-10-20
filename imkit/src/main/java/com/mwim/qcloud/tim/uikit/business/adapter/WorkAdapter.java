@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.adapter;
 
+import android.graphics.Color;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
+import com.chad.library.adapter.base.divider.VerticalDividerItemDecoration;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
@@ -45,6 +48,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
         WorkAppAdapter mAdapter = (WorkAppAdapter) recyclerView.getAdapter();
         if(mAdapter==null){
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
+            recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.TRANSPARENT).sizeResId(R.dimen.dp_20).build());
             mAdapter = new WorkAppAdapter(item.getToolDataList());
             recyclerView.setAdapter(mAdapter);
             mAdapter.setOnItemClickListener(new OnItemClickListener() {
