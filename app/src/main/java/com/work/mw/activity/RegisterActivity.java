@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.dd.processbutton.iml.ActionProcessButton;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginResp;
@@ -37,6 +39,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private TextView mSend;
     private EditText mPassword;
     private EditText mConfirmPassword;
+    private CheckBox mChecked;
     private Handler mHandler;
     private int mTimer=60;
     private boolean isRegister = true;
@@ -50,12 +53,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mSend = findViewById(R.id.send);
         mPassword = findViewById(R.id.password);
         mConfirmPassword = findViewById(R.id.confirm_password);
+        mChecked = findViewById(R.id.checked);
     }
 
     @Override
     public void onInitValue() throws Exception {
         super.onInitValue();
         setSubEnable(false);
+        findViewById(R.id.agree).setOnClickListener(this);
+        findViewById(R.id.conceal).setOnClickListener(this);
         mSubmit.setOnClickListener(this);
         mSmsCode.addTextChangedListener(this);
         mSend.setOnClickListener(this);
@@ -113,12 +119,22 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 }
                 Yz.getSession().sendSms(sendSmsReq,this);
                 break;
+            case R.id.agree:
+                WebActivity.startWebView(getString(R.string.text_agreement));
+                break;
+            case R.id.conceal:
+                WebActivity.startWebView(getString(R.string.text_conceal));
+                break;
             case R.id.submit:
                 String password = mPassword.getText().toString().trim();
                 String confirmPassword = mConfirmPassword.getText().toString().trim();
                 if(!password.equals(confirmPassword)){
                     ToastUtil.error(this,R.string.toast_password_error);
                     break;
+                }
+                if(!mChecked.isChecked()){
+                    ToastUtil.error(this,R.string.toast_agree_conceal);
+                    return;
                 }
                 String smsCode = mSmsCode.getText().toString().trim();
                 RegisterReq registerReq = new RegisterReq();

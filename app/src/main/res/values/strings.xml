@@ -19,5 +19,6 @@
 
     <string name="toast_permission_error" translatable="false">部分权限未允许，可能影响正常使用</string>
     <string name="toast_password_error" translatable="false">两次密码不一致</string>
+    <string name="toast_agree_conceal" translatable="false">请勾选服务协议和隐私政策</string>
     <string name="toast_reset_success" translatable="false">密码重置成功</string>
 </resources>
