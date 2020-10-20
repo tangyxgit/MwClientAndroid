@@ -76,7 +76,7 @@ public class MwWorkActivity extends IMBaseActivity implements
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);
 
         BottomNavigationItem messageItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_chat_fill,R.color.defaultColorAccent),R.string.tab_conversation_tab_text)
-                .setInactiveIcon(getSelectDrawable(R.drawable.icon_chat_stroke,R.color.color_E4E6E9))
+                .setInactiveIcon(getSelectDrawable(R.drawable.icon_chat_stroke,R.color.color_b2b2b2))
                 .setActiveColorResource(R.color.defaultColorAccent);
         mMessageBadge = new TextBadgeItem();
         mMessageBadge.hide();
@@ -84,22 +84,19 @@ public class MwWorkActivity extends IMBaseActivity implements
         mNavigationBar.addItem(messageItem);
 
         BottomNavigationItem contactItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_contact_fill,R.color.defaultColorAccent),R.string.tab_contact_tab_text)
-                .setInactiveIcon(getSelectDrawable(R.drawable.icon_contact_stroke,R.color.color_E4E6E9))
+                .setInactiveIcon(getSelectDrawable(R.drawable.icon_contact_stroke,R.color.color_b2b2b2))
                 .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(contactItem);
 
         BottomNavigationItem workItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_tools_fill,R.color.defaultColorAccent),R.string.tab_work_tab_text)
-                .setInactiveIcon(getSelectDrawable(R.drawable.icon_tools_stroke,R.color.color_E4E6E9))
+                .setInactiveIcon(getSelectDrawable(R.drawable.icon_tools_stroke,R.color.color_b2b2b2))
                 .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(workItem);
 
-
-
         BottomNavigationItem profileItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_user_fill,R.color.defaultColorAccent),R.string.tab_profile_tab_text)
-                .setInactiveIcon(getSelectDrawable(R.drawable.icon_user_stroke,R.color.color_E4E6E9))
+                .setInactiveIcon(getSelectDrawable(R.drawable.icon_user_stroke,R.color.color_b2b2b2))
                 .setActiveColorResource(R.color.defaultColorAccent);
         mNavigationBar.addItem(profileItem);
-
 
         mNavigationBar.initialise();
         mNavigationBar.setTabSelectedListener(this);

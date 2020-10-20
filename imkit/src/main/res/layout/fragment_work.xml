@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,8 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_15"
             android:layout_marginRight="@dimen/dp_15"
-            android:text="@string/work_title"
-            android:textStyle="bold"/>
+            android:text="@string/work_title"/>
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/add_more"
             android:visibility="gone"
@@ -29,18 +28,14 @@
             android:layout_marginRight="@dimen/dp_15"
             android:src="@drawable/conversation_more"/>
     </RelativeLayout>
-    <FrameLayout
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:src="@drawable/work_looper"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_marginTop="83dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:src="@drawable/work_looper"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_marginTop="35dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </FrameLayout>
-</LinearLayout>
+        android:layout_height="wrap_content"/>
+</FrameLayout>

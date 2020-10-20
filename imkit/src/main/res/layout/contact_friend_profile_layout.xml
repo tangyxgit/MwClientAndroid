@@ -74,6 +74,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:isTop="true"
                 app:name="@string/im_department" />
             <com.mwim.qcloud.tim.uikit.component.LineControllerView
                 android:id="@+id/modify_position"
@@ -97,6 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            app:isTop="true"
             app:canNav="true"
             app:name="@string/profile_remark" />
 
@@ -107,6 +109,7 @@
             android:layout_marginTop="10dp"
             android:visibility="gone"
             app:isSwitch="true"
+            app:isTop="true"
             app:name="@string/chat_to_top" />
 
         <com.mwim.qcloud.tim.uikit.component.LineControllerView
@@ -115,6 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:isSwitch="true"
+            app:isTop="true"
             app:name="@string/profile_black" />
 
         <LinearLayout

@@ -245,7 +245,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         } else {
             List<Object> faceList = new ArrayList<>();
             if (TextUtils.isEmpty(conversation.getFaceUrl())) {
-                faceList.add(R.drawable.default_head);
+                faceList.add(R.drawable.default_user_icon);
             } else {
                 faceList.add(conversation.getFaceUrl());
             }
@@ -328,7 +328,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
                 for (int i = 0; i < faceSize; i++) {
                     V2TIMGroupMemberFullInfo v2TIMGroupMemberFullInfo = v2TIMGroupMemberFullInfoList.get(i);
                     if (TextUtils.isEmpty(v2TIMGroupMemberFullInfo.getFaceUrl())) {
-                        urlList.add(R.drawable.default_head);
+                        urlList.add(R.drawable.default_user_icon);
                     } else {
                         urlList.add(v2TIMGroupMemberFullInfo.getFaceUrl());
                     }

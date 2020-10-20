@@ -22,14 +22,13 @@ public class InputMoreFragment extends BaseInputFragment {
     public static final int REQUEST_CODE_FILE = 1011;
     public static final int REQUEST_CODE_PHOTO = 1012;
 
-    private View mBaseView;
     private List<InputMoreActionUnit> mInputMoreList = new ArrayList<>();
     private IUIKitCallBack mCallback;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mBaseView = inflater.inflate(R.layout.chat_inputmore_fragment, container, false);
+        View mBaseView = inflater.inflate(R.layout.chat_inputmore_fragment, container, false);
         InputMoreLayout layout = mBaseView.findViewById(R.id.input_extra_area);
         layout.init(mInputMoreList);
         return mBaseView;
