@@ -1,7 +1,13 @@
 package com.mwim.qcloud.tim.uikit.modules.message;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import com.google.gson.Gson;
 import com.tencent.imsdk.v2.V2TIMCustomElem;
@@ -169,6 +175,26 @@ public class MessageInfoUtil {
         String filePath = FileUtil.getPathFromUri(fileUri);
         File file = new File(filePath);
         if (file.exists()) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(filePath,options);
+            if(options.outWidth != -1){//是图片
+                return buildImageMessage(fileUri,true);
+            }
+
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(filePath);
+            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
+            if(mimeType!=null && mimeType.contains("video")){//是视频
+                Bitmap firstFrame = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MINI_KIND);
+                String imagePath = FileUtil.saveBitmap("JCamera", firstFrame);
+                long duration = 0;
+                try {
+                    MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+                    mediaMetadataRetriever.setDataSource(filePath);
+                    duration = Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+                }catch (Exception ignore){}
+                return buildVideoMessage(imagePath,filePath,firstFrame.getWidth(),firstFrame.getHeight(),duration);
+            }
             MessageInfo info = new MessageInfo();
             V2TIMMessage v2TIMMessage = V2TIMManager.getMessageManager().createFileMessage(filePath, file.getName());
 

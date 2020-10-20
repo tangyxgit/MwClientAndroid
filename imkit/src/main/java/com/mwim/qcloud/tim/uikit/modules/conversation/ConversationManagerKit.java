@@ -395,6 +395,9 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      */
     private void handleTopData(String id, boolean flag) {
         ConversationInfo conversation = null;
+        if(mProvider==null){
+            return;
+        }
         List<ConversationInfo> conversationInfos = mProvider.getDataSource();
         for (int i = 0; i < conversationInfos.size(); i++) {
             ConversationInfo info = conversationInfos.get(i);

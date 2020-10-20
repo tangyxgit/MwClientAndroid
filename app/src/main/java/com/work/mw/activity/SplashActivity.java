@@ -12,6 +12,7 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
+import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
@@ -20,6 +21,7 @@ import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.mw.R;
 import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
 /**
  * Created by tangyx
@@ -100,6 +102,9 @@ public class SplashActivity extends BaseActivity {
         super.onResult(req, resp);
         if(resp.isSuccess() && resp instanceof LoginResp){
             login();
+        }else{
+            ToastUtil.warning(this,resp.getMessage());
+            new ConfirmDialog().setContent(resp.getMessage()).setOnConfirmListener(view -> finish()).setOnCancelListener(view -> finish()).show(getSupportFragmentManager(),"error_service");
         }
     }
 }
