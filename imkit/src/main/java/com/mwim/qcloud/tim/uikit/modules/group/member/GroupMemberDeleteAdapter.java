@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
 
@@ -88,7 +89,13 @@ public class GroupMemberDeleteAdapter extends BaseAdapter {
 
     public void setDataSource(List<GroupMemberInfo> members) {
         if (members != null) {
-            this.mGroupMembers = members;
+            this.mGroupMembers = new ArrayList<>(members);
+            for (GroupMemberInfo info:this.mGroupMembers) {
+                if(info.getAccount().equals(UserApi.instance().getUserId())){
+                    this.mGroupMembers.remove(info);
+                    break;
+                }
+            }
             BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -96,6 +103,10 @@ public class GroupMemberDeleteAdapter extends BaseAdapter {
                 }
             });
         }
+    }
+
+    public List<GroupMemberInfo> getGroupMembers() {
+        return mGroupMembers;
     }
 
     public void setOnSelectChangedListener(OnSelectChangedListener callback) {

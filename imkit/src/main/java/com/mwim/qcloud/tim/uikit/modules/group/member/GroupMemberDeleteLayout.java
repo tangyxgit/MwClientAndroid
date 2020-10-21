@@ -57,6 +57,8 @@ public class GroupMemberDeleteLayout extends LinearLayout implements IGroupMembe
                 provider.removeGroupMembers(mDelMembers, new IUIKitCallBack() {
                     @Override
                     public void onSuccess(Object data) {
+                        mAdapter.getGroupMembers().removeAll(mDelMembers);
+                        mAdapter.notifyDataSetChanged();
                         ToastUtil.success(getContext(),"删除成员成功");
                         post(new Runnable() {
                             @Override
