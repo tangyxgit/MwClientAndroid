@@ -17,6 +17,7 @@ import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.work.api.open.Yz;
+import com.work.api.open.model.BaseResp;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.mw.R;
@@ -104,7 +105,9 @@ public class SplashActivity extends BaseActivity {
             login();
         }else{
             ToastUtil.warning(this,resp.getMessage());
-            new ConfirmDialog().setContent(resp.getMessage()).setOnConfirmListener(view -> finish()).setOnCancelListener(view -> finish()).show(getSupportFragmentManager(),"error_service");
+            if(((BaseResp) resp).getCode() != 501){
+                new ConfirmDialog().setContent(resp.getMessage()).setOnConfirmListener(view -> finish()).setOnCancelListener(view -> finish()).show(getSupportFragmentManager(),"error_service");
+            }
         }
     }
 }
