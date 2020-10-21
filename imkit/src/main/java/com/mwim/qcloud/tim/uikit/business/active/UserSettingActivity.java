@@ -26,6 +26,7 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
         super.onInitView();
         findViewById(R.id.update_pwd).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
+        findViewById(R.id.modify_about).setOnClickListener(this);
         LineControllerView mVersion = findViewById(R.id.modify_version);
         AppUtils.AppInfo appInfo = AppUtils.getAppInfo(this);
         if(appInfo!=null){
@@ -64,6 +65,8 @@ public class UserSettingActivity extends BaseActivity implements View.OnClickLis
             }
         }else if(view.getId() == R.id.modify_version){
             UpdateAppDialog.showUpdateDialog(this,true);
+        }else if(view.getId() == R.id.modify_about){
+            startActivity(new Intent(this,AboutYzActivity.class));
         }
     }
 }

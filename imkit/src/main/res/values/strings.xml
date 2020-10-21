@@ -51,7 +51,7 @@
     <string name="exit" translatable="false">退出登录</string>
     <string name="user_info_title" translatable="false">个人信息</string>
     <string name="user_content_default" translatable="false">待完善</string>
-    <string name="user_setting_about" translatable="false">联系我们</string>
+    <string name="user_setting_about" translatable="false">关于我们</string>
     <string name="user_setting_version" translatable="false">检查更新</string>
     <string name="user_setting_cache" translatable="false">清除缓存</string>
     <string name="user_setting_update_pwd" translatable="false">修改密码</string>
@@ -205,4 +205,7 @@
     <string name="label_update_app_next" translatable="false">稍后提醒</string>
     <string name="label_update_app" translatable="false">马上体验</string>
     <string name="toast_app_version_up" translatable="false">已经是最新版本了！</string>
+
+    <string name="text_agreement" translatable="false">https://yinsi.yzmetax.com/agreement.html</string>
+    <string name="text_conceal" translatable="false">https://yinsi.yzmetax.com/conceal.html</string>
 </resources>
