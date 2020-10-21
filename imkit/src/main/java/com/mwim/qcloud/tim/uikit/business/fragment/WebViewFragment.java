@@ -16,6 +16,8 @@ import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.workstation.view.MaterialMenuDrawable;
 import com.workstation.view.MaterialMenuView;
 
+import static com.mwim.qcloud.tim.uikit.business.active.WebActivity.UA;
+
 /**
  * Created by tangyx
  * Date 2020/4/27
@@ -70,7 +72,10 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
             return;
         }
         String url = bundle.getString(WebActivity.class.getSimpleName());
-//        mWeb.loadUrl("http://soft.imtt.qq.com/browser/tes/feedback.html");
+        String ua = bundle.getString(UA);
+        if(!TextUtils.isEmpty(ua)){
+            mWeb.setUserAgentString(ua);
+        }
         mWeb.loadUrl(url);
     }
 

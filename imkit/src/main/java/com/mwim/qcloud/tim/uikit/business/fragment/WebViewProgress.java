@@ -217,7 +217,10 @@ public class WebViewProgress extends WebView {
         webSetting.setJavaScriptEnabled(true);
         webSetting.setDomStorageEnabled(true);
         webSetting.setGeolocationEnabled(true);
+    }
 
+    public void setUserAgentString(String ua){
+        getSettings().setUserAgentString(ua);
     }
 
     /**

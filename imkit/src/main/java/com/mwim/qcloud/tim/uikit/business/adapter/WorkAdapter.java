@@ -56,7 +56,8 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                     OpenData data = (OpenData) adapter.getItem(position);
                     if(data!=null){
                         if("code001".equals(data.getToolCode()) //腾讯会议
-                                || "code002".equals(data.getToolCode())){//网盘
+                                || "code002".equals(data.getToolCode())//网盘
+                                || "code003".equals(data.getToolCode())){//打车
                             if(getContext() instanceof BaseActivity){
                                 ((BaseActivity) getContext()).showProgressLoading(false,false);
                             }
@@ -67,11 +68,6 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                             getToolTokenReq.setToolCode(data.getToolCode());
                             getToolTokenReq.setUserName(UserApi.instance().getNickName());
                             Yz.getSession().getToolToken(getToolTokenReq, WorkAdapter.this,data.getToolUrl());
-                        }else if("code003".equals(data.getToolCode())){//打车
-                            if(getContext() instanceof BaseActivity){
-                                ((BaseActivity) getContext()).showProgressLoading(false,false);
-                            }
-                            Yz.getSession().getCarWebViewUrl(data.getToolUrl(),WorkAdapter.this);
                         }else{
                             WebActivity.startWebView(data.getToolUrl());
                         }
@@ -91,16 +87,18 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
         if(resp.isSuccess()){
             if(req instanceof GetToolTokenReq && resp instanceof GetToolTokenResp){
                 String token = ((GetToolTokenResp) resp).getData();
+                String url = resp.getPositionParams(0);
                 if("code001".equals(((GetToolTokenReq) req).getToolCode())){//腾讯会议
                     WemeetSdkHelper.startAuth(token);
                 }else if("code002".equals(((GetToolTokenReq) req).getToolCode())){//网盘
-                    String url = resp.getPositionParams(0);
                     WebActivity.startWebView(url+"?token="+token);
+                }else if("code003".equals(((GetToolTokenReq) req).getToolCode())){//打车
+                    Yz.getSession().getCarWebViewUrl(url+token,WorkAdapter.this);
                 }
             }else if(resp instanceof GetCarWebViewUrlResp){
                 OpenData result = ((GetCarWebViewUrlResp) resp).Result;
                 if(result!=null){
-                    WebActivity.startWebView(result.getUrl());
+                    WebActivity.startWebView(result.getUrl(),"hsh_android");
                 }
             }
         }else{
