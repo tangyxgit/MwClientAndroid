@@ -47,7 +47,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
         WorkAppAdapter mAdapter = (WorkAppAdapter) recyclerView.getAdapter();
         if(mAdapter==null){
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
-            recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.TRANSPARENT).sizeResId(R.dimen.dp_20).build());
+            recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).color(Color.TRANSPARENT).sizeResId(R.dimen.dp_24).build());
             mAdapter = new WorkAppAdapter(item.getToolDataList());
             recyclerView.setAdapter(mAdapter);
             mAdapter.setOnItemClickListener(new OnItemClickListener() {
