@@ -23,7 +23,6 @@ import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.R;
-import com.work.util.SLog;
 import com.work.util.StringUtils;
 
 import java.io.IOException;
@@ -192,7 +191,10 @@ public class FaceManager {
     }
 
 
-    public static void handlerEmojiText(TextView comment, String content, boolean typing) {
+    public static void handlerEmojiText(TextView comment, String content, boolean typing,int linkColor) {
+        if(linkColor==0){
+            linkColor = ContextCompat.getColor(IMKitAgent.instance(),R.color.color_333333);
+        }
         String regex = "https?://(?:[-\\w.]|(?:%[\\da-fA-F]{2}))+[^\\u4e00-\\u9fa5]+[\\w-_/?&=#%:]{0}";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(content);
@@ -208,7 +210,7 @@ public class FaceManager {
                 String url = (String) view.getTag();
                 WebActivity.startWebView(url);
             }
-        }, ContextCompat.getColor(IMKitAgent.instance(),R.color.color_E4E6E9));
+        }, linkColor);
 
         regex = "\\[(\\S+?)\\]";
         p = Pattern.compile(regex);

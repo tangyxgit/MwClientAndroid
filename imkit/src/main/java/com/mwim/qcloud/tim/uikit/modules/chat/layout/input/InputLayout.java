@@ -587,7 +587,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                 int index = mTextInput.getSelectionStart();
                 Editable editable = mTextInput.getText();
                 editable.insert(index, emoji.getFilter());
-                FaceManager.handlerEmojiText(mTextInput, editable.toString(), true);
+                FaceManager.handlerEmojiText(mTextInput, editable.toString(), true,0);
             }
 
             @Override
@@ -704,7 +704,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                 }
             }
             if (!TextUtils.equals(mInputContent, mTextInput.getText().toString())) {
-                FaceManager.handlerEmojiText(mTextInput, mTextInput.getText().toString(), true);
+                FaceManager.handlerEmojiText(mTextInput, mTextInput.getText().toString(), true,0);
             }
         }
     }

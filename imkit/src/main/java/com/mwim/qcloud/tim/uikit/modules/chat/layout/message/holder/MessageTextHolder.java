@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
@@ -31,7 +34,7 @@ public class MessageTextHolder extends MessageContentHolder {
     public void layoutVariableViews(MessageInfo msg, int position) {
         msgBodyText.setVisibility(View.VISIBLE);
         if (msg.getExtra() != null) {
-            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false);
+            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false, ContextCompat.getColor(IMKitAgent.instance(),msg.isSelf()?R.color.white:R.color.black));
         }
         if(msg.isSelf()){
             msgBodyText.setTextColor(Color.WHITE);

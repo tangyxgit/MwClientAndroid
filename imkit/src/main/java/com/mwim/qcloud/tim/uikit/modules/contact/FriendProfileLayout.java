@@ -77,6 +77,8 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
     private TextView mDeleteView;
     private TextView mChatView;
     private TextView mChatAudioVideo;
+    private View mDepLayout;
+    private View mAddWordingLayout;
 
     private ContactItemBean mContactInfo;
     private V2TIMFriendApplication mFriendApplication;
@@ -122,6 +124,8 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         mPosition = findViewById(R.id.modify_position);
         mCard = findViewById(R.id.modify_card);
         mEmail = findViewById(R.id.modify_email);
+        mDepLayout = findViewById(R.id.dep_layout);
+        mAddWordingLayout = findViewById(R.id.add_wording_layout);
     }
 
     public void initData(Object data) {
@@ -137,8 +141,8 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                     ConversationManagerKit.getInstance().setConversationTop(mId, isChecked);
                 }
             });
-            findViewById(R.id.add_wording_layout).setVisibility(GONE);
-            findViewById(R.id.dep_layout).setVisibility(VISIBLE);
+            mAddWordingLayout.setVisibility(GONE);
+            mDepLayout.setVisibility(VISIBLE);
             mChatAudioVideo.setVisibility(VISIBLE);
             loadUserProfile();
             loadUser();
@@ -160,10 +164,11 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                     }
                 }
             });
-            findViewById(R.id.add_wording_layout).setVisibility(GONE);
-            findViewById(R.id.dep_layout).setVisibility(VISIBLE);
+            mAddWordingLayout.setVisibility(GONE);
+            mDepLayout.setVisibility(VISIBLE);
             mChatAudioVideo.setVisibility(VISIBLE);
             loadUser();
+            updateViews(mContactInfo);
         } else if (data instanceof V2TIMFriendApplication) {
             mFriendApplication = (V2TIMFriendApplication) data;
             mId = mFriendApplication.getUserID();
@@ -213,67 +218,76 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         } else if (data instanceof OpenData) {
             mId = ((OpenData) data).getUserId();
             loadUser();
-            mDeleteView.setVisibility(GONE);
-            mRemarkView.setVisibility(GONE);
-            mAddBlackView.setVisibility(GONE);
-            mAddWordingView.setHint(R.string.conversation_wording_send);
-            mAddWordingView.setEnabled(true);
-            mChatView.setText(R.string.user_add_friends);
-            mChatView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    V2TIMFriendAddApplication v2TIMFriendAddApplication = new V2TIMFriendAddApplication(mId);
-                    v2TIMFriendAddApplication.setAddWording(mAddWordingView.getText().toString());
-                    v2TIMFriendAddApplication.setAddSource("android");
-                    V2TIMManager.getFriendshipManager().addFriend(v2TIMFriendAddApplication, new V2TIMValueCallback<V2TIMFriendOperationResult>() {
-                        @Override
-                        public void onError(int code, String desc) {
-                            SLog.e("addFriend err code = " + code + ", desc = " + desc);
-                        }
-
-                        @Override
-                        public void onSuccess(V2TIMFriendOperationResult v2TIMFriendOperationResult) {
-                            SLog.i("addFriend success");
-                            switch (v2TIMFriendOperationResult.getResultCode()) {
-                                case BaseConstants.ERR_SUCC:
-                                    ToastUtil.success(getContext(), "成功");
-                                    break;
-                                case BaseConstants.ERR_SVR_FRIENDSHIP_INVALID_PARAMETERS:
-                                    if (TextUtils.equals(v2TIMFriendOperationResult.getResultInfo(), "Err_SNS_FriendAdd_Friend_Exist")) {
-                                        ToastUtil.info(getContext(), "对方已是您的好友");
-                                        break;
-                                    }
-                                case BaseConstants.ERR_SVR_FRIENDSHIP_COUNT_LIMIT:
-                                    ToastUtil.info(getContext(), "您的好友数已达系统上限");
-                                    break;
-                                case BaseConstants.ERR_SVR_FRIENDSHIP_PEER_FRIEND_LIMIT:
-                                    ToastUtil.info(getContext(), "对方的好友数已达系统上限");
-                                    break;
-                                case BaseConstants.ERR_SVR_FRIENDSHIP_IN_SELF_BLACKLIST:
-                                    ToastUtil.info(getContext(), "被加好友在自己的黑名单中");
-                                    break;
-                                case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_DENY_ANY:
-                                    ToastUtil.info(getContext(), "对方已禁止加好友");
-                                    break;
-                                case BaseConstants.ERR_SVR_FRIENDSHIP_IN_PEER_BLACKLIST:
-                                    ToastUtil.info(getContext(), "您已被对方设置为黑名单");
-                                    break;
-                                case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_NEED_CONFIRM:
-                                    ToastUtil.info(getContext(), "等待好友审核同意");
-                                    break;
-                                default:
-                                    ToastUtil.info(getContext(), v2TIMFriendOperationResult.getResultCode() + " " + v2TIMFriendOperationResult.getResultInfo());
-                                    break;
-                            }
-                            ((Activity) getContext()).finish();
-                        }
-                    });
-                }
-            });
+            addFriend();
         }
         if (!TextUtils.isEmpty(mNickname)) {
             mNickNameView.setText(mNickname);
         }
+    }
+
+    private void addFriend(){
+        mDepLayout.setVisibility(GONE);
+        mChatTopView.setVisibility(GONE);
+        mDeleteView.setVisibility(GONE);
+        mRemarkView.setVisibility(GONE);
+        mAddBlackView.setVisibility(GONE);
+        mChatAudioVideo.setVisibility(GONE);
+        mAddWordingView.setHint(R.string.conversation_wording_send);
+        mAddWordingView.setEnabled(true);
+        mAddWordingLayout.setVisibility(VISIBLE);
+        mChatView.setVisibility(VISIBLE);
+        mChatView.setText(R.string.user_add_friends);
+        mChatView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                V2TIMFriendAddApplication v2TIMFriendAddApplication = new V2TIMFriendAddApplication(mId);
+                v2TIMFriendAddApplication.setAddWording(mAddWordingView.getText().toString());
+                v2TIMFriendAddApplication.setAddSource("android");
+                V2TIMManager.getFriendshipManager().addFriend(v2TIMFriendAddApplication, new V2TIMValueCallback<V2TIMFriendOperationResult>() {
+                    @Override
+                    public void onError(int code, String desc) {
+                        SLog.e("addFriend err code = " + code + ", desc = " + desc);
+                    }
+
+                    @Override
+                    public void onSuccess(V2TIMFriendOperationResult v2TIMFriendOperationResult) {
+                        SLog.i("addFriend success");
+                        switch (v2TIMFriendOperationResult.getResultCode()) {
+                            case BaseConstants.ERR_SUCC:
+                                ToastUtil.success(getContext(), "成功");
+                                break;
+                            case BaseConstants.ERR_SVR_FRIENDSHIP_INVALID_PARAMETERS:
+                                if (TextUtils.equals(v2TIMFriendOperationResult.getResultInfo(), "Err_SNS_FriendAdd_Friend_Exist")) {
+                                    ToastUtil.info(getContext(), "对方已是您的好友");
+                                    break;
+                                }
+                            case BaseConstants.ERR_SVR_FRIENDSHIP_COUNT_LIMIT:
+                                ToastUtil.info(getContext(), "您的好友数已达系统上限");
+                                break;
+                            case BaseConstants.ERR_SVR_FRIENDSHIP_PEER_FRIEND_LIMIT:
+                                ToastUtil.info(getContext(), "对方的好友数已达系统上限");
+                                break;
+                            case BaseConstants.ERR_SVR_FRIENDSHIP_IN_SELF_BLACKLIST:
+                                ToastUtil.info(getContext(), "被加好友在自己的黑名单中");
+                                break;
+                            case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_DENY_ANY:
+                                ToastUtil.info(getContext(), "对方已禁止加好友");
+                                break;
+                            case BaseConstants.ERR_SVR_FRIENDSHIP_IN_PEER_BLACKLIST:
+                                ToastUtil.info(getContext(), "您已被对方设置为黑名单");
+                                break;
+                            case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_NEED_CONFIRM:
+                                ToastUtil.info(getContext(), "等待好友审核同意");
+                                break;
+                            default:
+                                ToastUtil.info(getContext(), v2TIMFriendOperationResult.getResultCode() + " " + v2TIMFriendOperationResult.getResultInfo());
+                                break;
+                        }
+                        ((Activity) getContext()).finish();
+                    }
+                });
+            }
+        });
     }
 
     private void loadUser() {
@@ -336,16 +350,19 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             }
         });
         if (bean.isFriend()) {
+            mAddWordingLayout.setVisibility(GONE);
+            mDepLayout.setVisibility(VISIBLE);
             mRemarkView.setVisibility(VISIBLE);
             mRemarkView.setContent(bean.getRemark());
-//            mAddBlackView.setVisibility(VISIBLE);
+            mChatTopView.setVisibility(VISIBLE);
+            mAddBlackView.setVisibility(VISIBLE);
+            mChatView.setVisibility(VISIBLE);
+            mChatView.setText(R.string.profile_chat);
+            mChatView.setOnClickListener(this);
+            mChatAudioVideo.setVisibility(VISIBLE);
             mDeleteView.setVisibility(VISIBLE);
         } else {
-            mRemarkView.setVisibility(GONE);
-//            mAddBlackView.setVisibility(GONE);
-            mDeleteView.setVisibility(GONE);
-            mChatAudioVideo.setVisibility(GONE);
-            mChatView.setVisibility(GONE);
+            addFriend();
         }
 
         if (!TextUtils.isEmpty(mNickname)) {
@@ -500,7 +517,6 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
     private void delete() {
         List<String> identifiers = new ArrayList<>();
         identifiers.add(mId);
-
         V2TIMManager.getFriendshipManager().deleteFromFriendList(identifiers, V2TIMFriendInfo.V2TIM_FRIEND_TYPE_BOTH, new V2TIMValueCallback<List<V2TIMFriendOperationResult>>() {
             @Override
             public void onError(int code, String desc) {
@@ -515,7 +531,6 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                 if (mListener != null) {
                     mListener.onDeleteFriendClick(mId);
                 }
-//                ((Activity) getContext()).finish();
             }
         });
     }
