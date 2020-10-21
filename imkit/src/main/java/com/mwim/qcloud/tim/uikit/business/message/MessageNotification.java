@@ -189,7 +189,7 @@ public class MessageNotification {
         } else {
             builder.setContentText(Html.fromHtml(desc));
         }
-        builder.setSmallIcon(R.drawable.default_user_icon);
+        builder.setSmallIcon(R.drawable.message_small_icon);
         Intent launch;
         // 小米手机需要在设置里面把【云通信IM】的"后台弹出权限"打开才能点击Notification跳转。
         if (isDialing) {
