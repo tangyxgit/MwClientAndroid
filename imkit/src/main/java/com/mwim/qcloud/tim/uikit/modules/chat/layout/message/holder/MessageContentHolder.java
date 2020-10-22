@@ -190,7 +190,7 @@ public abstract class MessageContentHolder extends MessageEmptyHolder {
                 @Override
                 public void onClick(View view) {
                     if (onItemClickListener != null) {
-                        onItemClickListener.onMessageLongClick(msgContentFrame, position, msg);
+//                        onItemClickListener.onMessageLongClick(msgContentFrame, position, msg);
                     }
                 }
             });

@@ -317,7 +317,7 @@ public class StringUtils {
         return getTextHeight(str, text, Color.parseColor(color));
     }
 
-    public static SpannableStringBuilder getClickSpan(String str, String texts, View.OnClickListener listener, int color){
+    public static SpannableStringBuilder getClickSpan(String str, String texts, OnSpanClickListener listener, int color){
         SpannableStringBuilder builder = new SpannableStringBuilder(str);
         int start = str.indexOf(texts);
         int end = start+texts.length();
@@ -326,7 +326,7 @@ public class StringUtils {
         return builder;
     }
 
-    public static SpannableStringBuilder getClickSpan(String str, List<String> texts, View.OnClickListener listener,int color){
+    public static SpannableStringBuilder getClickSpan(String str, List<String> texts, OnSpanClickListener listener,int color){
         SpannableStringBuilder builder = new SpannableStringBuilder(str);
         for (String n:texts) {
             int start = str.indexOf(n);
@@ -340,7 +340,7 @@ public class StringUtils {
         return builder;
     }
 
-    public static SpannableStringBuilder getClickSpan(String str, String[] texts, View.OnClickListener listener) {
+    public static SpannableStringBuilder getClickSpan(String str, String[] texts, OnSpanClickListener listener) {
         SpannableStringBuilder builder = new SpannableStringBuilder(str);
         for (int i = 0; i < texts.length; i++) {
             String n = texts[i];
@@ -351,19 +351,23 @@ public class StringUtils {
         return builder;
     }
 
-    static class Clickable extends ClickableSpan {
-        private final View.OnClickListener clickListener;
+    public static class Clickable extends ClickableSpan {
+        private final OnSpanClickListener clickListener;
         private String text;
 
-        public Clickable(View.OnClickListener clickListener, String text) {
+        public Clickable(OnSpanClickListener clickListener, String text) {
             this.clickListener = clickListener;
             this.text = text;
         }
 
         @Override
         public void onClick(View v) {
-            v.setTag(text);
-            this.clickListener.onClick(v);
+            this.clickListener.onClickSpan(text);
+        }
+
+        public void onLongClick(){
+            SLog.e("长按事件。。。");
+            this.clickListener.onLongClickSpan();
         }
 
         @Override
@@ -373,4 +377,8 @@ public class StringUtils {
             ds.clearShadowLayer();
         }
     }
+    public interface OnSpanClickListener{
+        void onClickSpan(String content);
+        void onLongClickSpan();
+    };
 }

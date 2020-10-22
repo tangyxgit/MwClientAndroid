@@ -8,9 +8,11 @@ import androidx.core.content.ContextCompat;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.Constants;
+import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.face.FaceManager;
+import com.work.util.StringUtils;
 
 public class MessageTextHolder extends MessageContentHolder {
 
@@ -31,10 +33,22 @@ public class MessageTextHolder extends MessageContentHolder {
     }
 
     @Override
-    public void layoutVariableViews(MessageInfo msg, int position) {
+    public void layoutVariableViews(final MessageInfo msg, final int position) {
         msgBodyText.setVisibility(View.VISIBLE);
         if (msg.getExtra() != null) {
-            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false, ContextCompat.getColor(IMKitAgent.instance(),msg.isSelf()?R.color.white:R.color.black));
+            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false, ContextCompat.getColor(IMKitAgent.instance(), msg.isSelf() ? R.color.white : R.color.black), new StringUtils.OnSpanClickListener() {
+                @Override
+                public void onClickSpan(String content) {
+                    WebActivity.startWebView(content);
+                }
+
+                @Override
+                public void onLongClickSpan() {
+                    if(onItemClickListener!=null){
+                        onItemClickListener.onMessageLongClick(msgContentFrame,position,msg);
+                    }
+                }
+            });
         }
         if(msg.isSelf()){
             msgBodyText.setTextColor(Color.WHITE);

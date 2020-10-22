@@ -104,9 +104,7 @@ public class MessageLayout extends MessageLayoutUI {
         postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (popupList != null) {
-                    popupList.hidePopupListWindow();
-                }
+                popupList.hidePopupListWindow();
             }
         }, 10000); // 10s后无操作自动消失
     }

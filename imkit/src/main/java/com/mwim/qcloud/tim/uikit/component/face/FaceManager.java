@@ -7,11 +7,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.LruCache;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
+import com.mwim.qcloud.tim.uikit.component.TextViewFixTouchConsume;
 import com.mwim.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
 import com.mwim.qcloud.tim.uikit.R;
@@ -191,7 +190,7 @@ public class FaceManager {
     }
 
 
-    public static void handlerEmojiText(TextView comment, String content, boolean typing,int linkColor) {
+    public static void handlerEmojiText(TextView comment, String content, boolean typing, int linkColor, StringUtils.OnSpanClickListener listener) {
         if(linkColor==0){
             linkColor = ContextCompat.getColor(IMKitAgent.instance(),R.color.color_333333);
         }
@@ -203,15 +202,12 @@ public class FaceManager {
             String urlStr = m.group();
             links.add(urlStr);
         }
-//        SpannableStringBuilder sb = new SpannableStringBuilder(content);
-        SpannableStringBuilder sb = StringUtils.getClickSpan(content, links, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = (String) view.getTag();
-                WebActivity.startWebView(url);
-            }
-        }, linkColor);
-
+        SpannableStringBuilder sb;
+        if(listener!=null && links.size()>0){
+            sb = StringUtils.getClickSpan(content, links, listener, linkColor);
+        }else{
+            sb = new SpannableStringBuilder(content);
+        }
         regex = "\\[(\\S+?)\\]";
         p = Pattern.compile(regex);
         m = p.matcher(content);
@@ -235,7 +231,7 @@ public class FaceManager {
             ((EditText) comment).setSelection(selection);
         }
         if(links.size()>0){
-            comment.setMovementMethod(LinkMovementMethod.getInstance());
+            comment.setMovementMethod(TextViewFixTouchConsume.LocalLinkMovementMethod.getInstance());
         }
     }
 
