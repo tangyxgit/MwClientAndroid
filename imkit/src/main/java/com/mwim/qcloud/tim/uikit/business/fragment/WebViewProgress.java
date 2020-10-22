@@ -82,7 +82,6 @@ public class WebViewProgress extends WebView {
                     HashMap<String,String> extraHeaders = new HashMap<>();
                     extraHeaders.put(thirdWebJs.getKey(), thirdWebJs.getValue());
                     view.loadUrl(url, extraHeaders);
-                    SLog.e("注入extraHeaders...");
                 }else{
                     view.loadUrl(url);
                 }
