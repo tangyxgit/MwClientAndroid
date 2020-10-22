@@ -57,8 +57,9 @@ public class WebViewProgress extends WebView {
         progressbar.setLayoutParams(params);
         addView(progressbar);
         setJavaScript();
-        final CheoaWebJs mCheoa = new CheoaWebJs(getContext());
-        addJavascriptInterface(mCheoa, "cheoa");//第二个参数cheoa不可更改，
+        final ThirdWebJs thirdWebJs = new ThirdWebJs();
+        thirdWebJs.setExtraInfoHead("Referer","https://tg.tripg.com/");
+        addJavascriptInterface(thirdWebJs, "cheoa");
         setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -77,10 +78,11 @@ public class WebViewProgress extends WebView {
                     PhoneUtils.dial(getContext(), StringUtils.subStr(url,"tel:","",0));
                     return true;
                 }
-                if (mCheoa.getKey() != null) {
+                if (thirdWebJs.getKey() != null) {
                     HashMap<String,String> extraHeaders = new HashMap<>();
-                    extraHeaders.put(mCheoa.getKey(), mCheoa.getValue());
+                    extraHeaders.put(thirdWebJs.getKey(), thirdWebJs.getValue());
                     view.loadUrl(url, extraHeaders);
+                    SLog.e("注入extraHeaders...");
                 }else{
                     view.loadUrl(url);
                 }
@@ -236,12 +238,9 @@ public class WebViewProgress extends WebView {
     /**
      * 默认支持支付等功能
      */
-    private static class CheoaWebJs {
+    private static class ThirdWebJs {
 
-        private Context mContext;
-
-        CheoaWebJs(Context context) {
-            this.mContext = context;
+        ThirdWebJs() {
         }
 
         private String key,value;

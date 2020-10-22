@@ -85,7 +85,6 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
         if (id == R.id.web_back || id == R.id.web_back_title) {
             onBack();
         } else if (id == R.id.web_close) {
-            mWeb.destroy();
             getActivity().finish();
         } else if (id == R.id.error_layout) {
             reload();
@@ -93,7 +92,7 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
     }
 
     public boolean onBack(){
-        if(mWeb!=null && mWeb.canGoBack()){
+        if(!mWeb.isWebError() && mWeb!=null && mWeb.canGoBack()){
             mWeb.goBack();
             return true;
         }
