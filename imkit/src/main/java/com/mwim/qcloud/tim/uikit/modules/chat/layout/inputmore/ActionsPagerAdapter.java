@@ -15,6 +15,8 @@ import java.util.List;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class ActionsPagerAdapter extends PagerAdapter {
 
@@ -36,9 +38,8 @@ public class ActionsPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        int end = (position + 1) * ITEM_COUNT_PER_GRID_VIEW > mInputMoreList.size()
-                ? mInputMoreList.size() : (position + 1) * ITEM_COUNT_PER_GRID_VIEW;
+    public Object instantiateItem(@NotNull ViewGroup container, int position) {
+        int end = Math.min((position + 1) * ITEM_COUNT_PER_GRID_VIEW, mInputMoreList.size());
         List<InputMoreActionUnit> subBaseActions = mInputMoreList.subList(position
                 * ITEM_COUNT_PER_GRID_VIEW, end);
 
