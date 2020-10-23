@@ -184,6 +184,12 @@ public class BaseHomeActivity extends ToolBarActivity
                 if(mProgressLayout!=null && !isFinishing()){
                     mProgressLayout.setVisibility(View.VISIBLE);
                     mGraduallyTextView.startLoading();
+                    mGraduallyTextView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dismissProgress();
+                        }
+                    },1000 * 60);
                 }
             }
         },delayMillis);
