@@ -67,17 +67,19 @@
             android:id="@+id/dep_layout"
             android:visibility="gone"
             android:orientation="vertical"
+            android:layout_marginTop="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.mwim.qcloud.tim.uikit.component.LineControllerView
                 android:id="@+id/modify_department"
-                android:layout_marginTop="@dimen/dp_10"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:isTop="true"
                 app:name="@string/im_department" />
             <com.mwim.qcloud.tim.uikit.component.LineControllerView
                 android:id="@+id/modify_position"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:name="@string/im_position" />
@@ -85,9 +87,11 @@
                 android:id="@+id/modify_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:name="@string/im_card" />
             <com.mwim.qcloud.tim.uikit.component.LineControllerView
                 android:id="@+id/modify_email"
+                app:isTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:name="@string/im_email" />

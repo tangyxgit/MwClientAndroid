@@ -49,20 +49,25 @@
         android:layout_marginTop="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:name="@string/im_department" />
     <com.mwim.qcloud.tim.uikit.component.LineControllerView
         android:id="@+id/modify_position"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:name="@string/im_position" />
     <com.mwim.qcloud.tim.uikit.component.LineControllerView
         android:id="@+id/modify_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:name="@string/im_card" />
     <com.mwim.qcloud.tim.uikit.component.LineControllerView
         android:id="@+id/modify_email"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:isTop="true"
         app:name="@string/im_email" />
 </LinearLayout>
