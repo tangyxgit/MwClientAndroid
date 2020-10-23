@@ -83,6 +83,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:text="@string/text_user_remark"
+                        android:visibility="gone"
                         android:layout_alignStart="@+id/self_icon"
                         android:layout_alignParentBottom="true"/>
                 </RelativeLayout>
