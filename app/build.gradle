@@ -123,16 +123,6 @@ android {
     }
 }
 
-apply plugin: 'caster'
-caster {
-    enableJarTransform true
-    transformerConfigs {
-        xcastPatch {
-            enableJarTransform true
-        }
-    }
-}
-
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
