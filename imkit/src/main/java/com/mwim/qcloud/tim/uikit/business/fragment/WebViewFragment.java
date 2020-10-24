@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,11 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
+import com.work.util.SLog;
+import com.workstation.permission.PermissionsResultAction;
 import com.workstation.view.MaterialMenuDrawable;
 import com.workstation.view.MaterialMenuView;
 
+import static com.mwim.qcloud.tim.uikit.business.active.WebActivity.CheckLocation;
 import static com.mwim.qcloud.tim.uikit.business.active.WebActivity.UA;
 
 /**
@@ -24,6 +29,9 @@ import static com.mwim.qcloud.tim.uikit.business.active.WebActivity.UA;
  * email tangyx@live.com
  */
 public class WebViewFragment extends BaseFragment implements WebViewProgress.OnWebLoadListener, View.OnClickListener {
+    public static String[] PERMISSIONS = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,};
     private View mErrorLayout;
     private TextView mErrorText;
     private MaterialMenuView mBack;
@@ -55,21 +63,26 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
         return mBaseView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-    }
-
     private void loadWebUrl(){
         Bundle bundle = getArguments();
         if(bundle==null){
             getActivity().finish();
             return;
+        }
+        if(bundle.getBoolean(CheckLocation) && getActivity()!=null && getActivity() instanceof BaseActivity){
+            if(!((BaseActivity) getActivity()).hasPermission(PERMISSIONS)){
+                ((BaseActivity) getActivity()).onPermissionChecker(PERMISSIONS, new PermissionsResultAction() {
+                    @Override
+                    public void onGranted() {
+                        SLog.e("定位权限成功...");
+                    }
+
+                    @Override
+                    public void onDenied(String permission) {
+                        SLog.e("定位权限失败："+permission);
+                    }
+                });
+            }
         }
         String url = bundle.getString(WebActivity.class.getSimpleName());
         String ua = bundle.getString(UA);

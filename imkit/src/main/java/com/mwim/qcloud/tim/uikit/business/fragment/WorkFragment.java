@@ -16,6 +16,7 @@ import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.adapter.WorkAdapter;
 import com.work.api.open.Yz;
@@ -50,6 +51,14 @@ public class WorkFragment extends BaseFragment implements OnResultDataListener {
         super.onResume();
         if(mAdapter!=null){
             refreshTool();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(getActivity()!=null && getActivity() instanceof BaseActivity){
+            ((BaseActivity) getActivity()).dismissProgress();
         }
     }
 

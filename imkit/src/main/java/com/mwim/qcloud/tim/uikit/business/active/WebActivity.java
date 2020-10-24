@@ -19,6 +19,7 @@ import com.work.util.SLog;
 public class WebActivity extends BaseActivity {
 
     public final static String UA = "UA";
+    public final static String CheckLocation = "CheckLocation";
     private WebViewFragment webViewFragment;
 
     @Override
@@ -59,12 +60,16 @@ public class WebActivity extends BaseActivity {
         startWebView(url,null);
     }
     public static void startWebView(String url,String ua){
+        startWebView(url,ua,false);
+    }
+    public static void startWebView(String url,String ua,boolean checkLocation){
         Intent intent = new Intent(IMKitAgent.instance(),WebActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(WebActivity.class.getSimpleName(),url);
         if(!TextUtils.isEmpty(ua)){
             bundle.putString(UA,ua);
         }
+        bundle.putBoolean(CheckLocation,checkLocation);
         intent.putExtras(bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         IMKitAgent.instance().startActivity(intent);

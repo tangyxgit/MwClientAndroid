@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.webkit.DownloadListener;
+import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
@@ -172,6 +173,12 @@ public class WebViewProgress extends WebView {
                 onWebLoadListener.onShowFileChooser();
             }
             return true;
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+            callback.invoke(origin,true,true);
+            super.onGeolocationPermissionsShowPrompt(origin, callback);
         }
     }
     public void onWebProgressChanged(int newProgress){

@@ -89,7 +89,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                 String token = ((GetToolTokenResp) resp).getData();
                 String url = resp.getPositionParams(0);
                 if("code001".equals(((GetToolTokenReq) req).getToolCode())){//腾讯会议
-                    WemeetSdkHelper.startAuth(token);
+                    WemeetSdkHelper.startAuth(url+"eyJraWQiOiI3IiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJ5dWFuemhpX3Rlc3QwMSIsImlzcyI6InRlbmNlbnQgbWVldGluZyIsIm5hbWUiOiJ5dWFuemhpX3Rlc3QwMSIsImV4cCI6MTYwNjU1Mjk2NiwiaWF0IjoxNjAxMzg3MTY2fQ.XljVdtibXPxg29VM4kDFejlJoSyx1RXoWsXlyZhj_IplgMAtwMctEqVO84seGQxVMKcYUMi-7YiQRTph1-nzg1JuxVvruLVQnYSm3iIWrmj9XgHbbOWVAP1oA5XZfDOHG2QGev4OgWxwS6l1SZNLJLUunHy4UlwTqQvzDbQyZ7-WubJ5balAre30DkYNAyxI2IE5DXOgSpSFeHF30aQiq-4WGxREF84uP--43TXKfd5H76ZyDdluKzmEXoQBJywnK9KOwLOrTB4u7nyB_MnNMH9a33IESwa1ePIZklsQsDnxZnp8M-7o32Pa--D5krq0dR2UeqrHvgqPlRPFVKD9Tg");
                 }else if("code002".equals(((GetToolTokenReq) req).getToolCode())){//网盘
                     WebActivity.startWebView(url+"?token="+token);
                 }else if("code003".equals(((GetToolTokenReq) req).getToolCode())){//打车
@@ -98,7 +98,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
             }else if(resp instanceof GetCarWebViewUrlResp){
                 OpenData result = ((GetCarWebViewUrlResp) resp).Result;
                 if(result!=null){
-                    WebActivity.startWebView(result.getUrl(),"hsh_android");
+                    WebActivity.startWebView(result.getUrl(),"hsh_android",true);
                 }
             }
         }else{

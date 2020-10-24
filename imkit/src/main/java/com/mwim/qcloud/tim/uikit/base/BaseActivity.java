@@ -11,6 +11,7 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.business.helper.WemeetSdkHelper;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.work.api.open.model.BaseResp;
 import com.work.util.ToastUtil;
@@ -48,6 +49,7 @@ public class BaseActivity extends TakePhotoActivity {
             }
         });
         IMKitAgent.unInit();
+        WemeetSdkHelper.logout();
         UserApi.instance().clear();
         Intent intent = new Intent();
         intent.setClassName(this.getApplicationContext(), "com.work.mw.activity.LoginActivity");

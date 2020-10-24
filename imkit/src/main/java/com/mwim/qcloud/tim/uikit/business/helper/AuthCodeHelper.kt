@@ -14,14 +14,13 @@ typealias OnAuthCodeCallback = (authCode: String) -> Unit
 
 object AuthCodeHelper {
     private const val TAG = "SLog"
-    private const val SAMPLE_SSO_URL_PREFIX = "https://yzmetax-idp.id.meeting.qq.com/cidp/login/ai-2f96eed8349d4c7e8424cbe5a7136645?state=aHR0cHM6Ly95em1ldGF4LmlkLm1lZXRpbmcucXEuY29tL3Nzby9haS0xZTJlMzA5NjVhZjE0OGM3YWY5ODhjNGY3NzA3YTdlNg==&id_token="
+//    private const val SAMPLE_SSO_URL_PREFIX = "https://demo4-idp.idaas.tencentcs.com/cidp/login/ai-b17a6f68b4ed47678c62e0e0a3fc3bb0?state=aHR0cHM6Ly9kZW1vNC1pZHAuaWRhYXMudGVuY2VudGNzLmNvbS9jaWRwL3Nzby9haS0xZGIxMzkwOGY5Njc0NTExOWUyYTg5YzVlYjJmNWUwYw==&id_token="
+//    private const val SAMPLE_SSO_URL_PREFIX = "https://yzmetax-idp.id.meeting.qq.com/cidp/login/ai-2f96eed8349d4c7e8424cbe5a7136645?state=aHR0cHM6Ly95em1ldGF4LmlkLm1lZXRpbmcucXEuY29tL3Nzby9haS0xZTJlMzA5NjVhZjE0OGM3YWY5ODhjNGY3NzA3YTdlNg==&id_token="
     private val UI_HANDLER by lazy { Handler(Looper.getMainLooper()) }
 
     @JvmStatic
-    fun getAuthCode(token: String, callback: OnAuthCodeCallback) {
+    fun getAuthCode(url: String, callback: OnAuthCodeCallback) {
         UI_HANDLER.post {
-            Log.i(TAG, "token = $token")
-            val url = "$SAMPLE_SSO_URL_PREFIX$token"
             val webView = WebView(IMKitAgent.instance())
             val webSetting = webView.settings
             webSetting.javaScriptEnabled = true
