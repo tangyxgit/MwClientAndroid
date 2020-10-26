@@ -6,8 +6,10 @@ android {
         applicationId "com.work.mw"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode rootProject.ext.versionCode
-        versionName rootProject.ext.versionName
+//        versionCode rootProject.ext.versionCode
+//        versionName rootProject.ext.versionName
+        versionCode versions.code
+        versionName versions.name
 
         flavorDimensions "yzim"
 
@@ -126,7 +128,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'com.google.code.gson:gson:2.8.6'
     //im
     implementation project(path: ':imkit')
