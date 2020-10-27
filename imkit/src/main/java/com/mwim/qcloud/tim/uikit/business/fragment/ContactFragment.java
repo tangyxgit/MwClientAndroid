@@ -64,7 +64,9 @@ public class ContactFragment extends BaseFragment {
 
     public void refreshData() {
         // 通讯录面板的默认UI和交互初始化
-        mContactLayout.initDefault();
+        if(mContactLayout!=null){
+            mContactLayout.initDefault();
+        }
     }
 
     @Override
