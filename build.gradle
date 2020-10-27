@@ -39,32 +39,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-ext.versions = getVersionConfig()
-def getVersionConfig() {
-    def versions =[:]
-    // local env.
-    def majorVersion = "999"
-    def minorVersion = "999"
-    def fixVersion = "999"
-    def buildNo = "999"
-    def versionCode = 0
-    if (versionCode == 0) {
-        // Google Play 允许的最大 versionCode 值为 2100000000
-        def date = new Date()
-        def dateFormat = new SimpleDateFormat("yyyyMMddHH")
-        versionCode = Integer.parseInt(dateFormat.format(date))
-    }
-
-    versions.code = versionCode
-    versions.name = "$majorVersion.$minorVersion.$fixVersion.$buildNo"
-    versions.minSdkVersion = 21
-    versions.targetSdkVersion = 28
-    println("versionCode = ${versionCode}")
-    def localPropertiesFile = project.rootProject.file('local.properties')
-    if (localPropertiesFile.exists()) {
-        Properties properties = new Properties()
-        properties.load(localPropertiesFile.newDataInputStream())
-        versions.appcompat = properties.getProperty("appcompat.version") ?: versions.appcompat
-    }
-    return versions
-}

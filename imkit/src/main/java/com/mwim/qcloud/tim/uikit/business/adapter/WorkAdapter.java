@@ -17,7 +17,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
-import com.mwim.qcloud.tim.uikit.business.helper.WemeetSdkHelper;
+import com.mwim.qcloud.tim.uikit.business.helper.wemeet.WemeetSdkHelper;
 import com.work.api.open.Yz;
 import com.work.api.open.model.GetCarWebViewUrlResp;
 import com.work.api.open.model.GetToolTokenReq;

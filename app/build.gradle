@@ -6,10 +6,8 @@ android {
         applicationId "com.work.mw"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-//        versionCode rootProject.ext.versionCode
-//        versionName rootProject.ext.versionName
-        versionCode versions.code
-        versionName versions.name
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
 
         flavorDimensions "yzim"
 

@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
@@ -8,6 +9,7 @@ import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
+import com.mwim.qcloud.tim.uikit.business.helper.wemeet.RdmSDK;
 import com.mwim.qcloud.tim.uikit.business.message.MessageNotification;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
 import com.mwim.qcloud.tim.uikit.component.face.CustomFace;
@@ -23,6 +25,7 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
+import com.tencent.wemeet.sdk.app.AppGlobals;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.work.util.AppUtils;
@@ -67,7 +70,7 @@ public final class IMKitAgent {
         return instance;
     }
 
-    public static void init(Context context,String appKey){
+    public static void init(Application context,String appKey){
         instance = context;
         UMConfigure.init(context, "5f8d583980455950e4af10d9", "Yz", UMConfigure.DEVICE_TYPE_PHONE, "");
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
@@ -89,6 +92,9 @@ public final class IMKitAgent {
             }
         };
         QbSdk.initX5Environment(context,cb);
+        //腾讯会议
+        AppGlobals.INSTANCE.init(context);
+        RdmSDK.INSTANCE.init(context);
     };
     private static TUIKitConfigs getConfigs(Context context) {
         GeneralConfig config = new GeneralConfig();
