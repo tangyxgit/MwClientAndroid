@@ -25,6 +25,7 @@ import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.C2CChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
@@ -377,6 +378,11 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             GlideEngine.loadImage(mHeadImageView,R.drawable.default_head);
         }
 //        mMobile.setText(mId);
+        if(bean.getId().equals(UserApi.instance().getUserId())){//是自己
+            mAddWordingLayout.setVisibility(GONE);
+            mChatView.setVisibility(GONE);
+            mDepLayout.setVisibility(VISIBLE);
+        }
     }
 
     private void loadUserProfile() {
