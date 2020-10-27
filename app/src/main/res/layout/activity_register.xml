@@ -89,6 +89,7 @@
         app:pb_colorPressed="@color/defaultColorAccent"
         android:text="@string/text_compile"/>
     <LinearLayout
+        android:id="@+id/xy_layout"
         android:paddingLeft="@dimen/dp_20"
         android:paddingRight="@dimen/dp_20"
         android:paddingTop="@dimen/dp_15"

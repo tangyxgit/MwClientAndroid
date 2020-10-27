@@ -72,6 +72,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         isRegister = getIntent().getBooleanExtra(RegisterActivity.class.getSimpleName(),true);
         if(!isRegister){
             setTitleName(R.string.activity_forgetpassword);
+            findViewById(R.id.xy_layout).setVisibility(View.GONE);
+            mChecked.setChecked(true);
         }
     }
     private void setSubEnable(boolean enable){
