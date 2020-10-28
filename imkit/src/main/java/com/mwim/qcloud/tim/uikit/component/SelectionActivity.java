@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -12,12 +13,14 @@ import android.widget.TextView;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.RegularUtils;
 import com.work.util.ToastUtil;
 
 public class SelectionActivity extends BaseActivity {
 
     private static OnResultReturnListener sOnResultReturnListener;
     private EditText input;
+    private String type;
     private int mSelectionType;
 
     public static void startTextSelection(Context context, Bundle bundle, OnResultReturnListener listener) {
@@ -58,6 +61,10 @@ public class SelectionActivity extends BaseActivity {
             finish();
             return;
         }
+        type = bundle.getString(TUIKitConstants.Selection.TYPE_INPUT,"");
+        if("email".equals(type)){
+            input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        }
         mSelectionType = bundle.getInt(TUIKitConstants.Selection.TYPE,TUIKitConstants.Selection.TYPE_TEXT);
         final String title = bundle.getString(TUIKitConstants.Selection.TITLE);
         setTitleName(title);
@@ -77,8 +84,13 @@ public class SelectionActivity extends BaseActivity {
 //                ToastUtil.error(this,R.string.toast_user_message_empty);
 //                return;
 //            }
+            String text = input.getText().toString().trim();
+            if("email".equals(type) && !RegularUtils.isEmail(text)){
+                ToastUtil.error(this,"请输入正确的邮箱地址");
+                return;
+            }
             if (sOnResultReturnListener != null) {
-                sOnResultReturnListener.onReturn(input.getText().toString());
+                sOnResultReturnListener.onReturn(text);
             }
         }
         finish();

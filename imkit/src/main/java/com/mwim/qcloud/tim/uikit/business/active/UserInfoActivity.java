@@ -199,6 +199,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_email));
             bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getEmail());
+            bundle.putString(TUIKitConstants.Selection.TYPE_INPUT, "email");
             bundle.putInt(TUIKitConstants.Selection.LIMIT, 30);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
