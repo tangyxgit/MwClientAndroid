@@ -190,20 +190,24 @@ public class TUIKitImpl {
             @Override
             public void onSyncServerStart() {
                 super.onSyncServerStart();
+                SLog.e("iml onSyncServerStart");
             }
 
             @Override
             public void onSyncServerFinish() {
                 super.onSyncServerFinish();
+                SLog.e("iml onSyncServerFinish");
             }
 
             @Override
             public void onSyncServerFailed() {
                 super.onSyncServerFailed();
+                SLog.e("iml onSyncServerFailed");
             }
 
             @Override
             public void onNewConversation(List<V2TIMConversation> conversationList) {
+                SLog.e("impl onNewConversation");
                 ConversationManagerKit.getInstance().onRefreshConversation(conversationList);
                 for (IMEventListener listener : sIMEventListeners) {
                     listener.onRefreshConversation(conversationList);
@@ -212,6 +216,7 @@ public class TUIKitImpl {
 
             @Override
             public void onConversationChanged(List<V2TIMConversation> conversationList) {
+                SLog.e("impl onConversationChanged");
                 ConversationManagerKit.getInstance().onRefreshConversation(conversationList);
                 for (IMEventListener listener : sIMEventListeners) {
                     listener.onRefreshConversation(conversationList);
