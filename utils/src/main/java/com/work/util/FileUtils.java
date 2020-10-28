@@ -62,7 +62,42 @@ public class FileUtils {
 		}
 		return path;
 	}
+	public boolean copyFile(String oldPath$Name, String newPath$Name) {
+		try {
+			File oldFile = new File(oldPath$Name);
+			if (!oldFile.exists()) {
+				SLog.e("copyFile:  oldFile not exist.");
+				return false;
+			} else if (!oldFile.isFile()) {
+				SLog.e("copyFile:  oldFile not file.");
+				return false;
+			} else if (!oldFile.canRead()) {
+				SLog.e( "copyFile:  oldFile cannot read.");
+				return false;
+			}
 
+        /* 如果不需要打log，可以使用下面的语句
+        if (!oldFile.exists() || !oldFile.isFile() || !oldFile.canRead()) {
+            return false;
+        }
+        */
+
+			FileInputStream fileInputStream = new FileInputStream(oldPath$Name);    //读入原文件
+			FileOutputStream fileOutputStream = new FileOutputStream(newPath$Name);
+			byte[] buffer = new byte[1024];
+			int byteRead;
+			while ((byteRead = fileInputStream.read(buffer)) != -1) {
+				fileOutputStream.write(buffer, 0, byteRead);
+			}
+			fileInputStream.close();
+			fileOutputStream.flush();
+			fileOutputStream.close();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	/**
 	 * 获取储存Image的目录
 	 * @return

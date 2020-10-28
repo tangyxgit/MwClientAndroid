@@ -145,17 +145,22 @@ public class PhotoViewActivity extends BaseActivity {
                         @Override
                         public void onClick(View view) {
                             try {
-                                Bitmap bitmap = ((BitmapDrawable)mPhotoView.getDrawable()).getBitmap();
-                                String path = mFileUtils.saveBitmap("yzim"+System.currentTimeMillis()/1000+".png",bitmap);
-                                MediaScannerConnection.scanFile(PhotoViewActivity.this,
-                                        new String[]{path},
-                                        new String[]{"image/jpeg"},
-                                        new MediaScannerConnection.OnScanCompletedListener() {
-                                            @Override
-                                            public void onScanCompleted(String path, Uri uri) {
-                                                SLog.i("onScanCompleted"+path);
-                                            }
-                                        });
+                               new Thread(new Runnable() {
+                                   @Override
+                                   public void run() {
+                                       Bitmap bitmap = ((BitmapDrawable)mPhotoView.getDrawable()).getBitmap();
+                                       String path = mFileUtils.saveBitmap("yzim"+System.currentTimeMillis()/1000+".png",bitmap);
+                                       MediaScannerConnection.scanFile(PhotoViewActivity.this,
+                                               new String[]{path},
+                                               new String[]{"image/jpeg"},
+                                               new MediaScannerConnection.OnScanCompletedListener() {
+                                                   @Override
+                                                   public void onScanCompleted(String path, Uri uri) {
+                                                       SLog.i("onScanCompleted"+path);
+                                                   }
+                                               });
+                                   }
+                               }).start();
                             }catch (Exception e){
                                 e.printStackTrace();
                                 ToastUtil.error(PhotoViewActivity.this,"保存失败，请稍后尝试！");

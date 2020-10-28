@@ -15,7 +15,7 @@ import android.view.TextureView;
 import com.mwim.qcloud.tim.uikit.component.video.proxy.IPlayer;
 import com.mwim.qcloud.tim.uikit.component.video.proxy.MediaPlayerProxy;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
+import com.work.util.SLog;
 
 public class UIKitVideoView extends TextureView {
 
@@ -49,7 +49,7 @@ public class UIKitVideoView extends TextureView {
             mCurrentState = STATE_PREPARED;
             mVideoHeight = mp.getVideoHeight();
             mVideoWidth = mp.getVideoWidth();
-            TUIKitLog.i(TAG, "onPrepared mVideoWidth: " + mVideoWidth
+            SLog.i( "onPrepared mVideoWidth: " + mVideoWidth
                     + " mVideoHeight: " + mVideoHeight
                     + " mVideoRotationDegree: " + mVideoRotationDegree);
             if (mOutOnPreparedListener != null) {
@@ -59,7 +59,7 @@ public class UIKitVideoView extends TextureView {
     };
     private IPlayer.OnErrorListener mOnErrorListener = new IPlayer.OnErrorListener() {
         public boolean onError(IPlayer mp, int what, int extra) {
-            TUIKitLog.w(TAG, "onError: what/extra: " + what + "/" + extra);
+            SLog.w( "onError: what/extra: " + what + "/" + extra);
             mCurrentState = STATE_ERROR;
             stop_l();
             if (mOutOnErrorListener != null) {
@@ -70,7 +70,7 @@ public class UIKitVideoView extends TextureView {
     };
     private IPlayer.OnInfoListener mOnInfoListener = new IPlayer.OnInfoListener() {
         public void onInfo(IPlayer mp, int what, int extra) {
-            TUIKitLog.w(TAG, "onInfo: what/extra: " + what + "/" + extra);
+            SLog.w( "onInfo: what/extra: " + what + "/" + extra);
             if (what == 10001) { // IJK: MEDIA_INFO_VIDEO_ROTATION_CHANGED
                 // 有些视频拍摄的时候有角度，需要做旋转，默认ijk是不会做的，这里自己实现
                 mVideoRotationDegree = extra;
@@ -81,7 +81,7 @@ public class UIKitVideoView extends TextureView {
     };
     private IPlayer.OnCompletionListener mOnCompletionListener = new IPlayer.OnCompletionListener() {
         public void onCompletion(IPlayer mp) {
-            TUIKitLog.i(TAG, "onCompletion");
+            SLog.i( "onCompletion");
             mCurrentState = STATE_PLAYBACK_COMPLETED;
             if (mOutOnCompletionListener != null) {
                 mOutOnCompletionListener.onCompletion(mp);
@@ -91,32 +91,32 @@ public class UIKitVideoView extends TextureView {
     private IPlayer.OnVideoSizeChangedListener mOnVideoSizeChangedListener = new IPlayer.OnVideoSizeChangedListener() {
         @Override
         public void onVideoSizeChanged(IPlayer mp, int width, int height) {
-            // TUIKitLog.i(TAG, "onVideoSizeChanged width: " + width + " height: " + height);
+            // SLog.i( "onVideoSizeChanged width: " + width + " height: " + height);
         }
     };
     private TextureView.SurfaceTextureListener mSurfaceTextureListener = new TextureView.SurfaceTextureListener() {
 
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            TUIKitLog.i(TAG, "onSurfaceTextureAvailable");
+            SLog.i( "onSurfaceTextureAvailable");
             mSurface = new Surface(surface);
             openVideo();
         }
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            TUIKitLog.i(TAG, "onSurfaceTextureSizeChanged");
+            SLog.i( "onSurfaceTextureSizeChanged");
         }
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-            TUIKitLog.i(TAG, "onSurfaceTextureDestroyed");
+            SLog.i( "onSurfaceTextureDestroyed");
             return true;
         }
 
         @Override
         public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-            // TUIKitLog.i(TAG,"onSurfaceTextureUpdated");
+            // SLog.i("onSurfaceTextureUpdated");
         }
     };
 
@@ -136,7 +136,7 @@ public class UIKitVideoView extends TextureView {
     }
 
     private void initVideoView(Context context) {
-        TUIKitLog.i(TAG, "initVideoView");
+        SLog.i( "initVideoView");
         mContext = context;
         setSurfaceTextureListener(mSurfaceTextureListener);
         mCurrentState = STATE_IDLE;
@@ -156,7 +156,7 @@ public class UIKitVideoView extends TextureView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //  TUIKitLog.i(TAG, "onMeasure(" + MeasureSpec.toString(widthMeasureSpec) + ", "
+        //  SLog.i( "onMeasure(" + MeasureSpec.toString(widthMeasureSpec) + ", "
         //        + MeasureSpec.toString(heightMeasureSpec) + ")"
         //        + " mVideoWidth: " + mVideoWidth
         //        + " mVideoHeight: " + mVideoHeight);
@@ -215,12 +215,12 @@ public class UIKitVideoView extends TextureView {
         } else {
             // no size yet, just adopt the given spec sizes
         }
-        TUIKitLog.i(TAG, "onMeasure width: " + width + " height: " + height + " rotation degree: " + mVideoRotationDegree);
+        SLog.i( "onMeasure width: " + width + " height: " + height + " rotation degree: " + mVideoRotationDegree);
         setMeasuredDimension(width, height);
         if ((mVideoRotationDegree + 180) % 180 != 0) {
             // 画面旋转之后需要缩放，而且旋转之后宽高的计算都要换为高宽。
             int[] size = ScreenUtil.scaledSize(widthSpecSize, heightSpecSize, height, width);
-            TUIKitLog.i(TAG, "onMeasure scaled width: " + size[0] + " height: " + size[1]);
+            SLog.i( "onMeasure scaled width: " + size[0] + " height: " + size[1]);
             setScaleX(size[0] / ((float) height));
             setScaleY(size[1] / ((float) width));
         }
@@ -232,7 +232,7 @@ public class UIKitVideoView extends TextureView {
     }
 
     private void openVideo() {
-        TUIKitLog.i(TAG, "openVideo: mUri: " + mUri.getPath() + " mSurface: " + mSurface);
+        SLog.i( "openVideo: mUri: " + mUri.getPath() + " mSurface: " + mSurface);
         if (mSurface == null) {
             return;
         }
@@ -250,14 +250,14 @@ public class UIKitVideoView extends TextureView {
             mMediaPlayer.prepareAsync();
             mCurrentState = STATE_PREPARING;
         } catch (Exception ex) {
-            TUIKitLog.w(TAG, ex.getMessage());
+            SLog.w( ex.getMessage());
             mCurrentState = STATE_ERROR;
         }
 
     }
 
     public boolean start() {
-        TUIKitLog.i(TAG, "start mCurrentState:" + mCurrentState);
+        SLog.i( "start mCurrentState:" + mCurrentState);
         if (mMediaPlayer != null) {
             mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
@@ -266,13 +266,13 @@ public class UIKitVideoView extends TextureView {
     }
 
     public boolean stop() {
-        TUIKitLog.i(TAG, "stop mCurrentState:" + mCurrentState);
+        SLog.i( "stop mCurrentState:" + mCurrentState);
         stop_l();
         return true;
     }
 
     public boolean pause() {
-        TUIKitLog.i(TAG, "pause mCurrentState:" + mCurrentState);
+        SLog.i( "pause mCurrentState:" + mCurrentState);
         if (mMediaPlayer != null) {
             mMediaPlayer.pause();
             mCurrentState = STATE_PAUSED;

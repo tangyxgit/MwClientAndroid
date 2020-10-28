@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.tencent.imsdk.v2.V2TIMDownloadCallback;
 import com.tencent.imsdk.v2.V2TIMElem;
@@ -26,8 +27,8 @@ import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.component.video.VideoViewActivity;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -281,6 +282,7 @@ public class MessageImageHolder extends MessageContentHolder {
                 mClicking = true;
                 //以下代码为zanhanding修改，用于fix点击发送失败视频后无法播放，并且红色感叹号消失的问题
                 final File videoFile = new File(videoPath);
+                SLog.e(videoFile+">"+videoFile.exists());
                 if (videoFile.exists()) {//若存在本地文件则优先获取本地文件
                     mAdapter.notifyItemChanged(position);
                     mClicking = false;
@@ -309,7 +311,7 @@ public class MessageImageHolder extends MessageContentHolder {
 
             @Override
             public void onError(int code, String desc) {
-                ToastUtil.toastLongMessage("下载视频失败:" + code + "=" + desc);
+                ToastUtil.error(IMKitAgent.instance(),"下载视频失败:" + code + "=" + desc);
                 msg.setStatus(MessageInfo.MSG_STATUS_DOWNLOADED);
                 sendingProgress.setVisibility(View.GONE);
                 statusImage.setVisibility(View.VISIBLE);

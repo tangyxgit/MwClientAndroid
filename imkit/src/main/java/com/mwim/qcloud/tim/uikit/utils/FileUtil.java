@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.work.util.SLog;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -207,8 +208,7 @@ public class FileUtil {
 
                 final String id = DocumentsContract.getDocumentId(uri);
                 if (id.startsWith("raw:")) {
-                    final String path = id.replaceFirst("raw:", "");
-                    return path;
+                    return id.replaceFirst("raw:", "");
                 }
                 String[] contentUriPrefixesToTry = new String[]{
                         "content://downloads/public_downloads",
@@ -217,7 +217,7 @@ public class FileUtil {
                 };
 
                 for (String contentUriPrefix : contentUriPrefixesToTry) {
-                    Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), Long.valueOf(id));
+                    Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), Long.parseLong(id));
                     try {
                         String path = getDataColumn(context, contentUri, null, null);
                         if (path != null) {
@@ -229,8 +229,7 @@ public class FileUtil {
                 }
 
                 // 在某些android8+的手机上，无法获取路径，所以用拷贝的方式，获取新文件名，然后把文件发出去
-                String destinationPath = getPathByCopyFile(context, uri);
-                return destinationPath;
+                return getPathByCopyFile(context, uri);
             }
             // MediaProvider
             else if (isMediaDocument(uri)) {
