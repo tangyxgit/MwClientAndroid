@@ -101,7 +101,7 @@ public class FileUtils {
 		try {
 			file.createNewFile();
 			FileOutputStream fos = new FileOutputStream(file);
-			bitmap.compress(CompressFormat.JPEG, 100, fos);
+			bitmap.compress(CompressFormat.PNG, 100, fos);
 			fos.flush();
 			fos.close();
 			return filePath;

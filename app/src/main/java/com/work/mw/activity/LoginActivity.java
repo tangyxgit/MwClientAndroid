@@ -196,7 +196,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         @Override
                         public void onError(String module, final int errCode, final String errMsg) {
                             dismissProgress();
-                            SLog.e("登录失败, errCode = " + errCode + "errInfo = " + errMsg);
+                            ToastUtil.error(LoginActivity.this,"登录失败, errCode = " + errCode + ",errInfo = " + errMsg);
+                            SLog.e("登录失败, errCode = " + errCode + ",errInfo = " + errMsg);
                         }
                     });
                 }

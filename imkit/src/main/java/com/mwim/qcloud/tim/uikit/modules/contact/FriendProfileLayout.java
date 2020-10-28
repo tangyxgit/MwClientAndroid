@@ -26,6 +26,7 @@ import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
+import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.C2CChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
@@ -305,9 +306,15 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                     ((BaseActivity) getContext()).dismissProgress();
                 }
                 if (resp.isSuccess() && resp instanceof LoginResp) {
-                    OpenData data = ((LoginResp) resp).getData();
+                    final OpenData data = ((LoginResp) resp).getData();
                     if (!TextUtils.isEmpty(data.getUserIcon())) {
                         GlideEngine.loadCornerAvatar(mHeadImageView, data.getUserIcon());
+                        mHeadImageView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getContext().startActivity(new Intent(getContext(), PhotoViewActivity.class).putExtra(TUIKitConstants.IMAGE_DATA,data.getUserIcon()));
+                            }
+                        });
                     }else{
                         GlideEngine.loadImage(mHeadImageView,R.drawable.default_head);
                     }

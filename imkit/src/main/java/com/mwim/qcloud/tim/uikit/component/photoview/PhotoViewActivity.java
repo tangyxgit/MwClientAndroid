@@ -1,23 +1,34 @@
 package com.mwim.qcloud.tim.uikit.component.photoview;
 
+import android.app.AlertDialog;
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
+import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMDownloadCallback;
 import com.tencent.imsdk.v2.V2TIMElem;
 import com.tencent.imsdk.v2.V2TIMImageElem;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.FileUtils;
+import com.work.util.SLog;
+import com.work.util.ToastUtil;
 import com.workstation.view.MaterialMenuDrawable;
 import com.workstation.view.MaterialMenuView;
 
@@ -29,6 +40,8 @@ public class PhotoViewActivity extends BaseActivity {
     public static V2TIMImageElem.V2TIMImage mCurrentOriginalImage;
     private PhotoView mPhotoView;
     private TextView mViewOriginalBtn;
+    private AlertDialog mDialog;
+    private FileUtils mFileUtils;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,11 +55,17 @@ public class PhotoViewActivity extends BaseActivity {
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
+        MaterialMenuView mBack = findViewById(R.id.photo_view_back);
+        mBack.setState(MaterialMenuDrawable.IconState.X);
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        Uri uri = FileUtil.getUriFromPath(getIntent().getStringExtra(TUIKitConstants.IMAGE_DATA));
-        boolean isSelf = getIntent().getBooleanExtra(TUIKitConstants.SELF_MESSAGE, false);
-        Matrix mCurrentDisplayMatrix = new Matrix();
         mPhotoView = findViewById(R.id.photo_view);
+        Matrix mCurrentDisplayMatrix = new Matrix();
         mPhotoView.setDisplayMatrix(mCurrentDisplayMatrix);
         mPhotoView.setOnMatrixChangeListener(new MatrixChangeListener());
         mPhotoView.setOnPhotoTapListener(new OnPhotoTapListener() {
@@ -56,11 +75,19 @@ public class PhotoViewActivity extends BaseActivity {
             }
         });
         mPhotoView.setOnSingleFlingListener(new SingleFlingListener());
+        mFileUtils = new FileUtils(this);
+        String imageData = getIntent().getStringExtra(TUIKitConstants.IMAGE_DATA);
+        if(imageData.startsWith("http")){//加载网络图片
+            GlideEngine.loadImage(mPhotoView,imageData);
+            return;
+        }
+        Uri uri = FileUtil.getUriFromPath(imageData);
+        boolean isSelf = getIntent().getBooleanExtra(TUIKitConstants.SELF_MESSAGE, false);
         mViewOriginalBtn = findViewById(R.id.view_original_btn);
         if (isSelf || mCurrentOriginalImage == null) {
             mPhotoView.setImageURI(uri);
         } else {
-            String path = TUIKitConstants.IMAGE_DOWNLOAD_DIR + mCurrentOriginalImage.getUUID();
+            final String path = TUIKitConstants.IMAGE_DOWNLOAD_DIR + mCurrentOriginalImage.getUUID();
             File file = new File(path);
             if (file.exists()) {
                 mPhotoView.setImageURI(FileUtil.getUriFromPath(file.getPath()));
@@ -71,8 +98,6 @@ public class PhotoViewActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         if (mCurrentOriginalImage != null) {
-
-                            final String path = TUIKitConstants.IMAGE_DOWNLOAD_DIR + mCurrentOriginalImage.getUUID();
                             final File file = new File(path);
                             if (!file.exists()) {
                                 mCurrentOriginalImage.downloadImage(path, new V2TIMDownloadCallback() {
@@ -102,12 +127,54 @@ public class PhotoViewActivity extends BaseActivity {
             }
 
         }
-        MaterialMenuView mBack = findViewById(R.id.photo_view_back);
-        mBack.setState(MaterialMenuDrawable.IconState.X);
-        mBack.setOnClickListener(new View.OnClickListener() {
+
+        mPhotoView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                finish();
+            public boolean onLongClick(View v) {
+                if (mDialog == null) {
+                    mDialog = PopWindowUtil.buildFullScreenDialog(PhotoViewActivity.this);
+                    View moreActionView = LayoutInflater.from(PhotoViewActivity.this).inflate(R.layout.photo_video_view_pop_menu, null);
+                    moreActionView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mDialog.dismiss();
+                        }
+                    });
+                    Button addBtn = moreActionView.findViewById(R.id.video_call);
+                    addBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            try {
+                                Bitmap bitmap = ((BitmapDrawable)mPhotoView.getDrawable()).getBitmap();
+                                String path = mFileUtils.saveBitmap("yzim"+System.currentTimeMillis()/1000+".png",bitmap);
+                                MediaScannerConnection.scanFile(PhotoViewActivity.this,
+                                        new String[]{path},
+                                        new String[]{"image/jpeg"},
+                                        new MediaScannerConnection.OnScanCompletedListener() {
+                                            @Override
+                                            public void onScanCompleted(String path, Uri uri) {
+                                                SLog.i("onScanCompleted"+path);
+                                            }
+                                        });
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                ToastUtil.error(PhotoViewActivity.this,"保存失败，请稍后尝试！");
+                            }
+                            mDialog.dismiss();
+                        }
+                    });
+                    Button cancelBtn = moreActionView.findViewById(R.id.cancel);
+                    cancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mDialog.dismiss();
+                        }
+                    });
+                    mDialog.setContentView(moreActionView);
+                } else {
+                    mDialog.show();
+                }
+                return true;
             }
         });
     }

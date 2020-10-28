@@ -208,4 +208,5 @@
 
     <string name="text_agreement" translatable="false">https://yinsi.yzmetax.com/agreement.html</string>
     <string name="text_conceal" translatable="false">https://yinsi.yzmetax.com/conceal.html</string>
+    <string name="save_photo_video" translatable="false">保存到相册</string>
 </resources>
