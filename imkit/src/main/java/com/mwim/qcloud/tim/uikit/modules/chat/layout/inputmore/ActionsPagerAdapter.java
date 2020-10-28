@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SizeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,10 +70,10 @@ public class ActionsPagerAdapter extends PagerAdapter {
             });
         }
         gridView.setSelector(R.color.transparent);
-        gridView.setHorizontalSpacing(96);
-        gridView.setVerticalSpacing(60);
+        gridView.setHorizontalSpacing(SizeUtils.dp2px(mContext,20));
+        gridView.setVerticalSpacing(SizeUtils.dp2px(mContext,20));
         gridView.setGravity(Gravity.CENTER);
-        gridView.setTag(Integer.valueOf(position));
+        gridView.setTag(position);
         gridView.setOnItemClickListener(new GridView.OnItemClickListener() {
 
             @Override
