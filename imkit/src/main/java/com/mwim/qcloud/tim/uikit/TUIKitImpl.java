@@ -245,6 +245,7 @@ public class TUIKitImpl {
             @Override
             public void onMemberLeave(String groupID, V2TIMGroupMemberInfo member) {
                 SLog.i("onMemberLeave groupID:" + groupID + ", memberID:" + member.getUserID());
+                ConversationManagerKit.getInstance().setGroupConversationAvatar("group_" + groupID, null);
                 Intent intent = new Intent(GroupListenerConstants.ACTION);
                 intent.putExtra(GroupListenerConstants.KEY_METHOD, GroupListenerConstants.METHOD_ON_MEMBER_LEAVE);
                 intent.putExtra(GroupListenerConstants.KEY_GROUP_ID, groupID);
