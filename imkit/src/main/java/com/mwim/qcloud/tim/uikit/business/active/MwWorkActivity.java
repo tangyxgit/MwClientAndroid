@@ -39,7 +39,6 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -232,6 +231,11 @@ public class MwWorkActivity extends IMBaseActivity implements
     @Override
     public void updateContacts() {
         updateFragment(1);
+    }
+
+    @Override
+    public void updateConversion() {
+        ((ConversationFragment) mFragments.get(0)).refreshData();
     }
 
     @Override

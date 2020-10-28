@@ -87,6 +87,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
                 mUnreadTotal = 0;
                 for (V2TIMConversation v2TIMConversation : v2TIMConversationList) {
                     //将 imsdk v2TIMConversation 转换为 UIKit ConversationInfo
+                    SLog.e("v2TIMConversationList:"+v2TIMConversation.getShowName());
                     ConversationInfo conversationInfo = TIMConversation2ConversationInfo(v2TIMConversation);
                     if (conversationInfo != null && !V2TIMManager.GROUP_TYPE_AVCHATROOM.equals(v2TIMConversation.getGroupType())) {
                         mUnreadTotal = mUnreadTotal + conversationInfo.getUnRead();
@@ -143,14 +144,14 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @param v2TIMConversationList 需要刷新的会话列表
      */
     public void onRefreshConversation(List<V2TIMConversation> v2TIMConversationList) {
-        SLog.v( "onRefreshConversation conversations:" + v2TIMConversationList);
+        SLog.v( "onRefreshConversation conversations:" + v2TIMConversationList.size());
         if (mProvider == null) {
             return;
         }
         ArrayList<ConversationInfo> infos = new ArrayList<>();
         for (int i = 0; i < v2TIMConversationList.size(); i++) {
             V2TIMConversation v2TIMConversation = v2TIMConversationList.get(i);
-            SLog.v( "refreshConversation v2TIMConversation " + v2TIMConversation.toString());
+            SLog.v( "refreshConversation v2TIMConversation " + v2TIMConversation.getShowName());
             ConversationInfo conversationInfo = TIMConversation2ConversationInfo(v2TIMConversation);
             if (conversationInfo != null && !V2TIMManager.GROUP_TYPE_AVCHATROOM.equals(v2TIMConversation.getGroupType())) {
                 infos.add(conversationInfo);
@@ -160,7 +161,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             return;
         }
         List<ConversationInfo> dataSource = mProvider.getDataSource();
-        ArrayList<ConversationInfo> exists = new ArrayList();
+        ArrayList<ConversationInfo> exists = new ArrayList<>();
         for (int j = 0; j < infos.size(); j++) {
             ConversationInfo update = infos.get(j);
             boolean exist = false;
@@ -652,11 +653,20 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         }
     }
     /**
+     * 刷新全部会话
+     */
+    public void updateConversion(){
+        for (int i = 0; i < mUnreadWatchers.size(); i++) {
+            mUnreadWatchers.get(i).updateConversion();
+        }
+    }
+    /**
      * 会话未读计数变化监听器
      */
     public interface MessageUnreadWatcher {
         void updateUnread(int count);
         void updateContacts();
+        void updateConversion();
     }
 
 }

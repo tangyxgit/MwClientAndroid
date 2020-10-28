@@ -65,17 +65,13 @@ public class ConversationFragment extends BaseFragment {
                 startPopShow(view, position, conversationInfo);
             }
         });
-        initTitleAction();
         initPopMenuAction();
     }
 
-    private void initTitleAction() {
-//        mConversationLayout.getTitleBar().setOnRightClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mMenu.showMenu(getActivity());
-//            }
-//        });
+    public void refreshData(){
+        if(mConversationLayout!=null){
+            mConversationLayout.initDefault();
+        }
     }
 
     private void initPopMenuAction() {

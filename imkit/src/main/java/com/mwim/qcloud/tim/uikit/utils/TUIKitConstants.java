@@ -65,6 +65,7 @@ public class TUIKitConstants {
     public static class Selection {
         public static final String CONTENT = "content";
         public static final String TYPE = "type";
+        public static final String TYPE_INPUT = "type_input";
         public static final String TITLE = "title";
         public static final String INIT_CONTENT = "init_content";
         public static final String DEFAULT_SELECT_ITEM_INDEX = "default_select_item_index";

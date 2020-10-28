@@ -63,6 +63,11 @@ public final class IMKitAgent {
         public void updateContacts() {
 
         }
+
+        @Override
+        public void updateConversion() {
+
+        }
     };
     private static Context instance;
 

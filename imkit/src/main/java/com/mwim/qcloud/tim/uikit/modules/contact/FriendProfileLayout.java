@@ -638,7 +638,6 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         }else{
             C2CChatManagerKit.getInstance().onChat2C2RemarkChange(txt);
         }
-        ConversationManagerKit.getInstance().updateContacts();
         V2TIMManager.getFriendshipManager().setFriendInfo(v2TIMFriendInfo, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
@@ -648,7 +647,10 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             @Override
             public void onSuccess() {
                 mContactInfo.setRemark(txt);
+                ConversationManagerKit.getInstance().updateContacts();
+                ConversationManagerKit.getInstance().updateConversion();
                 SLog.i("modifyRemark success");
+
             }
         });
     }

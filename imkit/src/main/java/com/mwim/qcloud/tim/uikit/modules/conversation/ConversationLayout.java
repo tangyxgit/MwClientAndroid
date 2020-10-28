@@ -57,7 +57,7 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
         });
         mConversationList = findViewById(R.id.conversation_list);
     }
-
+    private IConversationAdapter adapter;
     public void initDefault() {
         final View mAddMore = findViewById(R.id.add_more);
         mAddMore.setOnClickListener(new OnClickListener() {
@@ -82,8 +82,10 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
                 mMenu.showMenu(getContext());
             }
         });
-        final IConversationAdapter adapter = new ConversationListAdapter();
-        mConversationList.setAdapter(adapter);
+        if(adapter==null){
+            adapter = new ConversationListAdapter();
+            mConversationList.setAdapter(adapter);
+        }
         ConversationManagerKit.getInstance().loadConversation(new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
