@@ -1,8 +1,11 @@
 package com.mwim.qcloud.tim.uikit.modules.group.info;
 
 import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.R;
@@ -20,17 +23,30 @@ import java.util.ArrayList;
  * email tangyx@live.com
  */
 
-public class StartGroupMemberSelectActivity extends BaseActivity {
+public class StartGroupMemberSelectActivity extends BaseActivity implements TextWatcher {
 
     private ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
+    private ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
+    private EditText mSearch;
+    private GroupInfo groupInfo;
+    private ContactListView mContactListView;
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
+        mSearch = findViewById(R.id.search);
+        mSearch.addTextChangedListener(this);
         mMembers.clear();
-        GroupInfo groupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
-        ContactListView mContactListView = findViewById(R.id.group_create_member_list);
+        groupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
+        if(groupInfo==null){
+            finish();
+        }
+        mContactListView = findViewById(R.id.group_create_member_list);
         mContactListView.setGroupInfo(groupInfo);
+        loadGroupInfo();
+    }
+
+    private void loadGroupInfo(){
         mContactListView.loadDataSource(ContactListView.DataSource.GROUP_MEMBER_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
             @Override
@@ -101,13 +117,42 @@ public class StartGroupMemberSelectActivity extends BaseActivity {
         }
 
         //TUIKitLog.i(TAG, "getMembersUserId mMembers.size() = " + mMembers.size());
-        String userIdString = "";
+        StringBuilder userIdString = new StringBuilder();
         for(int i = 0; i < mMembers.size(); i++){
-            userIdString += mMembers.get(i).getAccount();
-            userIdString += " ";
+            userIdString.append(mMembers.get(i).getAccount());
+            userIdString.append(" ");
         }
         //TUIKitLog.i(TAG, "userIdString = " + userIdString);
-        return userIdString;
+        return userIdString.toString();
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String text = s.toString();
+        if(memberInfoArrayList.size()==0){
+            memberInfoArrayList.addAll(mContactListView.getGroupData());
+        }
+        if(TextUtils.isEmpty(text)){
+            mContactListView.setDataSource(new ArrayList<>(memberInfoArrayList));
+        }else{
+            ArrayList<ContactItemBean> groupMemberInfos = new ArrayList<>();
+            for (ContactItemBean groupMemberInfo:memberInfoArrayList) {
+                if(groupMemberInfo.getNickname().contains(text)
+                    || groupMemberInfo.getRemark().contains(text)){
+                    groupMemberInfos.add(groupMemberInfo);
+                }
+            }
+            mContactListView.setDataSource(groupMemberInfos);
+        }
+    }
 }
