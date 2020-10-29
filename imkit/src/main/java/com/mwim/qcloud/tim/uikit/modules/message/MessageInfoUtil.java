@@ -34,6 +34,7 @@ import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.work.util.SLog;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -297,7 +298,7 @@ public class MessageInfoUtil {
 
     public static boolean isTyping(byte[] data) {
         try {
-            String str = new String(data, "UTF-8");
+            String str = new String(data, StandardCharsets.UTF_8);
             MessageTyping typing = new Gson().fromJson(str, MessageTyping.class);
             if (typing != null
                     && typing.userAction == MessageTyping.TYPE_TYPING
@@ -348,7 +349,7 @@ public class MessageInfoUtil {
                     // 忽略正在输入，它不能作为真正的消息展示
                     return null;
                 }
-                SLog.i( "custom data:" + data);
+                SLog.i( "message info util custom data:" + data);
                 String content = "[自定义消息]";
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_CUSTOM);
                 msgInfo.setExtra(content);
@@ -374,15 +375,27 @@ public class MessageInfoUtil {
                             switch (callModel.action) {
                                 case CallModel.VIDEO_CALL_ACTION_DIALING:
                                     content = isGroup ? ("\"" + senderShowName + "\"" + "发起群通话") : ("发起通话");
+                                    if(!isGroup){
+                                        msgInfo.setCallType(callModel.callType);
+                                    }
                                     break;
                                 case CallModel.VIDEO_CALL_ACTION_SPONSOR_CANCEL:
                                     content = isGroup ? "取消群通话" : "取消通话";
+                                    if(!isGroup){
+                                        msgInfo.setCallType(callModel.callType);
+                                    }
                                     break;
                                 case CallModel.VIDEO_CALL_ACTION_LINE_BUSY:
                                     content = isGroup ? ("\"" + senderShowName + "\"" + "忙线") : "对方忙线";
+                                    if(!isGroup){
+                                        msgInfo.setCallType(callModel.callType);
+                                    }
                                     break;
                                 case CallModel.VIDEO_CALL_ACTION_REJECT:
                                     content = isGroup ? ("\"" + senderShowName + "\"" + "拒绝群通话") : "拒绝通话";
+                                    if(!isGroup){
+                                        msgInfo.setCallType(callModel.callType);
+                                    }
                                     break;
                                 case CallModel.VIDEO_CALL_ACTION_SPONSOR_TIMEOUT:
                                     if (isGroup && callModel.invitedList != null && callModel.invitedList.size() == 1
@@ -404,9 +417,15 @@ public class MessageInfoUtil {
                                     break;
                                 case CallModel.VIDEO_CALL_ACTION_ACCEPT:
                                     content = isGroup ? ("\"" + senderShowName + "\"" + "已接听") : "已接听";
+                                    if(!isGroup){
+                                        msgInfo.setCallType(callModel.callType);
+                                    }
                                     break;
                                 case CallModel.VIDEO_CALL_ACTION_HANGUP:
                                     content = isGroup ? "结束群通话" : "结束通话，通话时长：" + DateTimeUtil.formatSecondsTo00(callModel.duration);
+                                    if(!isGroup){
+                                        msgInfo.setCallType(callModel.callType);
+                                    }
                                     break;
                                 default:
                                     content = "不能识别的通话指令";

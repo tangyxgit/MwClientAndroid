@@ -79,6 +79,10 @@ public final class ModeApi {
      */
     public final static String getToolToken = "tool/getToolToken";
     /**
+     * 搜索
+     */
+    public final static String getFriendByMobile="user/getFriendByMobile";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

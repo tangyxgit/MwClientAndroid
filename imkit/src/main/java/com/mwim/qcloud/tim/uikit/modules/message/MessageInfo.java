@@ -144,6 +144,7 @@ public class MessageInfo {
     private int imgWidth;
     private int imgHeight;
     private boolean peerRead;
+    private int callType;
 
     private V2TIMMessage timMessage;
 
@@ -469,5 +470,13 @@ public class MessageInfo {
 
     public void setPeerRead(boolean peerRead) {
         this.peerRead = peerRead;
+    }
+
+    public void setCallType(int callType) {
+        this.callType = callType;
+    }
+
+    public int getCallType() {
+        return callType;
     }
 }

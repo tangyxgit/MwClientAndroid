@@ -11,6 +11,7 @@ import com.work.api.open.model.CreateGroupReq;
 import com.work.api.open.model.CreateGroupResp;
 import com.work.api.open.model.DestroyGroupReq;
 import com.work.api.open.model.GetCarWebViewUrlResp;
+import com.work.api.open.model.GetFriendByMobileResp;
 import com.work.api.open.model.GetGroupMsgReq;
 import com.work.api.open.model.GetGroupMsgResp;
 import com.work.api.open.model.GetToolListByUserIdResp;
@@ -142,6 +143,12 @@ public class Yz extends ApiClient {
      */
     public void getToolToken(GetToolTokenReq getToolTokenReq,OnResultDataListener onResultDataListener,Object... objects){
         requestPost(ModeApi.getToolToken,getToolTokenReq,new GetToolTokenResp(),onResultDataListener,objects);
+    }
+    /**
+     * 搜索我的朋友
+     */
+    public void getFriendByMobile(LoginReq loginReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getFriendByMobile,loginReq,new GetFriendByMobileResp(),onResultDataListener);
     }
     /**
      * 获取打车链接

@@ -7,7 +7,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
-import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
@@ -67,6 +66,16 @@ public class MessageTextHolder extends MessageContentHolder {
                 msgBodyText.setTextColor(properties.getLeftChatContentFontColor());
             }
         }
+//        msgContentFrame.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(msg.getCallType() ==1 ){//语音通话
+//
+//                }else if(msg.getCallType() == 2){//视频通话
+//
+//                }
+//            }
+//        });
     }
 
 }
