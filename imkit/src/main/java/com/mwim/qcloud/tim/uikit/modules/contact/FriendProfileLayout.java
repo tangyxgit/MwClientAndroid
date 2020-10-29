@@ -25,6 +25,7 @@ import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
@@ -135,6 +136,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         if (data instanceof ChatInfo) {
             ChatInfo mChatInfo = (ChatInfo) data;
             mId = mChatInfo.getId();
+            if(isSelf()){
+                return;
+            }
             mChatTopView.setVisibility(View.VISIBLE);
             mChatTopView.setChecked(ConversationManagerKit.getInstance().isTopConversation(mId));
             mChatTopView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
@@ -152,6 +156,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         } else if (data instanceof ContactItemBean) {
             mContactInfo = (ContactItemBean) data;
             mId = mContactInfo.getId();
+            if(isSelf()){
+                return;
+            }
             mNickname = mContactInfo.getNickname();
             mRemarkView.setVisibility(VISIBLE);
             mRemarkView.setContent(mContactInfo.getRemark());
@@ -174,6 +181,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         } else if (data instanceof V2TIMFriendApplication) {
             mFriendApplication = (V2TIMFriendApplication) data;
             mId = mFriendApplication.getUserID();
+            if(isSelf()){
+                return;
+            }
             mNickname = mFriendApplication.getNickname();
             mAddWordingView.setVisibility(View.VISIBLE);
             mAddWordingView.setText(mFriendApplication.getAddWording());
@@ -198,6 +208,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             final GroupApplyInfo info = (GroupApplyInfo) data;
             V2TIMGroupApplication item = ((GroupApplyInfo) data).getGroupApplication();
             mId = item.getFromUser();
+            if(isSelf()){
+                return;
+            }
             mNickname = item.getFromUserNickName();
             mAddWordingView.setVisibility(View.VISIBLE);
             mAddWordingView.setText(item.getRequestMsg());
@@ -219,6 +232,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             });
         } else if (data instanceof OpenData) {
             mId = ((OpenData) data).getUserId();
+            if(isSelf()){
+                return;
+            }
             loadUser();
             addFriend();
         }
@@ -385,11 +401,22 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             GlideEngine.loadImage(mHeadImageView,R.drawable.default_head);
         }
 //        mMobile.setText(mId);
-        if(bean.getId().equals(UserApi.instance().getUserId())){//是自己
+        if(isSelf()){//是自己
             mAddWordingLayout.setVisibility(GONE);
             mChatView.setVisibility(GONE);
             mDepLayout.setVisibility(VISIBLE);
         }
+    }
+
+    private boolean isSelf(){
+        if(UserApi.instance().getUserId().equals(mId)){
+            getContext().startActivity(new Intent(getContext(), UserInfoActivity.class));
+            if(getContext() instanceof Activity){
+                ((Activity) getContext()).finish();
+            }
+            return true;
+        }
+        return false;
     }
 
     private void loadUserProfile() {
