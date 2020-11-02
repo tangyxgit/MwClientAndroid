@@ -11,6 +11,7 @@ import com.tencent.wemeet.sdk.ipc.RemoteCallback
 import com.work.util.ToastUtil
 
 object WemeetSdkHelper {
+
     private const val TAG = "SLog"
 
     // TODO SDKKEY替换
@@ -20,11 +21,11 @@ object WemeetSdkHelper {
     private lateinit var mContext:Context;
     private var url = "";
     @JvmStatic
-    fun init(context: Context) {
+    fun init(context: Context,sdkToken:String) {
         mContext = context
         WemeetSDK.getInstance().initialize(context, InitParams(
             SDKKEY,
-            SDKTOKEN
+            sdkToken
         ))
     }
 
