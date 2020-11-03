@@ -16,6 +16,7 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
+import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginResp;
@@ -135,7 +136,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     break;
                 }
                 if(!mChecked.isChecked()){
-                    ToastUtil.error(this,R.string.toast_agree_conceal);
+                    new ConfirmDialog().setContent("请先同意<font color='#3a89f0'>《服务协议》</font>和<font color='#3a89f0'>《隐私政策》</font>")
+                            .setConfirmTextResId(R.string.text_agree)
+                            .setOnConfirmListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mChecked.setChecked(true);
+                                }
+                            }).show(getSupportFragmentManager(),"cancel");
                     return;
                 }
                 String smsCode = mSmsCode.getText().toString().trim();

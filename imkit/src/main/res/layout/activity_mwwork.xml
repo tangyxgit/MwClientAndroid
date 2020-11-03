@@ -22,5 +22,7 @@
         android:background="#f7f7f7"
         app:bnbElevation="0dp"
         app:bnbMode="mode_fixed"
+        app:bnbActiveColor="@color/defaultColorAccent"
+        app:bnbInactiveColor="@color/color_b2b2b2"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>

@@ -101,12 +101,13 @@
             android:id="@+id/checked"
             android:button="@drawable/checkbox_selector"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:scaleX="0.6"
+            android:scaleY="0.6"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:layout_marginStart="@dimen/dp_10"
             android:text="我已阅读并同意"/>
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/agree"

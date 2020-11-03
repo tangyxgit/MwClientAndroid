@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.dialog;
 
+import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
@@ -35,7 +36,7 @@ public class ConfirmDialog extends BaseDialog implements View.OnClickListener {
         if(mContent>0){
             mContentText.setText(mContent);
         }else if(!TextUtils.isEmpty(mContentStr)){
-            mContentText.setText(mContentStr);
+            mContentText.setText(Html.fromHtml(mContentStr));
         }else if(mContentSpanned!=null){
             mContentText.setText(mContentSpanned);
         }
