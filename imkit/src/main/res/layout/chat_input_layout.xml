@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/navigation_bar_color"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <View
@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/voice_input_switch"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
             android:layout_margin="5dp"
             android:scaleType="fitXY"
             android:src="@drawable/action_audio_selector" />
@@ -32,9 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
+            android:textSize="@dimen/sp_14"
             android:background="@drawable/msg_editor_border"
             android:maxHeight="120dp"
             android:minHeight="30dp"
+            android:hint="发消息..."
             android:textCursorDrawable="@drawable/my_cursor"
             android:padding="5dp" />
 
@@ -52,16 +54,16 @@
 
         <ImageView
             android:id="@+id/face_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
             android:layout_margin="5dp"
             android:scaleType="fitXY"
             android:src="@drawable/action_face_selector" />
 
         <ImageView
             android:id="@+id/more_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
             android:layout_margin="5dp"
             android:scaleType="fitXY"
             android:src="@drawable/action_more_selector" />
@@ -80,6 +82,7 @@
 
     <RelativeLayout
         android:id="@+id/more_groups"
+        android:background="@color/background_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" />

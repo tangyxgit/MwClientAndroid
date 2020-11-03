@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.util.AttributeSet;
 import android.view.View;
@@ -101,8 +102,11 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
         mInputMoreView = findViewById(R.id.more_groups);
         mSendAudioButton = findViewById(R.id.chat_voice_input);
         mAudioInputSwitchButton = findViewById(R.id.voice_input_switch);
+        mAudioInputSwitchButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_b2b2b2));
         mEmojiInputButton = findViewById(R.id.face_btn);
+        mEmojiInputButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_b2b2b2));
         mMoreInputButton = findViewById(R.id.more_btn);
+        mMoreInputButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_b2b2b2));
         mSendTextButton = findViewById(R.id.send_btn);
         mTextInput = findViewById(R.id.chat_message_input);
 
@@ -114,7 +118,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
         mInputMoreActionList.clear();
         InputMoreActionUnit action = new InputMoreActionUnit();
         if (!mSendPhotoDisable) {
-            action.setIconResId(R.drawable.ic_more_picture);
+            action.setIconResId(R.drawable.icon_photo_fill);
             action.setTitleId(R.string.pic);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -127,7 +131,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (!mCaptureDisable) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.ic_more_camera);
+            action.setIconResId(R.drawable.icon_camera_fill);
             action.setTitleId(R.string.photo);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -140,7 +144,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (!mVideoRecordDisable) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.ic_more_video);
+            action.setIconResId(R.drawable.icon_document_fill);
             action.setTitleId(R.string.video);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -153,7 +157,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (!mSendFileDisable) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.ic_more_file);
+            action.setIconResId(R.drawable.icon_folder_fill);
             action.setTitleId(R.string.file);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -166,7 +170,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (mEnableAudioCall) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.ic_more_audio_call);
+            action.setIconResId(R.drawable.icon_dial_fill);
             action.setTitleId(R.string.audio_call);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -179,7 +183,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (mEnableVideoCall) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.ic_more_video_call);
+            action.setIconResId(R.drawable.icon_chat_history_fill);
             action.setTitleId(R.string.video_call);
             action.setOnClickListener(new OnClickListener() {
                 @Override

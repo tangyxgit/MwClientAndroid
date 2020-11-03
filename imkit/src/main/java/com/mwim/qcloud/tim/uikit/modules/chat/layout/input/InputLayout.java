@@ -523,7 +523,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         SLog.v("showSoftInput");
         hideInputMoreLayout();
         mAudioInputSwitchButton.setImageResource(R.drawable.action_audio_selector);
-        mEmojiInputButton.setImageResource(R.drawable.ic_input_face_normal);
+        mEmojiInputButton.setImageResource(R.drawable.action_face_selector);
         mTextInput.requestFocus();
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(mTextInput, 0);

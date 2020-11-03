@@ -34,7 +34,7 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
             Manifest.permission.ACCESS_COARSE_LOCATION,};
     private View mErrorLayout;
     private TextView mErrorText;
-    private MaterialMenuView mBack;
+    private View mBack;
     private TextView mBackTitle;
     private TextView mWebTitle;
     private MaterialMenuView mClose;
@@ -57,7 +57,6 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
         mBack.setOnClickListener(this);
         mBackTitle.setOnClickListener(this);
         mClose.setOnClickListener(this);
-        mBack.setState(MaterialMenuDrawable.IconState.ARROW);
         mClose.setState(MaterialMenuDrawable.IconState.X);
         loadWebUrl();
         return mBaseView;

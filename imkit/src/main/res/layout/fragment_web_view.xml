@@ -17,12 +17,14 @@
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="@dimen/actionbar_size">
-            <com.workstation.view.MaterialMenuView
+            <ImageView
                 android:id="@+id/web_back"
-                app:mm_color="@color/color_333333"
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"/>
+                android:src="@mipmap/icon_back"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/web_back_title"
                 android:visibility="gone"

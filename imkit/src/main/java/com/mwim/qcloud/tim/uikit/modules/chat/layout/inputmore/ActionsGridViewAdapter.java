@@ -2,12 +2,15 @@ package com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore;
 
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.mwim.qcloud.tim.uikit.R;
 
@@ -50,7 +53,9 @@ public class ActionsGridViewAdapter extends BaseAdapter {
 
         InputMoreActionUnit action = baseActions.get(position);
         if (action.getIconResId() > 0) {
-            ((ImageView) itemlayout.findViewById(R.id.imageView)).setImageResource(action.getIconResId());
+            ImageView imageView = itemlayout.findViewById(R.id.imageView);
+            imageView.setImageResource(action.getIconResId());
+            imageView.setColorFilter(ContextCompat.getColor(context,R.color.color_6e6e6e), PorterDuff.Mode.SRC_ATOP);
         }
         if (action.getTitleId() > 0) {
             ((TextView) itemlayout.findViewById(R.id.textView)).setText(context.getString(action.getTitleId()));

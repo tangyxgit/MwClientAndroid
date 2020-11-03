@@ -12,8 +12,8 @@
     <color name="text_tips_color">#A5A5A5</color>
 
     <!-- 线 -->
-    <color name="chat_title_line_color">#E6E6E6</color>
-    <color name="input_title_line_color">#D2D2D2</color>
+    <color name="chat_title_line_color">#E9EBEC</color>
+    <color name="input_title_line_color">#E9EBEC</color>
 
     <color name="btn_blue_standard_color">#338BFF</color>
     <color name="item_split_color">#cccccc</color>
