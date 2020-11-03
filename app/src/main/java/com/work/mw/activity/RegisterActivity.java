@@ -217,6 +217,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 ToastUtil.warning(this,resp.getMessage());
             }
         }else if(req instanceof RegisterReq){
+            mSubmit.setEnabled(true);
+            mSubmit.setProgress(0);
             if(resp.isSuccess()){
                 ToastUtil.success(this,R.string.toast_reset_success);
                 onBackPressed();

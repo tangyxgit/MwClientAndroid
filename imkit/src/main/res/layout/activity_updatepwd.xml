@@ -82,6 +82,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textColor="@color/white"
+        style="?android:attr/borderlessButtonStyle"
         app:pb_textProgress="@string/user_text_please_wait"
         app:pb_cornerRadius="5dp"
         app:pb_colorNormal="@color/defaultColorAccent"
