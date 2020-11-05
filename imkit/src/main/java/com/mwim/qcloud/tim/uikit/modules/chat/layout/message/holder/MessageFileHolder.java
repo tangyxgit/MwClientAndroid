@@ -61,6 +61,8 @@ public class MessageFileHolder extends MessageContentHolder {
             fileIconImage.setImageResource(R.drawable.icon_ppt_fill);
         }else if(fileName.endsWith(".zip") || fileName.endsWith(".rar")){
             fileIconImage.setImageResource(R.drawable.icon_zip_fill);
+        }else if(fileName.endsWith(".txt")){
+            fileIconImage.setImageResource(R.drawable.icon_txt_fill);
         }else{
             fileIconImage.setImageResource(R.drawable.icon_default_fill);
         }
