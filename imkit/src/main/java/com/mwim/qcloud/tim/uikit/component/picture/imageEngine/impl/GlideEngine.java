@@ -38,6 +38,7 @@ public class GlideEngine implements ImageEngine {
     public static void loadCornerAvatar(ImageView imageView, String filePath) {
         Glide.with(TUIKit.getAppContext())
                 .load(filePath)
+                .placeholder(R.drawable.default_head)
                 .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                 .into(imageView);
     }

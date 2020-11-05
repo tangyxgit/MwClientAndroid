@@ -115,7 +115,7 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         if (!TextUtils.isEmpty(mIconUrl)) {
             GlideEngine.loadCornerAvatar(mUserIcon, mIconUrl);
         }else{
-            GlideEngine.loadImage(mUserIcon, R.drawable.default_head);
+            GlideEngine.loadImage(mUserIcon, R.drawable.default_user_me);
         }
         // 昵称
         String nickName = userApi.getNickName();

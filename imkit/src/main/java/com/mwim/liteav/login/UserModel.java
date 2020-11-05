@@ -8,6 +8,7 @@ public class UserModel implements Serializable {
     public String userSig;
     public String userName;
     public String userAvatar;
+    public boolean loading;
 
     @java.lang.Override
     public java.lang.String toString() {

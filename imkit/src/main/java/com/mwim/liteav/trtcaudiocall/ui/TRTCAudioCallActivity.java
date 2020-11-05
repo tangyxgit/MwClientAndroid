@@ -21,9 +21,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.mwim.liteav.model.IntentParams;
+import com.mwim.liteav.trtcaudiocall.ui.audiolayout.TRTCAudioCallAdapter;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
@@ -34,8 +39,6 @@ import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
 import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.liteav.model.TRTCAVCallListener;
-import com.mwim.liteav.trtcaudiocall.ui.audiolayout.TRTCAudioLayout;
-import com.mwim.liteav.trtcaudiocall.ui.audiolayout.TRTCAudioLayoutManager;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
@@ -75,7 +78,8 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     private LinearLayout mHandsfreeLl;
     private TextView mHandsfreeName;
     private LinearLayout mDialingLl;
-    private TRTCAudioLayoutManager mLayoutManagerTrtc;
+//    private TRTCAudioLayoutManager mLayoutManagerTrtc;
+    private TRTCAudioCallAdapter mTrtcAdapter;
     private Group mInvitingGroup;
     private LinearLayout mImgContainerLl;
     private TextView mTimeTv;
@@ -124,9 +128,10 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     showCallingView();
-                    TRTCAudioLayout layout = mLayoutManagerTrtc.findAudioCallLayout(userId);
+                    UserModel layout = mTrtcAdapter.findAudioCallLayout(userId);
                     if (layout != null) {
-                        layout.stopLoading();
+                        layout.loading = false;
+                        mTrtcAdapter.notifyDataSetChanged();
                     } else {
                         // 没有这个用户，需要重新分配, 先获取用户资料，在进行分配
                         ProfileManager.getInstance().getUserInfoByUserId(userId, new ProfileManager.GetUserInfoCallback() {
@@ -162,7 +167,11 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     //1. 回收界面元素
-                    mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+//                    mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+                    int index = mTrtcAdapter.findAudioCallIndex(userId);
+                    if(index!=-1){
+                        mTrtcAdapter.remove(index);
+                    }
                     //2. 删除用户model
                     UserModel userModel = mCallUserModelMap.remove(userId);
                     if (userModel != null) {
@@ -180,7 +189,11 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                     if (mCallUserModelMap.containsKey(userId)) {
                         // 进入拒绝环节
                         //1. 回收界面元素
-                        mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+//                        mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+                        int index = mTrtcAdapter.findAudioCallIndex(userId);
+                        if(index!=-1){
+                            mTrtcAdapter.remove(index);
+                        }
                         //2. 删除用户model
                         UserModel userModel = mCallUserModelMap.remove(userId);
                         if (userModel != null) {
@@ -200,7 +213,11 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                     if (mCallUserModelMap.containsKey(userId)) {
                         // 进入无响应环节
                         //1. 回收界面元素
-                        mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+//                        mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+                        int index = mTrtcAdapter.findAudioCallIndex(userId);
+                        if(index!=-1){
+                            mTrtcAdapter.remove(index);
+                        }
                         //2. 删除用户model
                         UserModel userModel = mCallUserModelMap.remove(userId);
                         if (userModel != null) {
@@ -217,7 +234,11 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             if (mCallUserModelMap.containsKey(userId)) {
                 // 进入无响应环节
                 //1. 回收界面元素
-                mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+//                mLayoutManagerTrtc.recyclerAudioCallLayout(userId);
+                int index = mTrtcAdapter.findAudioCallIndex(userId);
+                if(index!=-1){
+                    mTrtcAdapter.remove(index);
+                }
                 //2. 删除用户model
                 UserModel userModel = mCallUserModelMap.remove(userId);
                 if (userModel != null) {
@@ -260,13 +281,13 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
 
         @Override
         public void onUserVoiceVolume(Map<String, Integer> volumeMap) {
-            for (Map.Entry<String, Integer> entry : volumeMap.entrySet()) {
-                String userId = entry.getKey();
-                TRTCAudioLayout layout = mLayoutManagerTrtc.findAudioCallLayout(userId);
-                if (layout != null) {
-                    layout.setAudioVolume(entry.getValue());
-                }
-            }
+//            for (Map.Entry<String, Integer> entry : volumeMap.entrySet()) {
+//                String userId = entry.getKey();
+//                TRTCAudioLayout layout = mLayoutManagerTrtc.findAudioCallLayout(userId);
+//                if (layout != null) {
+//                    layout.setAudioVolume(entry.getValue());
+//                }
+//            }
         }
     };
 
@@ -351,7 +372,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         mRingtone = RingtoneManager.getRingtone(this,
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
-
+        mGroupId = getIntent().getStringExtra(PARAM_GROUP_ID);
         initView();
         initData();
         initListener();
@@ -360,31 +381,6 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     private void finishActivity() {
         ((TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(this)).setWaitingLastActivityFinished(true);
         finish();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        SLog.i("onResume");
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        SLog.i("onPause");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        SLog.i("onStart");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        SLog.i("onStop");
     }
 
     @Override
@@ -448,9 +444,11 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         // 初始化从外界获取的数据
         Intent intent = getIntent();
         //自己的资料
-        mSelfModel = ProfileManager.getInstance().getUserModel();
+        mSelfModel = new UserModel();
+        mSelfModel.userId = UserApi.instance().getUserId();
+        mSelfModel.userName = UserApi.instance().getNickName();
+        mSelfModel.userAvatar = UserApi.instance().getUserIcon();
         mCallType = intent.getIntExtra(PARAM_TYPE, TYPE_BEING_CALLED);
-        mGroupId = intent.getStringExtra(PARAM_GROUP_ID);
         if (mCallType == TYPE_BEING_CALLED) {
             // 作为被叫
             mSponsorUserModel = (UserModel) intent.getSerializableExtra(PARAM_BEINGCALL_USER);
@@ -493,7 +491,12 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         mHandsfreeName = findViewById(R.id.handsfree_name);
         ImageView mDialingImg = (ImageView) findViewById(R.id.img_dialing);
         mDialingLl = findViewById(R.id.ll_dialing);
-        mLayoutManagerTrtc = findViewById(R.id.trtc_layout_manager);
+        RecyclerView mLayoutManagerTrtc = findViewById(R.id.trtc_layout_manager);
+        mLayoutManagerTrtc.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).sizeResId(R.dimen.dp_10).colorResId(R.color.transparent).build());
+        mLayoutManagerTrtc.setLayoutManager(new GridLayoutManager(this,TextUtils.isEmpty(mGroupId)?1:3));
+        mTrtcAdapter = new TRTCAudioCallAdapter(null);
+        mTrtcAdapter.setC2C(TextUtils.isEmpty(mGroupId));
+        mLayoutManagerTrtc.setAdapter(mTrtcAdapter);
         mInvitingGroup = findViewById(R.id.group_inviting);
         mImgContainerLl = findViewById(R.id.ll_img_container);
         mTimeTv = findViewById(R.id.tv_time);
@@ -505,10 +508,11 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
      */
     public void showWaitingResponseView() {
         //1. 展示对方的画面
-        TRTCAudioLayout layout = mLayoutManagerTrtc.allocAudioCallLayout(mSponsorUserModel.userId);
-        layout.setUserId(mSponsorUserModel.userName);
-        GlideEngine.loadCornerAvatar(layout.getImageView(), mSponsorUserModel.userAvatar);
-        updateUserView(mSponsorUserModel, layout);
+        mTrtcAdapter.addData(mSponsorUserModel);
+//        TRTCAudioLayout layout = mLayoutManagerTrtc.allocAudioCallLayout(mSponsorUserModel.userId);
+//        layout.setUserId(mSponsorUserModel.userName);
+//        GlideEngine.loadCornerAvatar(layout.getImageView(), mSponsorUserModel.userAvatar);
+        updateUserView(mSponsorUserModel);
         //2. 展示电话对应界面
         mHangupLl.setVisibility(View.VISIBLE);
         mDialingLl.setVisibility(View.VISIBLE);
@@ -530,8 +534,8 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 mVibrator.cancel();
                 mRingtone.stop();
                 //1.分配自己的画面
-                mLayoutManagerTrtc.setMySelfUserId(mSelfModel.userId);
-                addUserToManager(mSelfModel);
+//                mLayoutManagerTrtc.setMySelfUserId(mSelfModel.userId);
+//                addUserToManager(mSelfModel);
                 //2.接听电话
                 mITRTCAVCall.accept();
                 showCallingView();
@@ -546,12 +550,16 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
      */
     public void showInvitingView() {
         //1. 展示自己的界面
-        mLayoutManagerTrtc.setMySelfUserId(mSelfModel.userId);
-        addUserToManager(mSelfModel);
+//        mTrtcAdapter.setMySelfUserId(mSelfModel.userId);
+        if(!TextUtils.isEmpty(mGroupId)){//说明是单聊
+            addUserToManager(mSelfModel);
+        }
+
         //2. 展示对方的画面
         for (UserModel userModel : mCallUserModelList) {
-            TRTCAudioLayout layout = addUserToManager(userModel);
-            layout.startLoading();
+//            TRTCAudioLayout layout = addUserToManager(userModel);
+//            layout.startLoading();
+            addUserToManager(userModel);
         }
         //3. 设置底部栏
         mHangupLl.setVisibility(View.VISIBLE);
@@ -641,8 +649,8 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 layoutParams.leftMargin = leftMargin;
             }
             imageView.setLayoutParams(layoutParams);
-            GlideEngine.loadCornerImage(imageView, userModel.userAvatar, null, SelectContactActivity.RADIUS);
-            updateUserView(userModel, imageView);
+            GlideEngine.loadCornerAvatar(imageView, userModel.userAvatar);
+            updateUserView(userModel);
             mImgContainerLl.addView(imageView);
         }
     }
@@ -651,15 +659,16 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         mInvitingGroup.setVisibility(View.GONE);
     }
 
-    private TRTCAudioLayout addUserToManager(final UserModel userModel) {
-        final TRTCAudioLayout layout = mLayoutManagerTrtc.allocAudioCallLayout(userModel.userId);
-        layout.setUserId(userModel.userName);
-        GlideEngine.loadCornerAvatar(layout.getImageView(), userModel.userAvatar);
-        updateUserView(userModel, layout);
-        return layout;
+    private void addUserToManager(final UserModel userModel) {
+//        final TRTCAudioLayout layout = mLayoutManagerTrtc.allocAudioCallLayout(userModel.userId);
+//        layout.setUserId(userModel.userName);
+//        GlideEngine.loadCornerAvatar(layout.getImageView(), userModel.userAvatar);
+        userModel.loading = true;
+        mTrtcAdapter.addData(userModel);
+        updateUserView(userModel);
     }
 
-    private void updateUserView(final UserModel userModel, final Object layout) {
+    private void updateUserView(final UserModel userModel) {
         if (!TextUtils.isEmpty(userModel.userName) && !TextUtils.isEmpty(userModel.userAvatar)) {
             return;
         }
@@ -679,16 +688,18 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 }
                 if (TextUtils.isEmpty(userModel.userName)) {
                     userModel.userName = v2TIMUserFullInfos.get(0).getNickName();
-                    if (layout instanceof TRTCAudioLayout) {
-                        ((TRTCAudioLayout) layout).setUserId(v2TIMUserFullInfos.get(0).getNickName());
-                    }
+                    userModel.userId = v2TIMUserFullInfos.get(0).getNickName();
+//                    if (layout instanceof TRTCAudioLayout) {
+//                        ((TRTCAudioLayout) layout).setUserId(v2TIMUserFullInfos.get(0).getNickName());
+//                    }
                 }
                 userModel.userAvatar = v2TIMUserFullInfos.get(0).getFaceUrl();
-                if (layout instanceof TRTCAudioLayout) {
-                    GlideEngine.loadCornerAvatar(((TRTCAudioLayout) layout).getImageView(), userModel.userAvatar);
-                } else if (layout instanceof ImageView) {
-                    GlideEngine.loadCornerAvatar((ImageView) layout, userModel.userAvatar);
-                }
+                mTrtcAdapter.notifyDataSetChanged();
+//                if (layout instanceof TRTCAudioLayout) {
+//                    GlideEngine.loadCornerAvatar(((TRTCAudioLayout) layout).getImageView(), userModel.userAvatar);
+//                } else if (layout instanceof ImageView) {
+//                    GlideEngine.loadCornerAvatar((ImageView) layout, userModel.userAvatar);
+//                }
             }
         });
     }

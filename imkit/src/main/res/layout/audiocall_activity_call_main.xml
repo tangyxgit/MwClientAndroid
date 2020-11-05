@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/color_2c2c2c"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,16 +11,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="155dp" />
 
-    <com.mwim.liteav.trtcaudiocall.ui.audiolayout.TRTCAudioLayoutManager
+<!--    <com.mwim.liteav.trtcaudiocall.ui.audiolayout.TRTCAudioLayoutManager-->
+<!--        android:id="@+id/trtc_layout_manager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@id/top_guide_line" />-->
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trtc_layout_manager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/top_guide_line" />
-
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_inviting"
         android:layout_width="wrap_content"
@@ -32,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="他们也在"
+        android:layout_marginTop="@dimen/dp_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/trtc_layout_manager" />

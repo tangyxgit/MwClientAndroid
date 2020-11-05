@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
-import com.mwim.qcloud.tim.uikit.utils.DemoLog;
 import com.tencent.imsdk.v2.V2TIMFriendApplication;
 import com.tencent.imsdk.v2.V2TIMFriendOperationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -42,9 +41,9 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
 
                     @Override
                     public void onSuccess(V2TIMFriendOperationResult v2TIMFriendOperationResult) {
-                        DemoLog.i(TAG, "deleteFriends success");
+                        SLog.i("deleteFriends success");
                         view.setText(getContext().getResources().getString(R.string.request_accepted));
-                        view.setBackgroundColor(Color.TRANSPARENT);
+                        view.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.defaultColorAccent));
                     }
                 });
     }
