@@ -10,6 +10,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.work.api.open.Yz;
 import com.work.api.open.model.RegisterReq;
+import com.work.util.RegularUtils;
 import com.work.util.ToastUtil;
 
 /**
@@ -49,6 +50,10 @@ public class UpdatePwdActivity extends BaseActivity implements View.OnClickListe
         String newPwd = mNewPassword.getText().toString().trim();
         if(TextUtils.isEmpty(newPwd)){
             ToastUtil.error(this,mNewPassword.getHint().toString());
+            return;
+        }
+        if(!RegularUtils.isPassword(newPwd)){
+            ToastUtil.error(this,R.string.hint_password);
             return;
         }
         String confirmPwd = mConfirmPassword.getText().toString().trim();

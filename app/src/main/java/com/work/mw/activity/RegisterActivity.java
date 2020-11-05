@@ -24,6 +24,7 @@ import com.work.api.open.model.RegisterReq;
 import com.work.api.open.model.SendSmsReq;
 import com.work.api.open.model.client.OpenData;
 import com.work.mw.R;
+import com.work.util.RegularUtils;
 import com.work.util.ToastUtil;
 
 /**
@@ -130,6 +131,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.submit:
                 String password = mPassword.getText().toString().trim();
+                if(!RegularUtils.isPassword(password)){
+                    ToastUtil.error(this,R.string.hint_password);
+                    return;
+                }
                 String confirmPassword = mConfirmPassword.getText().toString().trim();
                 if(!password.equals(confirmPassword)){
                     ToastUtil.error(this,R.string.toast_password_error);

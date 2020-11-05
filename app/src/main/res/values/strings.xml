@@ -12,9 +12,7 @@
     <string name="text_agree" translatable="false">同意</string>
 
     <string name="hint_account" translatable="false">请输入手机号</string>
-    <string name="hint_password" translatable="false">请输入您的密码</string>
-    <string name="hint_password_new" translatable="false">请输入您的新密码</string>
-    <string name="hint_confirm_password_new" translatable="false">请再次输入您的新密码</string>
+    <string name="hint_password_login" translatable="false">请输入您的密码</string>
 
     <string name="toast_permission_error" translatable="false">部分权限未允许，可能影响正常使用</string>
     <string name="toast_password_error" translatable="false">两次密码不一致</string>

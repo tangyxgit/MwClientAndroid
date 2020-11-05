@@ -209,4 +209,7 @@
     <string name="text_agreement" translatable="false">https://yinsi.yzmetax.com/agreement.html</string>
     <string name="text_conceal" translatable="false">https://yinsi.yzmetax.com/conceal.html</string>
     <string name="save_photo_video" translatable="false">保存到相册</string>
+
+    <string name="hint_password" translatable="false">密码6～16位，需大小写字母+数字组合</string>
+    <string name="hint_password_new" translatable="false">请再次确认您的密码</string>
 </resources>

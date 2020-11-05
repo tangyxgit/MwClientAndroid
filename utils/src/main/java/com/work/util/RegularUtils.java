@@ -52,7 +52,7 @@ public class RegularUtils {
     /**
      * 验证密码
      */
-    private static final String REGEX_PASSWORD="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z@_.]{6,18}$";
+    private static final String REGEX_PASSWORD="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,16}$";
     /**
      * 验证IP地址
      */
