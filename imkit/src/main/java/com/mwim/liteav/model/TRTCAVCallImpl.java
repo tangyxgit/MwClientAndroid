@@ -51,7 +51,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
     /**
      * 超时时间，单位秒
      */
-    public static final int TIME_OUT_COUNT = 30;
+    public static final int TIME_OUT_COUNT = 60 * 3;
 
     /**
      * room id 的取值范围
