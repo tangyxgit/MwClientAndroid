@@ -59,6 +59,6 @@
         android:layout_width="46dp"
         android:layout_height="46dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/file_icon"/>
+        android:src="@drawable/icon_default_fill"/>
 
 </LinearLayout>

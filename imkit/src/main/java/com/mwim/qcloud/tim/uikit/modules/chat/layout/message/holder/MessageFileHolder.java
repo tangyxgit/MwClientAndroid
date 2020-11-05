@@ -22,6 +22,7 @@ public class MessageFileHolder extends MessageContentHolder {
     private TextView fileNameText;
     private TextView fileSizeText;
     private TextView fileStatusText;
+    private ImageView fileIconImage;
 
     public MessageFileHolder(View itemView) {
         super(itemView);
@@ -37,7 +38,7 @@ public class MessageFileHolder extends MessageContentHolder {
         fileNameText = rootView.findViewById(R.id.file_name_tv);
         fileSizeText = rootView.findViewById(R.id.file_size_tv);
         fileStatusText = rootView.findViewById(R.id.file_status_tv);
-        ImageView fileIconImage = rootView.findViewById(R.id.file_icon_iv);
+        fileIconImage = rootView.findViewById(R.id.file_icon_iv);
     }
 
     @Override
@@ -48,7 +49,21 @@ public class MessageFileHolder extends MessageContentHolder {
         }
         final V2TIMFileElem fileElem = message.getFileElem();
         final String path = msg.getDataPath();
-        fileNameText.setText(fileElem.getFileName());
+        String fileName = fileElem.getFileName();
+        fileNameText.setText(fileName);
+        if(fileName.endsWith(".doc") || fileName.endsWith(".docx")){
+            fileIconImage.setImageResource(R.drawable.icon_word_fill);
+        }else if(fileName.endsWith(".pdf")){
+            fileIconImage.setImageResource(R.drawable.icon_pdf_fill);
+        }else if(fileName.endsWith(".xls") || fileName.endsWith(".xlsx")){
+            fileIconImage.setImageResource(R.drawable.icon_xsl_fill);
+        }else if(fileName.endsWith("ppt") || fileName.endsWith("pptx")){
+            fileIconImage.setImageResource(R.drawable.icon_ppt_fill);
+        }else if(fileName.endsWith(".zip") || fileName.endsWith(".rar")){
+            fileIconImage.setImageResource(R.drawable.icon_zip_fill);
+        }else{
+            fileIconImage.setImageResource(R.drawable.icon_default_fill);
+        }
         if(msg.isSelf()){
             fileNameText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
             fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
