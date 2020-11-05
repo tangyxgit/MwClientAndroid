@@ -50,6 +50,11 @@ public class GroupMemberManagerFragment extends BaseFragment {
             }
 
             @Override
+            public void forwardItemMember(GroupMemberInfo info) {
+
+            }
+
+            @Override
             public void forwardAddMember(GroupInfo info) {
                 GroupMemberInviteFragment fragment = new GroupMemberInviteFragment();
                 Bundle bundle = new Bundle();

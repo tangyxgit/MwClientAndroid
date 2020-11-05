@@ -2,7 +2,6 @@ package com.mwim.qcloud.tim.uikit.business.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -23,13 +22,11 @@ import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserSettingActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
-import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.client.OpenData;
-import com.work.util.StringUtils;
 
 public class ProfileLayout extends LinearLayout implements View.OnClickListener {
 
@@ -125,7 +122,7 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         //手机号
         String phone = userApi.getMobile();
         mNickname.setText(TextUtils.isEmpty(nickName)?phone:nickName);
-        mSubMessage.setText(StringUtils.hideStr(phone));
+        mSubMessage.setText(phone);
         String contentDefault = getResources().getString(R.string.user_content_default);
         String email = userApi.getEmail();
         String department = userApi.getDepartment();

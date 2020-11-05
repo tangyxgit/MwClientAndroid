@@ -57,7 +57,6 @@ import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.client.OpenData;
 import com.work.util.SLog;
-import com.work.util.StringUtils;
 import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -335,7 +334,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                         GlideEngine.loadImage(mHeadImageView,R.drawable.default_head);
                     }
                     mNickNameView.setText(data.getNickName());
-                    mMobile.setText(StringUtils.hideStr(data.getMobile()));
+                    mMobile.setText(data.getMobile());
                     mDepartment.setContent(data.getDepartName());
                     mPosition.setContent(data.getPosition());
                     mCard.setContent(data.getCard());

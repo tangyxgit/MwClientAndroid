@@ -122,8 +122,10 @@
                     app:name="@string/im_card" />
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
                     android:id="@+id/modify_email"
+                    app:isTop="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
                     app:name="@string/im_email" />
                 <View
                     android:layout_width="match_parent"

@@ -27,18 +27,16 @@ public class StartGroupMemberSelectActivity extends BaseActivity implements Text
 
     private ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
     private ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
-    private EditText mSearch;
-    private GroupInfo groupInfo;
     private ContactListView mContactListView;
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
-        mSearch = findViewById(R.id.search);
+        EditText mSearch = findViewById(R.id.search);
         mSearch.addTextChangedListener(this);
         mMembers.clear();
-        groupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
-        if(groupInfo==null){
+        GroupInfo groupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
+        if(groupInfo ==null){
             finish();
         }
         mContactListView = findViewById(R.id.group_create_member_list);

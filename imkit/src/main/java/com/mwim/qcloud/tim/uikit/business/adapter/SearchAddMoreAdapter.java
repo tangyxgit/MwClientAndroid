@@ -12,7 +12,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.work.api.open.model.client.OpenData;
-import com.work.util.StringUtils;
 
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class SearchAddMoreAdapter extends BaseQuickAdapter<OpenData, BaseViewHol
             mDesc.setVisibility(View.GONE);
         }else{
             mDesc.setVisibility(View.VISIBLE);
-            mDesc.setText(StringUtils.hideStr(item.getMobile()));
+            mDesc.setText(item.getMobile());
         }
     }
 }

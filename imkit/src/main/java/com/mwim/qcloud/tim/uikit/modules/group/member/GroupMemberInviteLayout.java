@@ -5,8 +5,12 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
@@ -23,11 +27,12 @@ import com.work.util.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupMemberInviteLayout extends LinearLayout implements IGroupMemberLayout {
+public class GroupMemberInviteLayout extends LinearLayout implements IGroupMemberLayout, TextWatcher {
 
     private TitleBarLayout mTitleBar;
     private ContactListView mContactListView;
     private List<String> mInviteMembers = new ArrayList<>();
+    private ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
     private Object mParentLayout;
     private GroupInfo mGroupInfo;
 
@@ -76,6 +81,8 @@ public class GroupMemberInviteLayout extends LinearLayout implements IGroupMembe
                 });
             }
         });
+        EditText mSearch = findViewById(R.id.search);
+        mSearch.addTextChangedListener(this);
         mContactListView = findViewById(R.id.group_invite_member_list);
         mContactListView.loadDataSource(ContactListView.DataSource.FRIEND_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
@@ -119,4 +126,33 @@ public class GroupMemberInviteLayout extends LinearLayout implements IGroupMembe
         }
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String text = s.toString();
+        if(memberInfoArrayList.size()==0){
+            memberInfoArrayList.addAll(mContactListView.getGroupData());
+        }
+        if(TextUtils.isEmpty(text)){
+            mContactListView.setDataSource(new ArrayList<>(memberInfoArrayList));
+        }else{
+            ArrayList<ContactItemBean> groupMemberInfos = new ArrayList<>();
+            for (ContactItemBean groupMemberInfo:memberInfoArrayList) {
+                if(groupMemberInfo.getNickname().contains(text)
+                        || groupMemberInfo.getRemark().contains(text)){
+                    groupMemberInfos.add(groupMemberInfo);
+                }
+            }
+            mContactListView.setDataSource(groupMemberInfos);
+        }
+    }
 }

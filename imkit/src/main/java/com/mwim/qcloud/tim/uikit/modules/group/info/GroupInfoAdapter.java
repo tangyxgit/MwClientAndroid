@@ -105,6 +105,15 @@ public class GroupInfoAdapter extends BaseAdapter {
                     }
                 }
             });
+        }else{
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mTailListener != null) {
+                        mTailListener.forwardItemMember(info);
+                    }
+                }
+            });
         }
 
         return view;

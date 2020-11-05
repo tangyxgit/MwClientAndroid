@@ -6,6 +6,8 @@ public interface IGroupMemberRouter {
 
     void forwardListMember(GroupInfo info);
 
+    void forwardItemMember(GroupMemberInfo info);
+
     void forwardAddMember(GroupInfo info);
 
     void forwardDeleteMember(GroupInfo info);

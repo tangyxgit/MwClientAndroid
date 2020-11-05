@@ -246,7 +246,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         } else {
             List<Object> faceList = new ArrayList<>();
             if (TextUtils.isEmpty(conversation.getFaceUrl())) {
-                faceList.add(R.drawable.default_user_icon);
+                faceList.add(R.drawable.default_head);
             } else {
                 faceList.add(conversation.getFaceUrl());
             }

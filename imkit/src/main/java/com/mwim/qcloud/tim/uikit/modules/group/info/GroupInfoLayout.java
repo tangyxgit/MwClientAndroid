@@ -237,8 +237,8 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_group_name));
             bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mGroupNameView.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 20);
-            SelectionActivity.startTextSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 10);
+            SelectionActivity.startTextSelection(getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(final Object text) {
                     mPresenter.modifyGroupName(text.toString());
@@ -263,11 +263,21 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
                 }
             });
         } else if (v.getId() == R.id.group_notice) {
+            if(!mGroupInfo.isOwner()){
+                if(!TextUtils.isEmpty(mGroupNotice.getContent())){
+                    new ConfirmDialog().setContent(mGroupNotice.getContent())
+                            .setHiddenCancel(true)
+                            .setConfirmTextResId(R.string.label_know)
+                            .show(((BaseActivity) getContext()).getSupportFragmentManager(),"notice");
+                }
+                ToastUtil.info(getContext(),"您没有权限修改");
+                return;
+            }
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_group_notice));
             bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mGroupNotice.getContent());
             bundle.putInt(TUIKitConstants.Selection.LIMIT, 200);
-            SelectionActivity.startTextSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
+            SelectionActivity.startTextSelection(getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(final Object text) {
                     mPresenter.modifyGroupNotice(text.toString());
@@ -278,8 +288,8 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name_in_goup));
             bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mNickView.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 20);
-            SelectionActivity.startTextSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 6);
+            SelectionActivity.startTextSelection(getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(final Object text) {
                     mPresenter.modifyMyGroupNickname(text.toString());
@@ -367,7 +377,6 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mRevOptView.setChecked(mGroupInfo.getRevOpt()==V2TIMGroupInfo.V2TIM_GROUP_NOT_RECEIVE_MESSAGE);
         mDissolveBtn.setText(R.string.dissolve);
         if (mGroupInfo.isOwner()) {
-            mGroupNotice.setVisibility(VISIBLE);
 //            mJoinTypeView.setVisibility(VISIBLE);
             if (mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_WORK)
                     || mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_PRIVATE)) {
@@ -375,7 +384,6 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             }
         } else {
             mTransferGroupView.setVisibility(GONE);
-            mGroupNotice.setVisibility(GONE);
 //            mJoinTypeView.setVisibility(GONE);
             mDissolveBtn.setText(R.string.exit_group);
         }
@@ -448,6 +456,11 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mMemberAdminAdapter.setManagerCallBack(new IGroupMemberRouter() {
             @Override
             public void forwardListMember(GroupInfo info) {
+
+            }
+
+            @Override
+            public void forwardItemMember(GroupMemberInfo info) {
 
             }
 

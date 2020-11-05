@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.modules.group.info;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -8,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
+import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberDeleteFragment;
+import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInviteFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberManagerFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
@@ -43,6 +47,14 @@ public class GroupInfoFragment extends BaseFragment {
                 bundle.putSerializable(TUIKitConstants.Group.GROUP_INFO, info);
                 fragment.setArguments(bundle);
                 forward(fragment, false);
+            }
+
+            @Override
+            public void forwardItemMember(GroupMemberInfo info) {
+                ChatInfo chatInfo = new ChatInfo();
+                chatInfo.setId(info.getAccount());
+                chatInfo.setChatName(info.getNickName());
+                startActivity(new Intent(getContext(), FriendProfileActivity.class).putExtra(TUIKitConstants.ProfileType.CONTENT,chatInfo));
             }
 
             @Override
