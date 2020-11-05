@@ -106,7 +106,11 @@ public class SplashActivity extends BaseActivity {
         }else{
             ToastUtil.warning(this,resp.getMessage());
             if(((BaseResp) resp).getCode() != 501){
-                new ConfirmDialog().setContent(resp.getMessage()).setOnConfirmListener(view -> finish()).setOnCancelListener(view -> finish()).show(getSupportFragmentManager(),"error_service");
+                String message = resp.getMessage();
+                if(TextUtils.isEmpty(message)){
+                    message = "服务器繁忙。";
+                }
+                new ConfirmDialog().setContent(message).setOnConfirmListener(view -> finish()).setOnCancelListener(view -> finish()).show(getSupportFragmentManager(),"error_service");
             }
         }
     }

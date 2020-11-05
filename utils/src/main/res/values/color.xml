@@ -26,7 +26,7 @@
     <color name="transparent">#00000000</color>
     <color name="transparent1">#10000000</color>
     <color name="transparent_d">#d0000000</color>
-    <color name="white_50">#d9ffffff</color>
+    <color name="white_50">#ddffffff</color>
     <!-- 主颜色 -->
     <color name="color_555555">#555555</color>
     <color name="color_666666">#666666</color>
@@ -140,5 +140,7 @@
     <color name="color_ff2d3034">#ff2d3034</color>
     <color name="color_f5f6fa">#f5f6fa</color>
     <color name="color_dddddd">#dddddd</color>
-    <color name="color_6e6e6e">#6e6e6e</color>
+    <color name="color_6e6e6e">#ff6e6e6e</color>
+    <color name="color_2c2c2c">#2c2c2c</color>
+    <color name="color_f9faf9">#f9faf9</color>
 </resources>

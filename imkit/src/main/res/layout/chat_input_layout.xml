@@ -48,7 +48,7 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/voice_btn_selector"
-            android:text="按住说话"
+            android:text="按住发送语音"
             android:textColor="@color/text_color_gray"
             android:visibility="gone" />
 
