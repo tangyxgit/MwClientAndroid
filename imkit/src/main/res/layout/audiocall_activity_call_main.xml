@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:overScrollMode="never"
         app:layout_constraintTop_toTopOf="@id/top_guide_line" />
     <androidx.constraintlayout.widget.Group
         android:id="@+id/group_inviting"
@@ -79,8 +80,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_mute"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:src="@drawable/bg_mute_mic" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mute_name"
@@ -106,8 +107,8 @@
 
         <ImageView
             android:id="@+id/img_hangup"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@drawable/ic_hangup" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/hangup_name"
@@ -115,6 +116,7 @@
             android:textSize="@dimen/sp_12"
             android:layout_marginTop="@dimen/dp_5"
             android:text="@string/text_hangup_name"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -132,8 +134,8 @@
 
         <ImageView
             android:id="@+id/img_handsfree"
-            android:layout_width="40dp"
-            android:layout_height="@dimen/dp_40"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:src="@drawable/bg_handsfree" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/handsfree_name"
@@ -158,8 +160,8 @@
 
         <ImageView
             android:id="@+id/img_dialing"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@drawable/ic_dialing" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/dialing_name"
@@ -167,6 +169,7 @@
             android:textSize="@dimen/sp_12"
             android:layout_marginTop="@dimen/dp_5"
             android:text="@string/text_dialing_name"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

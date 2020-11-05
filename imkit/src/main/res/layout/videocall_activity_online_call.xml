@@ -117,8 +117,8 @@
         app:layout_constraintStart_toStartOf="parent">
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_mute"
-            android:layout_width="@dimen/dp_40"
-            android:layout_height="@dimen/dp_40"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:src="@drawable/bg_mute_mic" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/mute_name"
@@ -142,8 +142,8 @@
         app:layout_constraintStart_toEndOf="@+id/ll_mute">
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_hangup"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@drawable/ic_hangup" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/hangup_name"
@@ -151,6 +151,7 @@
             android:textSize="@dimen/sp_12"
             android:layout_marginTop="@dimen/dp_5"
             android:text="@string/text_hangup_name"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -168,8 +169,8 @@
 
         <ImageView
             android:id="@+id/img_handsfree"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:src="@drawable/icon_change_camera_h" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/change_camera"
@@ -194,14 +195,15 @@
 
         <ImageView
             android:id="@+id/img_dialing"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@drawable/ic_dialing" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/dialing_name"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_12"
             android:layout_marginTop="@dimen/dp_5"
+            android:visibility="invisible"
             android:text="@string/text_dialing_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
