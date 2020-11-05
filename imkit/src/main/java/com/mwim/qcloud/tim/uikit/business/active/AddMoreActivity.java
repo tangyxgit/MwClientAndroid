@@ -1,22 +1,10 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 
-import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
-import com.mwim.qcloud.tim.uikit.utils.SoftKeyBoardUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.tencent.imsdk.BaseConstants;
-import com.tencent.imsdk.v2.V2TIMCallback;
-import com.tencent.imsdk.v2.V2TIMFriendAddApplication;
-import com.tencent.imsdk.v2.V2TIMFriendOperationResult;
-import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.R;
-import com.work.util.SLog;
-import com.work.util.ToastUtil;
 
 public class AddMoreActivity extends IMBaseActivity {
 

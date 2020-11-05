@@ -68,8 +68,9 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
         Button mAgree = helper.getView(R.id.agree);
         switch (item.getType()) {
             case V2TIMFriendApplication.V2TIM_FRIEND_APPLICATION_COME_IN:
-                mAgree.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.background_color));
+                mAgree.setBackgroundResource(R.drawable.friend_border_2);
                 mAgree.setText(R.string.request_agree);
+                mAgree.setTextColor(Color.WHITE);
                 mAgree.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -80,10 +81,12 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
                 break;
             case V2TIMFriendApplication.V2TIM_FRIEND_APPLICATION_SEND_OUT:
                 mAgree.setBackgroundColor(Color.TRANSPARENT);
+                mAgree.setTextColor(ContextCompat.getColor(getContext(),R.color.defaultColorAccent));
                 mAgree.setText(R.string.request_waiting);
                 break;
             case V2TIMFriendApplication.V2TIM_FRIEND_APPLICATION_BOTH:
                 mAgree.setBackgroundColor(Color.TRANSPARENT);
+                mAgree.setTextColor(ContextCompat.getColor(getContext(),R.color.defaultColorAccent));
                 mAgree.setText(R.string.request_accepted);
                 break;
         }
