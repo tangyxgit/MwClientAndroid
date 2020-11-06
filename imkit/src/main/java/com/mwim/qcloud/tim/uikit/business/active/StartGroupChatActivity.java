@@ -1,7 +1,11 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
@@ -26,15 +30,17 @@ import com.work.util.ToastUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class StartGroupChatActivity extends IMBaseActivity {
+public class StartGroupChatActivity extends IMBaseActivity implements TextWatcher {
 
     private LineControllerView mJoinType;
     private ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
+    private ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
     private int mGroupType = -1;
     private int mJoinTypeIndex = 2;
     private ArrayList<String> mJoinTypes = new ArrayList<>();
     private ArrayList<String> mGroupTypeValue = new ArrayList<>();
     private boolean mCreating;
+    private ContactListView mContactListView;
 
     @Override
     public void onInitView() throws Exception {
@@ -59,8 +65,10 @@ public class StartGroupChatActivity extends IMBaseActivity {
         mJoinType.setCanNav(true);
         mJoinType.setContent(mJoinTypes.get(mJoinTypeIndex));
 
+        EditText mSearch = findViewById(R.id.search);
+        mSearch.addTextChangedListener(this);
 
-        ContactListView mContactListView = findViewById(R.id.group_create_member_list);
+        mContactListView = findViewById(R.id.group_create_member_list);
         mContactListView.loadDataSource(ContactListView.DataSource.FRIEND_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
             @Override
@@ -193,4 +201,33 @@ public class StartGroupChatActivity extends IMBaseActivity {
         });
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String text = s.toString();
+        if(memberInfoArrayList.size()==0){
+            memberInfoArrayList.addAll(mContactListView.getGroupData());
+        }
+        if(TextUtils.isEmpty(text)){
+            mContactListView.setDataSource(new ArrayList<>(memberInfoArrayList));
+        }else{
+            ArrayList<ContactItemBean> groupMemberInfos = new ArrayList<>();
+            for (ContactItemBean groupMemberInfo:memberInfoArrayList) {
+                if(groupMemberInfo.getNickname().contains(text)
+                        || groupMemberInfo.getRemark().contains(text)){
+                    groupMemberInfos.add(groupMemberInfo);
+                }
+            }
+            mContactListView.setDataSource(groupMemberInfos);
+        }
+    }
 }

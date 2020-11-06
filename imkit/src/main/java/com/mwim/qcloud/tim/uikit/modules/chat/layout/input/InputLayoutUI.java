@@ -168,19 +168,6 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             mInputMoreActionList.add(action);
         }
 
-        if (mEnableAudioCall) {
-            action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.icon_dial_fill);
-            action.setTitleId(R.string.audio_call);
-            action.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startAudioCall();
-                }
-            });
-            mInputMoreActionList.add(action);
-        }
-
         if (mEnableVideoCall) {
             action = new InputMoreActionUnit();
             action.setIconResId(R.drawable.icon_chat_history_fill);
@@ -189,6 +176,19 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
                 @Override
                 public void onClick(View v) {
                     startVideoCall();
+                }
+            });
+            mInputMoreActionList.add(action);
+        }
+
+        if (mEnableAudioCall) {
+            action = new InputMoreActionUnit();
+            action.setIconResId(R.drawable.icon_dial_fill);
+            action.setTitleId(R.string.audio_call);
+            action.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startAudioCall();
                 }
             });
             mInputMoreActionList.add(action);
