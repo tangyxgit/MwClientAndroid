@@ -30,6 +30,7 @@ public class TRTCAudioCallAdapter extends BaseQuickAdapter<UserModel, BaseViewHo
 
     private boolean isC2C;
     private int avatarSize;
+    private String sponsorUserId;
 
     public TRTCAudioCallAdapter(@Nullable List<UserModel> data) {
         super(R.layout.adapter_trtc_audio_call,data);
@@ -59,7 +60,9 @@ public class TRTCAudioCallAdapter extends BaseQuickAdapter<UserModel, BaseViewHo
         GlideEngine.loadCornerAvatar(mAvatar, item.userAvatar);
         helper.setText(R.id.name,item.userName);
         View mLoadingFg = helper.getView(R.id.fl_bg);
-        if(item.loading && !item.userId.equals(UserApi.instance().getUserId())){
+        if(item.loading
+                && !item.userId.equals(UserApi.instance().getUserId())
+                && !item.userId.equals(sponsorUserId)){
             mLoadingText.setVisibility(View.VISIBLE);
             mLoadingView.setVisibility(View.VISIBLE);
             mLoadingFg.setVisibility(View.VISIBLE);
@@ -91,5 +94,9 @@ public class TRTCAudioCallAdapter extends BaseQuickAdapter<UserModel, BaseViewHo
 
     public void setC2C(boolean c2C) {
         isC2C = c2C;
+    }
+
+    public void setSponsorUserId(String sponsorUserId) {
+        this.sponsorUserId = sponsorUserId;
     }
 }

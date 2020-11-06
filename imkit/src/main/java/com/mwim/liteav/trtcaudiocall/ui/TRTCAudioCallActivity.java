@@ -33,7 +33,6 @@ import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
-import com.mwim.liteav.SelectContactActivity;
 import com.mwim.liteav.login.ProfileManager;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
@@ -79,6 +78,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     private TextView mHandsfreeName;
     private LinearLayout mDialingLl;
 //    private TRTCAudioLayoutManager mLayoutManagerTrtc;
+    private RecyclerView mLayoutManagerTrtc;
     private TRTCAudioCallAdapter mTrtcAdapter;
     private Group mInvitingGroup;
     private LinearLayout mImgContainerLl;
@@ -314,7 +314,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
      * @param models
      */
     public static void startCallSomePeople(Context context, List<UserModel> models, String groupId) {
-        SLog.i("startCallSomePeople");
+        SLog.i("startCallSomePeople:"+groupId);
         ((TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(context)).setWaitingLastActivityFinished(false);
         Intent starter = new Intent(context, TRTCAudioCallActivity.class);
         starter.putExtra(PARAM_GROUP_ID, groupId);
@@ -373,6 +373,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         mRingtone = RingtoneManager.getRingtone(this,
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
         mGroupId = getIntent().getStringExtra(PARAM_GROUP_ID);
+        mCallType = getIntent().getIntExtra(PARAM_TYPE, TYPE_BEING_CALLED);
         initView();
         initData();
         initListener();
@@ -448,7 +449,6 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         mSelfModel.userId = UserApi.instance().getUserId();
         mSelfModel.userName = UserApi.instance().getNickName();
         mSelfModel.userAvatar = UserApi.instance().getUserIcon();
-        mCallType = intent.getIntExtra(PARAM_TYPE, TYPE_BEING_CALLED);
         if (mCallType == TYPE_BEING_CALLED) {
             // 作为被叫
             mSponsorUserModel = (UserModel) intent.getSerializableExtra(PARAM_BEINGCALL_USER);
@@ -456,6 +456,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             if (params != null) {
                 mOtherInvitingUserModelList = params.mUserModels;
             }
+            mTrtcAdapter.setSponsorUserId(mSponsorUserModel.userId);
             showWaitingResponseView();
             mVibrator.vibrate(new long[]{0, 1000, 1000}, 0);
             mRingtone.play();
@@ -491,7 +492,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         mHandsfreeName = findViewById(R.id.handsfree_name);
         ImageView mDialingImg = (ImageView) findViewById(R.id.img_dialing);
         mDialingLl = findViewById(R.id.ll_dialing);
-        RecyclerView mLayoutManagerTrtc = findViewById(R.id.trtc_layout_manager);
+        mLayoutManagerTrtc = findViewById(R.id.trtc_layout_manager);
         mLayoutManagerTrtc.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).sizeResId(R.dimen.dp_10).colorResId(R.color.transparent).build());
         mLayoutManagerTrtc.setLayoutManager(new GridLayoutManager(this,TextUtils.isEmpty(mGroupId)?1:3));
         mTrtcAdapter = new TRTCAudioCallAdapter(null);
@@ -535,7 +536,16 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
                 mRingtone.stop();
                 //1.分配自己的画面
 //                mLayoutManagerTrtc.setMySelfUserId(mSelfModel.userId);
-//                addUserToManager(mSelfModel);
+                if(mOtherInvitingUserModelList!=null && mOtherInvitingUserModelList.size()>0){//不是单聊，2个人以上
+                    mLayoutManagerTrtc.setLayoutManager(new GridLayoutManager(TRTCAudioCallActivity.this,3));
+                    mTrtcAdapter = new TRTCAudioCallAdapter(null);
+                    if(mSponsorUserModel!=null){
+                        mTrtcAdapter.setSponsorUserId(mSponsorUserModel.userId);
+                    }
+                    mLayoutManagerTrtc.setAdapter(mTrtcAdapter);
+                    addUserToManager(mSelfModel);
+                }
+
                 //2.接听电话
                 mITRTCAVCall.accept();
                 showCallingView();
@@ -551,7 +561,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     public void showInvitingView() {
         //1. 展示自己的界面
 //        mTrtcAdapter.setMySelfUserId(mSelfModel.userId);
-        if(!TextUtils.isEmpty(mGroupId)){//说明是单聊
+        if(!TextUtils.isEmpty(mGroupId)){//说明是群聊
             addUserToManager(mSelfModel);
         }
 
