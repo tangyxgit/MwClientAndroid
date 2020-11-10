@@ -118,7 +118,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
         mInputMoreActionList.clear();
         InputMoreActionUnit action = new InputMoreActionUnit();
         if (!mSendPhotoDisable) {
-            action.setIconResId(R.drawable.icon_photo_fill);
+            action.setIconResId(R.drawable.img_photo);
             action.setTitleId(R.string.pic);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -131,7 +131,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (!mCaptureDisable) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.icon_camera_fill);
+            action.setIconResId(R.drawable.img_camera);
             action.setTitleId(R.string.photo);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -144,7 +144,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (!mVideoRecordDisable) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.icon_document_fill);
+            action.setIconResId(R.drawable.img_video);
             action.setTitleId(R.string.video);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -157,7 +157,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (!mSendFileDisable) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.icon_folder_fill);
+            action.setIconResId(R.drawable.img_document);
             action.setTitleId(R.string.file);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -170,7 +170,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (mEnableVideoCall) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.icon_chat_history_fill);
+            action.setIconResId(R.drawable.img_video_call);
             action.setTitleId(R.string.video_call);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -183,7 +183,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
         if (mEnableAudioCall) {
             action = new InputMoreActionUnit();
-            action.setIconResId(R.drawable.icon_dial_fill);
+            action.setIconResId(R.drawable.img_phone_call);
             action.setTitleId(R.string.audio_call);
             action.setOnClickListener(new OnClickListener() {
                 @Override
@@ -193,6 +193,16 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             });
             mInputMoreActionList.add(action);
         }
+        action = new InputMoreActionUnit();
+        action.setIconResId(R.drawable.img_phone_call);
+        action.setTitleId(R.string.self_location);
+        action.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLocation();
+            }
+        });
+        mInputMoreActionList.add(action);
         mInputMoreActionList.addAll(mInputMoreCustomActionList);
 
     }
@@ -230,6 +240,8 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     protected abstract void startAudioCall();
 
     protected abstract void startVideoCall();
+
+    protected abstract void startLocation();
 
     @Override
     public void disableAudioInput(boolean disable) {

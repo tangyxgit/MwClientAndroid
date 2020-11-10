@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
+import com.mwim.qcloud.tim.uikit.business.active.ListStopMapActivity;
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
@@ -40,8 +41,8 @@ import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -262,7 +263,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 SLog.i("errCode: " + errCode);
-                ToastUtil.toastLongMessage(errMsg);
+                ToastUtil.error(getContext(),errMsg);
             }
         });
         mInputMoreFragment.startActivityForResult(intent, InputMoreFragment.REQUEST_CODE_PHOTO);
@@ -351,7 +352,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                ToastUtil.toastLongMessage(errMsg);
+                ToastUtil.error(getContext(),errMsg);
             }
         });
         mInputMoreFragment.startActivityForResult(intent, InputMoreFragment.REQUEST_CODE_FILE);
@@ -394,6 +395,22 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         } else {
             SelectContactActivity.start(mActivity.getApplicationContext(), mChatLayout.getChatInfo().getId(), ITRTCAVCall.TYPE_VIDEO_CALL);
         }
+    }
+
+    @Override
+    protected void startLocation() {
+        ListStopMapActivity.mCallBack = new IUIKitCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+
+            }
+        };
+        getContext().startActivity(new Intent(getContext(),ListStopMapActivity.class));
     }
 
     public void setChatInputHandler(ChatInputHandler handler) {

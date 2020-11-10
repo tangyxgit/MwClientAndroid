@@ -72,8 +72,8 @@ public class MessageFileHolder extends MessageContentHolder {
             fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
         }else{
             fileNameText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.black_font_color));
-            fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.black_font_color));
-            fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.black_font_color));
+            fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.color_999999));
+            fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.color_999999));
         }
         String size = FileUtil.FormetFileSize(fileElem.getFileSize());
         fileSizeText.setText(size);

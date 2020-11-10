@@ -33,12 +33,13 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:textSize="@dimen/sp_14"
+            android:gravity="center_vertical"
             android:background="@drawable/msg_editor_border"
             android:maxHeight="120dp"
             android:minHeight="30dp"
-            android:hint="发消息..."
-            android:textCursorDrawable="@drawable/my_cursor"
-            android:padding="5dp" />
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:hint="发消息..."/>
 
         <Button
             android:id="@+id/chat_voice_input"

@@ -55,7 +55,6 @@ public class ActionsGridViewAdapter extends BaseAdapter {
         if (action.getIconResId() > 0) {
             ImageView imageView = itemlayout.findViewById(R.id.imageView);
             imageView.setImageResource(action.getIconResId());
-            imageView.setColorFilter(ContextCompat.getColor(context,R.color.color_6e6e6e), PorterDuff.Mode.SRC_ATOP);
         }
         if (action.getTitleId() > 0) {
             ((TextView) itemlayout.findViewById(R.id.textView)).setText(context.getString(action.getTitleId()));
