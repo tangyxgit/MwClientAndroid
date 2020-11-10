@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -407,15 +408,15 @@ public class SelectContactActivity extends BaseActivity {
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            private Button mContactCb;
+            private CheckBox mContactCb;
             private ImageView mAvatarImg;
             private TextView mUserNameTv;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                mContactCb = (Button) itemView.findViewById(R.id.cb_contact);
-                mAvatarImg = (ImageView) itemView.findViewById(R.id.img_avatar);
-                mUserNameTv = (TextView) itemView.findViewById(R.id.tv_user_name);
+                mContactCb = itemView.findViewById(R.id.cb_contact);
+                mAvatarImg = itemView.findViewById(R.id.img_avatar);
+                mUserNameTv = itemView.findViewById(R.id.tv_user_name);
             }
 
             public void bind(final SelectContactActivity.ContactEntity model,
@@ -425,13 +426,8 @@ public class SelectContactActivity extends BaseActivity {
                 }else{
                     GlideEngine.loadCornerAvatar(mAvatarImg, model.mUserModel.userAvatar);
                 }
-
                 mUserNameTv.setText(model.mUserModel.userName);
-                if (model.isSelected) {
-                    mContactCb.setActivated(true);
-                } else {
-                    mContactCb.setActivated(false);
-                }
+                mContactCb.setChecked(model.isSelected);
                 mContactCb.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -83,10 +83,13 @@ dependencies {
     implementation "com.tencent.wemeet:sdk-interface:0.0.44"
 //    implementation "com.tencent.wemeet:sdk-interface:0.0.25"
     //umeng统计
-    implementation "com.umeng.umsdk:common:9.1.0"
+    implementation "com.umeng.umsdk:common:9.3.0"
     implementation "com.umeng.umsdk:asms:1.1.3" // asms包依赖(必选)
-    implementation "com.umeng.umsdk:crash:0.0.4" // native crash包依赖(必选)
-
+    implementation "com.umeng.umsdk:crash:0.0.5" // native crash包依赖(必选)
+    //地图相关
+    implementation 'com.amap.api:3dmap:6.9.2'
+    implementation 'com.amap.api:location:4.7.2'
+    implementation 'com.amap.api:search:7.3.0'
     api project(path: ':base')
     implementation project(path: ':update_app')
     // vivo push sdk

@@ -42,4 +42,6 @@
     <dimen name="text_size_middle">14sp</dimen>
     <dimen name="small_image_size">30dp</dimen>
     <dimen name="small_image_left_margin">5dp</dimen>
+
+    <dimen name="search_editor_height">35dp</dimen>
 </resources>

@@ -6,13 +6,12 @@ import android.text.TextUtils;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
+import com.work.util.SLog;
 
 import java.util.UUID;
 
 
 public class MessageInfo {
-    private final String TAG = "MessageInfo";
 
     public static final int MSG_TYPE_MIME = 0x1;
 
@@ -364,7 +363,7 @@ public class MessageInfo {
         V2TIMManager.getMessageManager().deleteMessageFromLocalStorage(timMessage, new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
-                TUIKitLog.e(TAG, "deleteMessageFromLocalStorage error code = " + code + ", desc = " + desc);
+                SLog.e( "deleteMessageFromLocalStorage error code = " + code + ", desc = " + desc);
             }
 
             @Override

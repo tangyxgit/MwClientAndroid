@@ -188,6 +188,7 @@
     <string name="search_call_hint" translatable="false">输入群成员名称</string>
     <string name="video_call" translatable="false">视频通话</string>
     <string name="audio_call" translatable="false">语音通话</string>
+    <string name="self_location" translatable="false">位置</string>
 
     <string name="label_confirm" translatable="false">确认</string>
     <string name="dialog_logout" translatable="false">确认退出账号吗？</string>
@@ -212,4 +213,9 @@
 
     <string name="hint_password" translatable="false">密码6～16位，需大小写字母+数字组合</string>
     <string name="hint_password_new" translatable="false">请再次确认您的密码</string>
+    <string name="hint_stop_search" translatable="false">请输入位置信息</string>
+
+    <string name="text_gps_permission_error" translatable="false">定位权限被禁用,请授予应用定位权限</string>
+    <string name="toast_fence_add_location_error" translatable="false">获取坐标错误，请重新选址。</string>
+    <string name="label_go_setting" translatable="false">去设置</string>
 </resources>

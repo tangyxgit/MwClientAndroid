@@ -54,4 +54,29 @@
         <item name="android:textSize">@dimen/sp_16</item>
         <item name="android:background">@drawable/shape_border_editor</item>
     </style>
+
+    <!--搜索框样式-->
+    <style name="SearchEditorTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/search_editor_height</item>
+        <item name="android:background">@drawable/shape_bg_white_radius_8</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:paddingLeft">@dimen/dp_10</item>
+        <item name="android:paddingRight">@dimen/dp_10</item>
+        <item name="android:imeOptions">actionSearch</item>
+        <item name="android:lines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColorHint">@color/color_cccccc</item>
+        <item name="android:drawableLeft">@drawable/ic_search</item>
+    </style>
+    <!-- item高度样式   -->
+    <style name="CellStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+    </style>
 </resources>

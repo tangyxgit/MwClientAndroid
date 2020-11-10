@@ -27,7 +27,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="108dp"
                 android:layout_height="108dp"
-                android:src="@mipmap/login_logo" />
+                android:src="@drawable/login_logo" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"

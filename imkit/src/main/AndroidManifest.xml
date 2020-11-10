@@ -95,7 +95,8 @@
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.NewFriendActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.GroupListActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.StartC2CChatActivity"/>
-        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".business.active.UserInfoActivity"/>
         <activity android:name=".business.active.UserSettingActivity"/>
         <activity android:name=".business.active.UpdatePwdActivity"/>
@@ -107,6 +108,7 @@
         <activity android:name=".business.active.X5FileOpenActivity"/>
         <activity android:name=".modules.group.info.StartGroupMemberSelectActivity"/>
         <activity android:name=".business.active.AboutYzActivity"/>
+        <activity android:name=".business.active.ListStopMapActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"
