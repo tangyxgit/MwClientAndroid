@@ -1,5 +1,6 @@
 package com.mwim.liteav.trtcaudiocall.ui.audiolayout;
 
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ public class TRTCAudioCallAdapter extends BaseQuickAdapter<UserModel, BaseViewHo
         FrameLayout mAvatarLayout = helper.getView(R.id.avatar_layout);
         View mLoadingView = helper.getView(R.id.loading_view);
         TextView mLoadingText = helper.getView(R.id.loading_text);
+        TextView mName = helper.getView(R.id.name);
+        mName.setText(item.userName);
         if(isC2C){//是单聊
             if(avatarSize==0){
                 avatarSize = SizeUtils.dp2px(getContext(),160);
@@ -53,12 +56,12 @@ public class TRTCAudioCallAdapter extends BaseQuickAdapter<UserModel, BaseViewHo
                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.gravity = Gravity.CENTER;
                 mLoadingView.setLayoutParams(layoutParams);
+                mName.setTextSize(TypedValue.COMPLEX_UNIT_SP,24);
             }
         }
 
         ImageView mAvatar = helper.getView(R.id.avatar);
         GlideEngine.loadCornerAvatar(mAvatar, item.userAvatar);
-        helper.setText(R.id.name,item.userName);
         View mLoadingFg = helper.getView(R.id.fl_bg);
         if(item.loading
                 && !item.userId.equals(UserApi.instance().getUserId())
