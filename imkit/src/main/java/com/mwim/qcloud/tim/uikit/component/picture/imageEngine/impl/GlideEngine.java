@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.mwim.qcloud.tim.uikit.TUIKit;
@@ -51,13 +52,6 @@ public class GlideEngine implements ImageEngine {
                 .into(imageView);
     }
 
-    public static void loadProfileImage(ImageView imageView, String filePath, RequestListener listener) {
-        Glide.with(TUIKit.getAppContext())
-                .load(filePath)
-                .listener(listener)
-                .apply(new RequestOptions().error(R.drawable.default_user_icon))
-                .into(imageView);
-    }
 
     public static void clear(ImageView imageView) {
         Glide.with(TUIKit.getAppContext()).clear(imageView);
@@ -90,6 +84,22 @@ public class GlideEngine implements ImageEngine {
         Glide.with(TUIKit.getAppContext())
                 .load(uri)
                 .apply(new RequestOptions().error(R.drawable.default_head))
+                .into(imageView);
+    }
+
+    public static void loadImage(ImageView imageView, Object uri,int radius,boolean leftTop, boolean rightTop, boolean leftBottom, boolean rightBottom) {
+        if (uri == null) {
+            return;
+        }
+        clear(imageView);
+        CornerTransform transform = new CornerTransform(TUIKit.getAppContext(), radius);
+        transform.setExceptCorner(leftTop,rightTop,leftBottom,rightBottom);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .transform(transform);
+        Glide.with(TUIKit.getAppContext())
+                .load(uri)
+                .apply(options)
                 .into(imageView);
     }
 

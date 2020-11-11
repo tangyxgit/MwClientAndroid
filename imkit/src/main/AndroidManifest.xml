@@ -15,6 +15,12 @@
             android:label="dexopt"
             android:process=":dexopt" >
         </service>
+        <!-- 地图 -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="ab887fbd22354b21ed5581fb8d859bb6"/>
+
+        <service android:name="com.amap.api.location.APSService" />
 
         <activity
             android:name="com.mwim.qcloud.tim.uikit.component.video.CameraActivity"
@@ -108,7 +114,9 @@
         <activity android:name=".business.active.X5FileOpenActivity"/>
         <activity android:name=".modules.group.info.StartGroupMemberSelectActivity"/>
         <activity android:name=".business.active.AboutYzActivity"/>
-        <activity android:name=".business.active.ListStopMapActivity"/>
+        <activity android:name=".business.active.ListStopMapActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".business.active.MapLocationActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

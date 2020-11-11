@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +47,7 @@ import com.mwim.qcloud.tim.uikit.business.helper.AMapManager;
 import com.work.util.KeyboardUtils;
 import com.work.util.ScreenUtils;
 import com.work.util.ToastUtil;
+import com.workstation.permission.PermissionsResultAction;
 
 import java.util.List;
 
@@ -61,7 +63,9 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
         TextWatcher,
         BaseQuickAdapter.OnItemClickListener,
         Inputtips.InputtipsListener {
-
+    private static String[] PERMISSIONS = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,};
     private final String GPS_ACTION = "android.location.PROVIDERS_CHANGED";
     private ListStopMapAdapter mAdapter;
     private View mLoadingLayout;
@@ -75,6 +79,7 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
     private LinearLayout mDataLayout;
 
     private GPSReceiver mGpsReceiver;
+    private boolean isFirstLocation = true;
 
     @Override
     public void onInitView() throws Exception {
@@ -86,7 +91,6 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.background_color).build());
-
     }
 
     @Override
@@ -106,9 +110,29 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
 
         mapManager = AMapManager.getInstance(this);
         mapManager.addOnAmapLocationChangeListener(this);
+        if(!hasPermission(PERMISSIONS)){
+            onPermissionChecker(PERMISSIONS, new PermissionsResultAction() {
+                @Override
+                public void onGranted() {
+                    onStart();
+                }
 
+                @Override
+                public void onDenied(String permission) {
+                    onStart();
+                }
+            });
+        }
         autoRecyclerView(false);
         setTitleName(R.string.self_location);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(hasPermission(PERMISSIONS)){
+            mapManager.onStart();
+        }
     }
 
     private void autoRecyclerView(final boolean focus){
@@ -131,12 +155,6 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mapManager.onStart();
-    }
-
-    @Override
     public int onCustomContentId() {
         return R.layout.dialog_liststopmap;
     }
@@ -152,12 +170,10 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
         super.onRightClickListener(view);
         PoiItem poiItem = mAdapter.getSelectData();
         if(poiItem!=null){
-//            OpenStop openStop = new OpenStop();
-//            openStop.setStopName(poiItem.getTitle());
-//            openStop.setLat(poiItem.getLatLonPoint().getLatitude());
-//            openStop.setLng(poiItem.getLatLonPoint().getLongitude());
-//            setResult(0,new Intent().putExtra(ListStopMapActivity.class.getSimpleName(),openStop));
-//            finish();
+            if(mCallBack!=null){
+                mCallBack.onSuccess(poiItem);
+            }
+            finish();
         }
     }
 
@@ -177,10 +193,15 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
             new ConfirmDialog().setContent(R.string.text_gps_permission_error).setConfirmTextResId(R.string.label_go_setting).setOnConfirmListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    intent.setData(Uri.parse("package:" + ListStopMapActivity.this.getPackageName()));
-                    if (!isIntentAvailable(intent)) return;
-                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    if(!isOpenGps(ListStopMapActivity.this)){
+                        Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, 0);
+                    }else{
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + ListStopMapActivity.this.getPackageName()));
+                        if (!isIntentAvailable(intent)) return;
+                        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    }
                 }
             }).show(getSupportFragmentManager(), "location");
             mGpsReceiver = new GPSReceiver();
@@ -204,8 +225,6 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
             options.draggable(true);
             options.position(new LatLng(lat,lng));
             mMark = mAMap.addMarker(options);
-            mAMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMark.getPosition(), 12), 400, this);
-
             loadPoiData();
         }
     }
@@ -241,9 +260,18 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
 
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
-//        mStopDialog.setNewData(poiResult.getPois());
         mAdapter.setNewData(poiResult.getPois());
         mLoadingLayout.setVisibility(View.GONE);
+        PoiItem poiItem = mAdapter.getSelectData();
+        if(mMark!=null){
+            mMark.setPosition(new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude()));
+            if(isFirstLocation){
+                isFirstLocation = false;
+                mAMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMark.getPosition(),14), 400, this);
+            }else{
+                mAMap.animateCamera(CameraUpdateFactory.newLatLng(mMark.getPosition()), 400, this);
+            }
+        }
     }
 
     @Override
@@ -259,6 +287,10 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
     @Override
     public void onFinish() {
         super.onFinish();
+        positionByPixels();
+    }
+
+    private void positionByPixels(){
         Projection projection = mAMap.getProjection();
         Point point = projection.toScreenLocation(mMark.getPosition());
         if (point.x > 0 && point.y > 0) {
@@ -268,6 +300,7 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
             mMark.setPositionByPixels(point.x, point.y);
         }
     }
+
     public FrameLayout.LayoutParams getMapParams(){
         return new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (ScreenUtils.getScreenHeight(this) * 0.6));
     }
@@ -291,7 +324,7 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
     public void afterTextChanged(Editable editable) {
         String keyword = editable.toString().trim();
         if(TextUtils.isEmpty(keyword)){
-            mAdapter.clear();
+            mFenceAdapter.clear();
         }else{
             InputtipsQuery inputtipsQuery = new InputtipsQuery(keyword,"");
             Inputtips inputtips = new Inputtips(this,inputtipsQuery);
@@ -309,6 +342,7 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
                 if(point!=null){
                     mAdapter.clear();
                     mMark.setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
+                    mAdapter.setSelectData(null);
                     KeyboardUtils.hideSoftInput(mSearch);
                     loadPoiData();
                 }else{
@@ -318,7 +352,13 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
                 ToastUtil.error(this,R.string.toast_fence_add_location_error);
             }
         }else{
-            mAdapter.setSelectData(mAdapter.getItem(position));
+            PoiItem poiItem = mAdapter.getItem(position);
+            if(poiItem!=null){
+                mAdapter.setSelectData(poiItem);
+                if(mMark!=null){
+                    mMark.setPosition(new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude()));
+                }
+            }
         }
     }
 
@@ -348,9 +388,6 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
         LocationManager locationManager
                 = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         // 通过GPS卫星定位，定位级别可以精确到街
-        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        // 通过WLAN或移动网络(3G/2G)确定的位置
-        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        return gps || network;
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 }

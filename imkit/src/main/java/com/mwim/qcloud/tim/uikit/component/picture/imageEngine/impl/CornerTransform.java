@@ -102,7 +102,7 @@ public class CornerTransform implements Transformation<Bitmap> {
             canvas.drawRect(0, 0, radius, radius, paint);
         }
         if (exceptRightTop) {//右上角不为圆角
-            canvas.drawRect(canvas.getWidth() - radius, 0, radius, radius, paint);
+            canvas.drawRect(canvas.getWidth(), 0, radius, radius, paint);
         }
 
         if (exceptLeftBottom) {//左下角不为圆角

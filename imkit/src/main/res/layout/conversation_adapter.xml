@@ -30,7 +30,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="@color/black_font_color"
-                android:textSize="16.3sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/conversation_time"
@@ -39,13 +39,13 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:textColor="@color/conversation_time_color"
-                android:textSize="11.14sp" />
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/conversation_at_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="15.54dp"
                 android:layout_above="@+id/view_line"
@@ -73,7 +73,7 @@
                 android:id="@+id/conversation_unread"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_above="@+id/view_line"
                 android:layout_marginBottom="15.54dp"

@@ -20,6 +20,7 @@ import com.tencent.imsdk.v2.V2TIMGroupMemberChangeInfo;
 import com.tencent.imsdk.v2.V2TIMGroupMemberInfo;
 import com.tencent.imsdk.v2.V2TIMGroupTipsElem;
 import com.tencent.imsdk.v2.V2TIMImageElem;
+import com.tencent.imsdk.v2.V2TIMLocationElem;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMSoundElem;
@@ -210,7 +211,20 @@ public class MessageInfoUtil {
         }
         return null;
     }
-
+    /**
+     * 创建定位消息
+     */
+    public static MessageInfo buildLocationMessage(String data,double longitude,double latitude){
+        MessageInfo info = new MessageInfo();
+        V2TIMMessage v2TIMMessage = V2TIMManager.getMessageManager().createLocationMessage(data,longitude,latitude);
+        info.setSelf(true);
+        info.setTimMessage(v2TIMMessage);
+        info.setExtra("[位置]");
+        info.setMsgTime(System.currentTimeMillis() / 1000);
+        info.setFromUser(V2TIMManager.getInstance().getLoginUser());
+        info.setMsgType(MessageInfo.MSG_TYPE_LOCATION);
+        return info;
+    }
     /**
      * 创建一条自定义消息
      *
@@ -689,6 +703,8 @@ public class MessageInfoUtil {
                     }
                 }
                 msgInfo.setExtra("[文件]");
+            }else if(type == V2TIMMessage.V2TIM_ELEM_TYPE_LOCATION){
+                msgInfo.setExtra("[位置]");
             }
             msgInfo.setMsgType(TIMElemType2MessageInfoType(type));
         }

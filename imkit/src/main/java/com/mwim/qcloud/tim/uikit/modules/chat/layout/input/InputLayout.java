@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
+import com.amap.api.services.core.PoiItem;
 import com.mwim.qcloud.tim.uikit.business.active.ListStopMapActivity;
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment;
@@ -402,7 +403,17 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         ListStopMapActivity.mCallBack = new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
-
+                if(data instanceof PoiItem){
+                    String title = ((PoiItem) data).getTitle();
+                    String address = ((PoiItem) data).getSnippet();
+                    if(!TextUtils.isEmpty(address)){
+                        title+="##"+address;
+                    }
+                    MessageInfo info = MessageInfoUtil.buildLocationMessage(title,((PoiItem) data).getLatLonPoint().getLongitude(),((PoiItem) data).getLatLonPoint().getLatitude());
+                    if (mMessageHandler != null) {
+                        mMessageHandler.sendMessage(info);
+                    }
+                }
             }
 
             @Override

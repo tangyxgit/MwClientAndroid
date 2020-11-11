@@ -194,7 +194,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             mInputMoreActionList.add(action);
         }
         action = new InputMoreActionUnit();
-        action.setIconResId(R.drawable.img_phone_call);
+        action.setIconResId(R.drawable.img_location_im);
         action.setTitleId(R.string.self_location);
         action.setOnClickListener(new OnClickListener() {
             @Override

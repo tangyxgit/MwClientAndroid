@@ -77,6 +77,9 @@ public abstract class MessageBaseHolder extends RecyclerView.ViewHolder {
                 case MessageInfo.MSG_TYPE_CUSTOM:
                     holder = new MessageCustomHolder(view);
                     break;
+                case MessageInfo.MSG_TYPE_LOCATION:
+                    holder = new MessageLocationHolder(view);
+                    break;
             }
             if (holder != null) {
                 ((MessageEmptyHolder) holder).setAdapter(adapter);

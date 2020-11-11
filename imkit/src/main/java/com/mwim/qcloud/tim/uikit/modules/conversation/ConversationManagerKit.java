@@ -461,6 +461,9 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
     public void deleteConversation(String id, boolean isGroup) {
         SLog.i( "deleteConversation id:" + id + "|isGroup:" + isGroup);
         handleTopData(id, false);
+        if(mProvider==null){
+            return;
+        }
         List<ConversationInfo> conversationInfos = mProvider.getDataSource();
         for (int i = 0; i < conversationInfos.size(); i++) {
             ConversationInfo info = conversationInfos.get(i);
