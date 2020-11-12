@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.widget.TextView;
 
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -40,6 +41,7 @@ public class MapLocationActivity extends MapViewActivity {
         double lat = getIntent().getDoubleExtra(LAT,0);
         double lng = getIntent().getDoubleExtra(LNG,0);
         options.position(new LatLng(lat,lng));
+        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker_location));
         Marker mMark = mAMap.addMarker(options);
         mAMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMark.getPosition(), 12), 400, this);
 

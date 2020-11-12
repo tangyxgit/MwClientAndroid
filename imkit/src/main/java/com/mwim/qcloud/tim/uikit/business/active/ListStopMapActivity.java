@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.Projection;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -223,6 +224,7 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
         if(lat>0 && lng>0){
             MarkerOptions options = new MarkerOptions();
             options.draggable(true);
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker_location));
             options.position(new LatLng(lat,lng));
             mMark = mAMap.addMarker(options);
             loadPoiData();
