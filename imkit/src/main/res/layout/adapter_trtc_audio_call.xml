@@ -22,9 +22,10 @@
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/loading_view"
             android:layout_gravity="center"
-            android:layout_marginStart="12dp"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_24"
+            android:scaleY="0.5"
+            android:scaleX="0.5"
+            android:layout_height="wrap_content"
             style="@style/AVLoadingIndicatorView.Large"
             app:indicatorName="BallPulseIndicator" />
     </FrameLayout>
