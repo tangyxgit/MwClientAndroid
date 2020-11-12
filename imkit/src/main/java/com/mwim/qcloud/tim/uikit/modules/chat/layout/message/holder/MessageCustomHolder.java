@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder;
 
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +8,11 @@ import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 
 public class MessageCustomHolder extends MessageContentHolder implements ICustomMessageViewGroup {
 
     private MessageInfo mMessageInfo;
     private int mPosition;
-
     private TextView msgBodyText;
 
     public MessageCustomHolder(View itemView) {
@@ -52,7 +49,7 @@ public class MessageCustomHolder extends MessageContentHolder implements ICustom
         msgBodyText.setVisibility(View.VISIBLE);
         if (msg.getExtra() != null) {
             if (TextUtils.equals("[自定义消息]", msg.getExtra().toString())) {
-                msgBodyText.setText(Html.fromHtml(TUIKitConstants.covert2HTMLString("[不支持的自定义消息]")));
+                msgBodyText.setText("[不支持的自定义消息]");
             } else {
                 msgBodyText.setText(msg.getExtra().toString());
             }

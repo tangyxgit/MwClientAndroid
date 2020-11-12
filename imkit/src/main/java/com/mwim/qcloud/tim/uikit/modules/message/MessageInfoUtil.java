@@ -39,6 +39,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mwim.qcloud.tim.uikit.utils.TUIKitConstants.BUSINESS_ID_CUSTOM_CARD;
+
 public class MessageInfoUtil {
 
     /**
@@ -371,10 +373,13 @@ public class MessageInfoUtil {
                 MessageCustom messageCustom;
                 try {
                     messageCustom = gson.fromJson(data, MessageCustom.class);
-                    if (!TextUtils.isEmpty(messageCustom.businessID) && messageCustom.businessID.equals(MessageCustom.BUSINESS_ID_GROUP_CREATE)) {
+                    String businessId = messageCustom.businessID;
+                    if (!TextUtils.isEmpty(businessId) && messageCustom.businessID.equals(MessageCustom.BUSINESS_ID_GROUP_CREATE)) {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_CREATE);
                         String message = TUIKitConstants.covert2HTMLString(messageCustom.opUser) + messageCustom.content;
                         msgInfo.setExtra(message);
+                    } else if(!TextUtils.isEmpty(businessId) && messageCustom.businessID.equals(BUSINESS_ID_CUSTOM_CARD)){
+                        msgInfo.setExtra("[链接]");
                     } else {
                         CallModel callModel = CallModel.convert2VideoCallData(timMessage);
                         if (callModel != null) {
