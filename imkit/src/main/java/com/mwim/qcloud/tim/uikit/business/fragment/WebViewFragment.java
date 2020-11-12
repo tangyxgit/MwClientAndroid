@@ -39,6 +39,7 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
     private TextView mWebTitle;
     private MaterialMenuView mClose;
     private WebViewProgress mWeb;
+    private String mUa;
 
     @Nullable
     @Override
@@ -84,9 +85,9 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
             }
         }
         String url = bundle.getString(WebActivity.class.getSimpleName());
-        String ua = bundle.getString(UA);
-        if(!TextUtils.isEmpty(ua)){
-            mWeb.setUserAgentString(ua);
+        mUa = bundle.getString(UA);
+        if(!TextUtils.isEmpty(mUa)){
+            mWeb.setUserAgentString(mUa);
         }
         mWeb.loadUrl(url);
     }
@@ -164,6 +165,14 @@ public class WebViewFragment extends BaseFragment implements WebViewProgress.OnW
             mErrorLayout.setVisibility(View.VISIBLE);
             mErrorText.setText(R.string.text_loading);
             mWeb.reload();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if("hsh_android".equals(mUa)){//打车
+            reload();
         }
     }
 
