@@ -2,16 +2,16 @@ package com.mwim.qcloud.tim.uikit;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 
 import com.huawei.hms.push.HmsMessaging;
-import com.meizu.cloud.pushsdk.PushManager;
-import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.helper.wemeet.RdmSDK;
 import com.mwim.qcloud.tim.uikit.business.message.MessageNotification;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
+import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.component.face.CustomFace;
 import com.mwim.qcloud.tim.uikit.component.face.CustomFaceGroup;
 import com.mwim.qcloud.tim.uikit.config.CustomFaceConfig;
@@ -23,11 +23,13 @@ import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.wemeet.sdk.app.AppGlobals;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.vivo.push.PushClient;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -198,23 +200,16 @@ public final class IMKitAgent {
                 @Override
                 public void onComplete(com.huawei.hmf.tasks.Task<Void> task) {
                     if (task.isSuccessful()) {
-//                        DemoLog.i(TAG, "huawei turnOnPush Complete");
+                        SLog.i( "huawei turnOnPush Complete");
                     } else {
-//                        DemoLog.e(TAG, "huawei turnOnPush failed: ret=" + task.getException().getMessage());
+                        SLog.e("huawei turnOnPush failed: ret=" + task.getException().getMessage());
                     }
                 }
             });
-        } else if (MzSystemUtils.isBrandMeizu(instance())) {
-            // 魅族离线推送
-            PushManager.register(instance(), PrivateConstants.MZ_PUSH_APPID, PrivateConstants.MZ_PUSH_APPKEY);
+        } else if (BrandUtil.isBrandVivo()) {
+            // vivo离线推送
+            PushClient.getInstance(instance.getApplicationContext()).initialize();
         }
-//        else if (BrandUtil.isBrandVivo()) {
-//            // vivo离线推送
-//            PushClient.getInstance(getApplicationContext()).initialize();
-//        }
-//        else if (HeytapPushManager.isSupportPush()) {
-//            // oppo离线推送，因为需要登录成功后向我们后台设置token，所以注册放在MainActivity中做
-//        }
     }
 
     public static void onActivityStarted(){
@@ -232,6 +227,15 @@ public final class IMKitAgent {
         removeIMEventListener(IMEventPushListener);
         ConversationManagerKit.getInstance().removeUnreadWatcher(UnreadWatcher);
         MessageNotification.getInstance().cancelTimeout();
+    }
+
+    public static boolean parseOfflineMessage(Intent intent){
+        OfflineMessageBean bean = OfflineMessageDispatcher.parseOfflineMessage(intent);
+        if (bean != null) {
+            OfflineMessageDispatcher.redirect(bean);
+            return true;
+        }
+        return false;
     }
 
     public static void onActivityStopped(){

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -42,6 +44,8 @@ import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
+import com.tencent.qcloud.tim.uikit.utils.FileUtil;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
@@ -199,37 +203,45 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         }
     }
 
-    private void updateAtUserInfoMap(String names, String ids) {
-        atUserInfoMap.clear();
+    private void updateAtUserInfoMap(String names, String ids){
         displayInputString = "";
 
-        String[] listName = names.split(" ");
-        String[] listId = ids.split(" ");
+        if (ids.equals(V2TIMGroupAtInfo.AT_ALL_TAG)){
+            atUserInfoMap.put(names, ids);
 
-        //此处防止昵称和ID不对等
-        boolean isListName = (listName.length >= listId.length);
-        int i;
-        if (isListName) {
-            for (i = 0; i < listId.length; i++) {
-                atUserInfoMap.put(listName[i], listId[i]);
-
-                //for display
-                displayInputString += listName[i];
-                displayInputString += " ";
-                displayInputString += TIMMentionEditText.TIM_METION_TAG;
-            }
+            //for display
+            displayInputString += names;
+            displayInputString += " ";
+            displayInputString += com.tencent.qcloud.tim.uikit.modules.chat.layout.input.TIMMentionEditText.TIM_METION_TAG;
         } else {
-            for (i = 0; i < listName.length; i++) {
-                atUserInfoMap.put(listName[i], listId[i]);
+            String[] listName = names.split(" ");
+            String[] listId = ids.split(" ");
 
-                //for display
-                displayInputString += listName[i];
-                displayInputString += " ";
-                displayInputString += TIMMentionEditText.TIM_METION_TAG;
+            //此处防止昵称和ID不对等
+            boolean isListName = (listName.length >= listId.length);
+            int i = 0;
+            if (isListName) {
+                for (i = 0; i < listId.length; i++) {
+                    atUserInfoMap.put(listName[i], listId[i]);
+
+                    //for display
+                    displayInputString += listName[i];
+                    displayInputString += " ";
+                    displayInputString += com.tencent.qcloud.tim.uikit.modules.chat.layout.input.TIMMentionEditText.TIM_METION_TAG;
+                }
+            } else {
+                for (i = 0; i < listName.length; i++) {
+                    atUserInfoMap.put(listName[i], listId[i]);
+
+                    //for display
+                    displayInputString += listName[i];
+                    displayInputString += " ";
+                    displayInputString += com.tencent.qcloud.tim.uikit.modules.chat.layout.input.TIMMentionEditText.TIM_METION_TAG;
+                }
             }
         }
 
-        if (!displayInputString.isEmpty()) {
+        if(!displayInputString.isEmpty()) {
             displayInputString = displayInputString.substring(0, displayInputString.length() - 1);
         }
     }
@@ -238,36 +250,92 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mTextInput.removeTextChangedListener(this);
+        atUserInfoMap.clear();
     }
 
     @Override
     protected void startSendPhoto() {
-        SLog.i("startSendPhoto");
+        SLog.i( "startSendPhoto");
         if (!checkPermission(SEND_PHOTO)) {
-            SLog.i("startSendPhoto checkPermission failed");
+            SLog.i( "startSendPhoto checkPermission failed");
             return;
         }
+
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        String[] mimetypes = {"image/*", "video/*"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+
         mInputMoreFragment.setCallback(new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
-                SLog.i("onSuccess: " + data);
-                MessageInfo info = MessageInfoUtil.buildImageMessage((Uri) data, true);
-                if (mMessageHandler != null) {
-                    mMessageHandler.sendMessage(info);
-                    hideSoftInput();
+                SLog.i( "onSuccess: " + data);
+                if (data == null){
+                    SLog.e( "data is null");
+                    return;
+                }
+
+                String uri = data.toString();
+                if (TextUtils.isEmpty(uri)){
+                    SLog.e( "uri is empty");
+                    return;
+                }
+
+                String videoPath = FileUtil.getPathFromUri((Uri) data);
+                String fileExtension = MimeTypeMap.getFileExtensionFromUrl(videoPath);
+                String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
+                if (mimeType != null && mimeType.contains("video")){
+                    MessageInfo msg = buildVideoMessage(FileUtil.getPathFromUri((Uri) data));
+                    if (msg == null){
+                        SLog.e("start send video error data: " + data);
+                    } else if (mMessageHandler != null) {
+                        mMessageHandler.sendMessage(msg);
+                        hideSoftInput();
+                    }
+                } else {
+                    MessageInfo info = MessageInfoUtil.buildImageMessage((Uri) data, true);
+                    if (mMessageHandler != null) {
+                        mMessageHandler.sendMessage(info);
+                        hideSoftInput();
+                    }
                 }
             }
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 SLog.i("errCode: " + errCode);
-                ToastUtil.error(getContext(),errMsg);
+                com.tencent.qcloud.tim.uikit.utils.ToastUtil.toastLongMessage(errMsg);
             }
         });
-        mInputMoreFragment.startActivityForResult(intent, InputMoreFragment.REQUEST_CODE_PHOTO);
+        mInputMoreFragment.startActivityForResult(intent, com.tencent.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment.REQUEST_CODE_PHOTO);
+    }
+
+    private MessageInfo buildVideoMessage(String mUri) {
+        android.media.MediaMetadataRetriever mmr = new android.media.MediaMetadataRetriever();
+        try {
+            mmr.setDataSource(mUri);
+            String sDuration = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);//时长(毫秒)
+            Bitmap bitmap = mmr.getFrameAtTime(0, android.media.MediaMetadataRetriever.OPTION_NEXT_SYNC);//缩略图
+
+            if (bitmap == null){
+                SLog.e("buildVideoMessage() bitmap is null");
+                return null;
+            }
+
+            String imgPath = FileUtil.saveBitmap("JCamera", bitmap);
+            String videoPath = mUri;
+            int imgWidth = bitmap.getWidth();
+            int imgHeight = bitmap.getHeight();
+            long duration = Long.parseLong(sDuration);
+            return MessageInfoUtil.buildVideoMessage(imgPath, videoPath, imgWidth, imgHeight, duration);
+        } catch (Exception ex){
+            SLog.e("MediaMetadataRetriever exception " + ex);
+        } finally {
+            mmr.release();
+        }
+
+        return null;
     }
 
     @Override
@@ -542,7 +610,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                 atUserIdList.add(atUserInfoMap.get(name));
             }
         }
-
+        atUserInfoMap.clear();
         return atUserIdList;
     }
 

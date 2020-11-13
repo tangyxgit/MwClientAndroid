@@ -6,21 +6,21 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.mwim.liteav.model.CallModel;
-import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
-import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
-import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
-import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageContainerBean;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
-import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
+import com.tencent.liteav.model.CallModel;
+import com.tencent.liteav.model.TRTCAVCallImpl;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageContainerBean;
+import com.tencent.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageHelper;
@@ -30,6 +30,7 @@ import java.util.Set;
 
 public class OfflineMessageDispatcher {
 
+
     public static OfflineMessageBean parseOfflineMessage(Intent intent) {
         SLog.i( "intent: " + intent);
         if (intent == null) {
@@ -38,10 +39,10 @@ public class OfflineMessageDispatcher {
         Bundle bundle = intent.getExtras();
         SLog.i( "bundle: " + bundle);
         if (bundle == null) {
-//            String ext = VIVOPushMessageReceiverImpl.getParams();
-//            if (!TextUtils.isEmpty(ext)) {
-//                return getOfflineMessageBeanFromContainer(ext);
-//            }
+            String ext = VIVOPushMessageReceiverImpl.getParams();
+            if (!TextUtils.isEmpty(ext)) {
+                return getOfflineMessageBeanFromContainer(ext);
+            }
             return null;
         } else {
             String ext = bundle.getString("ext");
@@ -88,7 +89,12 @@ public class OfflineMessageDispatcher {
         if (TextUtils.isEmpty(ext)) {
             return null;
         }
-        OfflineMessageContainerBean bean = new Gson().fromJson(ext, OfflineMessageContainerBean.class);
+        OfflineMessageContainerBean bean = null;
+        try {
+            bean = new Gson().fromJson(ext, OfflineMessageContainerBean.class);
+        } catch (Exception e) {
+            SLog.w( "getOfflineMessageBeanFromContainer: " + e.getMessage());
+        }
         if (bean == null) {
             return null;
         }
@@ -112,7 +118,7 @@ public class OfflineMessageDispatcher {
             PackageManager packageManager = IMKitAgent.instance().getPackageManager();
             String label = String.valueOf(packageManager.getApplicationLabel(IMKitAgent.instance().getApplicationInfo()));
             ToastUtil.toastLongMessage("您的应用 " + label + " 版本太低，不支持打开该离线消息");
-            SLog.e("unknown version: " + bean.version + " or action: " + bean.action);
+            SLog.e( "unknown version: " + bean.version + " or action: " + bean.action);
             return null;
         }
         return bean;
@@ -130,17 +136,17 @@ public class OfflineMessageDispatcher {
             return true;
         } else if (bean.action == OfflineMessageBean.REDIRECT_ACTION_CALL) {
             final CallModel model = new Gson().fromJson(bean.content, CallModel.class);
-            SLog.i("bean: "+ bean + " model: " + model);
+            SLog.i( "bean: "+ bean + " model: " + model);
             if (model != null) {
-                long timeout = System.currentTimeMillis() / 1000 - bean.sendTime;
+                long timeout = V2TIMManager.getInstance().getServerTime() - bean.sendTime;
                 if (timeout >= model.timeout) {
                     ToastUtil.toastLongMessage("本次通话已超时");
                 } else {
                     if (TextUtils.isEmpty(model.groupId)) {
-                        if (bean.chatType == TIMConversationType.C2C.value()) {
+                        if (bean.chatType == V2TIMConversation.V2TIM_C2C) {
                             // c2c 登录之后会同步消息，所以不需要主动调用通话界面
                         } else {
-                            SLog.e("group call but no group id");
+                            SLog.e( "group call but no group id");
                         }
                     } else {
                         V2TIMSignalingInfo info = new V2TIMSignalingInfo();
@@ -152,7 +158,7 @@ public class OfflineMessageDispatcher {
 
                             @Override
                             public void onError(int code, String desc) {
-                                SLog.e("addInvitedSignaling code: " + code + " desc: " + desc);
+                                SLog.e( "addInvitedSignaling code: " + code + " desc: " + desc);
                             }
 
                             @Override

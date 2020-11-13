@@ -218,4 +218,9 @@
     <string name="text_gps_permission_error" translatable="false">定位权限被禁用,请授予应用定位权限</string>
     <string name="toast_fence_add_location_error" translatable="false">获取坐标错误，请重新选址。</string>
     <string name="label_go_setting" translatable="false">去设置</string>
+
+    <string name="at_all" translatable="false">所有人</string>
+    <string name="ui_at_all" translatable="false">[@所有人]</string>
+    <string name="ui_at_me" translatable="false">[有人@我]</string>
+    <string name="ui_at_all_me" translatable="false">[@所有人][有人@我]</string>
 </resources>

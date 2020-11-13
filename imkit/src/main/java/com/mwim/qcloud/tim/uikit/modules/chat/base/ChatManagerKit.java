@@ -273,7 +273,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
         if (getCurrentChatInfo().getType() == V2TIMConversation.V2TIM_GROUP) {
             groupID = getCurrentChatInfo().getId();
             isGroup = true;
-            entity.chatType = TIMConversationType.Group.value();
+            entity.chatType = V2TIMConversation.V2TIM_GROUP;
             entity.sender = groupID;
         } else {
             userID = getCurrentChatInfo().getId();

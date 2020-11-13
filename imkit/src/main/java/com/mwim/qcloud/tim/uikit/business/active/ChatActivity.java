@@ -10,9 +10,9 @@ import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.fragment.ChatFragment;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
-import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.R;
+import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 
 import static com.tencent.imsdk.v2.V2TIMManager.V2TIM_STATUS_LOGINED;
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMConversationResult;
@@ -227,13 +228,13 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         int atInfoType = getAtInfoType(conversation);
         switch (atInfoType){
             case V2TIMGroupAtInfo.TIM_AT_ME:
-                info.setAtInfoText("[有人@我]");
+                info.setAtInfoText(IMKitAgent.instance().getString(R.string.ui_at_me));
                 break;
             case V2TIMGroupAtInfo.TIM_AT_ALL:
-                info.setAtInfoText("[@所有人]");
+                info.setAtInfoText(IMKitAgent.instance().getString(R.string.ui_at_all));
                 break;
             case V2TIMGroupAtInfo.TIM_AT_ALL_AT_ME:
-                info.setAtInfoText("[有人@我][@所有人]");
+                info.setAtInfoText(IMKitAgent.instance().getString(R.string.ui_at_all_me));
                 break;
             default:
                 info.setAtInfoText("");
@@ -280,6 +281,11 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
                 continue;
             }
             if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL){
+                atAll = true;
+                continue;
+            }
+            if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL_AT_ME){
+                atMe = true;
                 atAll = true;
             }
         }
@@ -519,7 +525,6 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
      * @return
      */
     private List<ConversationInfo> sortConversations(List<ConversationInfo> sources) {
-        ArrayList<ConversationInfo> conversationInfos = new ArrayList<>();
         List<ConversationInfo> normalConversations = new ArrayList<>();
         List<ConversationInfo> topConversations = new ArrayList<>();
 
@@ -535,9 +540,13 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
 
         mTopLinkedList.clear();
         mTopLinkedList.addAll(topConversations);
-        Collections.sort(topConversations); // 置顶会话列表页也需要按照最后一条时间排序，由新到旧，如果旧会话收到新消息，会排序到前面
-        conversationInfos.addAll(topConversations);
-        Collections.sort(normalConversations); // 正常会话也是按照最后一条消息时间排序，由新到旧
+        if(topConversations.size() > 1) {
+            Collections.sort(topConversations); // 置顶会话列表页也需要按照最后一条时间排序，由新到旧，如果旧会话收到新消息，会排序到前面
+        }
+        ArrayList<ConversationInfo> conversationInfos = new ArrayList<>(topConversations);
+        if(normalConversations.size() > 1) {
+            Collections.sort(normalConversations); // 正常会话也是按照最后一条消息时间排序，由新到旧
+        }
         conversationInfos.addAll(normalConversations);
         return conversationInfos;
     }

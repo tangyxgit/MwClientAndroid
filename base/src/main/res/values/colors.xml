@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--标题栏颜色-->
-    <color name="defaultColorPrimary">@color/status_bar_color</color>
+    <color name="defaultColorPrimary">@color/white</color>
     <!-- 状态栏颜色-->
-    <color name="defaultColorPrimaryDark">@color/status_bar_color</color>
+    <color name="defaultColorPrimaryDark">@color/white</color>
     <!--其他颜色 checkbox 光标等-->
     <color name="defaultColorAccent">@color/color_3a89f0</color>
     <!--标题栏字体颜色-->

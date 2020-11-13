@@ -32,7 +32,6 @@ import java.util.List;
 
 public class ContactListView extends LinearLayout {
 
-    private static final String INDEX_STRING_TOP = "↑";
     private ContactAdapter mAdapter;
     private List<ContactItemBean> mData = new ArrayList<>();
     private SuspensionDecoration mDecoration;
@@ -126,6 +125,9 @@ public class ContactListView extends LinearLayout {
                 loadFriendListDataAsync();
                 break;
             case DataSource.GROUP_MEMBER_LIST:
+                ContactItemBean contactItemBean = new ContactItemBean(getResources().getString(R.string.at_all));
+                contactItemBean.setTop(true).setBaseIndexTag(ContactItemBean.INDEX_STRING_TOP);
+                mData.add(contactItemBean);
                 loadGroupMembers();
                 break;
             default:
@@ -270,7 +272,6 @@ public class ContactListView extends LinearLayout {
                     }
                     members.add(v2TIMGroupMemberInfoResult.getMemberInfoList().get(i));
                 }
-                mData.clear();
                 for (V2TIMGroupMemberFullInfo info : members) {
                     ContactItemBean bean = new ContactItemBean();
                     mData.add(bean.covertTIMGroupMemberFullInfo(info));

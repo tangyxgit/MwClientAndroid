@@ -185,15 +185,15 @@ public class ChatFragment extends BaseFragment {
         switch (atInfoType){
             case V2TIMGroupAtInfo.TIM_AT_ME:
                 mChatLayout.getAtInfoLayout().setVisibility(VISIBLE);
-                mChatLayout.getAtInfoLayout().setText("[有人@我]");
+                mChatLayout.getAtInfoLayout().setText(getString(R.string.ui_at_me));
                 break;
             case V2TIMGroupAtInfo.TIM_AT_ALL:
                 mChatLayout.getAtInfoLayout().setVisibility(VISIBLE);
-                mChatLayout.getAtInfoLayout().setText("[@所有人]");
+                mChatLayout.getAtInfoLayout().setText(getString(R.string.ui_at_all));
                 break;
             case V2TIMGroupAtInfo.TIM_AT_ALL_AT_ME:
                 mChatLayout.getAtInfoLayout().setVisibility(VISIBLE);
-                mChatLayout.getAtInfoLayout().setText("[有人@我][@所有人]");
+                mChatLayout.getAtInfoLayout().setText(getString(R.string.ui_at_all_me));
                 break;
             default:
                 mChatLayout.getAtInfoLayout().setVisibility(GONE);
@@ -217,6 +217,11 @@ public class ChatFragment extends BaseFragment {
                 continue;
             }
             if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL) {
+                atAll = true;
+                continue;
+            }
+            if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL_AT_ME) {
+                atMe = true;
                 atAll = true;
             }
         }

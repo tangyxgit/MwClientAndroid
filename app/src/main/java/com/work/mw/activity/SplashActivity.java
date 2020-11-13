@@ -81,13 +81,10 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startMain() {
-        OfflineMessageBean bean = OfflineMessageDispatcher.parseOfflineMessage(getIntent());
-        if (bean != null) {
-            OfflineMessageDispatcher.redirect(bean);
+        if (IMKitAgent.parseOfflineMessage(getIntent())) {
             finish();
             return;
         }
-
         Intent intent = new Intent(SplashActivity.this, MwWorkActivity.class);
         startActivity(intent);
         finish();

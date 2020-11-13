@@ -21,7 +21,7 @@ public class BaseActivity extends TakePhotoActivity {
     @Override
     public void setStatusBar() {
         super.setStatusBar();
-        setStatusBar(ContextCompat.getColor(this, R.color.status_bar_color));
+        setStatusBar(ContextCompat.getColor(this, R.color.white));
     }
 
     public void setStatusBar(int color) {

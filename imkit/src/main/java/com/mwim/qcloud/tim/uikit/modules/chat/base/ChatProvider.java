@@ -91,7 +91,7 @@ public class ChatProvider implements IChatProvider {
             list.add(info);
         }
         boolean flag = mDataSource.addAll(list);
-        updateAdapter(MessageLayout.DATA_CHANGE_TYPE_ADD_BACK, list.size());
+        updateAdapter(MessageLayout.DATA_CHANGE_TYPE_REFRESH, 0);
         return flag;
 
     }

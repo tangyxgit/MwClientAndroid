@@ -14,6 +14,7 @@ import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IMessageProperties;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.mwim.qcloud.tim.uikit.component.action.PopMenuAction;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
+import com.tencent.qcloud.tim.uikit.component.CustomLinearLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public abstract class MessageLayoutUI extends RecyclerView implements IMessageLa
         setItemViewCacheSize(0);
         setHasFixedSize(true);
         setFocusableInTouchMode(false);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager linearLayoutManager = new CustomLinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         setLayoutManager(linearLayoutManager);
     }

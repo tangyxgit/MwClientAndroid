@@ -794,7 +794,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         entity.content = new Gson().toJson(model);
         entity.sender = V2TIMManager.getInstance().getLoginUser(); // 发送者肯定是登录账号
         entity.action = OfflineMessageBean.REDIRECT_ACTION_CALL;
-        entity.sendTime = System.currentTimeMillis() / 1000;
+        entity.sendTime = V2TIMManager.getInstance().getServerTime();
         entity.nickname = TUIKitConfigs.getConfigs().getGeneralConfig().getUserNickname();
         entity.faceUrl = TUIKitConfigs.getConfigs().getGeneralConfig().getUserFaceUrl();
         containerBean.entity = entity;
