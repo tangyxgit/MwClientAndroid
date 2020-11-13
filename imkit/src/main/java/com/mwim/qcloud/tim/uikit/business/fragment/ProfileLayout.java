@@ -18,6 +18,7 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.active.SelectMessageActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserSettingActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
@@ -105,6 +106,9 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
             getContext().startActivity(new Intent(getContext(), UserInfoActivity.class));
         }else if(v.getId() == R.id.modify_setting){
             getContext().startActivity(new Intent(getContext(), UserSettingActivity.class));
+        }else if(v.getId() == R.id.custom_im_message){
+            CustomMessage message = new CustomMessage();
+            SelectMessageActivity.sendCustomMessage((Activity) getContext(),message,0);
         }
     }
 

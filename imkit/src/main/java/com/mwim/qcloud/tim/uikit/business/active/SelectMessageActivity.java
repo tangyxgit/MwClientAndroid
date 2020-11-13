@@ -28,7 +28,7 @@ import com.work.util.ToastUtil;
  * email tangyx@live.com
  */
 
-public class SelectCustomMessageActivity extends BaseActivity {
+public class SelectMessageActivity extends BaseActivity {
 
     private ContactLayout mContactLayout;
 
@@ -43,7 +43,7 @@ public class SelectCustomMessageActivity extends BaseActivity {
     public void onInitValue() throws Exception {
         super.onInitValue();
         setTitleName("选择");
-        CustomMessage message = (CustomMessage) getIntent().getSerializableExtra(SelectCustomMessageActivity.class.getSimpleName());
+        CustomMessage message = (CustomMessage) getIntent().getSerializableExtra(SelectMessageActivity.class.getSimpleName());
         if(message==null){
             finish();
             return;
@@ -82,7 +82,7 @@ public class SelectCustomMessageActivity extends BaseActivity {
 
                         @Override
                         public void onError(String module, int errCode, String errMsg) {
-                            ToastUtil.warning(SelectCustomMessageActivity.this,errCode+">"+errMsg);
+                            ToastUtil.warning(SelectMessageActivity.this,errCode+">"+errMsg);
                         }
                     });
                 }
@@ -95,8 +95,8 @@ public class SelectCustomMessageActivity extends BaseActivity {
         return R.layout.fragment_im_contact;
     }
     public static void sendCustomMessage(Activity activity, CustomMessage message,int requestCode){
-        Intent intent = new Intent(activity,SelectCustomMessageActivity.class);
-        intent.putExtra(SelectCustomMessageActivity.class.getSimpleName(),message);
+        Intent intent = new Intent(activity, SelectMessageActivity.class);
+        intent.putExtra(SelectMessageActivity.class.getSimpleName(),message);
         activity.startActivityForResult(intent,requestCode);
     }
 }

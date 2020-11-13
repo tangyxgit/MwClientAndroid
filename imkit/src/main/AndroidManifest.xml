@@ -117,6 +117,7 @@
         <activity android:name=".business.active.ListStopMapActivity"
             android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".business.active.MapLocationActivity"/>
+        <activity android:name=".business.active.SelectMessageActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"
