@@ -196,7 +196,13 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
                 data.add(openData);
             }
         }
-        mAdapter.setNewData(data);
+        if(data.size()==0){
+            GetUserByParamReq getUserByParamReq = new GetUserByParamReq();
+            getUserByParamReq.setParamVal(keyword);
+            Yz.getSession().getFriendByMobile(getUserByParamReq,this);
+        }else{
+            mAdapter.setNewData(data);
+        }
     }
 
     @Override

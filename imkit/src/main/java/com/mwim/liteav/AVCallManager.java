@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
+import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallSingleActivity;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.liteav.login.ProfileManager;
 import com.mwim.liteav.login.UserModel;
@@ -105,7 +106,7 @@ public class AVCallManager {
             public void onSuccess(final UserModel model) {
                 if (userIdList == null || userIdList.size() == 0) {
                     if (callType == ITRTCAVCall.TYPE_VIDEO_CALL) {
-                        TRTCVideoCallActivity.startBeingCall(mContext, model, null);
+                        TRTCVideoCallSingleActivity.startBeingCall(mContext, model, null);
                     } else if (callType == ITRTCAVCall.TYPE_AUDIO_CALL) {
                         TRTCAudioCallActivity.startBeingCall(mContext, model, null);
                     }

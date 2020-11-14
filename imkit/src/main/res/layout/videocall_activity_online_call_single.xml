@@ -19,24 +19,15 @@
         android:visibility="gone"
         app:constraint_referenced_ids="img_sponsor_avatar,tv_sponsor_user_name,tv_sponsor_video_tag,shade_sponsor" />
 
-<!--    <com.mwim.liteav.trtcvideocall.ui.videolayout.TRTCVideoLayoutManager-->
-<!--        android:id="@+id/trtc_layout_manager"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <androidx.recyclerview.widget.RecyclerView
+    <com.mwim.liteav.trtcvideocall.ui.videolayout.TRTCVideoLayoutManager
         android:id="@+id/trtc_layout_manager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:id="@+id/shade_sponsor"
         android:layout_width="match_parent"

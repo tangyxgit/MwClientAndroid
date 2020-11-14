@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
 import com.amap.api.services.core.PoiItem;
+import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallSingleActivity;
 import com.mwim.qcloud.tim.uikit.business.active.ListStopMapActivity;
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment;
@@ -460,7 +461,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             model.userName = mChatLayout.getChatInfo().getChatName();
             model.userSig = TUIKitConfigs.getConfigs().getGeneralConfig().getUserSig();
             contactList.add(model);
-            TRTCVideoCallActivity.startCallSomeone(mActivity.getApplicationContext(), contactList);
+            TRTCVideoCallSingleActivity.startCallSomeone(mActivity.getApplicationContext(), contactList);
         } else {
             SelectContactActivity.start(mActivity.getApplicationContext(), mChatLayout.getChatInfo().getId(), ITRTCAVCall.TYPE_VIDEO_CALL);
         }

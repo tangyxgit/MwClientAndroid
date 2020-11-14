@@ -7,8 +7,16 @@ package com.work.api.open.model;
  */
 
 public class GetUserByParamReq extends BaseReq {
-
+    private String paramVal;
     private String param;
+
+    public String getParamVal() {
+        return paramVal;
+    }
+
+    public void setParamVal(String paramVal) {
+        this.paramVal = paramVal;
+    }
 
     public String getParam() {
         return param;

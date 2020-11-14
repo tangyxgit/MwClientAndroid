@@ -24,6 +24,7 @@ import com.http.network.model.ResponseWork;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
+import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallSingleActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
@@ -605,7 +606,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                         model.userName = mNickname;
                         model.userSig = TUIKitConfigs.getConfigs().getGeneralConfig().getUserSig();
                         contactList.add(model);
-                        TRTCVideoCallActivity.startCallSomeone(getContext(), contactList);
+                        TRTCVideoCallSingleActivity.startCallSomeone(getContext(), contactList);
                         mDialog.dismiss();
 
                     }

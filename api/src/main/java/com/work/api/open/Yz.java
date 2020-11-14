@@ -147,8 +147,8 @@ public class Yz extends ApiClient {
     /**
      * 搜索我的朋友
      */
-    public void getFriendByMobile(LoginReq loginReq,OnResultDataListener onResultDataListener){
-        requestPost(ModeApi.getFriendByMobile,loginReq,new GetFriendByMobileResp(),onResultDataListener);
+    public void getFriendByMobile(GetUserByParamReq getUserByParamReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getFriendByMobile,getUserByParamReq,new GetFriendByMobileResp(),onResultDataListener);
     }
     /**
      * 获取打车链接

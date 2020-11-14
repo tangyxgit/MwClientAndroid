@@ -3,6 +3,7 @@ package com.mwim.liteav.trtcvideocall.ui.videolayout;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -25,6 +26,8 @@ public class TRTCVideoLayout extends RelativeLayout {
     private TextView         mUserNameTv;
     private FrameLayout      mFlNoVideo;
     private ProgressBar      mAudioPb;
+    private TextView mWaiting;
+    private View mFlbg;
 
 
     public TRTCVideoLayout(Context context) {
@@ -53,9 +56,13 @@ public class TRTCVideoLayout extends RelativeLayout {
         if (available) {
             mTcCloudViewTrtc.setVisibility(VISIBLE);
             mFlNoVideo.setVisibility(GONE);
+            mWaiting.setVisibility(GONE);
+            mFlbg.setVisibility(GONE);
         } else {
             mTcCloudViewTrtc.setVisibility(GONE);
             mFlNoVideo.setVisibility(VISIBLE);
+            mWaiting.setVisibility(VISIBLE);
+            mFlbg.setVisibility(VISIBLE);
         }
     }
 
@@ -78,6 +85,17 @@ public class TRTCVideoLayout extends RelativeLayout {
         mUserNameTv = findViewById(R.id.tv_user_name);
         mFlNoVideo = findViewById(R.id.fl_no_video);
         mAudioPb = findViewById(R.id.pb_audio);
+        mWaiting = findViewById(R.id.waiting);
+        mFlbg = findViewById(R.id.fl_bg);
+    }
+
+
+    public TextView getWaiting() {
+        return mWaiting;
+    }
+
+    public View getFlbg() {
+        return mFlbg;
     }
 
     public boolean isMoveable() {
