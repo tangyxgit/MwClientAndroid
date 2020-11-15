@@ -35,8 +35,10 @@ import com.tencent.imsdk.v2.V2TIMFriendInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.work.api.open.Yz;
+import com.work.api.open.model.GetFriendByMobileResp;
 import com.work.api.open.model.GetUserByParamReq;
 import com.work.api.open.model.GetUserByParamResp;
+import com.work.api.open.model.client.OpenByMobile;
 import com.work.api.open.model.client.OpenData;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
@@ -57,6 +59,7 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
     private SearchAddMoreAdapter mAdapter;
     private ConversationListAdapter mConversationAdapter;
     private int flag=-1;
+    private List<V2TIMFriendInfo> mV2TIMFriendData;
 
     @Override
     public void onInitView() throws Exception {
@@ -173,17 +176,18 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
                             v2TIMFriendInfos = new ArrayList<>();
                         }
                         SLog.i("loadFriendListDataAsync->getFriendList:" + v2TIMFriendInfos.size());
-                        assembleFriendListData(v2TIMFriendInfos);
+                        mV2TIMFriendData = v2TIMFriendInfos;
+                        assembleFriendListData();
                     }
                 });
             }
         });
     }
 
-    private void assembleFriendListData(final List<V2TIMFriendInfo> timFriendInfoList) {
+    private void assembleFriendListData() {
         List<OpenData> data = new ArrayList<>();
         String keyword = mSearch.getText().toString().trim();
-        for (V2TIMFriendInfo friendInfo : timFriendInfoList) {
+        for (V2TIMFriendInfo friendInfo : mV2TIMFriendData) {
             String remark = friendInfo.getFriendRemark();
             String name  = friendInfo.getUserProfile().getNickName();
             if(!TextUtils.isEmpty(keyword)
@@ -197,9 +201,11 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
             }
         }
         if(data.size()==0){
-            GetUserByParamReq getUserByParamReq = new GetUserByParamReq();
-            getUserByParamReq.setParamVal(keyword);
-            Yz.getSession().getFriendByMobile(getUserByParamReq,this);
+            if(mV2TIMFriendData!=null && mV2TIMFriendData.size()>0){
+                GetUserByParamReq getUserByParamReq = new GetUserByParamReq();
+                getUserByParamReq.setParamVal(keyword);
+                Yz.getSession().getFriendByMobile(getUserByParamReq,this);
+            }
         }else{
             mAdapter.setNewData(data);
         }
@@ -219,6 +225,29 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
                     mAdapter.clear();
                 }else{
                     mAdapter.setNewData(((GetUserByParamResp) resp).getData());
+                }
+            }else if(resp instanceof GetFriendByMobileResp){
+                List<OpenByMobile> openByMobiles = ((GetFriendByMobileResp) resp).getData();
+                if(openByMobiles != null && openByMobiles.size()>0){
+                    List<OpenData> data = new ArrayList<>();
+                    for (V2TIMFriendInfo friendInfo : mV2TIMFriendData) {
+                        String userId = friendInfo.getUserID();
+                        for (OpenByMobile byMobile : openByMobiles){
+                            if(byMobile.To_Account.equals(userId)){
+                                OpenData openData = new OpenData();
+                                openData.setUserId(friendInfo.getUserID());
+                                String remark = friendInfo.getFriendRemark();
+                                String name  = friendInfo.getUserProfile().getNickName();
+                                openData.setRemark(remark);
+                                openData.setNickName(name);
+                                openData.setUserIcon(friendInfo.getUserProfile().getFaceUrl());
+                                data.add(openData);
+                            }
+                        }
+                    }
+                    mAdapter.setNewData(data);
+                }else{
+                    mAdapter.clear();
                 }
             }
         }
