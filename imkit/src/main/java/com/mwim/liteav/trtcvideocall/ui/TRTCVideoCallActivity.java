@@ -131,6 +131,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    mVibrator.cancel();
                     showCallingView();
                     UserModel layout = mTrtcAdapter.findAudioCallLayout(userId);
                     if (layout != null) {
@@ -471,6 +472,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
                 }
                 startInviting();
                 showInvitingView();
+                mVibrator.vibrate(new long[]{0, 1000, 1000}, 0);
             }
         }
 

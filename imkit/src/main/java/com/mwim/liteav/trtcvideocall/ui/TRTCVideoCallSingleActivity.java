@@ -128,6 +128,7 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    mVibrator.cancel();
                     showCallingView();
                     //1.先造一个虚拟的用户添加到屏幕上
                     UserModel model = new UserModel();
@@ -456,6 +457,7 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
                 }
                 startInviting();
                 showInvitingView();
+                mVibrator.vibrate(new long[]{0, 1000, 1000}, 0);
             }
         }
 
