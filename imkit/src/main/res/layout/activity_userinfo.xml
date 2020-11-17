@@ -24,8 +24,8 @@
             android:id="@+id/user_icon"
             android:layout_toStartOf="@+id/icon_arrow_right"
             android:layout_marginEnd="@dimen/dp_10"
-            android:layout_width="48dp"
-            android:layout_height="48dp"/>
+            android:layout_width="56dp"
+            android:layout_height="56dp"/>
         <ImageView
             android:id="@+id/icon_arrow_right"
             android:layout_width="wrap_content"
