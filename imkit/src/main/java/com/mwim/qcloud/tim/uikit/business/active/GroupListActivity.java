@@ -5,12 +5,19 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
+import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
+import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
+import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
+import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.SLog;
+import com.work.util.ToastUtil;
 
 public class GroupListActivity extends IMBaseActivity {
 
@@ -33,10 +40,32 @@ public class GroupListActivity extends IMBaseActivity {
                 }
                 chatInfo.setChatName(chatName);
                 chatInfo.setId(contact.getId());
-                Intent intent = new Intent(GroupListActivity.this, ChatActivity.class);
-                intent.putExtra(Constants.CHAT_INFO, chatInfo);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                String customData = getIntent().getStringExtra(GroupListActivity.class.getSimpleName());
+                if(customData!=null){
+                    GroupChatManagerKit groupChatManagerKit = GroupChatManagerKit.getInstance();
+                    GroupInfo groupInfo = new GroupInfo();
+                    groupInfo.setId(chatInfo.getId());
+                    groupInfo.setChatName(chatInfo.getChatName());
+                    groupChatManagerKit.setCurrentChatInfo(groupInfo);
+                    MessageInfo info = MessageInfoUtil.buildCustomMessage(customData);
+                    groupChatManagerKit.sendMessage(info, false, new IUIKitCallBack() {
+                        @Override
+                        public void onSuccess(Object data) {
+                            SLog.e("custom message group send success:"+data);
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(String module, int errCode, String errMsg) {
+                            ToastUtil.warning(GroupListActivity.this,errCode+">"+errMsg);
+                        }
+                    });
+                }else{
+                    Intent intent = new Intent(GroupListActivity.this, ChatActivity.class);
+                    intent.putExtra(Constants.CHAT_INFO, chatInfo);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
             }
         });
 //        loadDataSource();

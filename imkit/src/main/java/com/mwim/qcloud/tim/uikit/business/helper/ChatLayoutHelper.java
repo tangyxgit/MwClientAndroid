@@ -1,6 +1,7 @@
 package com.mwim.qcloud.tim.uikit.business.helper;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
-import com.mwim.qcloud.tim.uikit.business.message.CustomHelloMessage;
+import com.mwim.qcloud.tim.uikit.business.message.CustomMessage;
 import com.mwim.qcloud.tim.uikit.modules.chat.ChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.input.InputLayout;
@@ -26,6 +27,8 @@ import com.tencent.imsdk.v2.V2TIMCustomElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.util.SLog;
+
+import static com.mwim.qcloud.tim.uikit.utils.TUIKitConstants.BUSINESS_ID_CUSTOM_CARD;
 
 public class ChatLayoutHelper {
 
@@ -75,9 +78,9 @@ public class ChatLayoutHelper {
 //        // 设置聊天内容字体字体大小，朋友和自己用一种字体大小
 //        messageLayout.setChatContextFontSize(15);
 //        // 设置自己聊天内容字体颜色
-//        messageLayout.setRightChatContentFontColor(0xFFA9A9A9);
+        messageLayout.setRightChatContentFontColor(Color.WHITE);
 //        // 设置朋友聊天内容字体颜色
-//        messageLayout.setLeftChatContentFontColor(0xFFA020F0);
+        messageLayout.setLeftChatContentFontColor(Color.BLACK);
 //
 //        ////// 设置聊天时间 //////
 //        // 设置聊天时间线的背景
@@ -162,10 +165,7 @@ public class ChatLayoutHelper {
             @Override
             public void onClick(View v) {
                 Gson gson = new Gson();
-                CustomHelloMessage customHelloMessage = new CustomHelloMessage();
-                customHelloMessage.version = TUIKitConstants.version;
-                customHelloMessage.text = "欢迎加入云通信IM大家庭！";
-                customHelloMessage.link = "https://cloud.tencent.com/document/product/269/3794";
+                CustomMessage customHelloMessage = new CustomMessage();
                 String data = gson.toJson(customHelloMessage);
                 MessageInfo info = MessageInfoUtil.buildCustomMessage(data);
                 layout.sendMessage(info, false);
@@ -186,7 +186,7 @@ public class ChatLayoutHelper {
                     ToastUtil.toastShortMessage("自定义的按钮1");
                     if (getChatLayout() != null) {
                         Gson gson = new Gson();
-                        CustomHelloMessage customHelloMessage = new CustomHelloMessage();
+                        CustomMessage customHelloMessage = new CustomMessage();
                         String data = gson.toJson(customHelloMessage);
                         MessageInfo info = MessageInfoUtil.buildCustomMessage(data);
                         getChatLayout().sendMessage(info, false);
@@ -200,7 +200,7 @@ public class ChatLayoutHelper {
                     ToastUtil.toastShortMessage("自定义的按钮2");
                     if (getChatLayout() != null) {
                         Gson gson = new Gson();
-                        CustomHelloMessage customHelloMessage = new CustomHelloMessage();
+                        CustomMessage customHelloMessage = new CustomMessage();
                         String data = gson.toJson(customHelloMessage);
                         MessageInfo info = MessageInfoUtil.buildCustomMessage(data);
                         getChatLayout().sendMessage(info, false);
@@ -212,7 +212,7 @@ public class ChatLayoutHelper {
 
     }
 
-    public class CustomMessageDraw implements IOnCustomMessageDrawListener {
+    public static class CustomMessageDraw implements IOnCustomMessageDrawListener {
 
         /**
          * 自定义消息渲染时，会调用该方法，本方法实现了自定义消息的创建，以及交互逻辑
@@ -228,17 +228,17 @@ public class ChatLayoutHelper {
             }
             V2TIMCustomElem elem = info.getTimMessage().getCustomElem();
             // 自定义的json数据，需要解析成bean实例
-            CustomHelloMessage data = null;
+            CustomMessage data = null;
             try {
-                data = new Gson().fromJson(new String(elem.getData()), CustomHelloMessage.class);
+                data = new Gson().fromJson(new String(elem.getData()), CustomMessage.class);
             } catch (Exception e) {
                 SLog.w("invalid json: " + new String(elem.getData()) + " " + e.getMessage());
             }
             if (data == null) {
                 SLog.e( "No Custom Data: " + new String(elem.getData()));
             } else if (data.version == TUIKitConstants.JSON_VERSION_1
-                    || (data.version == TUIKitConstants.JSON_VERSION_4 && data.businessID.equals("text_link"))) {
-                CustomHelloTIMUIController.onDraw(parent, data);
+                    || (data.version == TUIKitConstants.JSON_VERSION_4 && data.businessID.equals(BUSINESS_ID_CUSTOM_CARD))) {
+                CustomIMUIController.onDraw(parent, data);
             } else {
                 SLog.w("unsupported version: " + data);
             }

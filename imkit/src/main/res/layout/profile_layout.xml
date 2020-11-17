@@ -145,20 +145,17 @@
                     android:layout_marginTop="10dp"
                     android:visibility="gone"
                     app:name="@string/add_rule" />
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/background_color"/>
                 <Button
-                    android:id="@+id/logout_btn"
+                    android:id="@+id/custom_im_message"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="@dimen/btn_margin_left"
-                    android:layout_marginRight="@dimen/btn_margin_right"
-                    android:layout_marginBottom="@dimen/btn_margin_bottom"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="@dimen/btn_height_large"
-                    android:visibility="gone"
-                    android:layout_alignParentBottom="true"
+                    android:layout_height="48dp"
                     android:background="@color/bg_negative_btn"
-                    android:text="@string/exit"
+                    android:text="模拟外部分享链接卡片形式"
                     android:textColor="@color/negative_text" />
 
             </LinearLayout>

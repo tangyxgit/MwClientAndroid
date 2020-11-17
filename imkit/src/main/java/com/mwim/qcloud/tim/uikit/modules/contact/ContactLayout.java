@@ -18,7 +18,6 @@ import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 
 public class ContactLayout extends LinearLayout implements IContactLayout {
 
-//    private TitleBarLayout mTitleBar;
     private ContactListView mContactListView;
 
     public ContactLayout(Context context) {
@@ -57,7 +56,11 @@ public class ContactLayout extends LinearLayout implements IContactLayout {
     }
 
     public void initDefault() {
-        mContactListView.loadDataSource(ContactListView.DataSource.CONTACT_LIST);
+        initDefault(ContactListView.DataSource.CONTACT_LIST);
+    }
+
+    public void initDefault(int type){
+        mContactListView.loadDataSource(type);
     }
 
     @Override

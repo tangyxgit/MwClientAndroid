@@ -124,6 +124,11 @@ public class ContactListView extends LinearLayout {
                         setTop(true).setBaseIndexTag(ContactItemBean.INDEX_STRING_TOP));
                 loadFriendListDataAsync();
                 break;
+            case DataSource.CONTACT_GROUP_SELECT:
+                mData.add((ContactItemBean) new ContactItemBean(getResources().getString(R.string.group)).
+                        setTop(true).setBaseIndexTag(ContactItemBean.INDEX_STRING_TOP));
+                loadFriendListDataAsync();
+                break;
             case DataSource.GROUP_MEMBER_LIST:
                 ContactItemBean contactItemBean = new ContactItemBean(getResources().getString(R.string.at_all));
                 contactItemBean.setTop(true).setBaseIndexTag(ContactItemBean.INDEX_STRING_TOP);
@@ -300,5 +305,6 @@ public class ContactListView extends LinearLayout {
         public static final int GROUP_LIST = 3;
         public static final int CONTACT_LIST = 4;
         public static final int GROUP_MEMBER_LIST = 5;
+        public static final int CONTACT_GROUP_SELECT = 6;
     }
 }

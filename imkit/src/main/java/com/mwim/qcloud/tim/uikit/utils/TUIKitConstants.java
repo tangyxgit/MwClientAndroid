@@ -41,7 +41,7 @@ public class TUIKitConstants {
     public static final int JSON_VERSION_4       = 4;
     public static int version = JSON_VERSION_4;
 
-    public static final String BUSINESS_ID_CUSTOM_HELLO = "text_link";
+    public static final String BUSINESS_ID_CUSTOM_CARD = "card_link";
 
     public static String covert2HTMLString(String original) {
         return "\"<font color=\"#5B6B92\">" + original + "</font>\"";

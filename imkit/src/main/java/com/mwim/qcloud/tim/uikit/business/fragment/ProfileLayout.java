@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -21,6 +22,7 @@ import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.SelectMessageActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserSettingActivity;
+import com.mwim.qcloud.tim.uikit.business.message.CustomMessage;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
@@ -98,6 +100,8 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
                 }
             }
         });
+
+        findViewById(R.id.custom_im_message).setOnClickListener(this);
     }
 
     @Override
