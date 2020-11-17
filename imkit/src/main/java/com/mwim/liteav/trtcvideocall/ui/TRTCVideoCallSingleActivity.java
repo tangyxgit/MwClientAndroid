@@ -95,7 +95,6 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
     private List<UserModel> mOtherInvitingUserModelList;
     private int mCallType;
     private ITRTCAVCall mITRTCAVCall;
-    private boolean isHandsFree = true;
     private boolean isMuteMic = false;
     private boolean isCamera = true;
     private boolean isMuteVideo = false;
@@ -421,6 +420,7 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
             }
         });
         mMuteImg.setActivated(isMuteMic);
+        boolean isHandsFree = true;
         mHandsfreeImg.setActivated(isHandsFree);
     }
 

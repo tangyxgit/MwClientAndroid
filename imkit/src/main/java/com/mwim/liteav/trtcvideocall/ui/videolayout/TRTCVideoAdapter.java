@@ -53,6 +53,9 @@ public class TRTCVideoAdapter extends BaseQuickAdapter<UserModel, BaseViewHolder
             mITRTCAVCall.openCamera(true, mVideoLayout.getVideoView());
         }else{
             mITRTCAVCall.stopRemoteView(item.userId);
+            if(!item.loading){
+                mVideoLayout.getWaiting().setVisibility(View.GONE);
+            }
         }
         if(item.isSponsor){
             mVideoLayout.getFlbg().setVisibility(View.GONE);

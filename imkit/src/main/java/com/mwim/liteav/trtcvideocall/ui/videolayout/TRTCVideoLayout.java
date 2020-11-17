@@ -98,6 +98,10 @@ public class TRTCVideoLayout extends RelativeLayout {
         return mFlbg;
     }
 
+    public FrameLayout getFlNoVideo() {
+        return mFlNoVideo;
+    }
+
     public boolean isMoveable() {
         return mMoveable;
     }

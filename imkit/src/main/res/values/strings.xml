@@ -78,6 +78,7 @@
     <string name="text_hangup_name" translatable="false">挂断</string>
     <string name="text_dialing_name" translatable="false">接听</string>
     <string name="text_change_camera" translatable="false">切换摄像头</string>
+    <string name="text_video_close" translatable="false">摄像头</string>
     <string name="text_mute_open" translatable="false">开启静音</string>
     <string name="text_mute_close" translatable="false">关闭静音</string>
     <string name="text_handsfree_1" translatable="false">免提</string>
