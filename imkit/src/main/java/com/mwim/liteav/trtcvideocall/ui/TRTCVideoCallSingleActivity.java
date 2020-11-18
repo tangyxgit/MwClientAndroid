@@ -20,11 +20,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.Group;
 
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.liteav.login.ProfileManager;
 import com.mwim.liteav.login.UserModel;
@@ -63,10 +63,6 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
     public static final String PARAM_USER = "user_model";
     public static final String PARAM_BEINGCALL_USER = "beingcall_user_model";
     public static final String PARAM_OTHER_INVITING_USER = "other_inviting_user_model";
-    private static final int MAX_SHOW_INVITING_USER = 4;
-
-    private static final int RADIUS = 30;
-
     /**
      * 界面元素相关
      */
@@ -75,10 +71,10 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
     private LinearLayout mHangupLl;
     private ImageView mHandsfreeImg;
     private LinearLayout mHandsfreeLl;
+    private ImageView mMuteVideoImg;
+    private LinearLayout mVideoLl;
     private LinearLayout mDialingLl;
     private TRTCVideoLayoutManager mLayoutManagerTrtc;
-    private Group mInvitingGroup;
-    private LinearLayout mImgContainerLl;
     private TextView mTimeTv;
     private Runnable mTimeRunnable;
     private int mTimeCount;
@@ -92,9 +88,9 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
     private List<UserModel> mCallUserModelList = new ArrayList<>(); // 呼叫方
     private Map<String, UserModel> mCallUserModelMap = new HashMap<>();
     private UserModel mSponsorUserModel; // 被叫方
-    private List<UserModel> mOtherInvitingUserModelList;
     private int mCallType;
     private ITRTCAVCall mITRTCAVCall;
+    private boolean isHandsFree = true;
     private boolean isMuteMic = false;
     private boolean isCamera = true;
     private boolean isMuteVideo = false;
@@ -293,7 +289,7 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
     private ImageView mSponsorAvatarImg;
     private TextView mSponsorUserNameTv;
     private TextView mSponsorTagTv;
-    private Group mSponsorGroup;
+    private View mSponsorGroup;
 
     /**
      * 主动拨打给某个用户
@@ -314,8 +310,6 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
 
     /**
      * 作为用户被叫
-     * @param context
-     * @param beingCallUserModel
      */
     public static void startBeingCall(Context context, UserModel beingCallUserModel, List<UserModel> otherInvitingUserModel) {
         SLog.i("startBeingCall");
@@ -403,7 +397,7 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
                 isMuteMic = !isMuteMic;
                 mITRTCAVCall.setMicMute(isMuteMic);
                 mMuteImg.setActivated(isMuteMic);
-                ToastUtil.info(TRTCVideoCallSingleActivity.this,isMuteMic ? "开启静音" : "关闭静音");
+//                ToastUtil.info(TRTCVideoCallSingleActivity.this,isMuteMic ? "开启静音" : "关闭静音");
 //                isMuteVideo = !isMuteVideo;
 //                mITRTCAVCall.setMuteLocalVideo(isMuteVideo);
             }
@@ -411,17 +405,27 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         mHandsfreeLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isCamera = !isCamera;
-                mITRTCAVCall.switchCamera(isCamera);
-//                isHandsFree = !isHandsFree;
-//                mITRTCAVCall.setHandsFree(isHandsFree);
-//                mHandsfreeImg.setActivated(isHandsFree);
-//                ToastUtil.info(TRTCVideoCallActivity.this, isHandsFree ? "使用扬声器" : "使用听筒");
+//                isCamera = !isCamera;
+//                mITRTCAVCall.switchCamera(isCamera);
+                isHandsFree = !isHandsFree;
+                mITRTCAVCall.setHandsFree(isHandsFree);
+                mHandsfreeImg.setActivated(isHandsFree);
+//                ToastUtil.info(TRTCVideoCallSingleActivity.this, isHandsFree ? "使用扬声器" : "使用听筒");
+            }
+        });
+        mVideoLl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMuteVideo = !isMuteVideo;
+                mITRTCAVCall.setMuteLocalVideo(isMuteVideo);
+                mMuteVideoImg.setActivated(isMuteVideo);
+                TRTCVideoLayout layout = mLayoutManagerTrtc.findCloudViewView(mSelfModel.userId);
+                layout.setVideoAvailable(!isMuteVideo);
             }
         });
         mMuteImg.setActivated(isMuteMic);
-        boolean isHandsFree = true;
         mHandsfreeImg.setActivated(isHandsFree);
+        mMuteVideoImg.setActivated(isMuteVideo);
     }
 
     private void initData() {
@@ -435,15 +439,14 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //自己的资料
         mSelfModel = ProfileManager.getInstance().getUserModel();
+        mSelfModel.userId = UserApi.instance().getUserId();
+        mSelfModel.userName = UserApi.instance().getNickName();
+        mSelfModel.userAvatar = UserApi.instance().getUserIcon();
         mCallType = intent.getIntExtra(PARAM_TYPE, TYPE_BEING_CALLED);
         mGroupId = intent.getStringExtra(PARAM_GROUP_ID);
         if (mCallType == TYPE_BEING_CALLED) {
             // 作为被叫
             mSponsorUserModel = (UserModel) intent.getSerializableExtra(PARAM_BEINGCALL_USER);
-            IntentParams params = (IntentParams) intent.getSerializableExtra(PARAM_OTHER_INVITING_USER);
-            if (params != null) {
-                mOtherInvitingUserModelList = params.mUserModels;
-            }
             showWaitingResponseView();
             mVibrator.vibrate(new long[]{0, 1000, 1000}, 0);
             mRingtone.play();
@@ -474,20 +477,18 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
     private void initView() {
         mMuteImg = findViewById(R.id.img_mute);
         mMuteLl = findViewById(R.id.ll_mute);
-        ImageView mHangupImg = findViewById(R.id.img_hangup);
         mHangupLl = findViewById(R.id.ll_hangup);
         mHandsfreeImg = findViewById(R.id.img_handsfree);
         mHandsfreeLl = findViewById(R.id.ll_handsfree);
-        ImageView mDialingImg = findViewById(R.id.img_dialing);
+        mMuteVideoImg = findViewById(R.id.img_video);
+        mVideoLl = findViewById(R.id.ll_video);
         mDialingLl = findViewById(R.id.ll_dialing);
         mLayoutManagerTrtc = findViewById(R.id.trtc_layout_manager);
-        mInvitingGroup = findViewById(R.id.group_inviting);
-        mImgContainerLl = findViewById(R.id.ll_img_container);
         mTimeTv = findViewById(R.id.tv_time);
         mSponsorAvatarImg = findViewById(R.id.img_sponsor_avatar);
         mSponsorUserNameTv = findViewById(R.id.tv_sponsor_user_name);
         mSponsorTagTv = findViewById(R.id.tv_sponsor_video_tag);
-        mSponsorGroup = findViewById(R.id.group_sponsor);
+        mSponsorGroup = findViewById(R.id.shade_sponsor);
     }
 
 
@@ -513,6 +514,7 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         mDialingLl.setVisibility(View.VISIBLE);
         mHandsfreeLl.setVisibility(View.GONE);
         mMuteLl.setVisibility(View.GONE);
+        mVideoLl.setVisibility(View.GONE);
         //3. 设置对应的listener
         mHangupLl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -532,8 +534,6 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
                 showCallingView();
             }
         });
-        //4. 展示其他用户界面
-        showOtherInvitingUserView();
     }
 
     /**
@@ -548,10 +548,6 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         }
         videoLayout.setVideoAvailable(true);
         mITRTCAVCall.openCamera(true, videoLayout.getVideoView());
-        //        for (UserModel userModel : mCallUserModelList) {
-        //            TRTCVideoLayout layout = addUserToManager(userModel);
-        //            layout.getShadeImg().setVisibility(View.VISIBLE);
-        //        }
         //2. 设置底部栏
         mHangupLl.setVisibility(View.VISIBLE);
         mHangupLl.setOnClickListener(new View.OnClickListener() {
@@ -564,10 +560,7 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         mDialingLl.setVisibility(View.GONE);
         mHandsfreeLl.setVisibility(View.GONE);
         mMuteLl.setVisibility(View.GONE);
-        //3. 隐藏中间他们也在界面
-        hideOtherInvitingUserView();
-        //4. sponsor画面也隐藏
-//        mSponsorGroup.setVisibility(View.GONE);
+        mVideoLl.setVisibility(View.GONE);
         //2. 展示对方的头像和蒙层
         if(mCallUserModelList.size()==1){
             loadUserInfo();
@@ -590,8 +583,11 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
                     mSponsorGroup.setVisibility(View.VISIBLE);
                     UserModel userModel = mCallUserModelList.get(0);
                     GlideEngine.loadCornerAvatar(mSponsorAvatarImg, data.getUserIcon());
+                    mSponsorAvatarImg.setVisibility(View.VISIBLE);
                     mSponsorUserNameTv.setText(userModel.userName);
+                    mSponsorUserNameTv.setVisibility(View.VISIBLE);
                     mSponsorTagTv.setText(R.string.text_video_tag);
+                    mSponsorTagTv.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -602,12 +598,15 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
     public void showCallingView() {
         //1. 蒙版消失
         mSponsorGroup.setVisibility(View.GONE);
+        mSponsorAvatarImg.setVisibility(View.GONE);
+        mSponsorTagTv.setVisibility(View.GONE);
+        mSponsorUserNameTv.setVisibility(View.GONE);
         //2. 底部状态栏
         mHangupLl.setVisibility(View.VISIBLE);
         mDialingLl.setVisibility(View.GONE);
         mHandsfreeLl.setVisibility(View.VISIBLE);
         mMuteLl.setVisibility(View.VISIBLE);
-
+        mVideoLl.setVisibility(View.VISIBLE);
         mHangupLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -615,8 +614,8 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
                 finishActivity();
             }
         });
+        mTimeTv.setVisibility(View.VISIBLE);
         showTimeCount();
-        hideOtherInvitingUserView();
     }
 
     private void showTimeCount() {
@@ -656,33 +655,9 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         return String.format("%02d:%02d", count / 60, count % 60);
     }
 
-    private void showOtherInvitingUserView() {
-        if (mOtherInvitingUserModelList == null || mOtherInvitingUserModelList.size() == 0) {
-            return;
-        }
-        mInvitingGroup.setVisibility(View.VISIBLE);
-        int squareWidth = getResources().getDimensionPixelOffset(R.dimen.small_image_size);
-        int leftMargin = getResources().getDimensionPixelOffset(R.dimen.small_image_left_margin);
-        for (int index = 0; index < mOtherInvitingUserModelList.size() && index < MAX_SHOW_INVITING_USER; index++) {
-            UserModel userModel = mOtherInvitingUserModelList.get(index);
-            ImageView imageView = new ImageView(this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(squareWidth, squareWidth);
-            if (index != 0) {
-                layoutParams.leftMargin = leftMargin;
-            }
-            imageView.setLayoutParams(layoutParams);
-            GlideEngine.loadCornerAvatar(imageView, userModel.userAvatar);
-
-            mImgContainerLl.addView(imageView);
-        }
-    }
-
-    private void hideOtherInvitingUserView() {
-        mInvitingGroup.setVisibility(View.GONE);
-    }
 
     private TRTCVideoLayout addUserToManager(UserModel userModel) {
-        TRTCVideoLayout layout = mLayoutManagerTrtc.allocCloudVideoView(userModel.userId);
+        TRTCVideoLayout layout = mLayoutManagerTrtc.allocCloudVideoView(userModel.userId,R.layout.videocall_item_user_single_layout);
         if (layout == null) {
             return null;
         }

@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.tencent.rtmp.ui.TXCloudVideoView;
+import com.work.util.SLog;
+import com.work.util.SizeUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -63,12 +64,10 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
     public TRTCVideoLayoutManager(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        initView(context);
+        initView();
     }
 
-    private void initView(Context context) {
-       TUIKitLog.i(TAG, "initView: ");
-
+    private void initView() {
         mLayoutEntityList = new LinkedList<>();
         // 默认为堆叠模式
         mMode = MODE_FLOAT;
@@ -122,14 +121,14 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
      * @param userId
      * @return
      */
-    public TRTCVideoLayout allocCloudVideoView(String userId) {
+    public TRTCVideoLayout allocCloudVideoView(String userId,int layoutId) {
         if (userId == null) return null;
         if (mCount > MAX_USER) {
             return null;
         }
         TRTCLayoutEntity layoutEntity = new TRTCLayoutEntity();
         layoutEntity.userId = userId;
-        layoutEntity.layout = new TRTCVideoLayout(mContext);
+        layoutEntity.layout = new TRTCVideoLayout(mContext, layoutId);
         layoutEntity.layout.setVisibility(VISIBLE);
         initGestureListener(layoutEntity.layout);
         mLayoutEntityList.add(layoutEntity);
@@ -152,7 +151,6 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
         }
         if (mCount >= 4 && mMode == MODE_GRID) {
             makeGirdLayout(true);
-            return;
         }
 
     }
@@ -328,12 +326,20 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
         for (int i = 0; i < size; i++) {
             TRTCLayoutEntity entity       = mLayoutEntityList.get(size - i - 1);
             LayoutParams     layoutParams = mFloatParamList.get(i);
-            entity.layout.setLayoutParams(layoutParams);
             if (i == 0) {
+                LayoutParams imageParams = (LayoutParams) entity.layout.getHeadImg().getLayoutParams();
+                imageParams.width = SizeUtils.dp2px(mContext,160);
+                imageParams.height = SizeUtils.dp2px(mContext,160);
+                imageParams.topMargin = SizeUtils.dp2px(mContext,115);
                 entity.layout.setMoveable(false);
             } else {
+                LayoutParams imageParams = (LayoutParams) entity.layout.getHeadImg().getLayoutParams();
+                imageParams.width = SizeUtils.dp2px(mContext,80);
+                imageParams.height = SizeUtils.dp2px(mContext,80);
+                imageParams.topMargin = SizeUtils.dp2px(mContext,40);
                 entity.layout.setMoveable(true);
             }
+            entity.layout.setLayoutParams(layoutParams);
             addFloatViewClickListener(entity);
             bringChildToFront(entity.layout);
         }
@@ -366,7 +372,7 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
      * @param userId
      */
     private void makeFullVideoView(String userId) {
-       TUIKitLog.i(TAG, "makeFullVideoView: from = " + userId);
+        SLog.i( "makeFullVideoView: from = " + userId);
         TRTCLayoutEntity entity = findEntity(userId);
         mLayoutEntityList.remove(entity);
         mLayoutEntityList.addLast(entity);

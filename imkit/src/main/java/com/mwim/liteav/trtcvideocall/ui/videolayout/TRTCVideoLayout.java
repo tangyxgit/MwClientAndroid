@@ -4,14 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.rtmp.ui.TXCloudVideoView;
-
 /**
  * Module: TRTCVideoLayout
  * <p>
@@ -24,18 +22,32 @@ public class TRTCVideoLayout extends RelativeLayout {
     private TXCloudVideoView mTcCloudViewTrtc;
     private SquareImageView  mHeadImg;
     private TextView         mUserNameTv;
-    private FrameLayout      mFlNoVideo;
+    private View      mFlNoVideo;
     private ProgressBar      mAudioPb;
     private TextView mWaiting;
     private View mFlbg;
+    private int layoutId = R.layout.videocall_item_user_user_layout;
 
 
     public TRTCVideoLayout(Context context) {
         this(context, null);
     }
 
+    public TRTCVideoLayout(Context context,int layoutId) {
+        super(context, null);
+        this.layoutId = layoutId;
+        initView();
+        setClickable(true);
+    }
+
     public TRTCVideoLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initView();
+        setClickable(true);
+    }
+
+    public TRTCVideoLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         initView();
         setClickable(true);
     }
@@ -61,8 +73,10 @@ public class TRTCVideoLayout extends RelativeLayout {
         } else {
             mTcCloudViewTrtc.setVisibility(GONE);
             mFlNoVideo.setVisibility(VISIBLE);
-            mWaiting.setVisibility(VISIBLE);
-            mFlbg.setVisibility(VISIBLE);
+            if(layoutId==R.layout.videocall_item_user_user_layout){
+                mWaiting.setVisibility(VISIBLE);
+                mFlbg.setVisibility(VISIBLE);
+            }
         }
     }
 
@@ -79,7 +93,7 @@ public class TRTCVideoLayout extends RelativeLayout {
     }
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.videocall_item_user_user_layout, this, true);
+        LayoutInflater.from(getContext()).inflate(layoutId, this, true);
         mTcCloudViewTrtc = findViewById(R.id.trtc_tc_cloud_view);
         mHeadImg = findViewById(R.id.img_avatar);
         mUserNameTv = findViewById(R.id.tv_user_name);
@@ -98,7 +112,7 @@ public class TRTCVideoLayout extends RelativeLayout {
         return mFlbg;
     }
 
-    public FrameLayout getFlNoVideo() {
+    public View getFlNoVideo() {
         return mFlNoVideo;
     }
 
