@@ -1,20 +1,17 @@
 package com.mwim.qcloud.tim.uikit.modules.conversation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-import androidx.appcompat.widget.PopupMenu;
-
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.business.MorePopWindow;
 import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
 import com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity;
-import com.mwim.qcloud.tim.uikit.business.helper.PopMenuHelper;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationAdapter;
 import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationLayout;
@@ -27,7 +24,7 @@ import com.work.util.ToastUtil;
 public class ConversationLayout extends RelativeLayout implements IConversationLayout {
 
     private ConversationListLayout mConversationList;
-    private PopMenuHelper mMenu;
+    private MorePopWindow mMenu;
 
     public ConversationLayout(Context context) {
         super(context);
@@ -65,22 +62,23 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
             @Override
             public void onClick(View view) {
                 if(mMenu==null){
-                    mMenu = new PopMenuHelper(R.menu.chat_group, mAddMore, new PopupMenu.OnMenuItemClickListener() {
+                    mMenu = new MorePopWindow((Activity) getContext(), new OnClickListener() {
                         @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getItemId() == R.id.add_friends) {
+                        public void onClick(View v) {
+                            mMenu.dismiss();
+                            if (v.getId() == R.id.add_friends) {
                                 getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
-                            }else if(item.getItemId() == R.id.add_group){
+                            }else{
                                 Intent intent = new Intent(TUIKit.getAppContext(), StartGroupChatActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
                                 getContext().startActivity(intent);
                             }
-                            return false;
                         }
                     });
                 }
-                mMenu.showMenu(getContext());
+                mMenu.showPopupWindow(mAddMore);
+
             }
         });
         if(adapter==null){
