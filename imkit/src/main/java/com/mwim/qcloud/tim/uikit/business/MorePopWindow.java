@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.business;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -8,10 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.PopupWindow;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.business.adapter.MorePopWindowAdapter;
 import com.work.util.SizeUtils;
 
 import android.view.ViewGroup.LayoutParams;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 /**
  * Created by tangyx
@@ -21,7 +28,7 @@ import android.view.ViewGroup.LayoutParams;
 
 public class MorePopWindow extends PopupWindow {
 
-    public MorePopWindow(final Activity context, View.OnClickListener listener) {
+    public MorePopWindow(Context context, List<String> items, BaseQuickAdapter.OnItemClickListener listener) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.pop_menu_conversation, null);
@@ -44,8 +51,13 @@ public class MorePopWindow extends PopupWindow {
 
         // 设置SelectPicPopupWindow弹出窗体动画效果
         this.setAnimationStyle(R.style.AnimationMainTitleMore);
-        contentView.findViewById(R.id.add_friends).setOnClickListener(listener);
-        contentView.findViewById(R.id.add_group).setOnClickListener(listener);
+
+        RecyclerView recyclerView = contentView.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(context).colorResId(R.color.background_color).build());
+        MorePopWindowAdapter mAdapter = new MorePopWindowAdapter(items);
+        recyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(listener);
     }
 
 

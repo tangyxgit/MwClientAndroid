@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.MorePopWindow;
 import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
@@ -20,6 +21,9 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.work.util.ToastUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConversationLayout extends RelativeLayout implements IConversationLayout {
 
@@ -62,17 +66,22 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
             @Override
             public void onClick(View view) {
                 if(mMenu==null){
-                    mMenu = new MorePopWindow((Activity) getContext(), new OnClickListener() {
+                    List<String> item = new ArrayList<>();
+                    item.add(getContext().getResources().getString(R.string.add_friend));
+                    item.add(getContext().getResources().getString(R.string.add_group));
+                    mMenu = new MorePopWindow((Activity) getContext(),item , new BaseQuickAdapter.OnItemClickListener() {
                         @Override
-                        public void onClick(View v) {
-                            mMenu.dismiss();
-                            if (v.getId() == R.id.add_friends) {
-                                getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
-                            }else{
-                                Intent intent = new Intent(TUIKit.getAppContext(), StartGroupChatActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
-                                getContext().startActivity(intent);
+                        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                            switch (position){
+                                case 0:
+                                    getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
+                                    break;
+                                case 1:
+                                    Intent intent = new Intent(TUIKit.getAppContext(), StartGroupChatActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+                                    getContext().startActivity(intent);
+                                    break;
                             }
                         }
                     });

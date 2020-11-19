@@ -4,22 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/seal_ic_popup_bg"
     android:orientation="vertical">
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/add_friends"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="128dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/add_friend"
-        android:padding="@dimen/dp_10"
-        android:textColor="@color/color_333333"
-        android:background="@drawable/bottom_f4_bg_white" />
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/add_group"
-        android:layout_width="128dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/dp_10"
-        android:textColor="@color/color_333333"
-        android:text="@string/create_group_chat"
-        android:background= "@null" />
+        android:layout_height="wrap_content"/>
 </LinearLayout>
