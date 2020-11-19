@@ -13,7 +13,7 @@ import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
-import com.mwim.qcloud.tim.uikit.business.inter.WorkAppItemClickListener;
+import com.mwim.qcloud.tim.uikit.business.inter.YzWorkAppItemClickListener;
 import com.mwim.qcloud.tim.uikit.business.message.MessageNotification;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
@@ -77,7 +77,7 @@ public final class IMKitAgent {
     private static IMKitAgent singleton;
     private Context mContext;
     private YzStatusListener mIMKitStatusListener;
-    private WorkAppItemClickListener mWorkAppItemClickListener;
+    private YzWorkAppItemClickListener mWorkAppItemClickListener;
 
     private IMKitAgent(Context context,String mYzAppId) {
         this.mContext = context;
@@ -97,6 +97,14 @@ public final class IMKitAgent {
 
     public void addStatusListener(YzStatusListener listener){
         this.mIMKitStatusListener = listener;
+    }
+
+    public void addWorkAppItemClickListener(YzWorkAppItemClickListener listener){
+        this.mWorkAppItemClickListener = listener;
+    }
+
+    public YzWorkAppItemClickListener getWorkAppItemClickListener(){
+        return this.mWorkAppItemClickListener;
     }
 
     private void loadConfig(){

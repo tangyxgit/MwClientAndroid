@@ -13,10 +13,13 @@ import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
+import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
+import com.mwim.qcloud.tim.uikit.business.inter.YzWorkAppItemClickListener;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
+import com.mwim.qcloud.tim.uikit.business.modal.WorkApp;
 import com.work.api.open.Yz;
 import com.work.api.open.model.GetCarWebViewUrlResp;
 import com.work.api.open.model.GetToolTokenReq;
@@ -70,13 +73,13 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                         if("code001".equals(data.getToolCode()) //腾讯会议
                                 || "code002".equals(data.getToolCode())//网盘
                                 || "code003".equals(data.getToolCode())){//打车
+                            String sdkToken = "";
                             if("code001".equals(data.getToolCode())){
-                                String sdkToken = SdkTokenMaps.get(UserApi.instance().getMobile());
+                                sdkToken = SdkTokenMaps.get(UserApi.instance().getMobile());
                                 if(sdkToken==null){
                                     ToastUtil.error(getContext(),"该账号未开通会议。");
                                     return;
                                 }
-//                                WemeetSdkHelper.init(getContext(),sdkToken);
                             }
                             if(getContext() instanceof BaseActivity){
                                 ((BaseActivity) getContext()).showProgressLoading(false,false);
@@ -84,7 +87,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                             GetToolTokenReq getToolTokenReq = new GetToolTokenReq();
                             getToolTokenReq.setToolCode(data.getToolCode());
                             getToolTokenReq.setUserName(UserApi.instance().getNickName());
-                            Yz.getSession().getToolToken(getToolTokenReq, WorkAdapter.this,data.getToolUrl());
+                            Yz.getSession().getToolToken(getToolTokenReq, WorkAdapter.this,data.getToolUrl(),sdkToken);
                         }else{
                             WebActivity.startWebView(data.getToolUrl());
                         }
@@ -106,7 +109,14 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                 String token = ((GetToolTokenResp) resp).getData();
                 String url = resp.getPositionParams(0);
                 if("code001".equals(((GetToolTokenReq) req).getToolCode())){//腾讯会议
-//                    WemeetSdkHelper.startAuth(url+IdTokenMaps.get(UserApi.instance().getMobile()));
+                    YzWorkAppItemClickListener listener = IMKitAgent.instance().getWorkAppItemClickListener();
+                    if(listener!=null){
+                        String sdkToken = resp.getPositionParams(1);
+                        WorkApp workApp = new WorkApp(sdkToken);
+                        workApp.setUrl(url+IdTokenMaps.get(UserApi.instance().getMobile()));
+                        listener.onWorkAppClick(workApp);
+                    }
+//                    WemeetSdkHelper.startAuth();
                 }else if("code002".equals(((GetToolTokenReq) req).getToolCode())){//网盘
                     WebActivity.startWebView(url+"?token="+token);
                 }else if("code003".equals(((GetToolTokenReq) req).getToolCode())){//打车

@@ -13,13 +13,17 @@ import androidx.multidex.MultiDexApplication;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
+import com.mwim.qcloud.tim.uikit.business.inter.YzWorkAppItemClickListener;
+import com.mwim.qcloud.tim.uikit.business.modal.WorkApp;
 import com.work.mw.wemeet.RdmSDK;
 import com.work.mw.wemeet.WemeetSdkHelper;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.tencent.wemeet.sdk.app.AppGlobals;
 import com.work.api.open.ApiClient;
 import com.work.mw.activity.LoginActivity;
-import com.work.util.SharedUtils;
+import com.work.util.ToastUtil;
+
+import java.util.HashMap;
 
 /**
  * Created by tangyx
@@ -28,6 +32,7 @@ import com.work.util.SharedUtils;
  */
 
 public class MwClientApplication extends MultiDexApplication {
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -49,12 +54,21 @@ public class MwClientApplication extends MultiDexApplication {
                 startActivity(intent);
             }
         });
+        IMKitAgent.instance().addWorkAppItemClickListener(item -> {
+            if(item instanceof WorkApp){
+                WorkApp wp = (WorkApp) item;
+                if(wp.isWemeet()){
+                    //先初始化会议
+                    WemeetSdkHelper.init(MwClientApplication.this,wp.getWemeetToken());
+                    //启动会议
+                    WemeetSdkHelper.startAuth(wp.getUrl());
+                }
+            }
+        });
         registerActivityLifecycleCallbacks(new StatisticActivityLifecycleCallback());
         //腾讯会议
         AppGlobals.INSTANCE.init(this);
         RdmSDK.INSTANCE.init(this);
-
-
     }
 
     private String getCurrentProcessName() {

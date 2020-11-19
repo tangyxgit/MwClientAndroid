@@ -6,6 +6,6 @@ package com.mwim.qcloud.tim.uikit.business.inter;
  * email tangyx@live.com
  */
 
-public interface WorkAppItemClickListener {
+public interface YzWorkAppItemClickListener {
     void onWorkAppClick(Object item);
 }
