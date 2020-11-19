@@ -116,7 +116,6 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                         workApp.setUrl(url+IdTokenMaps.get(UserApi.instance().getMobile()));
                         listener.onWorkAppClick(workApp);
                     }
-//                    WemeetSdkHelper.startAuth();
                 }else if("code002".equals(((GetToolTokenReq) req).getToolCode())){//网盘
                     WebActivity.startWebView(url+"?token="+token);
                 }else if("code003".equals(((GetToolTokenReq) req).getToolCode())){//打车

@@ -13,7 +13,6 @@ import androidx.multidex.MultiDexApplication;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
-import com.mwim.qcloud.tim.uikit.business.inter.YzWorkAppItemClickListener;
 import com.mwim.qcloud.tim.uikit.business.modal.WorkApp;
 import com.work.mw.wemeet.RdmSDK;
 import com.work.mw.wemeet.WemeetSdkHelper;
@@ -21,9 +20,6 @@ import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.tencent.wemeet.sdk.app.AppGlobals;
 import com.work.api.open.ApiClient;
 import com.work.mw.activity.LoginActivity;
-import com.work.util.ToastUtil;
-
-import java.util.HashMap;
 
 /**
  * Created by tangyx
@@ -44,6 +40,7 @@ public class MwClientApplication extends MultiDexApplication {
         MultiDex.install(this);
 
         IMKitAgent.init(this,"de241446a50499bb77a8684cf610fd04");
+        //账号被踢出，或者失效
         IMKitAgent.instance().addStatusListener(new YzStatusListener() {
             @Override
             public void logout() {
@@ -65,6 +62,7 @@ public class MwClientApplication extends MultiDexApplication {
                 }
             }
         });
+        //增加消息前后台逻辑监听器
         registerActivityLifecycleCallbacks(new StatisticActivityLifecycleCallback());
         //腾讯会议
         AppGlobals.INSTANCE.init(this);
