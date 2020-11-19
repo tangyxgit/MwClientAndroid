@@ -22,49 +22,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-
-    <!-- ********OPPO 推送 start******** -->
-<!--    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE"/>-->
-<!--    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE"/>-->
-<!--    &lt;!&ndash; ********OPPO 推送 end******** &ndash;&gt;-->
-
-<!--    <uses-feature android:name="android.hardware.Camera"/>-->
-<!--    <uses-feature android:name="android.hardware.camera.autofocus" />-->
-
-    <!-- ********华为推送权限设置******** -->
-<!--    <permission-->
-<!--        android:name="com.work.mw.permission.PROCESS_PUSH_MSG"-->
-<!--        android:protectionLevel="signatureOrSystem" />-->
-<!--    <uses-permission android:name = "com.huawei.android.launcher.permission.CHANGE_BADGE" />-->
-
-<!--    <uses-permission android:name="com.tencent.qcloud.tim.tuikit.permission.PROCESS_PUSH_MSG" />-->
-
-<!--    &lt;!&ndash; ********小米推送权限设置******** &ndash;&gt;-->
-<!--    <permission-->
-<!--        android:name="com.tencent.qcloud.tim.tuikit.permission.MIPUSH_RECEIVE"-->
-<!--        android:protectionLevel="signature" />-->
-
-<!--    <uses-permission android:name="com.tencent.qcloud.tim.tuikit.permission.MIPUSH_RECEIVE" />-->
-
-<!--    &lt;!&ndash; ********魅族推送权限设置******** &ndash;&gt;-->
-<!--    &lt;!&ndash; 兼容flyme5.0以下版本，魅族内部集成pushSDK必填，不然无法收到消息 &ndash;&gt;-->
-<!--    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />-->
-
-<!--    <permission-->
-<!--        android:name="com.tencent.qcloud.tim.tuikit.push.permission.MESSAGE"-->
-<!--        android:protectionLevel="signature" />-->
-
-<!--    <uses-permission android:name="com.tencent.qcloud.tim.tuikit.push.permission.MESSAGE" />-->
-
-<!--    &lt;!&ndash; 兼容flyme3.0配置权限 &ndash;&gt;-->
-<!--    <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />-->
-
-<!--    <permission-->
-<!--        android:name="com.tencent.qcloud.tim.tuikit.permission.C2D_MESSAGE"-->
-<!--        android:protectionLevel="signature" />-->
-
-<!--    <uses-permission android:name="com.tencent.qcloud.tim.tuikit.permission.C2D_MESSAGE" />-->
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
