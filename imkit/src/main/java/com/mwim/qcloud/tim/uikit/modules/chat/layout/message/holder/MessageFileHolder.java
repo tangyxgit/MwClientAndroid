@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.active.X5FileOpenActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.tencent.imsdk.v2.V2TIMDownloadCallback;
@@ -80,7 +81,7 @@ public class MessageFileHolder extends MessageContentHolder {
         msgContentFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                X5FileOpenActivity.openX5File(IMKitAgent.instance(),path,fileElem.getFileName());
+                X5FileOpenActivity.openX5File(TUIKit.getAppContext(),path,fileElem.getFileName());
             }
         });
         if (msg.getStatus() == MessageInfo.MSG_STATUS_SEND_SUCCESS || msg.getStatus() == MessageInfo.MSG_STATUS_NORMAL) {
@@ -119,7 +120,7 @@ public class MessageFileHolder extends MessageContentHolder {
                             msgContentFrame.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    X5FileOpenActivity.openX5File(IMKitAgent.instance(),path,fileElem.getFileName());
+                                    X5FileOpenActivity.openX5File(TUIKit.getAppContext(),path,fileElem.getFileName());
                                 }
                             });
                         }

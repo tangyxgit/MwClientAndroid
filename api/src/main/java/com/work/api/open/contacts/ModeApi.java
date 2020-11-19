@@ -83,6 +83,10 @@ public final class ModeApi {
      */
     public final static String getFriendByMobile="user/getFriendByMobile";
     /**
+     * 同步User
+     */
+    public final static String sysUser = "api/sysUser";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

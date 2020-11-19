@@ -42,7 +42,6 @@ public class TRTCVideoLayoutManager extends RelativeLayout {
     public static final  int    MODE_FLOAT = 1;  // 前后堆叠模式
     public static final  int    MODE_GRID  = 2;  // 九宫格模式
     public static final  int    MAX_USER   = 9;
-    private final static String TAG        = TRTCVideoLayoutManager.class.getSimpleName();
 
     private LinkedList<TRTCLayoutEntity> mLayoutEntityList;
     private ArrayList<LayoutParams>      mFloatParamList;

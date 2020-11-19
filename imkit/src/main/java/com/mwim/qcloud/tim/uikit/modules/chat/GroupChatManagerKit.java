@@ -7,6 +7,7 @@ import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
@@ -138,7 +139,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
                         }
                     });
                 }else{
-                    ToastUtil.warning(IMKitAgent.instance(),resp.getMessage());
+                    ToastUtil.warning(TUIKit.getAppContext(),resp.getMessage());
                 }
             }
         });
@@ -284,9 +285,9 @@ public class GroupChatManagerKit extends ChatManagerKit {
     public void notifyJoinGroup(String groupID, final boolean isInvited) {
         if(mCurrentChatInfo!=null){
             if (isInvited) {
-                ToastUtil.info(IMKitAgent.instance(),"您已被邀请进群：" + mCurrentChatInfo.getGroupName());
+                ToastUtil.info(TUIKit.getAppContext(),"您已被邀请进群：" + mCurrentChatInfo.getGroupName());
             } else {
-                ToastUtil.info(IMKitAgent.instance(),"您已加入群：" + mCurrentChatInfo.getGroupName());
+                ToastUtil.info(TUIKit.getAppContext(),"您已加入群：" + mCurrentChatInfo.getGroupName());
             }
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {
@@ -295,9 +296,9 @@ public class GroupChatManagerKit extends ChatManagerKit {
                     mCurrentChatInfo = new GroupInfo();
                     mCurrentChatInfo.covertTIMGroupDetailInfo((V2TIMGroupInfoResult) data);
                     if (isInvited) {
-                        ToastUtil.info(IMKitAgent.instance(),"您已被邀请进群：" + mCurrentChatInfo.getGroupName());
+                        ToastUtil.info(TUIKit.getAppContext(),"您已被邀请进群：" + mCurrentChatInfo.getGroupName());
                     } else {
-                        ToastUtil.info(IMKitAgent.instance(),"您已加入群：" + mCurrentChatInfo.getGroupName());
+                        ToastUtil.info(TUIKit.getAppContext(),"您已加入群：" + mCurrentChatInfo.getGroupName());
                     }
                 }
 
@@ -311,14 +312,14 @@ public class GroupChatManagerKit extends ChatManagerKit {
 
     public void notifyJoinGroupRefused(String groupID) {
         if(mCurrentChatInfo!=null){
-            ToastUtil.info(IMKitAgent.instance(),"您被拒绝加入群：" + mCurrentChatInfo.getGroupName());
+            ToastUtil.info(TUIKit.getAppContext(),"您被拒绝加入群：" + mCurrentChatInfo.getGroupName());
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
                     mCurrentChatInfo = new GroupInfo();
                     mCurrentChatInfo.covertTIMGroupDetailInfo((V2TIMGroupInfoResult) data);
-                    ToastUtil.info(IMKitAgent.instance(),"您被拒绝加入群：" + mCurrentChatInfo.getGroupName());
+                    ToastUtil.info(TUIKit.getAppContext(),"您被拒绝加入群：" + mCurrentChatInfo.getGroupName());
                 }
 
                 @Override
@@ -331,13 +332,13 @@ public class GroupChatManagerKit extends ChatManagerKit {
 
     public void notifyKickedFromGroup(String groupID) {
         if(mCurrentChatInfo!=null){
-            ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + mCurrentChatInfo.getGroupName());
+            ToastUtil.info(TUIKit.getAppContext(),"您已被踢出群：" + mCurrentChatInfo.getGroupName());
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID,true, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
                     if(data instanceof OpenGroupInfo && !TextUtils.isEmpty(((OpenGroupInfo) data).Name)){
-                        ToastUtil.info(IMKitAgent.instance(),"您已被踢出群：" + ((OpenGroupInfo) data).Name);
+                        ToastUtil.info(TUIKit.getAppContext(),"您已被踢出群：" + ((OpenGroupInfo) data).Name);
                     }
                 }
 
@@ -355,13 +356,13 @@ public class GroupChatManagerKit extends ChatManagerKit {
 
     public void notifyGroupDismissed(String groupID) {
         if(mCurrentChatInfo!=null && !TextUtils.isEmpty(mCurrentChatInfo.getGroupName())){
-            ToastUtil.info(IMKitAgent.instance(),"您所在的群" + mCurrentChatInfo.getGroupName() + "已解散");
+            ToastUtil.info(TUIKit.getAppContext(),"您所在的群" + mCurrentChatInfo.getGroupName() + "已解散");
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID,true, new IUIKitCallBack() {
                 @Override
                 public void onSuccess(Object data) {
                     if(data instanceof String){
-                        ToastUtil.info(IMKitAgent.instance(),"您所在的群" + data + "已解散");
+                        ToastUtil.info(TUIKit.getAppContext(),"您所在的群" + data + "已解散");
                     }
                 }
 
@@ -379,7 +380,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
 
     public void notifyGroupRESTCustomSystemData(String groupID, byte[] customData) {
         if (mCurrentChatInfo != null && groupID.equals(mCurrentChatInfo.getId())) {
-            ToastUtil.info(IMKitAgent.instance(),"收到自定义系统通知：" + new String(customData));
+            ToastUtil.info(TUIKit.getAppContext(),"收到自定义系统通知：" + new String(customData));
         }
 
     }

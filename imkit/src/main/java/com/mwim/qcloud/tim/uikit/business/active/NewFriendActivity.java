@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.adapter.NewFriendListAdapter;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMFriendApplication;
@@ -66,7 +66,7 @@ public class NewFriendActivity extends IMBaseActivity implements BaseQuickAdapte
     @Override
     public void onRightClickListener(View view) {
         super.onRightClickListener(view);
-        Intent intent = new Intent(IMKitAgent.instance(), AddMoreActivity.class);
+        Intent intent = new Intent(TUIKit.getAppContext(), AddMoreActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("isGroup", false);
         startActivity(intent);

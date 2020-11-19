@@ -18,7 +18,7 @@ import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.common.ApiException;
 import com.mwim.liteav.model.CallModel;
 import com.mwim.liteav.model.TRTCAVCallImpl;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.adapter.TabPagerAdapter;
@@ -198,7 +198,7 @@ public class MwWorkActivity extends IMBaseActivity implements
     protected void onResume() {
         super.onResume();
         if (mCallModel != null) {
-            TRTCAVCallImpl impl = (TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(IMKitAgent.instance());
+            TRTCAVCallImpl impl = (TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(TUIKit.getAppContext());
             impl.stopCall();
             final V2TIMSignalingInfo info = new V2TIMSignalingInfo();
             info.setInviteID(mCallModel.callId);
@@ -206,7 +206,7 @@ public class MwWorkActivity extends IMBaseActivity implements
             info.setGroupID(mCallModel.groupId);
             info.setInviter(mCallModel.sender);
             info.setData(mCallModel.data);
-            ((TRTCAVCallImpl) (TRTCAVCallImpl.sharedInstance(IMKitAgent.instance()))).processInvite(
+            ((TRTCAVCallImpl) (TRTCAVCallImpl.sharedInstance(TUIKit.getAppContext()))).processInvite(
                     info.getInviteID(), info.getInviter(), info.getGroupID(), info.getInviteeList(), info.getData());
             mCallModel = null;
         }

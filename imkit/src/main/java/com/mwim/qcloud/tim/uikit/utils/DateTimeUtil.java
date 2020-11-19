@@ -2,7 +2,6 @@ package com.mwim.qcloud.tim.uikit.utils;
 
 import android.content.Context;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.qcloud.tim.uikit.TUIKit;
 
@@ -52,7 +51,7 @@ public class DateTimeUtil {
         if (currentDayIndex == msgDayIndex) {
             return msgTimeStr;
         } else {
-            Context context = IMKitAgent.instance();
+            Context context = TUIKit.getAppContext();
             if (currentDayIndex - msgDayIndex == 1 && currentYear == msgYear) {
                 msgTimeStr = context.getString(R.string.date_yesterday) + msgTimeStr;
             } else if (false/*currentDayIndex - msgDayIndex > 1 && currentYear == msgYear*/) { //本年消息,注释掉统一按照 "年/月/日" 格式显示

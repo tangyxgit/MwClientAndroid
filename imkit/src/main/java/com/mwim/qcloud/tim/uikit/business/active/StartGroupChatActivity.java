@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.dialog.GroupJoinTypeDialog;
@@ -186,10 +186,10 @@ public class StartGroupChatActivity extends IMBaseActivity implements TextWatche
                 chatInfo.setType(V2TIMConversation.V2TIM_GROUP);
                 chatInfo.setId(data.toString());
                 chatInfo.setChatName(groupInfo.getGroupName());
-                Intent intent = new Intent(IMKitAgent.instance(), ChatActivity.class);
+                Intent intent = new Intent(TUIKit.getAppContext(), ChatActivity.class);
                 intent.putExtra(Constants.CHAT_INFO, chatInfo);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                IMKitAgent.instance().startActivity(intent);
+                TUIKit.getAppContext().startActivity(intent);
                 finish();
             }
 

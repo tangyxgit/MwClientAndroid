@@ -23,10 +23,12 @@ import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
+import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
+import com.work.api.open.model.SysUserReq;
 import com.work.api.open.model.client.OpenData;
 import com.work.mw.R;
 import com.work.util.AppUtils;
@@ -183,9 +185,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     userApi.setMobile(loginReq.getMobile());
                     userApi.setToken(((LoginResp) resp).getToken());
                     showProgressLoading(false,false);
-                    IMKitAgent.login(userApi.getUserId(), userApi.getUserSign(), new IUIKitCallBack() {
+                    SysUserReq sysUserReq = new SysUserReq();
+                    sysUserReq.setUserId(userApi.getUserId());
+                    IMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
                         @Override
-                        public void onSuccess(Object data) {
+                        public void loginSuccess(Object data) {
+                            super.loginSuccess(data);
                             SLog.e("im success:"+data);
                             dismissProgress();
                             Intent intent = new Intent(LoginActivity.this, MwWorkActivity.class);
@@ -194,7 +199,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         }
 
                         @Override
-                        public void onError(String module, final int errCode, final String errMsg) {
+                        public void loginFail(String module, int errCode, String errMsg) {
+                            super.loginFail(module, errCode, errMsg);
                             dismissProgress();
                             ToastUtil.error(LoginActivity.this,"登录失败, errCode = " + errCode + ",errInfo = " + errMsg);
                             SLog.e("登录失败, errCode = " + errCode + ",errInfo = " + errMsg);

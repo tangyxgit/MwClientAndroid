@@ -1,4 +1,4 @@
-package com.mwim.qcloud.tim.uikit.business.helper.wemeet
+package com.work.mw.wemeet
 
 import android.app.Application
 import android.content.Context

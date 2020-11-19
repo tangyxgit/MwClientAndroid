@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
 import com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity;
 import com.mwim.qcloud.tim.uikit.business.helper.PopMenuHelper;
@@ -70,7 +71,7 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
                             if (item.getItemId() == R.id.add_friends) {
                                 getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
                             }else if(item.getItemId() == R.id.add_group){
-                                Intent intent = new Intent(IMKitAgent.instance(), StartGroupChatActivity.class);
+                                Intent intent = new Intent(TUIKit.getAppContext(), StartGroupChatActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
                                 getContext().startActivity(intent);
@@ -94,7 +95,7 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                ToastUtil.error(IMKitAgent.instance(),"加载消息失败");
+                ToastUtil.error(TUIKit.getAppContext(),"加载消息失败");
             }
         });
     }

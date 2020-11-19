@@ -311,7 +311,7 @@ public class MessageImageHolder extends MessageContentHolder {
 
             @Override
             public void onError(int code, String desc) {
-                ToastUtil.error(IMKitAgent.instance(),"下载视频失败:" + code + "=" + desc);
+                ToastUtil.error(TUIKit.getAppContext(),"下载视频失败:" + code + "=" + desc);
                 msg.setStatus(MessageInfo.MSG_STATUS_DOWNLOADED);
                 sendingProgress.setVisibility(View.GONE);
                 statusImage.setVisibility(View.VISIBLE);

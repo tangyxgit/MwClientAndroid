@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.fragment.WebViewFragment;
 import com.work.util.SLog;
@@ -63,7 +64,7 @@ public class WebActivity extends BaseActivity {
         startWebView(url,ua,false);
     }
     public static void startWebView(String url,String ua,boolean checkLocation){
-        Intent intent = new Intent(IMKitAgent.instance(),WebActivity.class);
+        Intent intent = new Intent(TUIKit.getAppContext(),WebActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(WebActivity.class.getSimpleName(),url);
         if(!TextUtils.isEmpty(ua)){
@@ -72,6 +73,6 @@ public class WebActivity extends BaseActivity {
         bundle.putBoolean(CheckLocation,checkLocation);
         intent.putExtras(bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        IMKitAgent.instance().startActivity(intent);
+        TUIKit.getAppContext().startActivity(intent);
     }
 }

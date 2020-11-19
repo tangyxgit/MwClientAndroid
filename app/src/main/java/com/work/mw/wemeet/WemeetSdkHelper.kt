@@ -1,8 +1,8 @@
-package com.mwim.qcloud.tim.uikit.business.helper.wemeet
+package com.work.mw.wemeet
 
 import android.content.Context
 import android.util.Log
-import com.mwim.qcloud.tim.uikit.IMKitAgent
+import com.mwim.qcloud.tim.uikit.TUIKit
 import com.mwim.qcloud.tim.uikit.base.BaseActivity
 import com.tencent.wemeet.sdk.WemeetSDK
 import com.tencent.wemeet.sdk.data.InitParams
@@ -32,7 +32,7 @@ object WemeetSdkHelper {
     @JvmStatic
     fun startAuth(url: String) {
         if (SDKKEY.isBlank() || SDKTOKEN.isBlank()) {
-            ToastUtil.error(IMKitAgent.instance(), "Invalid parameter in $TAG:SDKKEY or SDKTOKEN,")
+            ToastUtil.error(TUIKit.getAppContext(), "Invalid parameter in $TAG:SDKKEY or SDKTOKEN,")
             return
         }
         if(mContext is BaseActivity){
@@ -67,7 +67,7 @@ object WemeetSdkHelper {
             Log.i(TAG, "onAuthCodeRefresh")
             AuthCodeHelper.getAuthCode(url) { authCode ->
                 if (authCode.isBlank()) {
-                    ToastUtil.error(IMKitAgent.instance(), "获取auth code失败，请重试")
+                    ToastUtil.error(TUIKit.getAppContext(), "获取auth code失败，请重试")
                 } else {
                     callback.onAuthCodeResult(authCode)
                 }

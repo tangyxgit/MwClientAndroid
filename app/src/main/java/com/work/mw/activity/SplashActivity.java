@@ -10,16 +10,15 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
-import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
+import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
-import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
-import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.work.api.open.Yz;
 import com.work.api.open.model.BaseResp;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
+import com.work.api.open.model.SysUserReq;
 import com.work.mw.R;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
@@ -48,29 +47,24 @@ public class SplashActivity extends BaseActivity {
             Yz.getSession().getUserByUserId(loginReq,this);
         } else {
             View mFlashView = findViewById(R.id.loading_view);
-            mFlashView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startLogin();
-                }
-            }, 1000);
+            mFlashView.postDelayed(this::startLogin, 1000);
         }
     }
     private void login() {
-        IMKitAgent.login(mUserInfo.getUserId(), mUserInfo.getUserSign(), new IUIKitCallBack() {
+        SysUserReq sysUserReq = new SysUserReq();
+        sysUserReq.setUserId(mUserInfo.getUserId());
+        IMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
             @Override
-            public void onError(String module, final int code, final String desc) {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        startLogin();
-                    }
-                });
-                SLog.e("imLogin errorCode = " + code + ", errorInfo = " + desc);
+            public void loginSuccess(Object data) {
+                super.loginSuccess(data);
+                startMain();
             }
 
             @Override
-            public void onSuccess(Object data) {
-                startMain();
+            public void loginFail(String module, int errCode, String errMsg) {
+                super.loginFail(module, errCode, errMsg);
+                runOnUiThread(() -> startLogin());
+                SLog.e("imLogin errorCode = " + errCode + ", errorInfo = " + errMsg);
             }
         });
     }

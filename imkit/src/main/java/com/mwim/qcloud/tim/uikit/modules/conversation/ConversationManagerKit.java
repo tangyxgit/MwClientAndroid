@@ -15,7 +15,6 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.R;
-import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
@@ -23,6 +22,7 @@ import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageRevokedManager;
 import com.mwim.qcloud.tim.uikit.utils.SharedPreferenceUtils;
+import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.work.util.SLog;
 
 import java.io.File;
@@ -228,13 +228,13 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         int atInfoType = getAtInfoType(conversation);
         switch (atInfoType){
             case V2TIMGroupAtInfo.TIM_AT_ME:
-                info.setAtInfoText(IMKitAgent.instance().getString(R.string.ui_at_me));
+                info.setAtInfoText(TUIKit.getAppContext().getString(R.string.ui_at_me));
                 break;
             case V2TIMGroupAtInfo.TIM_AT_ALL:
-                info.setAtInfoText(IMKitAgent.instance().getString(R.string.ui_at_all));
+                info.setAtInfoText(TUIKit.getAppContext().getString(R.string.ui_at_all));
                 break;
             case V2TIMGroupAtInfo.TIM_AT_ALL_AT_ME:
-                info.setAtInfoText(IMKitAgent.instance().getString(R.string.ui_at_all_me));
+                info.setAtInfoText(TUIKit.getAppContext().getString(R.string.ui_at_all_me));
                 break;
             default:
                 info.setAtInfoText("");

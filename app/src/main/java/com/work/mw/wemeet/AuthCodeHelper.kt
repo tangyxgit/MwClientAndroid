@@ -1,4 +1,4 @@
-package com.mwim.qcloud.tim.uikit.business.helper.wemeet
+package com.work.mw.wemeet
 
 import android.annotation.TargetApi
 import android.net.Uri
@@ -8,6 +8,7 @@ import android.os.Looper
 import android.util.Log
 import android.webkit.*
 import com.mwim.qcloud.tim.uikit.IMKitAgent
+import com.mwim.qcloud.tim.uikit.TUIKit
 import java.net.URLDecoder
 
 typealias OnAuthCodeCallback = (authCode: String) -> Unit
@@ -21,7 +22,7 @@ object AuthCodeHelper {
     @JvmStatic
     fun getAuthCode(url: String, callback: OnAuthCodeCallback) {
         UI_HANDLER.post {
-            val webView = WebView(IMKitAgent.instance())
+            val webView = WebView(TUIKit.getAppContext())
             val webSetting = webView.settings
             webSetting.javaScriptEnabled = true
             webSetting.domStorageEnabled = true

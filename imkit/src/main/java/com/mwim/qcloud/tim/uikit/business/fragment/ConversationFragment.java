@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
@@ -158,10 +159,10 @@ public class ConversationFragment extends BaseFragment {
         chatInfo.setType(conversationInfo.isGroup() ? V2TIMConversation.V2TIM_GROUP : V2TIMConversation.V2TIM_C2C);
         chatInfo.setId(conversationInfo.getId());
         chatInfo.setChatName(conversationInfo.getTitle());
-        Intent intent = new Intent(IMKitAgent.instance(), ChatActivity.class);
+        Intent intent = new Intent(TUIKit.getAppContext(), ChatActivity.class);
         intent.putExtra(Constants.CHAT_INFO, chatInfo);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        IMKitAgent.instance().startActivity(intent);
+        TUIKit.getAppContext().startActivity(intent);
     }
 
 }

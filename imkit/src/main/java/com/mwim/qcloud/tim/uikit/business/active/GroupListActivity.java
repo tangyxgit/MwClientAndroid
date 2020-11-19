@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
@@ -86,7 +87,7 @@ public class GroupListActivity extends IMBaseActivity {
     @Override
     public void onRightClickListener(View view) {
         super.onRightClickListener(view);
-        Intent intent = new Intent(IMKitAgent.instance(), AddMoreActivity.class);
+        Intent intent = new Intent(TUIKit.getAppContext(), AddMoreActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("isGroup", true);
         startActivity(intent);

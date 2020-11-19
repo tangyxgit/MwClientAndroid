@@ -15,9 +15,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.TUIKit;
-import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.component.TextViewFixTouchConsume;
 import com.mwim.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
@@ -192,7 +190,7 @@ public class FaceManager {
 
     public static void handlerEmojiText(TextView comment, String content, boolean typing, int linkColor, StringUtils.OnSpanClickListener listener) {
         if(linkColor==0){
-            linkColor = ContextCompat.getColor(IMKitAgent.instance(),R.color.color_333333);
+            linkColor = ContextCompat.getColor(TUIKit.getAppContext(),R.color.color_333333);
         }
         String regex = "https?://(?:[-\\w.]|(?:%[\\da-fA-F]{2}))+[^\\u4e00-\\u9fa5]+[\\w-_/?&=#%:]{0}";
         Pattern p = Pattern.compile(regex);

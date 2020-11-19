@@ -16,6 +16,7 @@ import android.text.TextUtils;
 
 import com.mwim.liteav.model.CallModel;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
@@ -48,7 +49,7 @@ public class MessageNotification {
 
     private NotificationManager mManager;
     private Handler mHandler = new Handler();
-    private Context mContext = IMKitAgent.instance();
+    private Context mContext = TUIKit.getAppContext();
     private HashMap<String,String> mGroupNameMaps = new HashMap<>();
     private GroupInfoProvider mGroupProvider;
 

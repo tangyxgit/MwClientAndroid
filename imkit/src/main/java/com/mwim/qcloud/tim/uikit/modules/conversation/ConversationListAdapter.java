@@ -14,9 +14,9 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.holder.ConversationCustomH
 import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationAdapter;
 import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationProvider;
 import com.mwim.qcloud.tim.uikit.R;
-import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
+import com.tencent.qcloud.tim.uikit.TUIKit;
 
 import java.util.ArrayList;
 import java.util.List;

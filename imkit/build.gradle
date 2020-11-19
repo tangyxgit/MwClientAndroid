@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 group='com.mwim.qcloud.tim.uikit'
 
 android {
@@ -39,12 +37,6 @@ android {
 }
 
 
-repositories {
-    maven {
-        url 'https://storage.googleapis.com/download.flutter.io'
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -64,8 +56,8 @@ dependencies {
 
     implementation 'com.wang.avi:library:2.1.3'
     implementation 'com.google.android:flexbox:1.0.0'
-//    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
-    implementation 'com.tencent.liteav:LiteAVSDK_TRTC:8.0.9638'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.tencent.liteav:LiteAVSDK_TRTC:8.0.9639'
     //im
     implementation 'com.tencent.imsdk:tuikit:5.1.2'
 
@@ -75,10 +67,6 @@ dependencies {
     api 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     //x5 内核
     implementation 'com.tencent.tbs.tbssdk:sdk:43939'
-    //腾讯会议
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
-    implementation "com.tencent.wemeet:sdk-interface:0.0.44"
-//    implementation "com.tencent.wemeet:sdk-interface:0.0.25"
     //umeng统计
     implementation "com.umeng.umsdk:common:9.3.0"
     implementation "com.umeng.umsdk:asms:1.1.3" // asms包依赖(必选)

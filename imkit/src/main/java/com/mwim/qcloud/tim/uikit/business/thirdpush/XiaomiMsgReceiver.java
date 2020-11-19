@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.ErrorCode;
@@ -34,10 +34,10 @@ public class XiaomiMsgReceiver extends PushMessageReceiver {
             SLog.w( "onNotificationMessageClicked: no extra data found");
             return;
         }
-        Intent intent = new Intent(IMKitAgent.instance(), MwWorkActivity.class);
+        Intent intent = new Intent(TUIKit.getAppContext(), MwWorkActivity.class);
         intent.putExtra("ext", ext);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        IMKitAgent.instance().startActivity(intent);
+        TUIKit.getAppContext().startActivity(intent);
     }
 
     @Override

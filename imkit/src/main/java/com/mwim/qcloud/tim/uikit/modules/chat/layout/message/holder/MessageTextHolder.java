@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
@@ -35,7 +35,7 @@ public class MessageTextHolder extends MessageContentHolder {
     public void layoutVariableViews(final MessageInfo msg, final int position) {
         msgBodyText.setVisibility(View.VISIBLE);
         if (msg.getExtra() != null) {
-            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false, ContextCompat.getColor(IMKitAgent.instance(), msg.isSelf() ? R.color.white : R.color.black), new StringUtils.OnSpanClickListener() {
+            FaceManager.handlerEmojiText(msgBodyText, msg.getExtra().toString(), false, ContextCompat.getColor(TUIKit.getAppContext(), msg.isSelf() ? R.color.white : R.color.black), new StringUtils.OnSpanClickListener() {
                 @Override
                 public void onClickSpan(String content) {
                     WebActivity.startWebView(content);

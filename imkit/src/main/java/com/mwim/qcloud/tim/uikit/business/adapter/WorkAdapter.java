@@ -17,7 +17,6 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
-import com.mwim.qcloud.tim.uikit.business.helper.wemeet.WemeetSdkHelper;
 import com.work.api.open.Yz;
 import com.work.api.open.model.GetCarWebViewUrlResp;
 import com.work.api.open.model.GetToolTokenReq;
@@ -36,6 +35,7 @@ import java.util.List;
  */
 
 public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> implements OnResultDataListener{
+
     public final static HashMap<String,String> SdkTokenMaps= new HashMap<>();
     public final static HashMap<String,String> IdTokenMaps= new HashMap<>();
 
@@ -76,7 +76,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                                     ToastUtil.error(getContext(),"该账号未开通会议。");
                                     return;
                                 }
-                                WemeetSdkHelper.init(getContext(),sdkToken);
+//                                WemeetSdkHelper.init(getContext(),sdkToken);
                             }
                             if(getContext() instanceof BaseActivity){
                                 ((BaseActivity) getContext()).showProgressLoading(false,false);
@@ -106,7 +106,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                 String token = ((GetToolTokenResp) resp).getData();
                 String url = resp.getPositionParams(0);
                 if("code001".equals(((GetToolTokenReq) req).getToolCode())){//腾讯会议
-                    WemeetSdkHelper.startAuth(url+IdTokenMaps.get(UserApi.instance().getMobile()));
+//                    WemeetSdkHelper.startAuth(url+IdTokenMaps.get(UserApi.instance().getMobile()));
                 }else if("code002".equals(((GetToolTokenReq) req).getToolCode())){//网盘
                     WebActivity.startWebView(url+"?token="+token);
                 }else if("code003".equals(((GetToolTokenReq) req).getToolCode())){//打车

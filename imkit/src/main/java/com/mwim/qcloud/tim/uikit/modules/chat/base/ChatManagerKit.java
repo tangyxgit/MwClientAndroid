@@ -3,12 +3,11 @@ package com.mwim.qcloud.tim.uikit.modules.chat.base;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageRevokedManager;
-import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.v2.V2TIMAdvancedMsgListener;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
@@ -118,7 +117,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
         }
         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         stringBuilder.append("成为好友");
-        ToastUtil.info(IMKitAgent.instance(),stringBuilder.toString());
+        ToastUtil.info(TUIKit.getAppContext(),stringBuilder.toString());
     }
 
     protected void onReceiveMessage(final V2TIMMessage msg) {
@@ -229,9 +228,9 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
             @Override
             public void onError(int code, String desc) {
                 if (code == REVOKE_TIME_OUT) {
-                    ToastUtil.info(IMKitAgent.instance(),"消息发送已超过2分钟");
+                    ToastUtil.info(TUIKit.getAppContext(),"消息发送已超过2分钟");
                 } else {
-                    ToastUtil.info(IMKitAgent.instance(),"撤回失败:" + code + "=" + desc);
+                    ToastUtil.info(TUIKit.getAppContext(),"撤回失败:" + code + "=" + desc);
                 }
             }
 
@@ -300,7 +299,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                             return;
                         }
                         if(code==20009){//不是好友
-                            ToastUtil.error(IMKitAgent.instance(),"您和对方不是好友，发送失败");
+                            ToastUtil.error(TUIKit.getAppContext(),"您和对方不是好友，发送失败");
                         }
                         if (callBack != null) {
                             callBack.onError("SLog",code, desc);

@@ -16,8 +16,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.adapter.SearchAddMoreAdapter;
@@ -77,10 +77,10 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
                     chatInfo.setType(conversationInfo.isGroup() ? V2TIMConversation.V2TIM_GROUP : V2TIMConversation.V2TIM_C2C);
                     chatInfo.setId(conversationInfo.getId());
                     chatInfo.setChatName(conversationInfo.getTitle());
-                    Intent intent = new Intent(IMKitAgent.instance(), ChatActivity.class);
+                    Intent intent = new Intent(TUIKit.getAppContext(), ChatActivity.class);
                     intent.putExtra(Constants.CHAT_INFO, chatInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    IMKitAgent.instance().startActivity(intent);
+                    TUIKit.getAppContext().startActivity(intent);
                 }
             });
             mRecyclerView.setAdapter(mConversationAdapter);
@@ -153,7 +153,7 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                ToastUtil.error(IMKitAgent.instance(),"加载消息失败");
+                ToastUtil.error(TUIKit.getAppContext(),"加载消息失败");
             }
         });
     }
@@ -263,10 +263,10 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
                 contact.setNickname(item.getNickName());
                 contact.setRemark(item.getRemark());
                 contact.setId(item.getUserId());
-                Intent intent = new Intent(IMKitAgent.instance(), FriendProfileActivity.class);
+                Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact);
-                IMKitAgent.instance().startActivity(intent);
+                TUIKit.getAppContext().startActivity(intent);
             }else{
                 Intent intent = new Intent(this, FriendProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

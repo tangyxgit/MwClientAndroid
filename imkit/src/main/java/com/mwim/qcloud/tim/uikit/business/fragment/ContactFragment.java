@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.active.BlackListActivity;
 import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
@@ -41,22 +42,22 @@ public class ContactFragment extends BaseFragment {
             @Override
             public void onItemClick(int position, ContactItemBean contact) {
                 if (position == 0) {
-                    Intent intent = new Intent(IMKitAgent.instance(), NewFriendActivity.class);
+                    Intent intent = new Intent(TUIKit.getAppContext(), NewFriendActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    IMKitAgent.instance().startActivity(intent);
+                    TUIKit.getAppContext().startActivity(intent);
                 } else if (position == 1) {
-                    Intent intent = new Intent(IMKitAgent.instance(), GroupListActivity.class);
+                    Intent intent = new Intent(TUIKit.getAppContext(), GroupListActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    IMKitAgent.instance().startActivity(intent);
+                    TUIKit.getAppContext().startActivity(intent);
                 } else if (position == 2) {
-                    Intent intent = new Intent(IMKitAgent.instance(), BlackListActivity.class);
+                    Intent intent = new Intent(TUIKit.getAppContext(), BlackListActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    IMKitAgent.instance().startActivity(intent);
+                    TUIKit.getAppContext().startActivity(intent);
                 } else {
-                    Intent intent = new Intent(IMKitAgent.instance(), FriendProfileActivity.class);
+                    Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact);
-                    IMKitAgent.instance().startActivity(intent);
+                    TUIKit.getAppContext().startActivity(intent);
                 }
             }
         });

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
@@ -90,10 +91,10 @@ public class ChatFragment extends BaseFragment {
             mTitleBar.setOnRightClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(IMKitAgent.instance(), FriendProfileActivity.class);
+                    Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);
-                    IMKitAgent.instance().startActivity(intent);
+                    TUIKit.getAppContext().startActivity(intent);
                 }
             });
         }
@@ -111,16 +112,16 @@ public class ChatFragment extends BaseFragment {
                 }
                 ChatInfo info = new ChatInfo();
                 info.setId(messageInfo.getFromUser());
-                Intent intent = new Intent(IMKitAgent.instance(), FriendProfileActivity.class);
+                Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(TUIKitConstants.ProfileType.CONTENT, info);
-                IMKitAgent.instance().startActivity(intent);
+                TUIKit.getAppContext().startActivity(intent);
             }
         });
         mChatLayout.getInputLayout().setStartActivityListener(new InputLayout.onStartActivityListener() {
             @Override
             public void onStartGroupMemberSelectActivity() {
-                Intent intent = new Intent(IMKitAgent.instance(), StartGroupMemberSelectActivity.class);
+                Intent intent = new Intent(TUIKit.getAppContext(), StartGroupMemberSelectActivity.class);
                 GroupInfo groupInfo = new GroupInfo();
                 groupInfo.setId(mChatInfo.getId());
                 groupInfo.setChatName(mChatInfo.getChatName());

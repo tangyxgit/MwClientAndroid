@@ -6,8 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.google.gson.Gson;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.message.CustomMessage;
@@ -54,10 +54,10 @@ public class SelectMessageActivity extends BaseActivity {
             @Override
             public void onItemClick(int position, ContactItemBean contact) {
                 if (position == 0) {
-                    Intent intent = new Intent(IMKitAgent.instance(), GroupListActivity.class);
+                    Intent intent = new Intent(TUIKit.getAppContext(), GroupListActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(GroupListActivity.class.getSimpleName(),customData);
-                    IMKitAgent.instance().startActivity(intent);
+                    TUIKit.getAppContext().startActivity(intent);
                     finish();
                 } else {
                     ChatInfo chatInfo = new ChatInfo();

@@ -34,7 +34,7 @@ public abstract class IMBaseActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IMKitAgent.addIMEventListener(mIMEventListener);
+        IMKitAgent.instance().addIMEventListener(mIMEventListener);
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
@@ -17,24 +17,17 @@ import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.mwim.qcloud.tim.uikit.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StartC2CChatActivity extends IMBaseActivity {
 
-    private static final String TAG = StartC2CChatActivity.class.getSimpleName();
 
-    private TitleBarLayout mTitleBar;
-    private ContactListView mContactListView;
     private ContactItemBean mSelectedItem;
-    private List<ContactItemBean> mContacts = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup_start_c2c_chat);
 
-        mTitleBar = findViewById(R.id.start_c2c_chat_title);
+        TitleBarLayout mTitleBar = findViewById(R.id.start_c2c_chat_title);
         mTitleBar.setTitle(getResources().getString(R.string.sure), TitleBarLayout.POSITION.RIGHT);
         mTitleBar.getRightTitle().setTextColor(getResources().getColor(R.color.title_bar_font_color));
         mTitleBar.getRightIcon().setVisibility(View.GONE);
@@ -51,7 +44,7 @@ public class StartC2CChatActivity extends IMBaseActivity {
             }
         });
 
-        mContactListView = findViewById(R.id.contact_list_view);
+        ContactListView mContactListView = findViewById(R.id.contact_list_view);
         mContactListView.setSingleSelectMode(true);
         mContactListView.loadDataSource(ContactListView.DataSource.FRIEND_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
@@ -90,10 +83,10 @@ public class StartC2CChatActivity extends IMBaseActivity {
             chatName = mSelectedItem.getNickname();
         }
         chatInfo.setChatName(chatName);
-        Intent intent = new Intent(IMKitAgent.instance(), ChatActivity.class);
+        Intent intent = new Intent(TUIKit.getAppContext(), ChatActivity.class);
         intent.putExtra(Constants.CHAT_INFO, chatInfo);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        IMKitAgent.instance().startActivity(intent);
+        TUIKit.getAppContext().startActivity(intent);
 
         finish();
     }

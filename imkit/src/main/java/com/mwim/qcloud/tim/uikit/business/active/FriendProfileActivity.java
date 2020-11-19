@@ -3,7 +3,7 @@ package com.mwim.qcloud.tim.uikit.business.active;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
@@ -32,10 +32,10 @@ public class FriendProfileActivity extends IMBaseActivity {
                     chatName = info.getNickname();
                 }
                 chatInfo.setChatName(chatName);
-                Intent intent = new Intent(IMKitAgent.instance(), ChatActivity.class);
+                Intent intent = new Intent(TUIKit.getAppContext(), ChatActivity.class);
                 intent.putExtra(Constants.CHAT_INFO, chatInfo);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                IMKitAgent.instance().startActivity(intent);
+                TUIKit.getAppContext().startActivity(intent);
             }
 
             @Override

@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.base;
 
-import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,8 +10,6 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
-import com.mwim.qcloud.tim.uikit.business.helper.wemeet.WemeetSdkHelper;
-import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.work.api.open.model.BaseResp;
 import com.work.util.ToastUtil;
 import com.workstation.android.TakePhotoActivity;
@@ -37,24 +34,7 @@ public class BaseActivity extends TakePhotoActivity {
     }
 
     public void logout() {
-        IMKitAgent.logout(new IUIKitCallBack() {
-            @Override
-            public void onSuccess(Object data) {
-
-            }
-
-            @Override
-            public void onError(String module, int errCode, String errMsg) {
-
-            }
-        });
-        IMKitAgent.unInit();
-        WemeetSdkHelper.logout();
-        UserApi.instance().clear();
-        Intent intent = new Intent();
-        intent.setClassName(this.getApplicationContext(), "com.work.mw.activity.LoginActivity");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        IMKitAgent.instance().logout();
     }
 
     @Override

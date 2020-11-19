@@ -3,6 +3,7 @@ package com.work.mw;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,8 +12,13 @@ import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
+import com.work.mw.wemeet.RdmSDK;
+import com.work.mw.wemeet.WemeetSdkHelper;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
+import com.tencent.wemeet.sdk.app.AppGlobals;
 import com.work.api.open.ApiClient;
+import com.work.mw.activity.LoginActivity;
 import com.work.util.SharedUtils;
 
 /**
@@ -32,9 +38,24 @@ public class MwClientApplication extends MultiDexApplication {
         onChannel();
         SharedUtils.init(this);
         MultiDex.install(this);
-        IMKitAgent.init(this,"");
-        IMKitAgent.registerPush();
+
+        IMKitAgent.init(this,"de241446a50499bb77a8684cf610fd04");
+        IMKitAgent.instance().addStatusListener(new YzStatusListener() {
+            @Override
+            public void logout() {
+                super.logout();
+                WemeetSdkHelper.logout();
+                Intent intent = new Intent(MwClientApplication.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
         registerActivityLifecycleCallbacks(new StatisticActivityLifecycleCallback());
+        //腾讯会议
+        AppGlobals.INSTANCE.init(this);
+        RdmSDK.INSTANCE.init(this);
+
+
     }
 
     private String getCurrentProcessName() {
@@ -83,7 +104,7 @@ public class MwClientApplication extends MultiDexApplication {
 
         @Override
         public void onActivityStarted(Activity activity) {
-            IMKitAgent.onActivityStarted();
+            IMKitAgent.instance().onActivityStarted();
         }
 
         @Override
@@ -98,7 +119,7 @@ public class MwClientApplication extends MultiDexApplication {
 
         @Override
         public void onActivityStopped(Activity activity) {
-            IMKitAgent.onActivityStopped();
+            IMKitAgent.instance().onActivityStopped();
         }
 
         @Override

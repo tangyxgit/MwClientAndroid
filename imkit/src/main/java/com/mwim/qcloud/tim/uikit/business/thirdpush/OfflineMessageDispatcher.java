@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
@@ -115,8 +116,8 @@ public class OfflineMessageDispatcher {
         } else if (bean.version != 1
                 || (bean.action != OfflineMessageBean.REDIRECT_ACTION_CHAT
                     && bean.action != OfflineMessageBean.REDIRECT_ACTION_CALL) ) {
-            PackageManager packageManager = IMKitAgent.instance().getPackageManager();
-            String label = String.valueOf(packageManager.getApplicationLabel(IMKitAgent.instance().getApplicationInfo()));
+            PackageManager packageManager = TUIKit.getAppContext().getPackageManager();
+            String label = String.valueOf(packageManager.getApplicationLabel(TUIKit.getAppContext().getApplicationInfo()));
             ToastUtil.toastLongMessage("您的应用 " + label + " 版本太低，不支持打开该离线消息");
             SLog.e( "unknown version: " + bean.version + " or action: " + bean.action);
             return null;
@@ -129,10 +130,10 @@ public class OfflineMessageDispatcher {
             ChatInfo chatInfo = new ChatInfo();
             chatInfo.setType(bean.chatType);
             chatInfo.setId(bean.sender);
-            Intent intent = new Intent(IMKitAgent.instance(), ChatActivity.class);
+            Intent intent = new Intent(TUIKit.getAppContext(), ChatActivity.class);
             intent.putExtra(Constants.CHAT_INFO, chatInfo);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            IMKitAgent.instance().startActivity(intent);
+            TUIKit.getAppContext().startActivity(intent);
             return true;
         } else if (bean.action == OfflineMessageBean.REDIRECT_ACTION_CALL) {
             final CallModel model = new Gson().fromJson(bean.content, CallModel.class);
@@ -163,7 +164,7 @@ public class OfflineMessageDispatcher {
 
                             @Override
                             public void onSuccess() {
-                                ((TRTCAVCallImpl)(TRTCAVCallImpl.sharedInstance(IMKitAgent.instance()))).
+                                ((TRTCAVCallImpl)(TRTCAVCallImpl.sharedInstance(TUIKit.getAppContext()))).
                                         processInvite(model.callId, bean.sender, model.groupId, model.invitedList, bean.content);
                             }
                         });
@@ -172,9 +173,9 @@ public class OfflineMessageDispatcher {
                 }
             }
         }
-        Intent intent = new Intent(IMKitAgent.instance(), MwWorkActivity.class);
+        Intent intent = new Intent(TUIKit.getAppContext(), MwWorkActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        IMKitAgent.instance().startActivity(intent);
+        TUIKit.getAppContext().startActivity(intent);
         return true;
     }
 }

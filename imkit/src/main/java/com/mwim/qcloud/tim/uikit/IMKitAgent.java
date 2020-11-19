@@ -1,20 +1,22 @@
 package com.mwim.qcloud.tim.uikit;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.text.TextUtils;
 
+import com.http.network.listener.OnResultDataListener;
+import com.http.network.model.RequestWork;
+import com.http.network.model.ResponseWork;
 import com.huawei.hms.push.HmsMessaging;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
-import com.mwim.qcloud.tim.uikit.business.helper.wemeet.RdmSDK;
+import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
+import com.mwim.qcloud.tim.uikit.business.inter.WorkAppItemClickListener;
 import com.mwim.qcloud.tim.uikit.business.message.MessageNotification;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
-import com.mwim.qcloud.tim.uikit.component.face.CustomFace;
-import com.mwim.qcloud.tim.uikit.component.face.CustomFaceGroup;
-import com.mwim.qcloud.tim.uikit.config.CustomFaceConfig;
 import com.mwim.qcloud.tim.uikit.config.GeneralConfig;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
@@ -26,10 +28,11 @@ import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
-import com.tencent.wemeet.sdk.app.AppGlobals;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.vivo.push.PushClient;
+import com.work.api.open.Yz;
+import com.work.api.open.model.SysUserReq;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -45,20 +48,18 @@ import java.util.HashMap;
 
 public final class IMKitAgent {
 
-    private static final int AppId = 1400432221;
-
-    private static IMEventListener IMEventPushListener = new IMEventListener() {
+    private IMEventListener IMEventPushListener = new IMEventListener() {
         @Override
         public void onNewMessage(V2TIMMessage msg) {
             MessageNotification notification = MessageNotification.getInstance();
             notification.notify(msg);
         }
     };
-    private static ConversationManagerKit.MessageUnreadWatcher UnreadWatcher = new ConversationManagerKit.MessageUnreadWatcher() {
+    private ConversationManagerKit.MessageUnreadWatcher UnreadWatcher = new ConversationManagerKit.MessageUnreadWatcher() {
         @Override
         public void updateUnread(int count) {
             // 华为离线推送角标
-            HUAWEIHmsMessageService.updateBadge(instance(), count);
+            HUAWEIHmsMessageService.updateBadge(mContext, count);
         }
 
         @Override
@@ -71,17 +72,37 @@ public final class IMKitAgent {
 
         }
     };
-    private static Context instance;
+    private static IMKitAgent singleton;
+    private Context mContext;
+    private String mYzAppId;
+    private YzStatusListener mIMKitStatusListener;
+    private WorkAppItemClickListener mWorkAppItemClickListener;
 
-    public static Context instance(){
-        return instance;
+    private IMKitAgent(Context context,String mYzAppId) {
+        this.mContext = context;
+        this.mYzAppId = mYzAppId;
+        loadConfig();
     }
 
-    public static void init(Application context,String appKey){
-        instance = context;
-        UMConfigure.init(context, "5f8d583980455950e4af10d9", "Yz", UMConfigure.DEVICE_TYPE_PHONE, "");
+    public static void init(Context context,String appId){
+        if(singleton==null){
+            singleton = new IMKitAgent(context,appId);
+        }
+    }
+
+    public static IMKitAgent instance(){
+        return singleton;
+    }
+
+    public void addStatusListener(YzStatusListener listener){
+        this.mIMKitStatusListener = listener;
+    }
+
+    private void loadConfig(){
+        UMConfigure.init(mContext, "5f8d583980455950e4af10d9", "Yz", UMConfigure.DEVICE_TYPE_PHONE, "");
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
-        TUIKit.init(context,AppId,getConfigs(context));
+        //初始化im
+        TUIKit.init(mContext,1400432221,getConfigs());
         HashMap<String,Object> map = new HashMap<>();
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
@@ -98,16 +119,14 @@ public final class IMKitAgent {
                 SLog.e("x5 web init:"+b);
             }
         };
-        QbSdk.initX5Environment(context,cb);
-        //腾讯会议
-        AppGlobals.INSTANCE.init(context);
-        RdmSDK.INSTANCE.init(context);
+        QbSdk.initX5Environment(mContext,cb);
+        registerPush();
     };
-    private static TUIKitConfigs getConfigs(Context context) {
+    private TUIKitConfigs getConfigs() {
         GeneralConfig config = new GeneralConfig();
         // 显示对方是否已读的view将会展示
         config.setShowRead(true);
-        config.setAppCacheDir(context.getFilesDir().getPath());
+        config.setAppCacheDir(mContext.getFilesDir().getPath());
         if (new File(Environment.getExternalStorageDirectory() + "/111222333").exists()) {
             config.setTestEnv(true);
         }
@@ -115,88 +134,57 @@ public final class IMKitAgent {
 //        TUIKit.getConfigs().setCustomFaceConfig(initCustomFaceConfig());
         return TUIKit.getConfigs();
     }
-
-    public static Context getAppContext() {
-        return TUIKitImpl.getAppContext();
-    }
-
-    private static CustomFaceConfig initCustomFaceConfig() {
-        CustomFaceConfig config = new CustomFaceConfig();
-        CustomFaceGroup faceConfigs_1 = new CustomFaceGroup();
-        faceConfigs_1.setPageColumnCount(5);
-        faceConfigs_1.setPageRowCount(2);
-        faceConfigs_1.setFaceGroupId(1);
-        faceConfigs_1.setFaceIconPath("4350/yz00@2x.png");
-        faceConfigs_1.setFaceIconName("4350");
-        for (int i = 0; i <= 17; i++) {
-            CustomFace customFace = new CustomFace();
-            String index = "" + i;
-            if (i < 10)
-                index = "0" + i;
-            customFace.setAssetPath("4350/yz" + index + "@2x.png");
-            customFace.setFaceName("yz" + index + "@2x");
-            customFace.setFaceWidth(170);
-            customFace.setFaceHeight(170);
-            faceConfigs_1.addCustomFace(customFace);
-        }
-        config.addFaceGroup(faceConfigs_1);
-
-        CustomFaceGroup faceConfigs_2 = new CustomFaceGroup();
-        faceConfigs_2.setPageColumnCount(5);
-        faceConfigs_2.setPageRowCount(2);
-        faceConfigs_2.setFaceGroupId(2);
-        faceConfigs_2.setFaceIconPath("4351/ys00@2x.png");
-        faceConfigs_2.setFaceIconName("4351");
-        for (int i = 0; i <= 15; i++) {
-            CustomFace customFace = new CustomFace();
-            String index = "" + i;
-            if (i < 10)
-                index = "0" + i;
-            customFace.setAssetPath("4351/ys" + index + "@2x.png");
-            customFace.setFaceName("ys" + index + "@2x");
-            customFace.setFaceWidth(170);
-            customFace.setFaceHeight(170);
-            faceConfigs_2.addCustomFace(customFace);
-        }
-        config.addFaceGroup(faceConfigs_2);
-
-        CustomFaceGroup faceConfigs_3 = new CustomFaceGroup();
-        faceConfigs_3.setPageColumnCount(5);
-        faceConfigs_3.setPageRowCount(2);
-        faceConfigs_3.setFaceGroupId(3);
-        faceConfigs_3.setFaceIconPath("4352/gcs00@2x.png");
-        faceConfigs_3.setFaceIconName("4352");
-        for (int i = 0; i <= 16; i++) {
-            CustomFace customFace = new CustomFace();
-            String index = "" + i;
-            if (i < 10)
-                index = "0" + i;
-            customFace.setAssetPath("4352/gcs" + index + "@2x.png");
-            customFace.setFaceName("gcs" + index + "@2x");
-            customFace.setFaceWidth(170);
-            customFace.setFaceHeight(170);
-            faceConfigs_3.addCustomFace(customFace);
-        }
-        config.addFaceGroup(faceConfigs_3);
-
-        return config;
-    }
-    public static void addIMEventListener(IMEventListener eventListener){
+    public void addIMEventListener(IMEventListener eventListener){
         TUIKit.addIMEventListener(eventListener);
     }
-    public static void login(String userid, String usersig, final IUIKitCallBack callback) {
-        TUIKitImpl.login(userid, usersig, callback);
+
+    private String userId;
+    private String userSign;
+    public void register(SysUserReq userReq,YzStatusListener listener) {
+        if(TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSign)){
+            Yz.getSession().sysUser(userReq, new OnResultDataListener() {
+                @Override
+                public void onResult(RequestWork req, ResponseWork resp) {
+
+                }
+            });
+        }else{
+            loginIM(listener);
+        }
+    }
+    private void loginIM(final YzStatusListener listener){
+        TUIKitImpl.login(userId, userSign, new IUIKitCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+                if(listener!=null){
+                    listener.loginSuccess(data);
+                }
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+                if(listener!=null){
+                    listener.loginFail(module,errCode,errMsg);
+                }
+            }
+        });
+    }
+    /**
+     * 启动im
+     */
+    public void startAuto(){
+        
     }
     /**
      * 注册推送
      */
-    public static void registerPush(){
+    private void registerPush(){
         if (BrandUtil.isBrandXiaoMi()) {
             // 小米离线推送
-            MiPushClient.registerPush(instance(), PrivateConstants.XM_PUSH_APPID, PrivateConstants.XM_PUSH_APPKEY);
+            MiPushClient.registerPush(mContext, PrivateConstants.XM_PUSH_APPID, PrivateConstants.XM_PUSH_APPKEY);
         } else if (BrandUtil.isBrandHuawei()) {
             // 华为离线推送，设置是否接收Push通知栏消息调用示例
-            HmsMessaging.getInstance(instance()).turnOnPush().addOnCompleteListener(new com.huawei.hmf.tasks.OnCompleteListener<Void>() {
+            HmsMessaging.getInstance(mContext).turnOnPush().addOnCompleteListener(new com.huawei.hmf.tasks.OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(com.huawei.hmf.tasks.Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -208,11 +196,11 @@ public final class IMKitAgent {
             });
         } else if (BrandUtil.isBrandVivo()) {
             // vivo离线推送
-            PushClient.getInstance(instance.getApplicationContext()).initialize();
+            PushClient.getInstance(mContext.getApplicationContext()).initialize();
         }
     }
 
-    public static void onActivityStarted(){
+    public void onActivityStarted(){
         V2TIMManager.getOfflinePushManager().doForeground(new V2TIMCallback() {
             @Override
             public void onError(int code, String desc) {
@@ -238,8 +226,8 @@ public final class IMKitAgent {
         return false;
     }
 
-    public static void onActivityStopped(){
-        if(AppUtils.isAppBackground(instance())){
+    public void onActivityStopped(){
+        if(AppUtils.isAppBackground(mContext)){
             int unReadCount = ConversationManagerKit.getInstance().getUnreadTotal();
             V2TIMManager.getOfflinePushManager().doBackground(unReadCount, new V2TIMCallback() {
                 @Override
@@ -258,18 +246,33 @@ public final class IMKitAgent {
         }
     }
 
-    public static void removeIMEventListener(IMEventListener listener) {
+    private void removeIMEventListener(IMEventListener listener) {
         TUIKitImpl.removeIMEventListener(listener);
     }
 
-    public static void logout(final IUIKitCallBack callback) {
-        TUIKitImpl.logout(callback);
+    public void logout() {
+        TUIKitImpl.logout(new IUIKitCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+
+            }
+        });
+        UserApi.instance().clear();
+        unInit();
     }
 
     /**
      * 释放一些资源等，一般可以在退出登录时调用
      */
-    public static void unInit() {
+    public void unInit() {
         TUIKitImpl.unInit();
+        if(mIMKitStatusListener!=null){
+            mIMKitStatusListener.logout();
+        }
     }
 }
