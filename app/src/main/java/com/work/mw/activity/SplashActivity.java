@@ -10,7 +10,6 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
-import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
@@ -80,9 +79,7 @@ public class SplashActivity extends BaseActivity {
             finish();
             return;
         }
-        Intent intent = new Intent(SplashActivity.this, MwWorkActivity.class);
-        startActivity(intent);
-        finish();
+        IMKitAgent.instance().startAuto();
     }
 
     @Override

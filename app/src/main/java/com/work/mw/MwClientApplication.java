@@ -36,7 +36,6 @@ public class MwClientApplication extends MultiDexApplication {
             return;
         }
         onChannel();
-        SharedUtils.init(this);
         MultiDex.install(this);
 
         IMKitAgent.init(this,"de241446a50499bb77a8684cf610fd04");

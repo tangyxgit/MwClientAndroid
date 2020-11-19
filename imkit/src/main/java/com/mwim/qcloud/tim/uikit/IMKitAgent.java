@@ -11,6 +11,7 @@ import com.http.network.model.ResponseWork;
 import com.huawei.hms.push.HmsMessaging;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
+import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.inter.WorkAppItemClickListener;
 import com.mwim.qcloud.tim.uikit.business.message.MessageNotification;
@@ -35,6 +36,7 @@ import com.work.api.open.Yz;
 import com.work.api.open.model.SysUserReq;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
+import com.work.util.SharedUtils;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
@@ -74,14 +76,13 @@ public final class IMKitAgent {
     };
     private static IMKitAgent singleton;
     private Context mContext;
-    private String mYzAppId;
     private YzStatusListener mIMKitStatusListener;
     private WorkAppItemClickListener mWorkAppItemClickListener;
 
     private IMKitAgent(Context context,String mYzAppId) {
         this.mContext = context;
-        this.mYzAppId = mYzAppId;
         loadConfig();
+        SharedUtils.putData("YzAppId",mYzAppId);
     }
 
     public static void init(Context context,String appId){
@@ -99,10 +100,13 @@ public final class IMKitAgent {
     }
 
     private void loadConfig(){
+        SharedUtils.init(mContext);
+        //umeng统计
         UMConfigure.init(mContext, "5f8d583980455950e4af10d9", "Yz", UMConfigure.DEVICE_TYPE_PHONE, "");
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
         //初始化im
         TUIKit.init(mContext,1400432221,getConfigs());
+        //加载腾讯x5的浏览器引擎
         HashMap<String,Object> map = new HashMap<>();
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
         map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
@@ -120,6 +124,7 @@ public final class IMKitAgent {
             }
         };
         QbSdk.initX5Environment(mContext,cb);
+        //注册消息通知离线登录
         registerPush();
     };
     private TUIKitConfigs getConfigs() {
@@ -175,7 +180,9 @@ public final class IMKitAgent {
      * 启动im
      */
     public void startAuto(){
-
+        Intent intent = new Intent(mContext, MwWorkActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
     }
     /**
      * 注册推送

@@ -184,6 +184,7 @@ public class ApiClient {
         params.addHeader("Accept", "application/json");
         params.addHeader("Content-Type", "application/json;charset=UTF-8");
         params.addHeader("token", SharedUtils.getString("userToken"));
+        params.addHeader("appId", SharedUtils.getString("YzAppId"));
         if(requestWork!=null){
             Map<String,String> header = requestWork.getRequestHeader();
             if(header!=null && header.size()>0){

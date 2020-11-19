@@ -21,7 +21,6 @@ import com.http.network.model.ResponseWork;
 import com.jaeger.library.StatusBarUtil;
 import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
-import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.work.api.open.Yz;
@@ -192,9 +191,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                             super.loginSuccess(data);
                             SLog.e("im success:"+data);
                             dismissProgress();
-                            Intent intent = new Intent(LoginActivity.this, MwWorkActivity.class);
-                            startActivity(intent);
                             finish();
+                            IMKitAgent.instance().startAuto();
                         }
 
                         @Override
