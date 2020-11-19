@@ -7,5 +7,5 @@ package com.mwim.qcloud.tim.uikit.business.inter;
  */
 
 public interface WorkAppItemClickListener {
-    void onWorkAppClick();
+    void onWorkAppClick(Object item);
 }

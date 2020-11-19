@@ -8,12 +8,12 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
 import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.R;
-import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.work.util.SizeUtils;
 import com.work.util.ToastUtil;
 

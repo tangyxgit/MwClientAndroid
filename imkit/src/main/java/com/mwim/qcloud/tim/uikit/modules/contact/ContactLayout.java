@@ -35,6 +35,11 @@ public class ContactLayout extends LinearLayout implements IContactLayout {
         init();
     }
 
+    public ContactLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
     private void init() {
         inflate(getContext(), R.layout.contact_layout, this);
 

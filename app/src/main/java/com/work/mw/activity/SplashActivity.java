@@ -53,6 +53,7 @@ public class SplashActivity extends BaseActivity {
     private void login() {
         SysUserReq sysUserReq = new SysUserReq();
         sysUserReq.setUserId(mUserInfo.getUserId());
+        sysUserReq.setUserSign(mUserInfo.getUserSign());
         IMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
             @Override
             public void loginSuccess(Object data) {
@@ -75,7 +76,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startMain() {
-        if (IMKitAgent.parseOfflineMessage(getIntent())) {
+        if (IMKitAgent.instance().parseOfflineMessage(getIntent())) {
             finish();
             return;
         }

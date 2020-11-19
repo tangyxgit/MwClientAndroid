@@ -58,6 +58,11 @@ public class ContactListView extends LinearLayout {
         init();
     }
 
+    public ContactListView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
     private void init() {
         inflate(getContext(), R.layout.contact_list, this);
         RecyclerView mRv = findViewById(R.id.contact_member_list);

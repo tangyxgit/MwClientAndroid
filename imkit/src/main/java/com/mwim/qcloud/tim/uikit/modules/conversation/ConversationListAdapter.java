@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.holder.ConversationBaseHolder;
 import com.mwim.qcloud.tim.uikit.modules.conversation.holder.ConversationCommonHolder;
 import com.mwim.qcloud.tim.uikit.modules.conversation.holder.ConversationCustomHolder;
@@ -16,7 +17,6 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationPr
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.tencent.qcloud.tim.uikit.TUIKit;
 
 import java.util.ArrayList;
 import java.util.List;

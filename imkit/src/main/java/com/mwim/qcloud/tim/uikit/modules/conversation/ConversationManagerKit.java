@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMConversationResult;
@@ -22,7 +22,6 @@ import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageRevokedManager;
 import com.mwim.qcloud.tim.uikit.utils.SharedPreferenceUtils;
-import com.tencent.qcloud.tim.uikit.TUIKit;
 import com.work.util.SLog;
 
 import java.io.File;

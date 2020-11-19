@@ -3,7 +3,7 @@ package com.mwim.qcloud.tim.uikit.utils;
 import android.content.Context;
 
 import com.mwim.qcloud.tim.uikit.R;
-import com.tencent.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.TUIKit;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -140,12 +140,14 @@ public final class IMKitAgent {
 
     private String userId;
     private String userSign;
-    public void register(SysUserReq userReq,YzStatusListener listener) {
+    public void register(final SysUserReq userReq, final YzStatusListener listener) {
         if(TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSign)){
             Yz.getSession().sysUser(userReq, new OnResultDataListener() {
                 @Override
                 public void onResult(RequestWork req, ResponseWork resp) {
-
+                    userId = userReq.getUserId();
+                    userSign = userReq.getUserSign();
+                    loginIM(listener);
                 }
             });
         }else{
@@ -173,7 +175,7 @@ public final class IMKitAgent {
      * 启动im
      */
     public void startAuto(){
-        
+
     }
     /**
      * 注册推送
@@ -217,7 +219,7 @@ public final class IMKitAgent {
         MessageNotification.getInstance().cancelTimeout();
     }
 
-    public static boolean parseOfflineMessage(Intent intent){
+    public boolean parseOfflineMessage(Intent intent){
         OfflineMessageBean bean = OfflineMessageDispatcher.parseOfflineMessage(intent);
         if (bean != null) {
             OfflineMessageDispatcher.redirect(bean);

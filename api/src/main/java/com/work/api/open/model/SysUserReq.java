@@ -9,6 +9,15 @@ package com.work.api.open.model;
 public class SysUserReq extends BaseReq {
 
     private String userId;
+    private String userSign;
+
+    public String getUserSign() {
+        return userSign;
+    }
+
+    public void setUserSign(String userSign) {
+        this.userSign = userSign;
+    }
 
     public String getUserId() {
         return userId;
