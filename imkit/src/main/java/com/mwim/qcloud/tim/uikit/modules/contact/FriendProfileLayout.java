@@ -642,7 +642,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.profile_remark_edit));
             bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mRemarkView.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 20);
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 6);
             SelectionActivity.startTextSelection(TUIKit.getAppContext(), bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object text) {
