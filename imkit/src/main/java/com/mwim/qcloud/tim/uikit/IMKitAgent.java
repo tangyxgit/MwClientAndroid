@@ -33,8 +33,8 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.vivo.push.PushClient;
 import com.work.api.open.Yz;
+import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.SysUserReq;
-import com.work.api.open.model.SysUserResp;
 import com.work.api.open.model.client.OpenData;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
@@ -158,12 +158,12 @@ public final class IMKitAgent {
             Yz.getSession().sysUser(userReq, new OnResultDataListener() {
                 @Override
                 public void onResult(RequestWork req, ResponseWork resp) {
-                    if(resp instanceof SysUserResp){
+                    if(resp instanceof LoginResp){
                         if(resp.isSuccess()){
-                            OpenData data = ((SysUserResp) resp).getData();
+                            OpenData data = ((LoginResp) resp).getData();
                             String userId = data.getUserId();
                             String userSign = data.getUserSign();
-                            String token = data.getToken();
+                            String token = ((LoginResp) resp).getToken();
                             UserApi userApi = UserApi.instance();
                             userApi.setUserId(userId);
                             userApi.setUserSign(userSign);
@@ -179,7 +179,7 @@ public final class IMKitAgent {
                             loginIM(listener);
                         }else{
                             if(listener!=null){
-                                listener.loginFail("sysUser",((SysUserResp) resp).getCode(),resp.getMessage());
+                                listener.loginFail("sysUser",((LoginResp) resp).getCode(),resp.getMessage());
                             }
                         }
                     }

@@ -25,7 +25,6 @@ import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.RegisterReq;
 import com.work.api.open.model.SendSmsReq;
 import com.work.api.open.model.SysUserReq;
-import com.work.api.open.model.SysUserResp;
 import com.work.api.open.model.UpdateMobileReq;
 import com.work.api.open.model.UploadResp;
 import com.work.util.SLog;
@@ -156,7 +155,7 @@ public class Yz extends ApiClient {
      * 同步数据
      */
     public void sysUser(SysUserReq sysUserReq,OnResultDataListener onResultDataListener){
-        requestPost(ModeApi.sysUser,sysUserReq,new SysUserResp(),onResultDataListener);
+        requestPost(ModeApi.sysUser,sysUserReq,new LoginResp(),onResultDataListener);
     }
     /**
      * 获取打车链接

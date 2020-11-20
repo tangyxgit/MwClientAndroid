@@ -89,7 +89,6 @@ public class OpenData extends ClientModel {
     public String Name;
     public List<OpenGroupInfo> GroupInfo;
     private String url;
-    private String token;
 
     public String getGroupId() {
         return GroupId;
@@ -117,14 +116,6 @@ public class OpenData extends ClientModel {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public String getUrl() {
