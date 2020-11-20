@@ -89,6 +89,43 @@ public class OpenData extends ClientModel {
     public String Name;
     public List<OpenGroupInfo> GroupInfo;
     private String url;
+    private String token;
+
+    public String getGroupId() {
+        return GroupId;
+    }
+
+    public void setGroupId(String groupId) {
+        GroupId = groupId;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public List<OpenGroupInfo> getGroupInfo() {
+        return GroupInfo;
+    }
+
+    public void setGroupInfo(List<OpenGroupInfo> groupInfo) {
+        GroupInfo = groupInfo;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getUrl() {
         return url;

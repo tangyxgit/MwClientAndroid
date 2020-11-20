@@ -169,22 +169,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             if(resp instanceof LoginResp){
                 OpenData data = ((LoginResp) resp).getData();
                 if(data!=null){
-                    UserApi userApi = UserApi.instance();
-                    userApi.setUserId(data.getUserId());
-                    userApi.setUserSign(data.getUserSign());
-                    userApi.setNickName(data.getNickName());
-                    userApi.setUserIcon(data.getUserIcon());
-                    userApi.setMobile(data.getMobile());
-                    userApi.setDepartment(data.getDepartName());
-                    userApi.setPosition(data.getPosition());
-                    userApi.setCard(data.getCard());
-                    userApi.setEmail(data.getEmail());
-                    LoginReq loginReq = (LoginReq) req;
-                    userApi.setMobile(loginReq.getMobile());
-                    userApi.setToken(((LoginResp) resp).getToken());
                     showProgressLoading(false,false);
                     SysUserReq sysUserReq = new SysUserReq();
-                    sysUserReq.setUserId(userApi.getUserId());
+                    sysUserReq.setUserId(data.getUserId());
+                    sysUserReq.setNickName(data.getNickName());
+                    sysUserReq.setUserIcon(data.getUserIcon());
+                    sysUserReq.setMobile(data.getMobile());
+                    sysUserReq.setDepartmentId(data.getDepartmentId());
+                    sysUserReq.setDepartName(data.getDepartName());
+                    sysUserReq.setPosition(data.getPosition());
+                    sysUserReq.setCard(data.getCard());
+                    sysUserReq.setEmail(data.getEmail());
                     IMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
                         @Override
                         public void loginSuccess(Object data) {

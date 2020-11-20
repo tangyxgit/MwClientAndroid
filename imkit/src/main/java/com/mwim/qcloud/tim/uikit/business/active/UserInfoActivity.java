@@ -97,7 +97,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         mNickname.setContent(userApi.getNickName());
         v2TIMUserFullInfo.setNickname(userApi.getNickName());
         mPhone.setContent(userApi.getMobile());
-        mDepartment.setContent(userApi.getDepartment());
+        mDepartment.setContent(userApi.getDepartName());
         mPosition.setContent(userApi.getPosition());
         mCard.setContent(userApi.getCard());
         mEmail.setContent(userApi.getEmail());
@@ -153,7 +153,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         } else if (id == R.id.modify_department) {
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_department));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getDepartment());
+            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getDepartName());
             bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
@@ -226,7 +226,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 if (viewId == R.id.modify_nick_name) {
                     userApi.setNickName(((RegisterReq) req).getNickName());
                 }else if(viewId == R.id.modify_department){
-                    userApi.setDepartment(((RegisterReq) req).getDepartName());
+                    userApi.setDepartName(((RegisterReq) req).getDepartName());
                 }else if(viewId == R.id.modify_position){
                     userApi.setPosition(((RegisterReq) req).getPosition());
                 }else if(viewId == R.id.modify_card){

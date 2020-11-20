@@ -152,6 +152,7 @@ public class ApiClient {
                                 postJson.put(key,val);
                             }
                         }
+                        postJson.put("appid",SharedUtils.getString("YzAppId"));
                         postData = postJson.toString();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -184,7 +185,7 @@ public class ApiClient {
         params.addHeader("Accept", "application/json");
         params.addHeader("Content-Type", "application/json;charset=UTF-8");
         params.addHeader("token", SharedUtils.getString("userToken"));
-        params.addHeader("appId", SharedUtils.getString("YzAppId"));
+        params.addHeader("appid", SharedUtils.getString("YzAppId"));
         if(requestWork!=null){
             Map<String,String> header = requestWork.getRequestHeader();
             if(header!=null && header.size()>0){

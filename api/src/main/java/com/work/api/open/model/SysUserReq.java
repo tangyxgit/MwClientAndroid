@@ -9,14 +9,77 @@ package com.work.api.open.model;
 public class SysUserReq extends BaseReq {
 
     private String userId;
-    private String userSign;
+    private String nickName;
+    private String userIcon;
+    private String mobile;
+    private String card;
+    private String position;
+    private String email;
+    private String departmentId;
+    private String departName;
 
-    public String getUserSign() {
-        return userSign;
+    public String getDepartmentId() {
+        return departmentId;
     }
 
-    public void setUserSign(String userSign) {
-        this.userSign = userSign;
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getDepartName() {
+        return departName;
+    }
+
+    public void setDepartName(String departName) {
+        this.departName = departName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getUserIcon() {
+        return userIcon;
+    }
+
+    public void setUserIcon(String userIcon) {
+        this.userIcon = userIcon;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getCard() {
+        return card;
+    }
+
+    public void setCard(String card) {
+        this.card = card;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUserId() {

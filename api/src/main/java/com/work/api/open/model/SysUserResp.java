@@ -1,5 +1,7 @@
 package com.work.api.open.model;
 
+import com.work.api.open.model.client.OpenData;
+
 /**
  * Created by tangyx
  * Date 2020/11/18
@@ -8,4 +10,9 @@ package com.work.api.open.model;
 
 public class SysUserResp extends BaseResp {
 
+    private OpenData data;
+
+    public OpenData getData() {
+        return data;
+    }
 }

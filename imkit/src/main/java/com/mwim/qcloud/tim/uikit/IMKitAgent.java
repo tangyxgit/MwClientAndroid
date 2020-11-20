@@ -34,6 +34,8 @@ import com.umeng.commonsdk.UMConfigure;
 import com.vivo.push.PushClient;
 import com.work.api.open.Yz;
 import com.work.api.open.model.SysUserReq;
+import com.work.api.open.model.SysUserResp;
+import com.work.api.open.model.client.OpenData;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.work.util.SharedUtils;
@@ -151,16 +153,36 @@ public final class IMKitAgent {
         TUIKit.addIMEventListener(eventListener);
     }
 
-    private String userId;
-    private String userSign;
     public void register(final SysUserReq userReq, final YzStatusListener listener) {
-        if(TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSign)){
+        if(TextUtils.isEmpty(UserApi.instance().getUserId()) || TextUtils.isEmpty(UserApi.instance().getUserSign())){
             Yz.getSession().sysUser(userReq, new OnResultDataListener() {
                 @Override
                 public void onResult(RequestWork req, ResponseWork resp) {
-                    userId = userReq.getUserId();
-                    userSign = userReq.getUserSign();
-                    loginIM(listener);
+                    if(resp instanceof SysUserResp){
+                        if(resp.isSuccess()){
+                            OpenData data = ((SysUserResp) resp).getData();
+                            String userId = data.getUserId();
+                            String userSign = data.getUserSign();
+                            String token = data.getToken();
+                            UserApi userApi = UserApi.instance();
+                            userApi.setUserId(userId);
+                            userApi.setUserSign(userSign);
+                            userApi.setNickName(userReq.getNickName());
+                            userApi.setUserIcon(userReq.getUserIcon());
+                            userApi.setMobile(userReq.getMobile());
+                            userApi.setPosition(userReq.getPosition());
+                            userApi.setDepartmentId(userReq.getDepartmentId());
+                            userApi.setDepartName(userReq.getDepartName());
+                            userApi.setCard(userReq.getCard());
+                            userApi.setEmail(userReq.getEmail());
+                            userApi.setToken(token);
+                            loginIM(listener);
+                        }else{
+                            if(listener!=null){
+                                listener.loginFail("sysUser",((SysUserResp) resp).getCode(),resp.getMessage());
+                            }
+                        }
+                    }
                 }
             });
         }else{
@@ -168,7 +190,7 @@ public final class IMKitAgent {
         }
     }
     private void loginIM(final YzStatusListener listener){
-        TUIKitImpl.login(userId, userSign, new IUIKitCallBack() {
+        TUIKitImpl.login(UserApi.instance().getUserId(), UserApi.instance().getUserSign(), new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
                 if(listener!=null){

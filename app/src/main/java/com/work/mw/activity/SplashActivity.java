@@ -52,7 +52,13 @@ public class SplashActivity extends BaseActivity {
     private void login() {
         SysUserReq sysUserReq = new SysUserReq();
         sysUserReq.setUserId(mUserInfo.getUserId());
-        sysUserReq.setUserSign(mUserInfo.getUserSign());
+        sysUserReq.setNickName(mUserInfo.getNickName());
+        sysUserReq.setMobile(mUserInfo.getMobile());
+        sysUserReq.setDepartmentId(mUserInfo.getDepartmentId());
+        sysUserReq.setDepartName(mUserInfo.getDepartName());
+        sysUserReq.setPosition(mUserInfo.getPosition());
+        sysUserReq.setCard(mUserInfo.getCard());
+        sysUserReq.setEmail(mUserInfo.getEmail());
         IMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
             @Override
             public void loginSuccess(Object data) {

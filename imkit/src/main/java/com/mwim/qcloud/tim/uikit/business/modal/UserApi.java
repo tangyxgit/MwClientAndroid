@@ -20,6 +20,7 @@ public class UserApi {
     private final static String USER_POSITION="userPosition";
     private final static String USER_EMAIL="userEmailKey";
     private final static String USER_DEPARTMENT="userDepartment";
+    private final static String USER_DEPARTMENT_ID="userDepartment_ID";
     private final static String USER_TOKEN="userToken";
     private static UserApi INSTANCE;
     private String userId;
@@ -36,7 +37,9 @@ public class UserApi {
     @JsonIgnore
     private String email;
     @JsonIgnore
-    private String department;
+    private String departmentId;
+    @JsonIgnore
+    private String departName;
 
     private String mobile;
     private String token;
@@ -175,18 +178,29 @@ public class UserApi {
         SharedUtils.putData(USER_EMAIL,email);
     }
 
-    public String getDepartment() {
-        if(TextUtils.isEmpty(department)){
-            department = SharedUtils.getString(USER_DEPARTMENT);
+    public String getDepartmentId() {
+        if(TextUtils.isEmpty(departmentId)){
+            departmentId = SharedUtils.getString(USER_DEPARTMENT_ID);
         }
-        return department;
+        return departmentId;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
-        SharedUtils.putData(USER_DEPARTMENT,USER_DEPARTMENT);
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+        SharedUtils.putData(USER_DEPARTMENT_ID,departmentId);
     }
 
+    public String getDepartName() {
+        if(TextUtils.isEmpty(departName)){
+            departName = SharedUtils.getString(USER_DEPARTMENT);
+        }
+        return departName;
+    }
+
+    public void setDepartName(String departName) {
+        this.departName = departName;
+        SharedUtils.putData(USER_DEPARTMENT,departName);
+    }
 
     public void clear(){
         SharedUtils.removeData(USER_ID);

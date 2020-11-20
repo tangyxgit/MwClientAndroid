@@ -92,7 +92,7 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
                     userApi.setNickName(data.getNickName());
                     userApi.setUserIcon(data.getUserIcon());
                     userApi.setMobile(data.getMobile());
-                    userApi.setDepartment(data.getDepartName());
+                    userApi.setDepartName(data.getDepartName());
                     userApi.setPosition(data.getPosition());
                     userApi.setCard(data.getCard());
                     userApi.setEmail(data.getEmail());
@@ -133,7 +133,7 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         mSubMessage.setText(phone);
         String contentDefault = getResources().getString(R.string.user_content_default);
         String email = userApi.getEmail();
-        String department = userApi.getDepartment();
+        String department = userApi.getDepartName();
         String position = userApi.getPosition();
         String card = userApi.getCard();
         mDepartment.setContent(TextUtils.isEmpty(department)?contentDefault:department);
