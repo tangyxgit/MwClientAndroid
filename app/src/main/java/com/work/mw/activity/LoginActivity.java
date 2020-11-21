@@ -114,9 +114,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        String phone = UserApi.instance().getMobile();
-        if(!TextUtils.isEmpty(phone)){
-            mPhone.setText(phone);
+        if(TextUtils.isEmpty(mPhone.getText())){
+            String phone = UserApi.instance().getMobile();
+            if(!TextUtils.isEmpty(phone)){
+                mPhone.setText(phone);
+            }
         }
     }
 
@@ -174,7 +176,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     sysUserReq.setUserId(data.getUserId());
                     sysUserReq.setNickName(data.getNickName());
                     sysUserReq.setUserIcon(data.getUserIcon());
-                    sysUserReq.setMobile(data.getMobile());
+                    sysUserReq.setMobile(mPhone.getText().toString().trim());
                     sysUserReq.setDepartmentId(data.getDepartmentId());
                     sysUserReq.setDepartName(data.getDepartName());
                     sysUserReq.setPosition(data.getPosition());
