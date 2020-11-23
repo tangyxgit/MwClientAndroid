@@ -11,7 +11,6 @@ import java.util.List;
  *
  */
 public class DisplayConfiguration {
-    private static final String TAG = DisplayConfiguration.class.getSimpleName();
 
     private Size viewfinderSize;
     private int rotation;
