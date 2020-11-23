@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.webkit.*
-import com.mwim.qcloud.tim.uikit.IMKitAgent
 import com.mwim.qcloud.tim.uikit.TUIKit
 import java.net.URLDecoder
 

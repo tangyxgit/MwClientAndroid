@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
@@ -59,7 +59,7 @@ public class SplashActivity extends BaseActivity {
         sysUserReq.setPosition(mUserInfo.getPosition());
         sysUserReq.setCard(mUserInfo.getCard());
         sysUserReq.setEmail(mUserInfo.getEmail());
-        IMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
+        YzIMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
             @Override
             public void loginSuccess(Object data) {
                 super.loginSuccess(data);
@@ -81,11 +81,11 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startMain() {
-        if (IMKitAgent.instance().parseOfflineMessage(getIntent())) {
+        if (YzIMKitAgent.instance().parseOfflineMessage(getIntent())) {
             finish();
             return;
         }
-        IMKitAgent.instance().startAuto();
+        YzIMKitAgent.instance().startAuto();
     }
 
     @Override

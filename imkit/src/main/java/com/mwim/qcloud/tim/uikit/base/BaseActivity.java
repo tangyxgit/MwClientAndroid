@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.api.open.model.BaseResp;
 import com.work.util.ToastUtil;
@@ -34,7 +34,7 @@ public class BaseActivity extends TakePhotoActivity {
     }
 
     public void logout() {
-        IMKitAgent.instance().logout();
+        YzIMKitAgent.instance().logout();
     }
 
     @Override

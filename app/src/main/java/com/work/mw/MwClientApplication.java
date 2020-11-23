@@ -11,7 +11,7 @@ import android.os.Bundle;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.modal.WorkApp;
 import com.work.mw.wemeet.RdmSDK;
@@ -39,9 +39,9 @@ public class MwClientApplication extends MultiDexApplication {
         onChannel();
         MultiDex.install(this);
 
-        IMKitAgent.init(this,"de241446a50499bb77a8684cf610fd04");
+        YzIMKitAgent.init(this,"de241446a50499bb77a8684cf610fd04");
         //账号被踢出，或者失效
-        IMKitAgent.instance().addStatusListener(new YzStatusListener() {
+        YzIMKitAgent.instance().addStatusListener(new YzStatusListener() {
             @Override
             public void logout() {
                 super.logout();
@@ -51,7 +51,7 @@ public class MwClientApplication extends MultiDexApplication {
                 startActivity(intent);
             }
         });
-        IMKitAgent.instance().addWorkAppItemClickListener(item -> {
+        YzIMKitAgent.instance().addWorkAppItemClickListener(item -> {
             if(item instanceof WorkApp){
                 WorkApp wp = (WorkApp) item;
                 if(wp.isWemeet()){
@@ -115,7 +115,7 @@ public class MwClientApplication extends MultiDexApplication {
 
         @Override
         public void onActivityStarted(Activity activity) {
-            IMKitAgent.instance().onActivityStarted();
+            YzIMKitAgent.instance().onActivityStarted();
         }
 
         @Override
@@ -130,7 +130,7 @@ public class MwClientApplication extends MultiDexApplication {
 
         @Override
         public void onActivityStopped(Activity activity) {
-            IMKitAgent.instance().onActivityStopped();
+            YzIMKitAgent.instance().onActivityStopped();
         }
 
         @Override

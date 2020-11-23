@@ -11,7 +11,6 @@ import android.widget.PopupWindow;
 
 import androidx.annotation.Nullable;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.Constants;

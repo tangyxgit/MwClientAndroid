@@ -3,7 +3,6 @@ package com.mwim.qcloud.tim.uikit;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
-import android.text.TextUtils;
 
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
@@ -50,7 +49,7 @@ import java.util.HashMap;
  * email tangyx@live.com
  */
 
-public final class IMKitAgent {
+public final class YzIMKitAgent {
 
     private IMEventListener IMEventPushListener = new IMEventListener() {
         @Override
@@ -76,12 +75,12 @@ public final class IMKitAgent {
 
         }
     };
-    private static IMKitAgent singleton;
+    private static YzIMKitAgent singleton;
     private Context mContext;
     private YzStatusListener mIMKitStatusListener;
     private YzWorkAppItemClickListener mWorkAppItemClickListener;
 
-    private IMKitAgent(Context context,String mYzAppId) {
+    private YzIMKitAgent(Context context, String mYzAppId) {
         this.mContext = context;
         loadConfig();
         SharedUtils.putData("YzAppId",mYzAppId);
@@ -89,11 +88,11 @@ public final class IMKitAgent {
 
     public static void init(Context context,String appId){
         if(singleton==null){
-            singleton = new IMKitAgent(context,appId);
+            singleton = new YzIMKitAgent(context,appId);
         }
     }
 
-    public static IMKitAgent instance(){
+    public static YzIMKitAgent instance(){
         return singleton;
     }
 

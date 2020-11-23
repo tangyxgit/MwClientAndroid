@@ -15,7 +15,6 @@ import android.text.Html;
 import android.text.TextUtils;
 
 import com.mwim.liteav.model.CallModel;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;

@@ -3,7 +3,7 @@ package com.mwim.qcloud.tim.uikit.business.active;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.utils.ClickUtils;
@@ -34,7 +34,7 @@ public abstract class IMBaseActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IMKitAgent.instance().addIMEventListener(mIMEventListener);
+        YzIMKitAgent.instance().addIMEventListener(mIMEventListener);
     }
 
     @Override

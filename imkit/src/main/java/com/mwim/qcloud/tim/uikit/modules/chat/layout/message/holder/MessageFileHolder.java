@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.active.X5FileOpenActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;

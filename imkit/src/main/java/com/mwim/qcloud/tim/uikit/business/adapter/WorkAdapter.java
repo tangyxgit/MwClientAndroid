@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.WebActivity;
@@ -109,7 +109,7 @@ public class WorkAdapter extends BaseQuickAdapter<OpenWork, BaseViewHolder> impl
                 String token = ((GetToolTokenResp) resp).getData();
                 String url = resp.getPositionParams(0);
                 if("code001".equals(((GetToolTokenReq) req).getToolCode())){//腾讯会议
-                    YzWorkAppItemClickListener listener = IMKitAgent.instance().getWorkAppItemClickListener();
+                    YzWorkAppItemClickListener listener = YzIMKitAgent.instance().getWorkAppItemClickListener();
                     if(listener!=null){
                         String sdkToken = resp.getPositionParams(1);
                         WorkApp workApp = new WorkApp(sdkToken);

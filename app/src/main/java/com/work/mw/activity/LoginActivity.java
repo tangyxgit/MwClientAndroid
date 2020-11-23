@@ -19,7 +19,7 @@ import com.dd.processbutton.iml.ActionProcessButton;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.jaeger.library.StatusBarUtil;
-import com.mwim.qcloud.tim.uikit.IMKitAgent;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
@@ -182,14 +182,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     sysUserReq.setPosition(data.getPosition());
                     sysUserReq.setCard(data.getCard());
                     sysUserReq.setEmail(data.getEmail());
-                    IMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
+                    YzIMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
                         @Override
                         public void loginSuccess(Object data) {
                             super.loginSuccess(data);
                             SLog.e("im success:"+data);
                             dismissProgress();
                             finish();
-                            IMKitAgent.instance().startAuto();
+                            YzIMKitAgent.instance().startAuto();
                         }
 
                         @Override
