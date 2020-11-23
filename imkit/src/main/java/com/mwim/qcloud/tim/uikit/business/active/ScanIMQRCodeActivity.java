@@ -171,7 +171,7 @@ public class ScanIMQRCodeActivity extends BaseActivity implements View.OnClickLi
      * 处理二维码结果，并跳转到相应界面
      */
     private void handleQrCode(String qrCodeText) {
-        SLog.e("qrCodeText:"+qrCodeText);
+        if(SLog.debug)SLog.e("qrCodeText:"+qrCodeText);
         if (TextUtils.isEmpty(qrCodeText)) {
             ToastUtil.error(this,R.string.zxing_qr_can_not_recognized);
             return;

@@ -129,7 +129,7 @@ public final class YzIMKitAgent {
 
             @Override
             public void onViewInitFinished(boolean b) {
-                SLog.e("x5 web init:"+b);
+                if(SLog.debug)SLog.e("x5 web init:"+b);
             }
         };
         QbSdk.initX5Environment(mContext,cb);

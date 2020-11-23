@@ -112,7 +112,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onSuccess() {
-                SLog.e("个人信息同步成功");
+                if(SLog.debug)SLog.e("个人信息同步成功");
             }
         });
     }

@@ -55,7 +55,7 @@ public class X5FileOpenActivity extends BaseActivity implements TbsReaderView.Re
         bundle.putString("filePath", mOpenFile);
         bundle.putString("tempPath", Environment.getExternalStorageDirectory() + "/TbsReaderTemp");
         boolean result = mTbsReaderView.preOpen(parseFormat(mOpenFile), false);
-        SLog.e("x5 file pre open:" + result + ">>" + mOpenFile +">>"+copy+">");
+        if(SLog.debug)SLog.e("x5 file pre open:" + result + ">>" + mOpenFile +">>"+copy+">");
         if (result) {
             mTbsReaderView.openFile(bundle);
         } else {

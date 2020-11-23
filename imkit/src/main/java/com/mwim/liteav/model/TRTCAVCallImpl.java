@@ -900,7 +900,6 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                 break;
             case CallModel.VIDEO_CALL_ACTION_ACCEPT:
                 String acceptDataStr = new Gson().toJson(customMap);
-                SLog.e("acceptDataStr>>>>"+acceptDataStr+">"+realCallModel.callId);
                 V2TIMManager.getSignalingManager().accept(realCallModel.callId, acceptDataStr, new V2TIMCallback() {
                     @Override
                     public void onError(int code, String desc) {

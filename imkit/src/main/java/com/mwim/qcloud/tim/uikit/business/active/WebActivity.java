@@ -31,7 +31,7 @@ public class WebActivity extends BaseActivity {
             return;
         }
         String url = bundle.getString(WebActivity.class.getSimpleName());
-        SLog.e("web url:"+url);
+        if(SLog.debug)SLog.e("web url:"+url);
         if(TextUtils.isEmpty(url)){
             finish();
             return;

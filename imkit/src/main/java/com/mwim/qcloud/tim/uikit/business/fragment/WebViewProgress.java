@@ -139,7 +139,6 @@ public class WebViewProgress extends WebView {
         setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String s, String s1, String s2, String s3, long l) {
-                SLog.e("下载文件："+s+">"+s1+">"+s2+">"+s3+">"+l);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
                 intent.setData(Uri.parse(s));

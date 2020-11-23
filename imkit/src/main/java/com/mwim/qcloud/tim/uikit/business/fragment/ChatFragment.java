@@ -253,7 +253,6 @@ public class ChatFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        SLog.e("chat fragment resume");
         // TODO 通过api设置ChatLayout各种属性的样例
         ChatLayoutHelper helper = new ChatLayoutHelper(getActivity());
         helper.customizeChatLayout(mChatLayout);
