@@ -21,6 +21,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.SelectMessageActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
+import com.mwim.qcloud.tim.uikit.business.active.UserQRCodeActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserSettingActivity;
 import com.mwim.qcloud.tim.uikit.business.message.CustomMessage;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
@@ -73,6 +74,9 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         mCard.setLeftDrawable(R.drawable.icon_employee_id);
         mEmail = findViewById(R.id.modify_email);
         mEmail.setLeftDrawable(R.drawable.icon_mail_fill);
+
+        findViewById(R.id.qr_code).setOnClickListener(this);
+
         LineControllerView mModifySettingView = findViewById(R.id.modify_setting);
         mModifySettingView.setCanNav(true);
         mModifySettingView.setOnClickListener(this);
@@ -113,6 +117,8 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
         }else if(v.getId() == R.id.custom_im_message){
             CustomMessage message = new CustomMessage();
             SelectMessageActivity.sendCustomMessage((Activity) getContext(),message,0);
+        }else if(v.getId() == R.id.qr_code){
+            getContext().startActivity(new Intent(getContext(), UserQRCodeActivity.class));
         }
     }
 

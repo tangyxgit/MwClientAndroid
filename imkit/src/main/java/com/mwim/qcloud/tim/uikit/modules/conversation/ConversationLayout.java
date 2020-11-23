@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.MorePopWindow;
+import com.mwim.qcloud.tim.uikit.business.active.ScanIMQRCodeActivity;
 import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
 import com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
@@ -69,18 +70,22 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
                     List<String> item = new ArrayList<>();
                     item.add(getContext().getResources().getString(R.string.add_friend));
                     item.add(getContext().getResources().getString(R.string.add_group));
-                    mMenu = new MorePopWindow((Activity) getContext(),item , new BaseQuickAdapter.OnItemClickListener() {
+                    item.add(getContext().getResources().getString(R.string.scan_qr_code));
+                    mMenu = new MorePopWindow(getContext(),item , new BaseQuickAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                            mMenu.dismiss();
                             switch (position){
                                 case 0:
                                     getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
                                     break;
                                 case 1:
-                                    Intent intent = new Intent(TUIKit.getAppContext(), StartGroupChatActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
                                     intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
                                     getContext().startActivity(intent);
+                                    break;
+                                case 2:
+                                    getContext().startActivity(new Intent(getContext(), ScanIMQRCodeActivity.class));
                                     break;
                             }
                         }

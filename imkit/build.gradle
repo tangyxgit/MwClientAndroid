@@ -87,6 +87,8 @@ dependencies {
     // 华为
     implementation 'com.tencent.tpns:huawei:1.2.1.2-release'
     implementation 'com.huawei.hms:push:5.0.2.300'
+    // 扫一扫模块
+    implementation "com.google.zxing:core:3.3.2"
 
     api project(path: ':base')
     implementation project(path: ':update_app')

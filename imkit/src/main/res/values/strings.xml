@@ -10,6 +10,7 @@
     // "+"menu相关
     <string name="add_friend" translatable="false">添加好友</string>
     <string name="add_group" translatable="false">添加群聊</string>
+    <string name="scan_qr_code" translatable="false">扫一扫</string>
     <string name="start_conversation" translatable="false">发起会话</string>
     <string name="create_group_chat" translatable="false">发起群聊</string>
     <string name="create_chat_room" translatable="false">创建聊天室</string>
@@ -87,6 +88,8 @@
     <string name="text_china_phone" translatable="false">+86</string>
     <string name="text_video_tag" translatable="false">正在等待对方接受邀请...</string>
     <string name="text_video_tag_show" translatable="false">邀请您进行视频通话...</string>
+    <string name="text_qr_code" translatable="false">我的二维码</string>
+    <string name="text_qr_code_remark" translatable="false">扫一扫二维码，加我为好友</string>
 
     // 群信息相关
     <string name="tips_empty_group_member" translatable="false">请选择群成员</string>
@@ -202,6 +205,8 @@
     <string name="toast_pwd_success" translatable="false">修改成功</string>
     <string name="toast_add_more_friends" translatable="false">不能添加自己为好友</string>
     <string name="toast_update_pwd_success" translatable="false">修改成功</string>
+    <string name="toast_save_success" translatable="false">保存成功</string>
+    <string name="toast_save_fail" translatable="false">保存失败，请稍后尝试！</string>
 
     <string name="label_update_app_title" translatable="false">版本更新</string>
     <string name="label_update_app_next" translatable="false">稍后提醒</string>
@@ -224,4 +229,14 @@
     <string name="ui_at_all" translatable="false">[@所有人]</string>
     <string name="ui_at_me" translatable="false">[有人@我]</string>
     <string name="ui_at_all_me" translatable="false">[@所有人][有人@我]</string>
+
+    <string name="zxing_msg_camera_framework_bug" translatable="false">对不起，Android摄像头遇到问题，您需要重启设备</string>
+    <string name="zxing_distinguish_picture" translatable="false">识别图中二维码</string>
+    <string name="zxing_qr_can_not_recognized" translatable="false">该二维码无法识别</string>
+    <string name="zxing_open_light" translatable="false">打开</string>
+    <string name="zxing_close_light" translatable="false">关闭</string>
+    <string name="zxing_tips_qrcode_scan" translatable="false">将二维码放入框内，即可自动扫描</string>
+    <string name="zxing_scan_from_picture" translatable="false">选择图片</string>
+    <string name="common_network_unavailable" translatable="false">当前网络不可用</string>
+    <string name="common_network_check" translatable="false">请检查网络设置</string>
 </resources>

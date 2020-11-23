@@ -121,7 +121,7 @@ public class VideoViewActivity extends BaseActivity {
                                 }).start();
                             }catch (Exception e){
                                 e.printStackTrace();
-                                ToastUtil.error(VideoViewActivity.this,"保存失败，请稍后尝试！");
+                                ToastUtil.error(VideoViewActivity.this,R.string.toast_save_fail);
                             }
                             mDialog.dismiss();
                         }

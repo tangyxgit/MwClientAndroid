@@ -23,7 +23,6 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
-import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallSingleActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
@@ -237,6 +236,13 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             }
             loadUser();
             addFriend();
+        }else if(data instanceof String){
+            mId = (String) data;
+            if(isSelf()){
+                return;
+            }
+            loadUser();
+            loadUserProfile();
         }
         if (!TextUtils.isEmpty(mNickname)) {
             mNickNameView.setText(mNickname);

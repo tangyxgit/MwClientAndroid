@@ -229,6 +229,8 @@
             android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".business.active.MapLocationActivity"/>
         <activity android:name=".business.active.SelectMessageActivity"/>
+        <activity android:name=".business.active.UserQRCodeActivity"/>
+        <activity android:name=".business.active.ScanIMQRCodeActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

@@ -163,7 +163,7 @@ public class PhotoViewActivity extends BaseActivity {
                                }).start();
                             }catch (Exception e){
                                 e.printStackTrace();
-                                ToastUtil.error(PhotoViewActivity.this,"保存失败，请稍后尝试！");
+                                ToastUtil.error(PhotoViewActivity.this,R.string.toast_save_fail);
                             }
                             mDialog.dismiss();
                         }
