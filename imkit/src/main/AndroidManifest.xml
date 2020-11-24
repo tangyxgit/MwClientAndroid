@@ -16,11 +16,7 @@
             android:label="dexopt"
             android:process=":dexopt" >
         </service>
-        <!-- 地图 -->
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="ab887fbd22354b21ed5581fb8d859bb6"/>
-        <service android:name="com.amap.api.location.APSService" />
+
 
         <!-- ********小米推送service和receiver设置start******** -->
         <service

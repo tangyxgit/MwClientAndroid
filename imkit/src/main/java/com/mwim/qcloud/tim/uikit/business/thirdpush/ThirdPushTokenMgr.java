@@ -37,7 +37,7 @@ public class ThirdPushTokenMgr {
             DemoLog.i(TAG, "setPushTokenToTIM third token is empty");
             return;
         }
-        V2TIMOfflinePushConfig v2TIMOfflinePushConfig = null;
+        V2TIMOfflinePushConfig v2TIMOfflinePushConfig;
         if (BrandUtil.isBrandXiaoMi()) {
             v2TIMOfflinePushConfig = new V2TIMOfflinePushConfig(PrivateConstants.XM_PUSH_BUZID, token);
         } else if (BrandUtil.isBrandHuawei()) {

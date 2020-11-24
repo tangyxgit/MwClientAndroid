@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.business.MorePopWindow;
 import com.mwim.qcloud.tim.uikit.business.active.ScanIMQRCodeActivity;
 import com.mwim.qcloud.tim.uikit.business.active.SearchAddMoreActivity;
@@ -63,38 +64,44 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
     private IConversationAdapter adapter;
     public void initDefault() {
         final View mAddMore = findViewById(R.id.add_more);
-        mAddMore.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mMenu==null){
-                    List<String> item = new ArrayList<>();
-                    item.add(getContext().getResources().getString(R.string.add_friend));
-                    item.add(getContext().getResources().getString(R.string.add_group));
-                    item.add(getContext().getResources().getString(R.string.scan_qr_code));
-                    mMenu = new MorePopWindow(getContext(),item , new BaseQuickAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                            mMenu.dismiss();
-                            switch (position){
-                                case 0:
-                                    getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
-                                    break;
-                                case 1:
-                                    Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
-                                    intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
-                                    getContext().startActivity(intent);
-                                    break;
-                                case 2:
-                                    getContext().startActivity(new Intent(getContext(), ScanIMQRCodeActivity.class));
-                                    break;
+        int functionPrem = YzIMKitAgent.instance().getFunctionPrem();
+        if((functionPrem & 2)>0){
+            mAddMore.setVisibility(VISIBLE);
+            mAddMore.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mMenu==null){
+                        List<String> item = new ArrayList<>();
+                        item.add(getContext().getResources().getString(R.string.add_friend));
+                        item.add(getContext().getResources().getString(R.string.add_group));
+                        item.add(getContext().getResources().getString(R.string.scan_qr_code));
+                        mMenu = new MorePopWindow(getContext(),item , new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                mMenu.dismiss();
+                                switch (position){
+                                    case 0:
+                                        getContext().startActivity(new Intent(getContext(), SearchAddMoreActivity.class));
+                                        break;
+                                    case 1:
+                                        Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
+                                        intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+                                        getContext().startActivity(intent);
+                                        break;
+                                    case 2:
+                                        getContext().startActivity(new Intent(getContext(), ScanIMQRCodeActivity.class));
+                                        break;
+                                }
                             }
-                        }
-                    });
-                }
-                mMenu.showPopupWindow(mAddMore);
+                        });
+                    }
+                    mMenu.showPopupWindow(mAddMore);
 
-            }
-        });
+                }
+            });
+        }else{
+            mAddMore.setVisibility(GONE);
+        }
         if(adapter==null){
             adapter = new ConversationListAdapter();
             mConversationList.setAdapter(adapter);

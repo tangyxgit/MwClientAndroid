@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.view.View;
 
 import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
@@ -19,6 +20,7 @@ import com.huawei.hms.common.ApiException;
 import com.mwim.liteav.model.CallModel;
 import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.adapter.TabPagerAdapter;
@@ -28,15 +30,20 @@ import com.mwim.qcloud.tim.uikit.business.fragment.ConversationFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.ProfileFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.WorkFragment;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
+import com.mwim.qcloud.tim.uikit.business.thirdpush.OPPOPushImpl;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.ThirdPushTokenMgr;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
+import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
+import com.vivo.push.IPushActionListener;
+import com.vivo.push.PushClient;
+import com.work.util.SLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,29 +80,37 @@ public class MwWorkActivity extends IMBaseActivity implements
         V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
 
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);
-
-        BottomNavigationItem messageItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_chat_fill,R.color.defaultColorAccent),R.string.tab_conversation_tab_text)
-                .setInactiveIcon(getSelectDrawable(R.drawable.icon_chat_stroke,R.color.color_b2b2b2))
-                .setActiveColorResource(R.color.defaultColorAccent);
         mMessageBadge = new TextBadgeItem();
         mMessageBadge.hide();
-        messageItem.setBadgeItem(mMessageBadge);
-        mNavigationBar.addItem(messageItem);
+        int functionPrem = YzIMKitAgent.instance().getFunctionPrem();
+        if((functionPrem & 1)>0){
+            BottomNavigationItem messageItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_chat_fill,R.color.defaultColorAccent),R.string.tab_conversation_tab_text)
+                    .setInactiveIcon(getSelectDrawable(R.drawable.icon_chat_stroke,R.color.color_b2b2b2))
+                    .setActiveColorResource(R.color.defaultColorAccent);
+            messageItem.setBadgeItem(mMessageBadge);
+            mNavigationBar.addItem(messageItem);
+        }
 
-        BottomNavigationItem contactItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_contact_fill,R.color.defaultColorAccent),R.string.tab_contact_tab_text)
-                .setInactiveIcon(getSelectDrawable(R.drawable.icon_contact_stroke,R.color.color_b2b2b2))
-                .setActiveColorResource(R.color.defaultColorAccent);
-        mNavigationBar.addItem(contactItem);
+        if((functionPrem & 2)>0){
+            BottomNavigationItem contactItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_contact_fill,R.color.defaultColorAccent),R.string.tab_contact_tab_text)
+                    .setInactiveIcon(getSelectDrawable(R.drawable.icon_contact_stroke,R.color.color_b2b2b2))
+                    .setActiveColorResource(R.color.defaultColorAccent);
+            mNavigationBar.addItem(contactItem);
+        }
 
-        BottomNavigationItem workItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_tools_fill,R.color.defaultColorAccent),R.string.tab_work_tab_text)
-                .setInactiveIcon(getSelectDrawable(R.drawable.icon_tools_stroke,R.color.color_b2b2b2))
-                .setActiveColorResource(R.color.defaultColorAccent);
-        mNavigationBar.addItem(workItem);
+        if((functionPrem & 4)>0){
+            BottomNavigationItem workItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_tools_fill,R.color.defaultColorAccent),R.string.tab_work_tab_text)
+                    .setInactiveIcon(getSelectDrawable(R.drawable.icon_tools_stroke,R.color.color_b2b2b2))
+                    .setActiveColorResource(R.color.defaultColorAccent);
+            mNavigationBar.addItem(workItem);
+        }
 
-        BottomNavigationItem profileItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_user_fill,R.color.defaultColorAccent),R.string.tab_profile_tab_text)
-                .setInactiveIcon(getSelectDrawable(R.drawable.icon_user_stroke,R.color.color_b2b2b2))
-                .setActiveColorResource(R.color.defaultColorAccent);
-        mNavigationBar.addItem(profileItem);
+        if((functionPrem & 4)>0){
+            BottomNavigationItem profileItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_user_fill,R.color.defaultColorAccent),R.string.tab_profile_tab_text)
+                    .setInactiveIcon(getSelectDrawable(R.drawable.icon_user_stroke,R.color.color_b2b2b2))
+                    .setActiveColorResource(R.color.defaultColorAccent);
+            mNavigationBar.addItem(profileItem);
+        }
 
         mNavigationBar.initialise();
         mNavigationBar.setTabSelectedListener(this);
@@ -114,10 +129,25 @@ public class MwWorkActivity extends IMBaseActivity implements
     public void onInitValue() throws Exception {
         super.onInitValue();
         mFragments = new ArrayList<>();
-        mFragments.add(new ConversationFragment());
-        mFragments.add(new ContactFragment());
-        mFragments.add(new WorkFragment());
-        mFragments.add(new ProfileFragment());
+        int functionPrem = YzIMKitAgent.instance().getFunctionPrem();
+        if((functionPrem & 1)>0){
+            mFragments.add(new ConversationFragment());
+        }
+        if((functionPrem & 2)>0){
+            mFragments.add(new ContactFragment());
+        }
+        if((functionPrem & 4)>0){
+            mFragments.add(new WorkFragment());
+        }
+        if((functionPrem & 8)>0){
+            mFragments.add(new ProfileFragment());
+        }
+        if(mFragments.size()<=1){
+            mNavigationBar.setVisibility(View.INVISIBLE);
+            View line = findViewById(R.id.line);
+            mNavigationBar.getLayoutParams().height=0;
+            line.getLayoutParams().height=0;
+        }
         mPager = findViewById(R.id.pager);
         mPager.addOnPageChangeListener(this);
         TabPagerAdapter mAdapter = new TabPagerAdapter(this.getSupportFragmentManager(), mFragments);
@@ -169,20 +199,19 @@ public class MwWorkActivity extends IMBaseActivity implements
         } else if (BrandUtil.isBrandVivo()) {
             // vivo离线推送
 //            DemoLog.i(TAG, "vivo support push: " + PushClient.getInstance(getApplicationContext()).isSupport());
-//            PushClient.getInstance(getApplicationContext()).turnOnPush(new IPushActionListener() {
-//                @Override
-//                public void onStateChanged(int state) {
-//                    if (state == 0) {
-//                        String regId = PushClient.getInstance(getApplicationContext()).getRegId();
-//                        DemoLog.i(TAG, "vivopush open vivo push success regId = " + regId);
-//                        ThirdPushTokenMgr.getInstance().setThirdPushToken(regId);
-//                        ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
-//                    } else {
-//                        // 根据vivo推送文档说明，state = 101 表示该vivo机型或者版本不支持vivo推送，链接：https://dev.vivo.com.cn/documentCenter/doc/156
-//                        DemoLog.i(TAG, "vivopush open vivo push fail state = " + state);
-//                    }
-//                }
-//            });
+            PushClient.getInstance(getApplicationContext()).turnOnPush(new IPushActionListener() {
+                @Override
+                public void onStateChanged(int state) {
+                    if (state == 0) {
+                        String regId = PushClient.getInstance(getApplicationContext()).getRegId();
+                        ThirdPushTokenMgr.getInstance().setThirdPushToken(regId);
+                        ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
+                    } else {
+                        // 根据vivo推送文档说明，state = 101 表示该vivo机型或者版本不支持vivo推送，链接：https://dev.vivo.com.cn/documentCenter/doc/156
+                        SLog.i("vivopush open vivo push fail state = " + state);
+                    }
+                }
+            });
         }
 //        else if (HeytapPushManager.isSupportPush()) {
 //            // oppo离线推送
@@ -230,12 +259,19 @@ public class MwWorkActivity extends IMBaseActivity implements
 
     @Override
     public void updateContacts() {
-        updateFragment(1);
+        for (int i = 0; i < mFragments.size(); i++) {
+            if(mFragments.get(i) instanceof ContactFragment){
+                updateFragment(i);
+            }
+        }
     }
 
     @Override
     public void updateConversion() {
-        ((ConversationFragment) mFragments.get(0)).refreshData();
+        BaseFragment f = mFragments.get(0);
+        if(f instanceof ConversationFragment){
+            ((ConversationFragment) f).refreshData();
+        }
     }
 
     @Override

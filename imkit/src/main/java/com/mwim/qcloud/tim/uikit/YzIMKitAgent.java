@@ -79,6 +79,7 @@ public final class YzIMKitAgent {
     private Context mContext;
     private YzStatusListener mIMKitStatusListener;
     private YzWorkAppItemClickListener mWorkAppItemClickListener;
+    private int functionPrem;
 
     private YzIMKitAgent(Context context, String mYzAppId) {
         this.mContext = context;
@@ -136,6 +137,11 @@ public final class YzIMKitAgent {
         //注册消息通知离线登录
         registerPush();
     };
+
+    public int getFunctionPrem() {
+        return functionPrem;
+    }
+
     private TUIKitConfigs getConfigs() {
         GeneralConfig config = new GeneralConfig();
         // 显示对方是否已读的view将会展示
@@ -175,6 +181,7 @@ public final class YzIMKitAgent {
                         userApi.setEmail(userReq.getEmail());
                         userApi.setToken(token);
                         loginIM(listener);
+                        functionPrem = data.getFunctionPerm();
                     }else{
                         if(listener!=null){
                             listener.loginFail("sysUser",((LoginResp) resp).getCode(),resp.getMessage());

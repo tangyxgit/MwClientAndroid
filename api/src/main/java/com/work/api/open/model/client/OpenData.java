@@ -89,6 +89,11 @@ public class OpenData extends ClientModel {
     public String Name;
     public List<OpenGroupInfo> GroupInfo;
     private String url;
+    private int functionPerm;
+
+    public int getFunctionPerm() {
+        return functionPerm;
+    }
 
     public String getGroupId() {
         return GroupId;
