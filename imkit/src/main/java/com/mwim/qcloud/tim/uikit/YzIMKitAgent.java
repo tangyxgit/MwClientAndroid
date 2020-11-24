@@ -10,6 +10,8 @@ import com.http.network.model.ResponseWork;
 import com.huawei.hms.push.HmsMessaging;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
+import com.mwim.qcloud.tim.uikit.business.Constants;
+import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.inter.YzWorkAppItemClickListener;
@@ -19,10 +21,12 @@ import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.config.GeneralConfig;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
 import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
+import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
@@ -38,6 +42,7 @@ import com.work.api.open.model.client.OpenData;
 import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.work.util.SharedUtils;
+import com.work.util.ToastUtil;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
@@ -213,6 +218,24 @@ public final class YzIMKitAgent {
      */
     public void startAuto(){
         Intent intent = new Intent(mContext, MwWorkActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(intent);
+    }
+    /**
+     * 去聊天
+     */
+    public void startChat(String toChatId,String chatName,boolean finishToConversation){
+        if((getFunctionPrem() & 1)<=0){
+            ToastUtil.error(mContext,R.string.toast_conversation_permission);
+            return;
+        }
+        ChatInfo chatInfo = new ChatInfo();
+        chatInfo.setType(V2TIMConversation.V2TIM_C2C);
+        chatInfo.setId(toChatId);
+        chatInfo.setChatName(chatName);
+        Intent intent = new Intent(mContext, ChatActivity.class);
+        intent.putExtra(Constants.CHAT_INFO, chatInfo);
+        intent.putExtra(Constants.CHAT_TO_CONVERSATION, finishToConversation);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }

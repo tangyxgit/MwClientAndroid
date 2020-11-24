@@ -55,7 +55,11 @@ public class ChatFragment extends BaseFragment {
     }
 
     private void initView() {
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
+        if(bundle==null){
+            getActivity().finish();
+            return;
+        }
         mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
         if (mChatInfo == null) {
             return;
@@ -78,10 +82,12 @@ public class ChatFragment extends BaseFragment {
         mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MwWorkActivity.instance==null){
-                    Intent intent = new Intent(getActivity(),MwWorkActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                if(bundle.getBoolean(Constants.CHAT_TO_CONVERSATION,true)){
+                    if(MwWorkActivity.instance==null){
+                        Intent intent = new Intent(getActivity(),MwWorkActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
                 }
                 getActivity().finish();
             }

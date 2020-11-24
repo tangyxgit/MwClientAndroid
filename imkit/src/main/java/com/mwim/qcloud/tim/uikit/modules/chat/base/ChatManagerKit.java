@@ -300,6 +300,8 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
                         }
                         if(code==20009){//不是好友
                             ToastUtil.error(TUIKit.getAppContext(),"您和对方不是好友，发送失败");
+                        }else if(code == 20003){//userId错误
+                            ToastUtil.error(TUIKit.getAppContext(),"对方ID错误或不存在，发送失败");
                         }
                         if (callBack != null) {
                             callBack.onError("SLog",code, desc);

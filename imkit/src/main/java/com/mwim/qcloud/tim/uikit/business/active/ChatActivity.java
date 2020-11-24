@@ -39,7 +39,7 @@ public class ChatActivity extends IMBaseActivity {
     private void chat(Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle == null) {
-            startSplashActivity(null);
+            finish();
             return;
         }
 
@@ -64,27 +64,18 @@ public class ChatActivity extends IMBaseActivity {
                 }
             }
             if (mChatInfo == null) {
-                startSplashActivity(null);
+                finish();
                 return;
             }
         }
         if (V2TIMManager.getInstance().getLoginStatus() == V2TIM_STATUS_LOGINED) {
             ChatFragment mChatFragment = new ChatFragment();
+            bundle.putBoolean(Constants.CHAT_TO_CONVERSATION,getIntent().getBooleanExtra(Constants.CHAT_TO_CONVERSATION,true));
             mChatFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.empty_view, mChatFragment).commitAllowingStateLoss();
         } else {
-            startSplashActivity(bundle);
+            finish();
         }
-    }
-
-    private void startSplashActivity(Bundle bundle) {
-        Intent intent = new Intent();
-        intent.setClassName(this,"com.work.mw.activity.SplashActivity");
-        if (bundle != null) {
-            intent.putExtras(bundle);
-        }
-        startActivity(intent);
-        finish();
     }
 
     @Override

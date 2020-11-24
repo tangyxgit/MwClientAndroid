@@ -207,6 +207,7 @@
     <string name="toast_update_pwd_success" translatable="false">修改成功</string>
     <string name="toast_save_success" translatable="false">保存成功</string>
     <string name="toast_save_fail" translatable="false">保存失败，请稍后尝试！</string>
+    <string name="toast_conversation_permission" translatable="false">未开通聊天功能</string>
 
     <string name="label_update_app_title" translatable="false">版本更新</string>
     <string name="label_update_app_next" translatable="false">稍后提醒</string>
