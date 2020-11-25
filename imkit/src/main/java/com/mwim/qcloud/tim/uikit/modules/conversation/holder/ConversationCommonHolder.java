@@ -8,14 +8,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.R;
-import com.mwim.qcloud.tim.uikit.business.Constants;
-import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.utils.DateTimeUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.work.util.SharedUtils;
 
 import java.util.Date;
 
