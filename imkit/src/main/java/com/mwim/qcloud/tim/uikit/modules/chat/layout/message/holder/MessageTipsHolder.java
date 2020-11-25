@@ -45,10 +45,14 @@ public class MessageTipsHolder extends MessageEmptyHolder {
             if (msg.isSelf()) {
                 msg.setExtra("您撤回了一条消息");
             } else if (msg.isGroup()) {
-                String message = TUIKitConstants.covert2HTMLString(
-                        (TextUtils.isEmpty(msg.getGroupNameCard())
-                                ? msg.getFromUser()
-                                : msg.getGroupNameCard()));
+                String name = msg.getGroupNameCard();
+                if(TextUtils.isEmpty(name)){
+                    name = msg.getTimMessage().getNameCard();
+                }
+                if(TextUtils.isEmpty(name)){
+                    name = msg.getTimMessage().getNickName();
+                }
+                String message = TUIKitConstants.covert2HTMLString(name);
                 msg.setExtra(message + "撤回了一条消息");
             } else {
                 msg.setExtra("对方撤回了一条消息");

@@ -720,7 +720,14 @@ public class MessageInfoUtil {
             if (msgInfo.isSelf()) {
                 msgInfo.setExtra("您撤回了一条消息");
             } else if (msgInfo.isGroup()) {
-                String message = TUIKitConstants.covert2HTMLString(msgInfo.getFromUser());
+                String name = msgInfo.getGroupNameCard();
+                if(TextUtils.isEmpty(name)){
+                    name = msgInfo.getTimMessage().getNameCard();
+                }
+                if(TextUtils.isEmpty(name)){
+                    name = msgInfo.getTimMessage().getNickName();
+                }
+                String message = TUIKitConstants.covert2HTMLString(name);
                 msgInfo.setExtra(message + "撤回了一条消息");
             } else {
                 msgInfo.setExtra("对方撤回了一条消息");

@@ -46,10 +46,14 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
             if (lastMsg.isSelf()) {
                 lastMsg.setExtra("您撤回了一条消息");
             } else if (lastMsg.isGroup()) {
-                String message = TUIKitConstants.covert2HTMLString(
-                        TextUtils.isEmpty(lastMsg.getGroupNameCard())
-                                ? lastMsg.getFromUser()
-                                : lastMsg.getGroupNameCard());
+                String name = lastMsg.getGroupNameCard();
+                if(TextUtils.isEmpty(name)){
+                    name = lastMsg.getTimMessage().getNameCard();
+                }
+                if(TextUtils.isEmpty(name)){
+                    name = lastMsg.getTimMessage().getNickName();
+                }
+                String message = TUIKitConstants.covert2HTMLString(name);
                 lastMsg.setExtra(message + "撤回了一条消息");
             } else {
                 lastMsg.setExtra("对方撤回了一条消息");
