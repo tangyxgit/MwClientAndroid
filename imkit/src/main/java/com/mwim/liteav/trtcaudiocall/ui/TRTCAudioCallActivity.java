@@ -39,6 +39,8 @@ import com.mwim.liteav.model.ITRTCAVCall;
 import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.liteav.model.TRTCAVCallListener;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
+import com.work.api.open.Yz;
+import com.work.api.open.model.AddApplyStaticsReq;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
@@ -640,6 +642,15 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
             mTimeHandler.removeCallbacks(mTimeRunnable);
         }
         mTimeRunnable = null;
+        if(mTimeCount>1 && mTimeCount<60){//不足一分钟，按照一分钟计算
+            mTimeCount = 60;
+        }
+        if(mTimeCount>1){
+            int s = (int) Math.ceil(mTimeCount / 60f);
+            AddApplyStaticsReq addApplyStaticsReq = new AddApplyStaticsReq();
+            addApplyStaticsReq.setAudioMinutes(s);
+            Yz.getSession().addApplyStatics(addApplyStaticsReq,null);
+        }
     }
 
     private String getShowTime(int count) {

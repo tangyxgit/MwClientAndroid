@@ -31,7 +31,10 @@ import com.mwim.liteav.model.IntentParams;
 import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.liteav.model.TRTCAVCallListener;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.api.open.Yz;
+import com.work.api.open.model.AddApplyStaticsReq;
 import com.work.util.SLog;
+import com.work.util.SharedUtils;
 import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -627,6 +630,15 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             mTimeHandler.removeCallbacks(mTimeRunnable);
         }
         mTimeRunnable = null;
+        if(mTimeCount>1 && mTimeCount<60){//不足一分钟，按照一分钟计算
+            mTimeCount = 60;
+        }
+        if(mTimeCount>1){
+            int s = (int) Math.ceil(mTimeCount / 60f);
+            AddApplyStaticsReq addApplyStaticsReq = new AddApplyStaticsReq();
+            addApplyStaticsReq.setVideoMinutes(s);
+            Yz.getSession().addApplyStatics(addApplyStaticsReq,null);
+        }
     }
 
     private String getShowTime(int count) {
@@ -668,5 +680,4 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
 //        }
         mTrtcAdapter.addData(userModel);
     }
-
 }

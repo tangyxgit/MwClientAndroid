@@ -37,6 +37,7 @@ import com.mwim.liteav.trtcvideocall.ui.videolayout.TRTCVideoLayoutManager;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.work.api.open.Yz;
+import com.work.api.open.model.AddApplyStaticsReq;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.client.OpenData;
@@ -649,6 +650,15 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
             mTimeHandler.removeCallbacks(mTimeRunnable);
         }
         mTimeRunnable = null;
+        if(mTimeCount>1 && mTimeCount<60){//不足一分钟，按照一分钟计算
+            mTimeCount = 60;
+        }
+        if(mTimeCount>1){
+            int s = (int) Math.ceil(mTimeCount / 60f);
+            AddApplyStaticsReq addApplyStaticsReq = new AddApplyStaticsReq();
+            addApplyStaticsReq.setVideoMinutes(s);
+            Yz.getSession().addApplyStatics(addApplyStaticsReq,null);
+        }
     }
 
     private String getShowTime(int count) {

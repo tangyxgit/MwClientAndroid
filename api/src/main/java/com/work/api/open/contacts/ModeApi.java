@@ -87,6 +87,10 @@ public final class ModeApi {
      */
     public final static String sysUser = "api/sysUser";
     /**
+     * 统计报表
+     */
+    public final static String addApplyStatics = "apply/addApplyStatics";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

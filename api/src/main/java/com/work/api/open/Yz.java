@@ -5,6 +5,7 @@ import com.http.network.RequestParams;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.task.ConnectDataTask;
 import com.work.api.open.contacts.ModeApi;
+import com.work.api.open.model.AddApplyStaticsReq;
 import com.work.api.open.model.BaseReq;
 import com.work.api.open.model.BaseResp;
 import com.work.api.open.model.CreateGroupReq;
@@ -156,6 +157,12 @@ public class Yz extends ApiClient {
      */
     public void sysUser(SysUserReq sysUserReq,OnResultDataListener onResultDataListener){
         requestPost(ModeApi.sysUser,sysUserReq,new LoginResp(),onResultDataListener);
+    }
+    /**
+     * 统计报表
+     */
+    public void addApplyStatics(AddApplyStaticsReq addApplyStaticsReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.addApplyStatics,addApplyStaticsReq,new BaseResp(),onResultDataListener);
     }
     /**
      * 获取打车链接
