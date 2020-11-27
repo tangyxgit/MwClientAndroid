@@ -32,7 +32,6 @@ import com.mwim.liteav.SelectContactActivity;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
 import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
-import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallActivity;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.AudioPlayer;

@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mwim.qcloud.tim.uikit.utils.TUIKitConstants.BUSINESS_ID_CUSTOM_CARD;
+import static com.mwim.qcloud.tim.uikit.utils.TUIKitConstants.BUSINESS_ID_CUSTOM_LOCATION;
 
 public class MessageInfoUtil {
 
@@ -356,7 +357,7 @@ public class MessageInfoUtil {
             V2TIMCustomElem customElem = timMessage.getCustomElem();
             String data = new String(customElem.getData());
             if (data.equals(MessageCustom.BUSINESS_ID_GROUP_CREATE)) {
-                // 兼容4.7版本以前的 tuikit
+                // 兼容4.7版本以前的 tuikith
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_CREATE);
                 String message =  (TextUtils.isEmpty(msgInfo.getTimMessage().getNameCard())?msgInfo.getTimMessage().getNickName():msgInfo.getTimMessage().getNameCard())+ " 发起了群聊";
                 msgInfo.setExtra(message);
@@ -380,6 +381,9 @@ public class MessageInfoUtil {
                         msgInfo.setExtra(message);
                     } else if(!TextUtils.isEmpty(businessId) && messageCustom.businessID.equals(BUSINESS_ID_CUSTOM_CARD)){
                         msgInfo.setExtra("[链接]");
+                    }if(!TextUtils.isEmpty(businessId) && messageCustom.businessID.equals(BUSINESS_ID_CUSTOM_LOCATION)){//来自小程序自己发送的位置消息
+                        msgInfo.setExtra("[位置]");
+                        msgInfo.setMsgType(MessageInfo.MSG_TYPE_LOCATION);
                     } else {
                         CallModel callModel = CallModel.convert2VideoCallData(timMessage);
                         if (callModel != null) {
