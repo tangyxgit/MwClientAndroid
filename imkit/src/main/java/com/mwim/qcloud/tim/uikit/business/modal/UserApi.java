@@ -44,7 +44,8 @@ public class UserApi {
     private String mobile;
     private String token;
     private String store;
-    private String version;
+    private String version = "1.0.1";
+    private int versionCode = 1;
 
     public static UserApi instance(){
         return INSTANCE==null?INSTANCE = new UserApi():INSTANCE;
@@ -84,6 +85,14 @@ public class UserApi {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public int getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(int versionCode) {
+        this.versionCode = versionCode;
     }
 
     public String getToken() {
