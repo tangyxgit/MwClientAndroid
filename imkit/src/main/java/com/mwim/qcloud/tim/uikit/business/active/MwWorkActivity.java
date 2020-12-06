@@ -103,7 +103,7 @@ public class MwWorkActivity extends IMBaseActivity implements
             mNavigationBar.addItem(workItem);
         }
 
-        if((functionPrem & 4)>0){
+        if((functionPrem & 8)>0){
             BottomNavigationItem profileItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_user_fill,R.color.defaultColorAccent),R.string.tab_profile_tab_text)
                     .setInactiveIcon(getSelectDrawable(R.drawable.icon_user_stroke,R.color.color_b2b2b2))
                     .setActiveColorResource(R.color.defaultColorAccent);
