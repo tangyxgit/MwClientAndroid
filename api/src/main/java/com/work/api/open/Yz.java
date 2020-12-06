@@ -8,6 +8,8 @@ import com.work.api.open.contacts.ModeApi;
 import com.work.api.open.model.AddApplyStaticsReq;
 import com.work.api.open.model.BaseReq;
 import com.work.api.open.model.BaseResp;
+import com.work.api.open.model.CheckToolTokenReq;
+import com.work.api.open.model.CheckToolTokenResp;
 import com.work.api.open.model.CreateGroupReq;
 import com.work.api.open.model.CreateGroupResp;
 import com.work.api.open.model.DestroyGroupReq;
@@ -163,6 +165,12 @@ public class Yz extends ApiClient {
      */
     public void addApplyStatics(AddApplyStaticsReq addApplyStaticsReq,OnResultDataListener onResultDataListener){
         requestPost(ModeApi.addApplyStatics,addApplyStaticsReq,new BaseResp(),onResultDataListener);
+    }
+    /**
+     * 验证JSKey
+     */
+    public void checkToolToken(CheckToolTokenReq checkToolTokenReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.checkToolToken,checkToolTokenReq,new CheckToolTokenResp(),onResultDataListener);
     }
     /**
      * 获取打车链接

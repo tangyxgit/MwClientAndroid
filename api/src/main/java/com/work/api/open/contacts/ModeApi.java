@@ -91,6 +91,10 @@ public final class ModeApi {
      */
     public final static String addApplyStatics = "apply/addApplyStatics";
     /**
+     * 验证JSKey
+     */
+    public final static String checkToolToken = "api/checkToolToken";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

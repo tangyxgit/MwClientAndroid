@@ -22,11 +22,22 @@ import android.widget.ProgressBar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.http.network.listener.OnResultDataListener;
+import com.http.network.model.RequestWork;
+import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
+import com.work.api.open.Yz;
+import com.work.api.open.model.CheckToolTokenReq;
+import com.work.api.open.model.CheckToolTokenResp;
+import com.work.api.open.model.client.OpenData;
 import com.work.util.PhoneUtils;
 import com.work.util.SLog;
 import com.work.util.SizeUtils;
 import com.work.util.StringUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -36,6 +47,7 @@ public class WebViewProgress extends WebView {
     private OnWebLoadListener onWebLoadListener;
     private boolean needClearHistory;
     private boolean isWebError;
+    private String mDomain = "";
 
     public WebViewProgress(Context context) {
         super(getFixedContext(context));
@@ -60,7 +72,7 @@ public class WebViewProgress extends WebView {
         setJavaScript();
         final ThirdWebJs thirdWebJs = new ThirdWebJs();
         thirdWebJs.setExtraInfoHead("Referer","https://tg.tripg.com/");
-        addJavascriptInterface(thirdWebJs, "cheoa");
+        addJavascriptInterface(thirdWebJs, "YzIMAgent");
         setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -99,6 +111,10 @@ public class WebViewProgress extends WebView {
                     }
                     onWebLoadListener.onWebTitleChange(title);
                 }
+                try {
+                    Uri uri = Uri.parse(url);
+                    mDomain = uri.getHost();
+                }catch (Exception ignore){}
             }
 
             @Override
@@ -243,7 +259,7 @@ public class WebViewProgress extends WebView {
     /**
      * 默认支持支付等功能
      */
-    private static class ThirdWebJs {
+    private class ThirdWebJs {
 
         ThirdWebJs() {
         }
@@ -262,6 +278,58 @@ public class WebViewProgress extends WebView {
 
         public String getValue() {
             return value;
+        }
+
+        @JavascriptInterface
+        public void loadJSSdk(final String data){
+            try {
+                JSONObject dataJson = new JSONObject(data);
+                String appKey = dataJson.getString("appKey");
+                CheckToolTokenReq checkToolTokenReq = new CheckToolTokenReq();
+                checkToolTokenReq.setToolKey(appKey);
+                checkToolTokenReq.setToolDomain(mDomain);
+                Yz.getSession().checkToolToken(checkToolTokenReq, new OnResultDataListener() {
+                    @Override
+                    public void onResult(RequestWork req, ResponseWork resp) throws Exception {
+                        JSONObject resultJson = new JSONObject();
+                        if(resp.isSuccess()){
+                            if(resp instanceof CheckToolTokenResp){
+                                OpenData work = ((CheckToolTokenResp) resp).getData();
+                                resultJson.put("code",0);
+                                resultJson.put("nickName",UserApi.instance().getNickName());
+                                resultJson.put("appName",work.getToolName());
+                                resultJson.put("appIcon",work.getIconUrl());
+                            }
+                        }else{
+                            resultJson.put("code",-1);
+                            resultJson.put("msg",resp.getMessage());
+                        }
+                        String result = resultJson.toString();
+                        WebViewProgress.this.loadUrl("javascript:permissionWindowYzIM("+result+")");
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        @JavascriptInterface
+        public String getUserProfile(){
+            JSONObject resultJson = new JSONObject();
+            try {
+                resultJson.put("code",0);
+                resultJson.put("nickName", UserApi.instance().getNickName());
+                resultJson.put("userId", UserApi.instance().getUserId());
+                resultJson.put("mobile", UserApi.instance().getMobile());
+            }catch (Exception e){
+                e.printStackTrace();
+                try {
+                    resultJson.put("code",-1);
+                } catch (JSONException jsonException) {
+                    jsonException.printStackTrace();
+                }
+            }
+            return resultJson.toString();
         }
     }
     /**
