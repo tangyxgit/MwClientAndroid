@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -46,6 +47,7 @@ import com.mwim.qcloud.tim.uikit.business.adapter.ListStopMapAdapter;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.business.helper.AMapManager;
 import com.work.util.KeyboardUtils;
+import com.work.util.SLog;
 import com.work.util.ScreenUtils;
 import com.work.util.ToastUtil;
 import com.workstation.permission.PermissionsResultAction;
@@ -64,7 +66,7 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
         TextWatcher,
         BaseQuickAdapter.OnItemClickListener,
         Inputtips.InputtipsListener {
-    private static String[] PERMISSIONS = new String[]{
+    private static final String[] PERMISSIONS = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,};
     private final String GPS_ACTION = "android.location.PROVIDERS_CHANGED";
@@ -195,7 +197,7 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
                 @Override
                 public void onClick(View v) {
                     if(!isOpenGps(ListStopMapActivity.this)){
-                        Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivityForResult(intent, 0);
                     }else{
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -222,29 +224,30 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
         double lat = mapManager.getLat();
         double lng = mapManager.getLng();
         if(lat>0 && lng>0){
+            mapManager.removeOnAmapLocationChangeListener(this);
+            mapManager.onStop();
+            LatLng latLng = new LatLng(lat,lng);
             MarkerOptions options = new MarkerOptions();
             options.draggable(true);
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_marker_location));
-            options.position(new LatLng(lat,lng));
+//            options.position(new LatLng(lat,lng));
+            mAMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
             mMark = mAMap.addMarker(options);
-            loadPoiData();
         }
     }
 
-    private void loadPoiData(){
+    private void loadPoiData(LatLng latLng){
         if(mMark==null){
             return;
         }
-        double lat = mMark.getPosition().latitude;
-        double lng = mMark.getPosition().longitude;
+        positionByPixels(latLng);
         PoiSearch.Query query = new PoiSearch.Query(null,null,null);
         query.setPageNum(1);
-        query.setPageSize(20);
+        query.setPageSize(40);
         PoiSearch poiSearch = new PoiSearch(this,query);
-        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(lat,lng),1000 * 5));
+        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(latLng.latitude,latLng.longitude),1000 * 5));
         poiSearch.setOnPoiSearchListener(this);
         poiSearch.searchPOIAsyn();
-        mapManager.removeOnAmapLocationChangeListener(this);
     }
 
     @Override
@@ -266,12 +269,13 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
         mLoadingLayout.setVisibility(View.GONE);
         PoiItem poiItem = mAdapter.getSelectData();
         if(mMark!=null){
-            mMark.setPosition(new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude()));
+//            mMark.setPosition(new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude()));
+            LatLng latLng = new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude());
             if(isFirstLocation){
                 isFirstLocation = false;
-                mAMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMark.getPosition(),14), 400, this);
+                mAMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
             }else{
-                mAMap.animateCamera(CameraUpdateFactory.newLatLng(mMark.getPosition()), 400, this);
+                mAMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             }
         }
     }
@@ -280,25 +284,37 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
     public void onPoiItemSearched(PoiItem poiItem, int i) {
     }
 
+    private boolean isCameraFinishUpdate = true;
+
     @Override
-    public void onCameraChangeFinish(CameraPosition cameraPosition) {
-        super.onCameraChangeFinish(cameraPosition);
-        loadPoiData();
+    public void onTouch(MotionEvent motionEvent) {
+        super.onTouch(motionEvent);
+        isCameraFinishUpdate = true;
     }
 
     @Override
     public void onFinish() {
         super.onFinish();
-        positionByPixels();
+        PoiItem poiItem = mAdapter.getSelectData();
+        if(poiItem!=null){
+            positionByPixels(new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude()));
+        }
     }
 
-    private void positionByPixels(){
+    @Override
+    public void onCameraChangeFinish(CameraPosition cameraPosition) {
+        super.onCameraChangeFinish(cameraPosition);
+        if(isCameraFinishUpdate){
+            SLog.e("onCameraChangeFinish");
+            isCameraFinishUpdate = false;
+            loadPoiData(cameraPosition.target);
+        }
+    }
+
+    private void positionByPixels(LatLng latLng){
         Projection projection = mAMap.getProjection();
-        Point point = projection.toScreenLocation(mMark.getPosition());
+        Point point = projection.toScreenLocation(latLng);
         if (point.x > 0 && point.y > 0) {
-            mMark.setPositionByPixels(point.x, point.y);
-            //重新校准一下
-            point = projection.toScreenLocation(mMark.getPosition());
             mMark.setPositionByPixels(point.x, point.y);
         }
     }
@@ -343,12 +359,14 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
                 LatLonPoint point = tip.getPoint();
                 if(point!=null){
                     mAdapter.clear();
-                    mMark.setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
+                    LatLng latLng = new LatLng(point.getLatitude(), point.getLongitude());
+//                    mMark.setPosition(new LatLng(point.getLatitude(), point.getLongitude()));
                     mAdapter.setSelectData(null);
                     KeyboardUtils.hideSoftInput(mSearch);
-                    loadPoiData();
+                    isCameraFinishUpdate = true;
+                    loadPoiData(latLng);
                 }else{
-                    ToastUtil.error(this,R.string.toast_fence_add_location_error);
+                    ToastUtil.error(this, R.string.toast_fence_add_location_error);
                 }
             }else{
                 ToastUtil.error(this,R.string.toast_fence_add_location_error);
@@ -358,7 +376,10 @@ public class ListStopMapActivity extends MapViewActivity implements AMapManager.
             if(poiItem!=null){
                 mAdapter.setSelectData(poiItem);
                 if(mMark!=null){
-                    mMark.setPosition(new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude()));
+//                    mMark.setPosition(new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude()));
+                    final LatLng latLng = new LatLng(poiItem.getLatLonPoint().getLatitude(),poiItem.getLatLonPoint().getLongitude());
+                    isCameraFinishUpdate = false;
+                    mAMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14),this);
                 }
             }
         }

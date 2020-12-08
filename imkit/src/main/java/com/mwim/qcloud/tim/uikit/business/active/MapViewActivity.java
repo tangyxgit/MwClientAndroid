@@ -1,6 +1,7 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -25,7 +26,8 @@ public abstract class MapViewActivity extends BaseActivity implements AMap.OnMar
         AMap.OnMapLoadedListener,
         AMap.OnCameraChangeListener,
         AMap.CancelableCallback,
-        AMap.OnInfoWindowClickListener{
+        AMap.OnInfoWindowClickListener,
+        AMap.OnMapTouchListener {
 
     public static IUIKitCallBack mCallBack;
     private TextureMapView mMapView;
@@ -67,7 +69,13 @@ public abstract class MapViewActivity extends BaseActivity implements AMap.OnMar
             mAMap.setOnMarkerClickListener(this);
             mAMap.setOnCameraChangeListener(this);
             mAMap.setOnInfoWindowClickListener(this);
+            mAMap.setOnMapTouchListener(this);
         }
+    }
+
+    @Override
+    public void onTouch(MotionEvent motionEvent) {
+
     }
 
     @Override
