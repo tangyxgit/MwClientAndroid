@@ -30,7 +30,7 @@ import java.util.List;
 public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements MessageRevokedManager.MessageRevokeHandler {
 
     protected static final int MSG_PAGE_COUNT = 20;
-    protected static final int REVOKE_TIME_OUT = 10031;
+    protected static final int REVOKE_TIME_OUT = 20016;
     protected ChatProvider mCurrentProvider;
 
     protected boolean mIsMore;

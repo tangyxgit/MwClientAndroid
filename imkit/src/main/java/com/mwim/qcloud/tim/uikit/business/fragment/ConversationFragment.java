@@ -35,7 +35,7 @@ public class ConversationFragment extends BaseFragment {
     private View mBaseView;
     private ConversationLayout mConversationLayout;
     private PopupWindow mConversationPopWindow;
-    private List<PopMenuAction> mConversationPopActions = new ArrayList<>();
+    private final List<PopMenuAction> mConversationPopActions = new ArrayList<>();
 
     @Nullable
     @Override

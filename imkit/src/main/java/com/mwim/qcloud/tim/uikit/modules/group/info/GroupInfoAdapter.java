@@ -26,14 +26,14 @@ public class GroupInfoAdapter extends BaseAdapter {
 
     private static final int ADD_TYPE = -100;
     private static final int DEL_TYPE = -101;
-    private static final int OWNER_PRIVATE_MAX_LIMIT = 10;  //讨论组,owner可以添加成员和删除成员，
+    private static final int OWNER_PRIVATE_MAX_LIMIT = 8;  //讨论组,owner可以添加成员和删除成员，
     private static final int OWNER_PUBLIC_MAX_LIMIT = 11;   //公开群,owner不可以添加成员，但是可以删除成员
     private static final int OWNER_CHATROOM_MAX_LIMIT = 11; //聊天室,owner不可以添加成员，但是可以删除成员
-    private static final int NORMAL_PRIVATE_MAX_LIMIT = 11; //讨论组,普通人可以添加成员
+    private static final int NORMAL_PRIVATE_MAX_LIMIT = 9; //讨论组,普通人可以添加成员
     private static final int NORMAL_PUBLIC_MAX_LIMIT = 12;  //公开群,普通人没有权限添加成员和删除成员
     private static final int NORMAL_CHATROOM_MAX_LIMIT = 12; //聊天室,普通人没有权限添加成员和删除成员
 
-    private List<GroupMemberInfo> mGroupMembers = new ArrayList<>();
+    private final List<GroupMemberInfo> mGroupMembers = new ArrayList<>();
     private IGroupMemberRouter mTailListener;
     private GroupInfo mGroupInfo;
 
@@ -128,22 +128,22 @@ public class GroupInfoAdapter extends BaseAdapter {
             if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PRIVATE)
                     || TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_WORK)) {
                 if (info.isOwner()) {
-                    shootMemberCount = members.size() > OWNER_PRIVATE_MAX_LIMIT ? OWNER_PRIVATE_MAX_LIMIT : members.size();
+                    shootMemberCount = Math.min(members.size(), OWNER_PRIVATE_MAX_LIMIT);
                 } else {
-                    shootMemberCount = members.size() > NORMAL_PRIVATE_MAX_LIMIT ? NORMAL_PRIVATE_MAX_LIMIT : members.size();
+                    shootMemberCount = Math.min(members.size(), NORMAL_PRIVATE_MAX_LIMIT);
                 }
             } else if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PUBLIC)) {
                 if (info.isOwner()) {
-                    shootMemberCount = members.size() > OWNER_PUBLIC_MAX_LIMIT ? OWNER_PUBLIC_MAX_LIMIT : members.size();
+                    shootMemberCount = Math.min(members.size(), OWNER_PUBLIC_MAX_LIMIT);
                 } else {
-                    shootMemberCount = members.size() > NORMAL_PUBLIC_MAX_LIMIT ? NORMAL_PUBLIC_MAX_LIMIT : members.size();
+                    shootMemberCount = Math.min(members.size(), NORMAL_PUBLIC_MAX_LIMIT);
                 }
             } else if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_CHAT_ROOM)
                     || TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_MEETING)) {
                 if (info.isOwner()) {
-                    shootMemberCount = members.size() > OWNER_CHATROOM_MAX_LIMIT ? OWNER_CHATROOM_MAX_LIMIT : members.size();
+                    shootMemberCount = Math.min(members.size(), OWNER_CHATROOM_MAX_LIMIT);
                 } else {
-                    shootMemberCount = members.size() > NORMAL_CHATROOM_MAX_LIMIT ? NORMAL_CHATROOM_MAX_LIMIT : members.size();
+                    shootMemberCount = Math.min(members.size(), NORMAL_CHATROOM_MAX_LIMIT);
                 }
             }
             for (int i = 0; i < shootMemberCount; i++) {

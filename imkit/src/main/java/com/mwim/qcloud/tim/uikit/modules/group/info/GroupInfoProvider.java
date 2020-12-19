@@ -155,7 +155,7 @@ public class GroupInfoProvider {
         }
     }
 
-    public void loadGroupMembers(long nextSeq, final IUIKitCallBack callBack) {
+    public void loadGroupMembers(final long nextSeq, final IUIKitCallBack callBack) {
         V2TIMManager.getGroupManager().getGroupMemberList(mGroupInfo.getId(), V2TIMGroupMemberFullInfo.V2TIM_GROUP_MEMBER_FILTER_ALL, nextSeq, new V2TIMValueCallback<V2TIMGroupMemberInfoResult>() {
             @Override
             public void onError(int code, String desc) {
@@ -170,7 +170,9 @@ public class GroupInfoProvider {
                     GroupMemberInfo member = new GroupMemberInfo();
                     members.add(member.covertTIMGroupMemberInfo(v2TIMGroupMemberInfoResult.getMemberInfoList().get(i)));
                 }
-                mGroupMembers.clear();
+                if(nextSeq==0){
+                    mGroupMembers.clear();
+                }
                 mGroupMembers.addAll(members);
                 mGroupInfo.setMemberDetails(mGroupMembers);
                 if (v2TIMGroupMemberInfoResult.getNextSeq() != 0){

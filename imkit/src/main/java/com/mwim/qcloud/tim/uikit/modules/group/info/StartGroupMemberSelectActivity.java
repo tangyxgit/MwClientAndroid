@@ -26,8 +26,8 @@ import java.util.ArrayList;
 
 public class StartGroupMemberSelectActivity extends BaseActivity implements TextWatcher {
 
-    private ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
-    private ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
+    private final ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
+    private final ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
     private ContactListView mContactListView;
 
     @Override
@@ -160,8 +160,8 @@ public class StartGroupMemberSelectActivity extends BaseActivity implements Text
         }else{
             ArrayList<ContactItemBean> groupMemberInfos = new ArrayList<>();
             for (ContactItemBean groupMemberInfo:memberInfoArrayList) {
-                if(groupMemberInfo.getNickname().contains(text)
-                    || groupMemberInfo.getRemark().contains(text)){
+                if((!TextUtils.isEmpty(groupMemberInfo.getNickname()) && groupMemberInfo.getNickname().contains(text))
+                    || (!TextUtils.isEmpty(groupMemberInfo.getRemark()) && groupMemberInfo.getRemark().contains(text))){
                     groupMemberInfos.add(groupMemberInfo);
                 }
             }

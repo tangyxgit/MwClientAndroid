@@ -136,7 +136,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.component.SelectionActivity"
             android:screenOrientation="portrait" />
@@ -204,7 +205,8 @@
         </activity>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.AddMoreActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.BlackListActivity"/>
-        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity"
+            android:launchMode="singleTask"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.NewFriendActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.GroupListActivity"/>
         <activity android:name="com.mwim.qcloud.tim.uikit.business.active.StartC2CChatActivity"/>

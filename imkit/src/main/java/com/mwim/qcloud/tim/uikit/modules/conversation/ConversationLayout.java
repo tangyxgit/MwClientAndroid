@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.modules.conversation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;

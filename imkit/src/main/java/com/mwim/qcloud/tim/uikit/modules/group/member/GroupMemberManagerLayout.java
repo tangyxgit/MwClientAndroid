@@ -6,26 +6,39 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 
+import android.content.Intent;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
+import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
+import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.modules.group.interfaces.IGroupMemberLayout;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
+import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class GroupMemberManagerLayout extends LinearLayout implements IGroupMemberLayout {
+public class GroupMemberManagerLayout extends LinearLayout implements IGroupMemberLayout, TextWatcher {
 
     private TitleBarLayout mTitleBar;
     private AlertDialog mDialog;
-    private GroupMemberManagerAdapter mAdapter;
+//    private GroupMemberManagerAdapter mAdapter;
     private IGroupMemberRouter mGroupMemberManager;
     private GroupInfo mGroupInfo;
+    private ContactListView mContactListView;
+    private List<ContactItemBean> mAllMemberManager;
 
     public GroupMemberManagerLayout(Context context) {
         super(context);
@@ -53,16 +66,25 @@ public class GroupMemberManagerLayout extends LinearLayout implements IGroupMemb
                 buildPopMenu();
             }
         });
-        mAdapter = new GroupMemberManagerAdapter();
-        mAdapter.setMemberChangedCallback(new IGroupMemberChangedCallback() {
-
+        EditText mSearch = findViewById(R.id.search);
+        mSearch.addTextChangedListener(this);
+//        mAdapter = new GroupMemberManagerAdapter();
+//        mAdapter.setMemberChangedCallback(new IGroupMemberChangedCallback() {
+//
+//            @Override
+//            public void onMemberRemoved(GroupMemberInfo memberInfo) {
+//                mTitleBar.setTitle("群成员(" + mGroupInfo.getMemberDetails().size() + ")", TitleBarLayout.POSITION.MIDDLE);
+//            }
+//        });
+//        GridView gridView = findViewById(R.id.group_all_members);
+//        gridView.setAdapter(mAdapter);
+        mContactListView = findViewById(R.id.group_create_member_list);
+        mContactListView.setOnItemClickListener(new ContactListView.OnItemClickListener() {
             @Override
-            public void onMemberRemoved(GroupMemberInfo memberInfo) {
-                mTitleBar.setTitle("群成员(" + mGroupInfo.getMemberDetails().size() + ")", TitleBarLayout.POSITION.MIDDLE);
+            public void onItemClick(int position, ContactItemBean contact) {
+                getContext().startActivity(new Intent(getContext(), FriendProfileActivity.class).putExtra(TUIKitConstants.ProfileType.CONTENT,contact));
             }
         });
-        GridView gridView = findViewById(R.id.group_all_members);
-        gridView.setAdapter(mAdapter);
     }
 
     public TitleBarLayout getTitleBar() {
@@ -76,7 +98,22 @@ public class GroupMemberManagerLayout extends LinearLayout implements IGroupMemb
 
     public void setDataSource(GroupInfo groupInfo) {
         mGroupInfo = groupInfo;
-        mAdapter.setDataSource(groupInfo);
+        mContactListView.setGroupInfo(groupInfo);
+        List<GroupMemberInfo> memberDetails = groupInfo.getMemberDetails();
+        List<ContactItemBean> contactItemBeans = new ArrayList<>();
+        for (GroupMemberInfo info:memberDetails) {
+            ContactItemBean contactItemBean = new ContactItemBean();
+            List<Object> icons = new ArrayList<>();
+            icons.add(info.getIconUrl());
+            contactItemBean.setId(info.getAccount());
+            contactItemBean.setIconUrlList(icons);
+            contactItemBean.setNickname(info.getNickName());
+            contactItemBean.setRemark(info.getNameCard());
+            contactItemBeans.add(contactItemBean);
+        }
+        mAllMemberManager = new ArrayList<>(contactItemBeans);
+        mContactListView.setDataSource(contactItemBeans);
+//        mAdapter.setDataSource(groupInfo);
         if (groupInfo != null) {
             mTitleBar.setTitle("群成员(" + groupInfo.getMemberDetails().size() + ")", TitleBarLayout.POSITION.MIDDLE);
         }
@@ -137,4 +174,30 @@ public class GroupMemberManagerLayout extends LinearLayout implements IGroupMemb
         this.mGroupMemberManager = callBack;
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String text = s.toString();
+        if(TextUtils.isEmpty(text)){
+            mContactListView.setDataSource(new ArrayList<>(mAllMemberManager));
+        }else{
+            ArrayList<ContactItemBean> groupMemberInfos = new ArrayList<>();
+            for (ContactItemBean groupMemberInfo:mAllMemberManager) {
+                if((!TextUtils.isEmpty(groupMemberInfo.getNickname()) && groupMemberInfo.getNickname().contains(text))
+                        || (!TextUtils.isEmpty(groupMemberInfo.getRemark()) && groupMemberInfo.getRemark().contains(text))){
+                    groupMemberInfos.add(groupMemberInfo);
+                }
+            }
+            mContactListView.setDataSource(groupMemberInfos);
+        }
+    }
 }

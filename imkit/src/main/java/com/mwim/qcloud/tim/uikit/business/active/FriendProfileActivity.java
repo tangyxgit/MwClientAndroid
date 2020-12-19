@@ -3,14 +3,10 @@ package com.mwim.qcloud.tim.uikit.business.active;
 import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
-import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
-import com.mwim.qcloud.tim.uikit.business.Constants;
-import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.FriendProfileLayout;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.tencent.imsdk.v2.V2TIMConversation;
 import com.mwim.qcloud.tim.uikit.R;
 
 public class FriendProfileActivity extends IMBaseActivity {
@@ -51,5 +47,16 @@ public class FriendProfileActivity extends IMBaseActivity {
     @Override
     public int onCustomContentId() {
         return R.layout.activity_im_contact_friend_profile;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        try {
+            onInitView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
