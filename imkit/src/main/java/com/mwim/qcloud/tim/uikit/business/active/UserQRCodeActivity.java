@@ -1,10 +1,12 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.R;
@@ -43,10 +45,13 @@ public class UserQRCodeActivity extends BaseActivity {
         final Bitmap bitmap = QRCodeUtils.generateImage(content,mQRCodeImage.getLayoutParams().width,mQRCodeImage.getLayoutParams().height,null);
         mQRCodeImage.setImageBitmap(bitmap);
 
-        findViewById(R.id.save_qr_code).setOnClickListener(new View.OnClickListener() {
+        final LinearLayout mQRCodeLayout = findViewById(R.id.qr_code_layout);
+        final View mSaveQrCode = findViewById(R.id.save_qr_code);
+        mSaveQrCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
+                    mSaveQrCode.setVisibility(View.GONE);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -54,17 +59,17 @@ public class UserQRCodeActivity extends BaseActivity {
                             if(name.length()>10){
                                 name = name.substring(0,10);
                             }
-                            String path = new FileUtils(UserQRCodeActivity.this).saveBitmap(name+".png",bitmap);
+                            String path = new FileUtils(UserQRCodeActivity.this).saveBitmap(name+".png",createViewBitmap(mQRCodeLayout));
                             MediaScannerConnection.scanFile(UserQRCodeActivity.this,
                                     new String[]{path},
                                     new String[]{"image/jpeg"},
                                     new MediaScannerConnection.OnScanCompletedListener() {
                                         @Override
                                         public void onScanCompleted(String path, Uri uri) {
-                                            SLog.i("onScanCompleted"+path);
                                             mQRCodeImage.post(new Runnable() {
                                                 @Override
                                                 public void run() {
+                                                    mSaveQrCode.setVisibility(View.VISIBLE);
                                                     ToastUtil.success(UserQRCodeActivity.this,R.string.toast_save_success);
                                                 }
                                             });
@@ -78,6 +83,13 @@ public class UserQRCodeActivity extends BaseActivity {
                 }
             }
         });
+    }
+    public Bitmap createViewBitmap(View v) {
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        v.draw(canvas);
+        return bitmap;
     }
 
     /**

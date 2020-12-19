@@ -139,7 +139,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name));
             bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getNickName());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 6);
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 10);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {
