@@ -221,7 +221,8 @@
         <activity android:name=".modules.group.member.GroupMemberRemindActivity"/>
         <activity android:name=".business.active.WebActivity"/>
         <activity android:name=".business.active.X5FileOpenActivity"/>
-        <activity android:name=".modules.group.info.StartGroupMemberSelectActivity"/>
+        <activity android:name=".modules.group.info.StartGroupMemberSelectActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".business.active.AboutYzActivity"/>
         <activity android:name=".business.active.ListStopMapActivity"
             android:windowSoftInputMode="adjustNothing"/>

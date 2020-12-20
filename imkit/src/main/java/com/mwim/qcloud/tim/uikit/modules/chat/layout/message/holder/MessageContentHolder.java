@@ -127,6 +127,14 @@ public abstract class MessageContentHolder extends MessageEmptyHolder {
             } else {
                 leftUserIcon.setIconUrls(urllist);
             }
+        }else{
+            List<Object> urllist = new ArrayList<>();
+            urllist.add(R.drawable.default_head);
+            if (msg.isSelf()) {
+                rightUserIcon.setIconUrls(urllist);
+            } else {
+                leftUserIcon.setIconUrls(urllist);
+            }
         }
 
         if (msg.isSelf()) {
