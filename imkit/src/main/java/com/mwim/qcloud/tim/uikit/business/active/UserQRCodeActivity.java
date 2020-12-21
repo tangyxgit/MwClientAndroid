@@ -16,7 +16,6 @@ import com.mwim.qcloud.tim.uikit.business.barcodescanner.QRCodeUtils;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.work.util.FileUtils;
-import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -65,12 +64,12 @@ public class UserQRCodeActivity extends BaseActivity {
                                     new String[]{"image/jpeg"},
                                     new MediaScannerConnection.OnScanCompletedListener() {
                                         @Override
-                                        public void onScanCompleted(String path, Uri uri) {
+                                        public void onScanCompleted(final String path, Uri uri) {
                                             mQRCodeImage.post(new Runnable() {
                                                 @Override
                                                 public void run() {
                                                     mSaveQrCode.setVisibility(View.VISIBLE);
-                                                    ToastUtil.success(UserQRCodeActivity.this,R.string.toast_save_success);
+                                                    ToastUtil.success(UserQRCodeActivity.this,getString(R.string.toast_save_success)+":"+path);
                                                 }
                                             });
                                         }
