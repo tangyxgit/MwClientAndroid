@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
+import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.modules.group.interfaces.IGroupMemberLayout;
@@ -82,7 +83,10 @@ public class GroupMemberManagerLayout extends LinearLayout implements IGroupMemb
         mContactListView.setOnItemClickListener(new ContactListView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, ContactItemBean contact) {
-                getContext().startActivity(new Intent(getContext(), FriendProfileActivity.class).putExtra(TUIKitConstants.ProfileType.CONTENT,contact));
+                ChatInfo chatInfo = new ChatInfo();
+                chatInfo.setId(contact.getId());
+                chatInfo.setChatName(contact.getNickname());
+                getContext().startActivity(new Intent(getContext(), FriendProfileActivity.class).putExtra(TUIKitConstants.ProfileType.CONTENT,chatInfo));
             }
         });
     }
