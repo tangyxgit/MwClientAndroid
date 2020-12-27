@@ -1,7 +1,6 @@
 package com.work.api.open.model;
 
 import com.work.api.open.model.client.OpenData;
-import com.work.api.open.model.client.OpenWork;
 
 /**
  * Created by tangyx

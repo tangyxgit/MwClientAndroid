@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +22,7 @@ import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.business.adapter.WorkAdapter;
 import com.work.api.open.Yz;
 import com.work.api.open.model.GetToolListByUserIdResp;
+import com.work.util.SizeUtils;
 import com.work.util.ToastUtil;
 
 /**
@@ -39,10 +41,16 @@ public class WorkFragment extends BaseFragment implements OnResultDataListener {
         View baseView = inflater.inflate(R.layout.fragment_work, container, false);
         RecyclerView mRecyclerView = baseView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addItemDecoration(new VerticalDividerItemDecoration.Builder(getContext()).color(Color.TRANSPARENT).sizeResId(R.dimen.dp_10).build());
         mAdapter = new WorkAdapter(null);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).colorResId(R.color.transparent).sizeResId(R.dimen.dp_10).build());
+        View view = new View(getContext());
+        view.setLayoutParams(new LinearLayout.LayoutParams(1, SizeUtils.dp2px(getContext(),30)));
+        mAdapter.addFooterView(view);
+
+        view = new View(getContext());
+        view.setLayoutParams(new LinearLayout.LayoutParams(1, SizeUtils.dp2px(getContext(),35)));
+        mAdapter.addHeaderView(view);
         return baseView;
     }
 

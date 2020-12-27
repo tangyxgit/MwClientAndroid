@@ -35,7 +35,7 @@
         android:src="@drawable/img_appcenter_bg"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_marginTop="83dp"
+        android:layout_marginTop="48dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </FrameLayout>

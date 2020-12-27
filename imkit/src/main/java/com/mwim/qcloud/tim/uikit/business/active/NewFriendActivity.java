@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
+import android.Manifest;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.adapter.NewFriendListAdapter;
+import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMFriendApplication;
 import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
@@ -19,22 +21,24 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.util.SLog;
+import com.workstation.permission.PermissionsResultAction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewFriendActivity extends IMBaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class NewFriendActivity extends IMBaseActivity implements BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
 
     private RecyclerView mNewFriendLv;
     private NewFriendListAdapter mAdapter;
     private TextView mEmptyView;
-    private List<V2TIMFriendApplication> mList = new ArrayList<>();
+    private final List<V2TIMFriendApplication> mList = new ArrayList<>();
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
         mNewFriendLv = findViewById(R.id.new_friend_list);
         mEmptyView = findViewById(R.id.empty_text);
+        findViewById(R.id.add_new_contacts_phone).setOnClickListener(this);
     }
 
     @Override
@@ -111,5 +115,39 @@ public class NewFriendActivity extends IMBaseActivity implements BaseQuickAdapte
             intent.putExtra(TUIKitConstants.ProfileType.CONTENT, item);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        intentAddressBook();
+    }
+    /**
+     * 跳转到系统通讯录
+     */
+    private void intentAddressBook(){
+        String[] Permission = { Manifest.permission.READ_CONTACTS};
+        final Intent intent = new Intent(this, SystemContactActivity.class);
+        if(hasPermission(Permission)){
+            startActivityForResult(intent,0);
+        }else{
+            onPermissionChecker(Permission, new PermissionsResultAction() {
+                @Override
+                public void onGranted() {
+                    startActivityForResult(intent,0);
+                }
+
+                @Override
+                public void onDenied(String permission) {
+                    showMissingPermissionDialog();
+                }
+            });
+        }
+    }
+    // 显示缺失权限提示
+    public void showMissingPermissionDialog() {
+        new ConfirmDialog()
+                .setContent(R.string.tips_permissions)
+                .setHiddenCancel(true)
+                .show(getSupportFragmentManager(),"permission");
     }
 }

@@ -90,6 +90,15 @@
     <string name="text_video_tag_show" translatable="false">邀请您进行视频通话...</string>
     <string name="text_qr_code" translatable="false">我的二维码</string>
     <string name="text_qr_code_remark" translatable="false">扫一扫二维码，加我为好友</string>
+    <string name="text_new_contacts_phone" translatable="false">添加手机联系人</string>
+    <string name="text_new_contacts_approval_title" translatable="false">好友申请和添加</string>
+    <string name="text_contacts_phone_nickname" translatable="false">昵称：%1$s</string>
+    <string name="text_contacts_phone_friends" translatable="false">已是好友</string>
+    <string name="text_contacts_phone_download" translatable="false">邀请下载</string>
+    <string name="text_contacts_phone_download_sending" translatable="false">正在发送</string>
+    <string name="text_contacts_phone_download_ok" translatable="false">邀请成功</string>
+    <string name="text_contacts_add_wording" translatable="false">我是 %1$s</string>
+    <string name="text_contacts_add_download_success" translatable="false">邀请成功，已发送链接给您的好友...</string>
 
     // 群信息相关
     <string name="tips_empty_group_member" translatable="false">请选择群成员</string>

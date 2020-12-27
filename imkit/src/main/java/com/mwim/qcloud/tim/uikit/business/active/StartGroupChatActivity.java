@@ -33,12 +33,12 @@ import java.util.Arrays;
 public class StartGroupChatActivity extends IMBaseActivity implements TextWatcher {
 
     private LineControllerView mJoinType;
-    private ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
-    private ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
+    private final ArrayList<GroupMemberInfo> mMembers = new ArrayList<>();
+    private final ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
     private int mGroupType = -1;
     private int mJoinTypeIndex = 2;
-    private ArrayList<String> mJoinTypes = new ArrayList<>();
-    private ArrayList<String> mGroupTypeValue = new ArrayList<>();
+    private final ArrayList<String> mJoinTypes = new ArrayList<>();
+    private final ArrayList<String> mGroupTypeValue = new ArrayList<>();
     private boolean mCreating;
     private ContactListView mContactListView;
 
@@ -54,7 +54,14 @@ public class StartGroupChatActivity extends IMBaseActivity implements TextWatche
         GroupMemberInfo memberInfo = new GroupMemberInfo();
         memberInfo.setAccount(V2TIMManager.getInstance().getLoginUser());
         memberInfo.setNameCard(UserApi.instance().getNickName());
-        mMembers.add(0, memberInfo);
+        mMembers.add(memberInfo);
+        ChatInfo chatInfo = (ChatInfo) getIntent().getSerializableExtra(StartGroupChatActivity.class.getSimpleName());
+        if(chatInfo!=null){
+            memberInfo = new GroupMemberInfo();
+            memberInfo.setAccount(chatInfo.getId());
+            memberInfo.setNameCard(chatInfo.getChatName());
+            mMembers.add(memberInfo);
+        }
         mJoinType = findViewById(R.id.group_type_join);
         mJoinType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +203,7 @@ public class StartGroupChatActivity extends IMBaseActivity implements TextWatche
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 mCreating = false;
-                ToastUtil.error(StartGroupChatActivity.this,"createGroupChat fail:" + errCode + "=" + errMsg);
+                ToastUtil.error(StartGroupChatActivity.this,"群组创建失败:" + errCode + "=" + errMsg);
             }
         });
     }

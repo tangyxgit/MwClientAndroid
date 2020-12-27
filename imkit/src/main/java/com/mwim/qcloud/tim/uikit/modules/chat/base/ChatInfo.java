@@ -16,6 +16,7 @@ public class ChatInfo implements Serializable {
     private String id;
     private boolean isTopChat;
     private List<V2TIMGroupAtInfo> atInfoList;
+    private boolean showAddGroup;
 
     public ChatInfo() {
 
@@ -91,6 +92,14 @@ public class ChatInfo implements Serializable {
      */
     public void setTopChat(boolean topChat) {
         isTopChat = topChat;
+    }
+
+    public boolean isShowAddGroup() {
+        return showAddGroup;
+    }
+
+    public void setShowAddGroup(boolean showAddGroup) {
+        this.showAddGroup = showAddGroup;
     }
 
     public List<V2TIMGroupAtInfo> getAtInfoList() {

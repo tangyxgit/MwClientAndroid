@@ -90,6 +90,19 @@ public class OpenData extends ClientModel {
     public List<OpenGroupInfo> GroupInfo;
     private String url;
     private int functionPerm;
+    private int userType;
+
+    public void setFunctionPerm(int functionPerm) {
+        this.functionPerm = functionPerm;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
 
     public int getFunctionPerm() {
         return functionPerm;

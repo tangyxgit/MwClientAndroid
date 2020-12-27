@@ -179,7 +179,7 @@ public class GroupInfoAdapter extends BaseAdapter {
 
     }
 
-    private class MyViewHolder {
+    private static class MyViewHolder {
         private ImageView memberIcon;
         private TextView memberName;
     }

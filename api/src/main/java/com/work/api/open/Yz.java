@@ -22,7 +22,10 @@ import com.work.api.open.model.GetToolTokenReq;
 import com.work.api.open.model.GetToolTokenResp;
 import com.work.api.open.model.GetUserByParamReq;
 import com.work.api.open.model.GetUserByParamResp;
+import com.work.api.open.model.GetUserListByMobilesReq;
+import com.work.api.open.model.GetUserListByMobilesResp;
 import com.work.api.open.model.GetVersionResp;
+import com.work.api.open.model.InviteUserReq;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.RegisterReq;
@@ -171,6 +174,18 @@ public class Yz extends ApiClient {
      */
     public void checkToolToken(CheckToolTokenReq checkToolTokenReq,OnResultDataListener onResultDataListener){
         requestPost(ModeApi.checkToolToken,checkToolTokenReq,new CheckToolTokenResp(),onResultDataListener);
+    }
+    /**
+     * 匹配手机通讯录
+     */
+    public void getUserListByMobiles(GetUserListByMobilesReq getUserListByMobilesReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getUserListByMobiles,getUserListByMobilesReq,new GetUserListByMobilesResp(),onResultDataListener);
+    }
+    /**
+     * 邀请下载
+     */
+    public void inviteUser(InviteUserReq inviteUserReq,OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.inviteUser,inviteUserReq,new BaseResp(),onResultDataListener);
     }
     /**
      * 获取打车链接

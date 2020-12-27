@@ -95,6 +95,14 @@ public final class ModeApi {
      */
     public final static String checkToolToken = "api/checkToolToken";
     /**
+     *匹配手机通讯录
+     */
+    public final static String getUserListByMobiles="user/getUserListByMobiles";
+    /**
+     * 邀请下载
+     */
+    public final static String inviteUser="user/inviteUser";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

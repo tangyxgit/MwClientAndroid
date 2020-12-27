@@ -17,7 +17,7 @@ object WemeetSdkHelper {
     // TODO SDKKEY替换
     private const val SDKKEY = "2009233371"
     // TODO sdktoken替换
-    private const val SDKTOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyMDA5MjMzMzcxIiwiaWF0IjoxNjAxMjgyNTY2LCJleHAiOjE2MDY1NTI5NjYsImF1ZCI6IlRlbmNlbnQgTWVldGluZyIsInN1YiI6Inl1YW56aGlfdGVzdDAxIn0.9DXh4MFF490mVipau7QgotrFvCe-tupj3JtefbTLQ44"
+//    private const val SDKTOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIyMDA5MjMzMzcxIiwiaWF0IjoxNjAxMjgyNTY2LCJleHAiOjE2MDY1NTI5NjYsImF1ZCI6IlRlbmNlbnQgTWVldGluZyIsInN1YiI6Inl1YW56aGlfdGVzdDAxIn0.9DXh4MFF490mVipau7QgotrFvCe-tupj3JtefbTLQ44"
     private lateinit var mContext:Context;
     private var url = "";
     @JvmStatic
@@ -31,7 +31,7 @@ object WemeetSdkHelper {
 
     @JvmStatic
     fun startAuth(url: String) {
-        if (SDKKEY.isBlank() || SDKTOKEN.isBlank()) {
+        if (SDKKEY.isBlank()) {
             ToastUtil.error(TUIKit.getAppContext(), "Invalid parameter in $TAG:SDKKEY or SDKTOKEN,")
             return
         }
@@ -39,7 +39,6 @@ object WemeetSdkHelper {
             (mContext as BaseActivity).showProgressLoading(false,false)
         }
         WemeetSdkHelper.url = url;
-//        currentToken = "eyJraWQiOiI3IiwidHlwIjoiSldUIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJ5dWFuemhpX3Rlc3QwMSIsImlzcyI6InRlbmNlbnQgbWVldGluZyIsIm5hbWUiOiJ5dWFuemhpX3Rlc3QwMSIsImV4cCI6MTYwNjU1Mjk2NiwiaWF0IjoxNjAxMzg3MTY2fQ.XljVdtibXPxg29VM4kDFejlJoSyx1RXoWsXlyZhj_IplgMAtwMctEqVO84seGQxVMKcYUMi-7YiQRTph1-nzg1JuxVvruLVQnYSm3iIWrmj9XgHbbOWVAP1oA5XZfDOHG2QGev4OgWxwS6l1SZNLJLUunHy4UlwTqQvzDbQyZ7-WubJ5balAre30DkYNAyxI2IE5DXOgSpSFeHF30aQiq-4WGxREF84uP--43TXKfd5H76ZyDdluKzmEXoQBJywnK9KOwLOrTB4u7nyB_MnNMH9a33IESwa1ePIZklsQsDnxZnp8M-7o32Pa--D5krq0dR2UeqrHvgqPlRPFVKD9Tg"
         WemeetSDK.getInstance().login(LOGIN_CALLBACK)
     }
     @JvmStatic

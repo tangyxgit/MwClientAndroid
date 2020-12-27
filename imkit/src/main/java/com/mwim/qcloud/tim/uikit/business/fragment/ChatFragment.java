@@ -96,6 +96,7 @@ public class ChatFragment extends BaseFragment {
             mTitleBar.setOnRightClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mChatInfo.setShowAddGroup(true);
                     Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);

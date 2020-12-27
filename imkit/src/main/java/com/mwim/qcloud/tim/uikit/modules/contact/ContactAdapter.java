@@ -1,19 +1,30 @@
 package com.mwim.qcloud.tim.uikit.modules.contact;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.http.network.listener.OnResultDataListener;
+import com.http.network.model.RequestWork;
+import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
+import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.api.open.Yz;
+import com.work.api.open.model.InviteUserReq;
+import com.work.api.open.model.client.OpenData;
 import com.work.util.SizeUtils;
 import com.work.util.ToastUtil;
 
@@ -144,6 +155,65 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             }
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),30);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),30);
+            holder.mAgree.setVisibility(View.GONE);
+            holder.mRemark.setVisibility(View.GONE);
+            if(contactBean.isSystemContacts()){
+                holder.mAgree.setVisibility(View.VISIBLE);
+                String remark = contactBean.getSystemRemark();
+                if(TextUtils.isEmpty(remark)){
+                    holder.mRemark.setVisibility(View.GONE);
+                }else{
+                    holder.mRemark.setVisibility(View.VISIBLE);
+                    holder.mRemark.setText(remark);
+                }
+                if(contactBean.getUserType()==1){
+                    holder.mAgree.setBackgroundColor(Color.TRANSPARENT);
+                    holder.mAgree.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.color_999999));
+                    holder.mAgree.setText(R.string.text_contacts_phone_friends);
+                }else if(contactBean.getUserType()==2){
+                    holder.mAgree.setBackgroundResource(R.drawable.friend_border_2);
+                    holder.mAgree.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.white));
+                    holder.mAgree.setText(R.string.add_friend);
+                    holder.mAgree.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            OpenData openData = new OpenData();
+                            openData.setUserId(contactBean.getId());
+                            Intent intent = new Intent(holder.itemView.getContext(),FriendProfileActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            holder.itemView.getContext().startActivity(intent.putExtra(TUIKitConstants.ProfileType.CONTENT,openData));
+                        }
+                    });
+                }else{
+                    holder.mAgree.setBackgroundResource(R.drawable.friend_border_3);
+                    holder.mAgree.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.defaultColorAccent));
+                    holder.mAgree.setText(R.string.text_contacts_phone_download);
+                    holder.mAgree.setEnabled(contactBean.isEnable());
+                    holder.mAgree.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            holder.mAgree.setText(R.string.text_contacts_phone_download_sending);
+                            holder.mAgree.setEnabled(false);
+                            InviteUserReq inviteUserReq = new InviteUserReq();
+                            inviteUserReq.setMobile(contactBean.getMobile());
+                            Yz.getSession().inviteUser(inviteUserReq, new OnResultDataListener() {
+                                @Override
+                                public void onResult(RequestWork req, ResponseWork resp) {
+                                    if(resp.isSuccess()){
+                                        contactBean.setEnable(false);
+                                        holder.mAgree.setText(R.string.text_contacts_phone_download_ok);
+                                        ToastUtil.success(TUIKit.getAppContext(),R.string.text_contacts_add_download_success);
+                                    }else{
+                                        holder.mAgree.setText(R.string.text_contacts_phone_download);
+                                        holder.mAgree.setEnabled(true);
+                                        ToastUtil.warning(TUIKit.getAppContext(),resp.getMessage());
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            }
         }
 
     }
@@ -194,6 +264,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         CheckBox ccSelect;
         View content;
         View line;
+        Button mAgree;
+        TextView mRemark;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -204,6 +276,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             ccSelect = itemView.findViewById(R.id.contact_check_box);
             content = itemView.findViewById(R.id.selectable_contact_item);
             line = itemView.findViewById(R.id.view_line);
+            mAgree = itemView.findViewById(R.id.agree);
+            mRemark = itemView.findViewById(R.id.remark);
+
         }
     }
 }

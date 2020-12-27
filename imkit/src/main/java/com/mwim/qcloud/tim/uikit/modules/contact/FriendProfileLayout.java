@@ -25,6 +25,7 @@ import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity;
 import com.mwim.liteav.trtcvideocall.ui.TRTCVideoCallSingleActivity;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
@@ -67,6 +68,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
 
     private ImageView mHeadImageView;
     private TextView mNickNameView;
+    private TextView mBottomNameView;
     private TextView mMobile;
     private LineControllerView mDepartment;
     private LineControllerView mPosition;
@@ -81,6 +83,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
     private TextView mChatAudioVideo;
     private View mDepLayout;
     private View mAddWordingLayout;
+    private View mAddGroupMember;
 
     private ContactItemBean mContactInfo;
     private V2TIMFriendApplication mFriendApplication;
@@ -108,9 +111,11 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         inflate(getContext(), R.layout.contact_friend_profile_layout, this);
         mHeadImageView = findViewById(R.id.avatar);
         mNickNameView = findViewById(R.id.name);
+        mBottomNameView = findViewById(R.id.bottom_name);
         mMobile = findViewById(R.id.mobile);
         mAddWordingView = findViewById(R.id.add_wording);
         mAddWordingView.setSingleLine(false);
+
         mRemarkView = findViewById(R.id.remark);
         mRemarkView.setOnClickListener(this);
         mChatTopView = findViewById(R.id.chat_to_top);
@@ -128,6 +133,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         mEmail = findViewById(R.id.modify_email);
         mDepLayout = findViewById(R.id.dep_layout);
         mAddWordingLayout = findViewById(R.id.add_wording_layout);
+        mAddGroupMember = findViewById(R.id.add_group_member);
     }
 
     public void initData(Object data) {
@@ -137,6 +143,13 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             mId = mChatInfo.getId();
             if(isSelf()){
                 return;
+            }
+            if(mChatInfo.isShowAddGroup()){
+                mBottomNameView.setVisibility(VISIBLE);
+                mAddGroupMember.setVisibility(VISIBLE);
+                mAddGroupMember.setOnClickListener(this);
+                mNickNameView.setVisibility(GONE);
+                mMobile.setVisibility(GONE);
             }
             mChatTopView.setVisibility(View.VISIBLE);
             mChatTopView.setChecked(ConversationManagerKit.getInstance().isTopConversation(mId));
@@ -246,6 +259,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         }
         if (!TextUtils.isEmpty(mNickname)) {
             mNickNameView.setText(mNickname);
+            mBottomNameView.setText(mNickname);
         }
     }
 
@@ -257,6 +271,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         mAddBlackView.setVisibility(GONE);
         mChatAudioVideo.setVisibility(GONE);
         mAddWordingView.setHint(R.string.conversation_wording_send);
+        mAddWordingView.setText(getResources().getString(R.string.text_contacts_add_wording,UserApi.instance().getNickName()));
         mAddWordingView.setEnabled(true);
         mAddWordingLayout.setVisibility(VISIBLE);
         mChatView.setVisibility(VISIBLE);
@@ -341,6 +356,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                         GlideEngine.loadImage(mHeadImageView,R.drawable.default_head);
                     }
                     mNickNameView.setText(data.getNickName());
+                    mBottomNameView.setText(data.getNickName());
                     mMobile.setText(data.getMobile());
                     mDepartment.setContent(data.getDepartName());
                     mPosition.setContent(data.getPosition());
@@ -397,8 +413,10 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
 
         if (!TextUtils.isEmpty(mNickname)) {
             mNickNameView.setText(mNickname);
+            mBottomNameView.setText(mNickname);
         } else {
             mNickNameView.setText(mId);
+            mBottomNameView.setText(mId);
         }
 
         if (!TextUtils.isEmpty(bean.getAvatarurl())) {
@@ -659,6 +677,14 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                     modifyRemark(text.toString());
                 }
             });
+        }else if(v.getId() == R.id.add_group_member){
+            Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
+            intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+            ChatInfo chatInfo = new ChatInfo();
+            chatInfo.setId(mId);
+            chatInfo.setChatName(mNickname);
+            intent.putExtra(StartGroupChatActivity.class.getSimpleName(),chatInfo);
+            getContext().startActivity(intent);
         }
     }
 

@@ -36,8 +36,48 @@ public class ContactItemBean extends BaseIndexPinyinBean {
     private boolean isGroup;
     private boolean isFriend = true;
     private boolean isEnable = true;
+    private boolean isSystemContacts;
+    private String systemRemark;
+    private int userType;
+    private String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public static String getIndexStringTop() {
+        return INDEX_STRING_TOP;
+    }
+
+    public boolean isSystemContacts() {
+        return isSystemContacts;
+    }
+
+    public String getSystemRemark() {
+        return systemRemark;
+    }
+
+    public void setSystemRemark(String systemRemark) {
+        this.systemRemark = systemRemark;
+    }
 
     public ContactItemBean() {
+    }
+
+    public void setSystemContacts(boolean systemContacts) {
+        isSystemContacts = systemContacts;
     }
 
     public ContactItemBean(String id) {
