@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
+import com.work.util.KeyboardUtils;
 import com.work.util.RegularUtils;
 import com.work.util.ToastUtil;
 
@@ -28,11 +29,6 @@ public class SelectionActivity extends BaseActivity {
         startSelection(context, bundle, listener);
     }
 
-    public static void startListSelection(Context context, Bundle bundle, OnResultReturnListener listener) {
-        bundle.putInt(TUIKitConstants.Selection.TYPE, TUIKitConstants.Selection.TYPE_LIST);
-        startSelection(context, bundle, listener);
-    }
-
     private static void startSelection(Context context, Bundle bundle, OnResultReturnListener listener) {
         Intent intent = new Intent(context, SelectionActivity.class);
         intent.putExtra(TUIKitConstants.Selection.CONTENT, bundle);
@@ -45,7 +41,6 @@ public class SelectionActivity extends BaseActivity {
     public void onInitValue() throws Exception {
         super.onInitValue();
         input = findViewById(R.id.edit_content_et);
-
         Bundle bundle = getIntent().getBundleExtra(TUIKitConstants.Selection.CONTENT);
         if (bundle.getInt(TUIKitConstants.Selection.TYPE) == TUIKitConstants.Selection.TYPE_TEXT) {
             String defaultString = bundle.getString(TUIKitConstants.Selection.INIT_CONTENT);
@@ -68,6 +63,12 @@ public class SelectionActivity extends BaseActivity {
         mSelectionType = bundle.getInt(TUIKitConstants.Selection.TYPE,TUIKitConstants.Selection.TYPE_TEXT);
         final String title = bundle.getString(TUIKitConstants.Selection.TITLE);
         setTitleName(title);
+        input.post(new Runnable() {
+            @Override
+            public void run() {
+                KeyboardUtils.showSoftInput(input);
+            }
+        });
     }
 
     @Override

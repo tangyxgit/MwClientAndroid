@@ -182,6 +182,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     sysUserReq.setPosition(data.getPosition());
                     sysUserReq.setCard(data.getCard());
                     sysUserReq.setEmail(data.getEmail());
+                    sysUserReq.setCity(data.getCity());
+                    sysUserReq.setUserSignature(data.getUserSignature());
+                    sysUserReq.setGender(data.getGender());
                     YzIMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
                         @Override
                         public void loginSuccess(Object data) {

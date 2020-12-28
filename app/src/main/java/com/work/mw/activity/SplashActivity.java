@@ -59,6 +59,9 @@ public class SplashActivity extends BaseActivity {
         sysUserReq.setPosition(mUserInfo.getPosition());
         sysUserReq.setCard(mUserInfo.getCard());
         sysUserReq.setEmail(mUserInfo.getEmail());
+        sysUserReq.setCity(mUserInfo.getCity());
+        sysUserReq.setGender(mUserInfo.getGender());
+        sysUserReq.setUserSignature(mUserInfo.getUserSignature());
         YzIMKitAgent.instance().register(sysUserReq, new YzStatusListener() {
             @Override
             public void loginSuccess(Object data) {

@@ -103,6 +103,10 @@ public final class ModeApi {
      */
     public final static String inviteUser="user/inviteUser";
     /**
+     * 获取城市列表
+     */
+    public final static String getCityList="api/getCityList";
+    /**
      * 退出登录
      */
     public final static String logout = "user.logout";

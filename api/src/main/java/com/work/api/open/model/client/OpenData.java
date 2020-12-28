@@ -91,6 +91,33 @@ public class OpenData extends ClientModel {
     private String url;
     private int functionPerm;
     private int userType;
+    private String city;
+    private String userSignature;
+    private int gender;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getUserSignature() {
+        return userSignature;
+    }
+
+    public void setUserSignature(String userSignature) {
+        this.userSignature = userSignature;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
 
     public void setFunctionPerm(int functionPerm) {
         this.functionPerm = functionPerm;

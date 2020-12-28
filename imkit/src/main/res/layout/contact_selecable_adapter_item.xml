@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/selectable_contact_item"
     android:layout_width="match_parent"
-    android:layout_height="57.5dp"
+    android:layout_height="55dp"
     android:background="#fcfcfc"
     android:focusable="true"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
-        android:paddingStart="17.3dp">
+        android:paddingStart="15dp">
 
         <CheckBox
             android:id="@+id/contact_check_box"
@@ -51,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerInParent="true"
-                        android:textSize="16.3sp"
+                        android:textSize="16sp"
                         android:clickable="false"
                         android:focusable="false"
                         android:lines="1"

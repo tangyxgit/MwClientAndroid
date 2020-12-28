@@ -14,6 +14,7 @@ import com.work.api.open.model.CreateGroupReq;
 import com.work.api.open.model.CreateGroupResp;
 import com.work.api.open.model.DestroyGroupReq;
 import com.work.api.open.model.GetCarWebViewUrlResp;
+import com.work.api.open.model.GetCityListResp;
 import com.work.api.open.model.GetFriendByMobileResp;
 import com.work.api.open.model.GetGroupMsgReq;
 import com.work.api.open.model.GetGroupMsgResp;
@@ -186,6 +187,12 @@ public class Yz extends ApiClient {
      */
     public void inviteUser(InviteUserReq inviteUserReq,OnResultDataListener onResultDataListener){
         requestPost(ModeApi.inviteUser,inviteUserReq,new BaseResp(),onResultDataListener);
+    }
+    /**
+     * 获取城市
+     */
+    public void getCityList(OnResultDataListener onResultDataListener){
+        requestPost(ModeApi.getCityList,new BaseReq(),new GetCityListResp(),onResultDataListener);
     }
     /**
      * 获取打车链接

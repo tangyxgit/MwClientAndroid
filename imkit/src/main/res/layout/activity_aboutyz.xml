@@ -24,13 +24,13 @@
         android:layout_height="wrap_content"
         app:isTop="true"
         android:layout_marginTop="@dimen/dp_40"
-        app:name="用户协议"
+        app:name="@string/text_agreement_"
         app:canNav="true"/>
     <com.mwim.qcloud.tim.uikit.component.LineControllerView
         android:id="@+id/conceal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:isBottom="false"
-        app:name="隐私政策"
+        app:name="@string/text_conceal_"
         app:canNav="true"/>
 </LinearLayout>

@@ -31,7 +31,7 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
         super(R.layout.contact_new_friend_item, data);
     }
 
-    private void doResponse(final Button view, V2TIMFriendApplication data) {
+    private void doResponse(final Button mAgree,V2TIMFriendApplication data) {
         V2TIMManager.getFriendshipManager().acceptFriendApplication(
                 data, V2TIMFriendApplication.V2TIM_FRIEND_ACCEPT_AGREE_AND_ADD, new V2TIMValueCallback<V2TIMFriendOperationResult>() {
                     @Override
@@ -42,8 +42,10 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
                     @Override
                     public void onSuccess(V2TIMFriendOperationResult v2TIMFriendOperationResult) {
                         SLog.i("deleteFriends success");
-                        view.setText(getContext().getResources().getString(R.string.request_accepted));
-                        view.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.defaultColorAccent));
+                        mAgree.setBackgroundColor(Color.TRANSPARENT);
+                        mAgree.setTextColor(ContextCompat.getColor(getContext(),R.color.defaultColorAccent));
+                        mAgree.setText(R.string.request_accepted);
+                        mAgree.setOnClickListener(null);
                     }
                 });
     }
@@ -64,7 +66,7 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
             mDesc.setVisibility(View.VISIBLE);
             mDesc.setText(item.getAddWording());
         }
-        Button mAgree = helper.getView(R.id.agree);
+        final Button mAgree = helper.getView(R.id.agree);
         switch (item.getType()) {
             case V2TIMFriendApplication.V2TIM_FRIEND_APPLICATION_COME_IN:
                 mAgree.setBackgroundResource(R.drawable.friend_border_2);
@@ -73,8 +75,7 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
                 mAgree.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final Button vv = (Button) v;
-                        doResponse(vv, item);
+                        doResponse(mAgree,item);
                     }
                 });
                 break;
@@ -82,11 +83,13 @@ public class NewFriendListAdapter extends BaseQuickAdapter<V2TIMFriendApplicatio
                 mAgree.setBackgroundColor(Color.TRANSPARENT);
                 mAgree.setTextColor(ContextCompat.getColor(getContext(),R.color.defaultColorAccent));
                 mAgree.setText(R.string.request_waiting);
+                mAgree.setOnClickListener(null);
                 break;
             case V2TIMFriendApplication.V2TIM_FRIEND_APPLICATION_BOTH:
                 mAgree.setBackgroundColor(Color.TRANSPARENT);
                 mAgree.setTextColor(ContextCompat.getColor(getContext(),R.color.defaultColorAccent));
                 mAgree.setText(R.string.request_accepted);
+                mAgree.setOnClickListener(null);
                 break;
         }
     }

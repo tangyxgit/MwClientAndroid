@@ -80,7 +80,7 @@ public class LineControllerView extends LinearLayout {
         Drawable drawable = ContextCompat.getDrawable(getContext(),resId);
         if(drawable!=null){
             drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
-            drawable.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_d4d4d4), PorterDuff.Mode.SRC_ATOP);
+//            drawable.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_d4d4d4), PorterDuff.Mode.SRC_ATOP);
         }
         mNameText.setCompoundDrawables(drawable,null,null,null);
         LinearLayout.LayoutParams params = (LayoutParams) bottomLine.getLayoutParams();

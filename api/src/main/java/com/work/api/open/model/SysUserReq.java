@@ -17,6 +17,33 @@ public class SysUserReq extends BaseReq {
     private String email;
     private String departmentId;
     private String departName;
+    private String city;
+    private String userSignature;
+    private int gender;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getUserSignature() {
+        return userSignature;
+    }
+
+    public void setUserSignature(String userSignature) {
+        this.userSignature = userSignature;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
 
     public String getDepartmentId() {
         return departmentId;

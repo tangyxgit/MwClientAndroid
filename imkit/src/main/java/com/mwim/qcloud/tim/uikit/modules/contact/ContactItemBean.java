@@ -40,6 +40,15 @@ public class ContactItemBean extends BaseIndexPinyinBean {
     private String systemRemark;
     private int userType;
     private String mobile;
+    private List<String> area;
+
+    public List<String> getArea() {
+        return area;
+    }
+
+    public void setArea(List<String> area) {
+        this.area = area;
+    }
 
     public String getMobile() {
         return mobile;

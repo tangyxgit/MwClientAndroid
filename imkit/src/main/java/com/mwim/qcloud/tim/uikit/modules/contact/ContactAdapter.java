@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
+import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
@@ -107,7 +109,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         });
         holder.unreadText.setVisibility(View.GONE);
         if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.new_friend), contactBean.getId())) {
-//            holder.avatar.setImageResource(R.drawable.group_new_friend);
             holder.avatar.setDefaultImageResId(R.drawable.icon_add_contact_stroke,ContextCompat.getColor(holder.avatar.getContext(),R.color.defaultColorAccent));
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
@@ -121,7 +122,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 @Override
                 public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
                     if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
-                        int pendingRequest = v2TIMFriendApplicationResult.getFriendApplicationList().size();
+                        int pendingRequest = v2TIMFriendApplicationResult.getUnreadCount();
                         if (pendingRequest == 0) {
                             holder.unreadText.setVisibility(View.GONE);
                         } else {
@@ -132,15 +133,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                 }
             });
         } else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.group), contactBean.getId())) {
-//            holder.avatar.setImageResource(R.drawable.group_common_list);
-//            holder.avatar.setDefaultImageResId(R.drawable.group_common_list);
             holder.avatar.setDefaultImageResId(R.drawable.icon_chat_group_stroke,ContextCompat.getColor(holder.avatar.getContext(),R.color.color_fdac3b));
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.setRadius(0);
         } else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.blacklist), contactBean.getId())) {
-//            holder.avatar.setImageResource(R.drawable.group_black_list);
-//            holder.avatar.setDefaultImageResId(R.drawable.group_black_list);
             holder.avatar.setDefaultImageResId(R.drawable.icon_block_fill,ContextCompat.getColor(holder.avatar.getContext(),R.color.color_999999));
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
@@ -149,7 +146,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             if (contactBean.getIconUrlList()==null) {
                 holder.avatar.setDefaultImageResId(R.drawable.default_head);
             } else {
-//                GlideEngine.loadCornerImage(holder.avatar, contactBean.getAvatarurl(),null,10);
                 holder.avatar.setRadius(SizeUtils.dp2px(holder.avatar.getContext(),30));
                 holder.avatar.setIconUrls(contactBean.getIconUrlList());
             }
@@ -213,6 +209,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                         }
                     });
                 }
+            }else if(contactBean.getArea()!=null){
+                holder.avatar.setVisibility(View.GONE);
+                holder.mContainer.setPadding(0,0,0,0);
             }
         }
 
@@ -258,6 +257,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout mContainer;
         TextView tvName;
         TextView unreadText;
         ConversationIconView avatar;
@@ -269,6 +269,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mContainer = itemView.findViewById(R.id.container);
             tvName = itemView.findViewById(R.id.tvCity);
             unreadText = itemView.findViewById(R.id.conversation_unread);
             unreadText.setVisibility(View.GONE);

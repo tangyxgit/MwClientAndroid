@@ -34,6 +34,9 @@
     <string name="im_user_icon" translatable="false">头像</string>
     <string name="modify_nick_name" translatable="false">修改昵称</string>
     <string name="im_nick_name" translatable="false">昵称</string>
+    <string name="im_sex" translatable="false">性别</string>
+    <string name="im_city" translatable="false">地区</string>
+    <string name="im_signature" translatable="false">个性签名</string>
     <string name="im_phone" translatable="false">手机号</string>
     <string name="im_department" translatable="false">部门</string>
     <string name="modify_department" translatable="false">修改部门</string>
@@ -99,6 +102,15 @@
     <string name="text_contacts_phone_download_ok" translatable="false">邀请成功</string>
     <string name="text_contacts_add_wording" translatable="false">我是 %1$s</string>
     <string name="text_contacts_add_download_success" translatable="false">邀请成功，已发送链接给您的好友...</string>
+    <string name="text_agreement_" translatable="false">用户协议</string>
+    <string name="text_conceal_" translatable="false">隐私政策</string>
+    <string name="hint_user_info_input" translatable="false">未填写</string>
+    <string name="hint_user_info_select" translatable="false">未选择</string>
+    <string name="hint_user_info_setting" translatable="false">未设置</string>
+    <string name="user_gender_0" translatable="false">保密</string>
+    <string name="user_gender_1" translatable="false">男</string>
+    <string name="user_gender_2" translatable="false">女</string>
+    <string name="user_city_select" translatable="false">选择地区</string>
 
     // 群信息相关
     <string name="tips_empty_group_member" translatable="false">请选择群成员</string>

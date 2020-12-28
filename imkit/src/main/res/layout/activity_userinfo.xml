@@ -38,9 +38,32 @@
         android:id="@+id/modify_nick_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:canNav="true"
         app:name="@string/im_nick_name" />
     <com.mwim.qcloud.tim.uikit.component.LineControllerView
+        android:id="@+id/modify_sex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:canNav="true"
+        app:name="@string/im_sex" />
+    <com.mwim.qcloud.tim.uikit.component.LineControllerView
+        android:id="@+id/modify_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:name="@string/im_city"
+        app:canNav="true"/>
+    <com.mwim.qcloud.tim.uikit.component.LineControllerView
+        android:id="@+id/modify_signature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:name="@string/im_signature"
+        app:canNav="true"/>
+
+    <com.mwim.qcloud.tim.uikit.component.LineControllerView
         android:id="@+id/modify_phone"
+        app:isTop="true"
+        app:canNav="true"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:name="@string/im_phone" />
@@ -65,9 +88,8 @@
         app:name="@string/im_card" />
     <com.mwim.qcloud.tim.uikit.component.LineControllerView
         android:id="@+id/modify_email"
-        android:layout_marginTop="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:isTop="true"
+        app:canNav="true"
         app:name="@string/im_email" />
 </LinearLayout>

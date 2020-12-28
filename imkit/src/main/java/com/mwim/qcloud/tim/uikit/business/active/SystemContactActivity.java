@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;

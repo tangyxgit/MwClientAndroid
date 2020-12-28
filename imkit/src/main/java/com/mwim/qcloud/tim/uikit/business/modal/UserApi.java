@@ -22,6 +22,9 @@ public class UserApi {
     private final static String USER_DEPARTMENT="userDepartment";
     private final static String USER_DEPARTMENT_ID="userDepartment_ID";
     private final static String USER_TOKEN="userToken";
+    private final static String USER_SIGNATURE="userSignature";
+    private final static String USER_CITY="userCity";
+    private final static String USER_GENDER="userGender";
     private static UserApi INSTANCE;
     private String userId;
     @JsonIgnore
@@ -40,6 +43,12 @@ public class UserApi {
     private String departmentId;
     @JsonIgnore
     private String departName;
+    @JsonIgnore
+    private String userSignature;
+    @JsonIgnore
+    private String city;
+    @JsonIgnore
+    private int gender=-1;
 
     private String mobile;
     private String token;
@@ -211,6 +220,42 @@ public class UserApi {
         SharedUtils.putData(USER_DEPARTMENT,departName);
     }
 
+    public String getUserSignature() {
+        if(TextUtils.isEmpty(userSignature)){
+            userSignature = SharedUtils.getString(USER_SIGNATURE);
+        }
+        return userSignature;
+    }
+
+    public void setUserSignature(String userSignature) {
+        this.userSignature = userSignature;
+        SharedUtils.putData(USER_SIGNATURE,userSignature);
+    }
+
+    public String getCity() {
+        if(TextUtils.isEmpty(city)){
+            city = SharedUtils.getString(USER_CITY);
+        }
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+        SharedUtils.putData(USER_CITY,city);
+    }
+
+    public int getGender() {
+        if(gender==-1){
+            gender = SharedUtils.getInt(USER_GENDER,0);
+        }
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+        SharedUtils.putData(USER_GENDER,gender);
+    }
+
     public void clear(){
         SharedUtils.removeData(USER_ID);
         SharedUtils.removeData(USER_SIGN);
@@ -222,5 +267,7 @@ public class UserApi {
         SharedUtils.removeData(USER_ICON);
         SharedUtils.removeData(USER_NAME);
         SharedUtils.removeData(USER_TOKEN);
+        SharedUtils.removeData(USER_SIGNATURE);
+        SharedUtils.removeData(USER_CITY);
     }
 }

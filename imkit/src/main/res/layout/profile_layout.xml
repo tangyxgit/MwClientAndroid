@@ -51,18 +51,30 @@
                         <LinearLayout
                             android:id="@+id/user_layout"
                             android:layout_toEndOf="@+id/self_icon"
-                            android:layout_toStartOf="@+id/arrow_right"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:orientation="vertical">
-                            <TextView
-                                android:id="@+id/self_account"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <LinearLayout
+                                android:orientation="horizontal"
                                 android:gravity="center_vertical"
-                                android:textSize="18sp"
-                                android:textColor="@color/white"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/self_account"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/white"/>
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/gender"
+                                    android:layout_width="20dp"
+                                    android:layout_height="16dp"
+                                    android:layout_marginStart="5dp"
+                                    android:background="@drawable/shape_bg_white_radius_10"
+                                    android:src="@drawable/icon_male_fill"/>
+                            </LinearLayout>
                             <TextView
                                 android:id="@+id/sub_message"
                                 android:layout_width="wrap_content"
@@ -72,22 +84,17 @@
                                 android:textSize="12sp"
                                 android:textColor="@color/color_9eccfd" />
                         </LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/arrow_right"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone"
-                            android:src="@drawable/arrow_right"/>
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
+                            android:textColor="@color/background_color"
+                            android:alpha="0.9"
                             android:text="@string/text_user_remark"
-                            android:visibility="gone"
+                            android:drawablePadding="@dimen/dp_4"
+                            android:gravity="center_vertical"
+                            android:textSize="@dimen/sp_12"
+                            android:drawableStart="@drawable/icon_location_fill"
                             android:layout_alignStart="@+id/self_icon"
                             android:layout_alignParentBottom="true"/>
                     </RelativeLayout>
@@ -132,12 +139,47 @@
                     android:visibility="gone"
                     app:name="@string/im_card" />
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
-                    android:id="@+id/modify_email"
+                    android:id="@+id/modify_mobile"
                     app:isTop="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
+                    app:name="@string/im_phone" />
+                <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                    android:id="@+id/modify_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:name="@string/im_email" />
+                <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                    android:id="@+id/modify_qrcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:name="@string/text_qr_code" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/background_color"/>
+                <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                    android:id="@+id/modify_scan"
+                    app:isTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:name="@string/scan_qr_code" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/background_color"/>
+                <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                    android:id="@+id/modify_agreement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:name="@string/text_agreement_"
+                    app:isTop="true"/>
+                <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                    android:id="@+id/modify_conceal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:name="@string/text_conceal_" />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="10dp"

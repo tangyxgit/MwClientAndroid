@@ -153,7 +153,8 @@
             android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.component.SelectionActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.modules.group.apply.GroupApplyManagerActivity"
             android:screenOrientation="portrait"
@@ -244,6 +245,7 @@
         <activity android:name=".business.active.UserQRCodeActivity"/>
         <activity android:name=".business.active.ScanIMQRCodeActivity"/>
         <activity android:name=".business.active.SystemContactActivity"/>
+        <activity android:name=".business.active.CityAddressActivity"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"

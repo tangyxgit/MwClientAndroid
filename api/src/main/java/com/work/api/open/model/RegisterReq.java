@@ -19,6 +19,33 @@ public class RegisterReq extends BaseReq {
     private String newPassword;
     private String oldPassword;
     private String oldMobile;
+    private Integer gender;
+    private String city;
+    private String userSignature;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getUserSignature() {
+        return userSignature;
+    }
+
+    public void setUserSignature(String userSignature) {
+        this.userSignature = userSignature;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
 
     public String getOldMobile() {
         return oldMobile;

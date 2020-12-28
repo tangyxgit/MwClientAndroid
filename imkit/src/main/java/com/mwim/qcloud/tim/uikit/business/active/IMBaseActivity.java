@@ -16,7 +16,7 @@ public abstract class IMBaseActivity extends BaseActivity {
 
 
     // 监听做成静态可以让每个子类重写时都注册相同的一份。
-    private IMEventListener mIMEventListener = new IMEventListener() {
+    private final IMEventListener mIMEventListener = new IMEventListener() {
         @Override
         public void onForceOffline() {
             ToastUtil.warning(IMBaseActivity.this,"您的帐号已在其它终端登录");

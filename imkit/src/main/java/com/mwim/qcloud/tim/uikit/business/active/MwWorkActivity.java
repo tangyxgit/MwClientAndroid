@@ -35,10 +35,12 @@ import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
+import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.vivo.push.IPushActionListener;
 import com.vivo.push.PushClient;
 import com.work.util.SLog;
@@ -59,6 +61,7 @@ public class MwWorkActivity extends IMBaseActivity implements
     private BottomNavigationBar mNavigationBar;
     private ViewPager mPager;
     private TextBadgeItem mMessageBadge;
+    private TextBadgeItem mContactsNewBadge;
     private List<BaseFragment> mFragments;
 
     private CallModel mCallModel;
@@ -80,6 +83,8 @@ public class MwWorkActivity extends IMBaseActivity implements
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);
         mMessageBadge = new TextBadgeItem();
         mMessageBadge.hide();
+        mContactsNewBadge = new TextBadgeItem();
+        mContactsNewBadge.hide();
         int functionPrem = YzIMKitAgent.instance().getFunctionPrem();
         if((functionPrem & 1)>0){
             BottomNavigationItem messageItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_chat_fill,R.color.defaultColorAccent),R.string.tab_conversation_tab_text)
@@ -93,6 +98,7 @@ public class MwWorkActivity extends IMBaseActivity implements
             BottomNavigationItem contactItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_contact_fill,R.color.defaultColorAccent),R.string.tab_contact_tab_text)
                     .setInactiveIcon(getSelectDrawable(R.drawable.icon_contact_stroke,R.color.color_b2b2b2))
                     .setActiveColorResource(R.color.defaultColorAccent);
+            contactItem.setBadgeItem(mContactsNewBadge);
             mNavigationBar.addItem(contactItem);
         }
 
@@ -155,8 +161,7 @@ public class MwWorkActivity extends IMBaseActivity implements
 //        // 未读消息监视器
         ConversationManagerKit.getInstance().addUnreadWatcher(this);
         GroupChatManagerKit.getInstance();
-
-
+        getFriendApplicationList();
     }
 
     @Override
@@ -262,6 +267,34 @@ public class MwWorkActivity extends IMBaseActivity implements
                 updateFragment(i);
             }
         }
+        getFriendApplicationList();
+    }
+
+    private void getFriendApplicationList(){
+        V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
+            @Override
+            public void onError(int code, String desc) {
+            }
+
+            @Override
+            public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
+                if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
+                    int count = v2TIMFriendApplicationResult.getUnreadCount();
+                    if (count > 0) {
+                        mContactsNewBadge.show(true);
+                    } else {
+                        mContactsNewBadge.hide();
+                    }
+                    String unreadStr = "" + count;
+                    if (count > 100) {
+                        unreadStr = "99+";
+                    }
+                    mContactsNewBadge.setText(unreadStr);
+                }else{
+                    mContactsNewBadge.hide();
+                }
+            }
+        });
     }
 
     @Override

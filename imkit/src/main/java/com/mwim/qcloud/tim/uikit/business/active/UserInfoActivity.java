@@ -1,9 +1,12 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
@@ -16,7 +19,9 @@ import com.mwim.qcloud.tim.uikit.business.dialog.UserAvatarDialog;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
+import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
+import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -38,18 +43,25 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private ImageView mUserIcon;
     private LineControllerView mNickname;
+    private LineControllerView mSex;
+    private LineControllerView mCity;
+    private LineControllerView mSignature;
     private LineControllerView mPhone;
     private LineControllerView mDepartment;
     private LineControllerView mPosition;
     private LineControllerView mCard;
     private LineControllerView mEmail;
     private UserAvatarDialog mUserAvatarDialog;
+    private AlertDialog mDialog;
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
         mUserIcon = findViewById(R.id.user_icon);
         mNickname = findViewById(R.id.modify_nick_name);
+        mSex = findViewById(R.id.modify_sex);
+        mCity = findViewById(R.id.modify_city);
+        mSignature = findViewById(R.id.modify_signature);
         mPhone = findViewById(R.id.modify_phone);
         mDepartment = findViewById(R.id.modify_department);
         mPosition = findViewById(R.id.modify_position);
@@ -64,9 +76,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         super.onInitValue();
         setTitleName(R.string.user_info_title);
         findViewById(R.id.user_layout).setOnClickListener(this);
-        mNickname.setCanNav(true);
         mNickname.setOnClickListener(this);
-        mPhone.setCanNav(true);
+        mSex.setOnClickListener(this);
+        mCity.setOnClickListener(this);
+        mSignature.setOnClickListener(this);
         mPhone.setOnClickListener(this);
         mDepartment.setCanNav(true);
         mDepartment.setOnClickListener(this);
@@ -74,8 +87,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         mPosition.setOnClickListener(this);
         mCard.setCanNav(true);
         mCard.setOnClickListener(this);
-        mEmail.setCanNav(true);
         mEmail.setOnClickListener(this);
+        mUserIcon.setOnClickListener(this);
     }
 
     @Override
@@ -95,7 +108,23 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             GlideEngine.loadCornerAvatar(mUserIcon, userIcon);
         }
         mNickname.setContent(userApi.getNickName());
+        int gender = userApi.getGender();
+        switch (gender){
+            case 1:
+                mSex.setContent(getString(R.string.user_gender_1));
+                break;
+            case 2:
+                mSex.setContent(getString(R.string.user_gender_2));
+                break;
+            default:
+                mSex.setContent(getString(R.string.user_gender_0));
+                break;
+
+        }
         v2TIMUserFullInfo.setNickname(userApi.getNickName());
+        mSignature.setContent(TextUtils.isEmpty(userApi.getUserSignature())?getString(R.string.hint_user_info_input):userApi.getUserSignature());
+        v2TIMUserFullInfo.setSelfSignature(userApi.getUserSignature());
+        mCity.setContent(TextUtils.isEmpty(userApi.getCity())?getString(R.string.hint_user_info_select):userApi.getCity());
         mPhone.setContent(userApi.getMobile());
         mDepartment.setContent(userApi.getDepartName());
         mPosition.setContent(userApi.getPosition());
@@ -117,24 +146,34 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         });
     }
 
+    private void selectAvatar(){
+        if(mUserAvatarDialog==null){
+            mUserAvatarDialog = new UserAvatarDialog().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (view.getId() == R.id.camera) {
+                        onOpenCamera(true);
+                    }else{
+                        onOpenPhoto(true);
+                    }
+                    mUserAvatarDialog.dismiss();
+                }
+            });
+        }
+        mUserAvatarDialog.show(getSupportFragmentManager(),"user_avatar");
+    }
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if(id == R.id.user_layout){
-            if(mUserAvatarDialog==null){
-                mUserAvatarDialog = new UserAvatarDialog().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (view.getId() == R.id.camera) {
-                            onOpenCamera(true);
-                        }else{
-                            onOpenPhoto(true);
-                        }
-                        mUserAvatarDialog.dismiss();
-                    }
-                });
+            selectAvatar();
+        }else if(id == R.id.user_icon){
+            if(TextUtils.isEmpty(UserApi.instance().getUserIcon())){
+                selectAvatar();
+            }else{
+                startActivity(new Intent(this, PhotoViewActivity.class).putExtra(TUIKitConstants.IMAGE_DATA,UserApi.instance().getUserIcon()));
             }
-            mUserAvatarDialog.show(getSupportFragmentManager(),"user_avatar");
         }else if (id == R.id.modify_nick_name) {
             Bundle bundle = new Bundle();
             bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name));
@@ -213,6 +252,88 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             });
         }else if(id == R.id.modify_phone){
             startActivity(new Intent(this,UpdatePhoneActivity.class));
+        }else if(id == R.id.modify_signature){
+            Bundle bundle = new Bundle();
+            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_signature));
+            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getUserSignature());
+            bundle.putInt(TUIKitConstants.Selection.LIMIT, 30);
+            SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
+                @Override
+                public void onReturn(Object res) {
+                    String text = (String) res;
+                    showProgressLoading(false,false);
+                    RegisterReq registerReq = new RegisterReq();
+                    registerReq.setUserSignature(text);
+                    Yz.getSession().update(registerReq,UserInfoActivity.this,R.id.modify_signature);
+                }
+            });
+        }else if(id == R.id.modify_city){
+            CityAddressActivity.startCity(UserInfoActivity.this, new SelectionActivity.OnResultReturnListener() {
+                @Override
+                public void onReturn(Object res) {
+                    if(res instanceof String){
+                        showProgressLoading(false,false);
+                        RegisterReq registerReq = new RegisterReq();
+                        registerReq.setCity((String) res);
+                        Yz.getSession().update(registerReq,UserInfoActivity.this,R.id.modify_city);
+                    }
+                }
+            });
+        }else if(id == R.id.modify_sex){
+            if(mDialog == null){
+                mDialog = PopWindowUtil.buildFullScreenDialog(this);
+                View moreActionView = LayoutInflater.from(this).inflate( R.layout.gender_pop_menu, null);
+                moreActionView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                    }
+                });
+                Button btn0 = moreActionView.findViewById(R.id.gender_0);
+                btn0.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                        RegisterReq registerReq = new RegisterReq();
+                        registerReq.setGender(0);
+                        Yz.getSession().update(registerReq, UserInfoActivity.this,R.id.modify_sex,0);
+                    }
+                });
+
+                Button btn1 = moreActionView.findViewById(R.id.gender_1);
+                btn1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                        RegisterReq registerReq = new RegisterReq();
+                        registerReq.setGender(1);
+                        Yz.getSession().update(registerReq, UserInfoActivity.this,R.id.modify_sex,1);
+                    }
+                });
+
+                Button btn2 = moreActionView.findViewById(R.id.gender_2);
+                btn2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                        RegisterReq registerReq = new RegisterReq();
+                        registerReq.setGender(2);
+                        Yz.getSession().update(registerReq, UserInfoActivity.this,R.id.modify_sex,2);
+                    }
+                });
+
+
+                Button cancelBtn = moreActionView.findViewById(R.id.cancel);
+                cancelBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                    }
+                });
+                mDialog.setContentView(moreActionView);
+            }else {
+                mDialog.show();
+            }
         }
     }
 
@@ -233,6 +354,13 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                     userApi.setCard(((RegisterReq) req).getCard());
                 }else if(viewId == R.id.modify_email){
                     userApi.setEmail(((RegisterReq) req).getEmail());
+                }else if(viewId == R.id.modify_signature){
+                    userApi.setUserSignature(((RegisterReq) req).getUserSignature());
+                }else if(viewId == R.id.modify_sex){
+                    int gender = resp.getPositionParams(1);
+                    userApi.setGender(gender);
+                }else if(viewId == R.id.modify_city){
+                    userApi.setCity(((RegisterReq) req).getCity());
                 }
                 updateUser();
             }else if(resp instanceof UploadResp){

@@ -56,14 +56,15 @@ import java.util.HashMap;
 
 public final class YzIMKitAgent {
 
-    private IMEventListener IMEventPushListener = new IMEventListener() {
+    private final IMEventListener IMEventPushListener = new IMEventListener() {
         @Override
         public void onNewMessage(V2TIMMessage msg) {
             MessageNotification notification = MessageNotification.getInstance();
             notification.notify(msg);
         }
     };
-    private ConversationManagerKit.MessageUnreadWatcher UnreadWatcher = new ConversationManagerKit.MessageUnreadWatcher() {
+
+    private final ConversationManagerKit.MessageUnreadWatcher UnreadWatcher = new ConversationManagerKit.MessageUnreadWatcher() {
         @Override
         public void updateUnread(int count) {
             // 华为离线推送角标
@@ -81,7 +82,7 @@ public final class YzIMKitAgent {
         }
     };
     private static YzIMKitAgent singleton;
-    private Context mContext;
+    private final Context mContext;
     private YzStatusListener mIMKitStatusListener;
     private YzWorkAppItemClickListener mWorkAppItemClickListener;
     private int functionPrem;
@@ -185,6 +186,9 @@ public final class YzIMKitAgent {
                         userApi.setCard(userReq.getCard());
                         userApi.setEmail(userReq.getEmail());
                         userApi.setToken(token);
+                        userApi.setCity(userReq.getCity());
+                        userApi.setGender(userReq.getGender());
+                        userApi.setUserSignature(userReq.getUserSignature());
                         loginIM(listener);
                         functionPrem = data.getFunctionPerm();
                     }else{
