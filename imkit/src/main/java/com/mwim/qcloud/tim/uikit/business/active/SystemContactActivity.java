@@ -1,6 +1,7 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,6 +13,8 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.dialog.BaseDialog;
+import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
@@ -124,9 +127,21 @@ public class SystemContactActivity extends BaseActivity {
         @Override
         protected void onPostExecute(List<OpenData> contactItemBeans) {
             super.onPostExecute(contactItemBeans);
-            GetUserListByMobilesReq getUserListByMobilesReq = new GetUserListByMobilesReq();
-            getUserListByMobilesReq.setParamVal(contactItemBeans);
-            Yz.getSession().getUserListByMobiles(getUserListByMobilesReq,SystemContactActivity.this);
+            if(contactItemBeans.size()==0){
+                ConfirmDialog cd = new ConfirmDialog();
+                cd.setContent(R.string.toast_sys_contacts_error);
+                cd.setOnDismissListener(new BaseDialog.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        finish();
+                    }
+                });
+                cd.show(getSupportFragmentManager(),"sys_contacts");
+            }else{
+                GetUserListByMobilesReq getUserListByMobilesReq = new GetUserListByMobilesReq();
+                getUserListByMobilesReq.setParamVal(contactItemBeans);
+                Yz.getSession().getUserListByMobiles(getUserListByMobilesReq,SystemContactActivity.this);
+            }
         }
     }
 

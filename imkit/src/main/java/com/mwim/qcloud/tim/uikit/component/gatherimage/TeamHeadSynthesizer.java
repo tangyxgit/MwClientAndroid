@@ -281,7 +281,12 @@ public class TeamHeadSynthesizer implements Synthesizer {
         }
 
         if (multiImageData.size() == 1) {
-            GlideEngine.loadImage(imageView, multiImageData.getImageUrls().get(0));
+            Object icon = multiImageData.getImageUrls().get(0);
+            if(icon instanceof String){
+                GlideEngine.loadCornerAvatar(imageView, (String) icon);
+            }else{
+                GlideEngine.loadImage(imageView, icon);
+            }
             return;
         }
 
