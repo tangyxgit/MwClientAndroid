@@ -31,8 +31,8 @@ public class GroupMemberInviteLayout extends LinearLayout implements IGroupMembe
 
     private TitleBarLayout mTitleBar;
     private ContactListView mContactListView;
-    private List<String> mInviteMembers = new ArrayList<>();
-    private ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
+    private final List<String> mInviteMembers = new ArrayList<>();
+    private final ArrayList<ContactItemBean> memberInfoArrayList = new ArrayList<>();
     private Object mParentLayout;
     private GroupInfo mGroupInfo;
 

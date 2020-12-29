@@ -132,17 +132,20 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                     }
                 }
             });
-        } else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.group), contactBean.getId())) {
+        }
+        else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.group), contactBean.getId())) {
             holder.avatar.setDefaultImageResId(R.drawable.icon_chat_group_stroke,ContextCompat.getColor(holder.avatar.getContext(),R.color.color_fdac3b));
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.setRadius(0);
-        } else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.blacklist), contactBean.getId())) {
+        }
+        else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.blacklist), contactBean.getId())) {
             holder.avatar.setDefaultImageResId(R.drawable.icon_block_fill,ContextCompat.getColor(holder.avatar.getContext(),R.color.color_999999));
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.setRadius(0);
-        } else {
+        }
+        else {
             if (contactBean.getIconUrlList()==null) {
                 holder.avatar.setDefaultImageResId(R.drawable.default_head);
             } else {

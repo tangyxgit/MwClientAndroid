@@ -55,6 +55,7 @@ public class StartGroupChatActivity extends IMBaseActivity implements TextWatche
         memberInfo.setAccount(V2TIMManager.getInstance().getLoginUser());
         memberInfo.setNameCard(UserApi.instance().getNickName());
         mMembers.add(memberInfo);
+
         ChatInfo chatInfo = (ChatInfo) getIntent().getSerializableExtra(StartGroupChatActivity.class.getSimpleName());
         if(chatInfo!=null){
             memberInfo = new GroupMemberInfo();
@@ -62,6 +63,7 @@ public class StartGroupChatActivity extends IMBaseActivity implements TextWatche
             memberInfo.setNameCard(chatInfo.getChatName());
             mMembers.add(memberInfo);
         }
+
         mJoinType = findViewById(R.id.group_type_join);
         mJoinType.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +78,9 @@ public class StartGroupChatActivity extends IMBaseActivity implements TextWatche
         mSearch.addTextChangedListener(this);
 
         mContactListView = findViewById(R.id.group_create_member_list);
+        GroupInfo groupInfo = new GroupInfo();
+        groupInfo.setMemberDetails(mMembers);
+        mContactListView.setGroupInfo(groupInfo);
         mContactListView.loadDataSource(ContactListView.DataSource.FRIEND_LIST);
         mContactListView.setOnSelectChangeListener(new ContactListView.OnSelectChangedListener() {
             @Override
