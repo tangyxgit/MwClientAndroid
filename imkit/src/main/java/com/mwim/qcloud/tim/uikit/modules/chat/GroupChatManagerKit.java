@@ -282,7 +282,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
     }
 
     public void notifyJoinGroup(String groupID, final boolean isInvited) {
-        if(mCurrentChatInfo!=null){
+        if(mCurrentChatInfo!=null && !TextUtils.isEmpty(mCurrentChatInfo.getGroupName())){
             if (isInvited) {
                 ToastUtil.info(TUIKit.getAppContext(),"您已被邀请进群：" + mCurrentChatInfo.getGroupName());
             } else {
@@ -330,7 +330,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
     }
 
     public void notifyKickedFromGroup(String groupID) {
-        if(mCurrentChatInfo!=null){
+        if(mCurrentChatInfo!=null && !TextUtils.isEmpty(mCurrentChatInfo.getGroupName())){
             ToastUtil.info(TUIKit.getAppContext(),"您已被踢出群：" + mCurrentChatInfo.getGroupName());
         }else{
             mGroupInfoProvider.loadGroupPublicInfo(groupID,true, new IUIKitCallBack() {

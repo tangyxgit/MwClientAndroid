@@ -21,8 +21,8 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.util.SharedUtils;
+import com.work.util.ToastUtil;
 
 import java.util.List;
 
@@ -73,7 +73,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
                         intent.putExtra(TUIKitConstants.Group.GROUP_ID, mGroupInfo.getId());
                         getContext().startActivity(intent);
                     } else {
-                        ToastUtil.toastLongMessage("请稍后再试试~");
+                        ToastUtil.info(getContext(),"请稍后再试试~");
                     }
                 }
             });
@@ -117,7 +117,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                ToastUtil.toastLongMessage("loadApplyList onError: " + errMsg);
+                ToastUtil.error(getContext(),"loadApplyList onError: " +errCode + ">" + errMsg);
             }
         });
     }

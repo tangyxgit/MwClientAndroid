@@ -27,6 +27,7 @@ import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IChatLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
+import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.mwim.liteav.SelectContactActivity;
 import com.mwim.liteav.login.UserModel;
@@ -45,7 +46,6 @@ import com.mwim.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
-import com.tencent.qcloud.tim.uikit.utils.FileUtil;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
@@ -212,7 +212,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             //for display
             displayInputString += names;
             displayInputString += " ";
-            displayInputString += com.tencent.qcloud.tim.uikit.modules.chat.layout.input.TIMMentionEditText.TIM_METION_TAG;
+            displayInputString += TIMMentionEditText.TIM_METION_TAG;
         } else {
             String[] listName = names.split(" ");
             String[] listId = ids.split(" ");
@@ -227,7 +227,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                     //for display
                     displayInputString += listName[i];
                     displayInputString += " ";
-                    displayInputString += com.tencent.qcloud.tim.uikit.modules.chat.layout.input.TIMMentionEditText.TIM_METION_TAG;
+                    displayInputString += TIMMentionEditText.TIM_METION_TAG;
                 }
             } else {
                 for (i = 0; i < listName.length; i++) {
@@ -236,7 +236,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                     //for display
                     displayInputString += listName[i];
                     displayInputString += " ";
-                    displayInputString += com.tencent.qcloud.tim.uikit.modules.chat.layout.input.TIMMentionEditText.TIM_METION_TAG;
+                    displayInputString += TIMMentionEditText.TIM_METION_TAG;
                 }
             }
         }
@@ -305,10 +305,10 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 SLog.i("errCode: " + errCode);
-                com.tencent.qcloud.tim.uikit.utils.ToastUtil.toastLongMessage(errMsg);
+                ToastUtil.error(getContext(),errCode+">"+errMsg);
             }
         });
-        mInputMoreFragment.startActivityForResult(intent, com.tencent.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreFragment.REQUEST_CODE_PHOTO);
+        mInputMoreFragment.startActivityForResult(intent,InputMoreFragment.REQUEST_CODE_PHOTO);
     }
 
     private MessageInfo buildVideoMessage(String mUri) {

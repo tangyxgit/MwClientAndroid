@@ -253,6 +253,22 @@
     <string name="ui_at_me" translatable="false">[有人@我]</string>
     <string name="ui_at_all_me" translatable="false">[@所有人][有人@我]</string>
 
+    <string name="date_yesterday">昨天</string>
+    <string name="date_tommorow">明天</string>
+    <string name="date_year">年</string>
+    <string name="date_month">月</string>
+    <string name="date_day">天</string>
+    <string name="date_hour">时</string>
+    <string name="date_minute">分</string>
+    <string name="date_second">秒</string>
+
+    <string name="date_year_short">年</string>
+    <string name="date_month_short">月</string>
+    <string name="date_day_short">天</string>
+    <string name="date_hour_short">时</string>
+    <string name="date_minute_short">分</string>
+    <string name="date_second_short">秒</string>
+
     <string name="zxing_msg_camera_framework_bug" translatable="false">对不起，Android摄像头遇到问题，您需要重启设备</string>
     <string name="zxing_distinguish_picture" translatable="false">识别图中二维码</string>
     <string name="zxing_qr_can_not_recognized" translatable="false">该二维码无法识别</string>

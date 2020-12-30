@@ -6,22 +6,22 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.mwim.liteav.model.CallModel;
+import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
+import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
+import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
+import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageContainerBean;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
-import com.tencent.liteav.model.CallModel;
-import com.tencent.liteav.model.TRTCAVCallImpl;
-import com.tencent.qcloud.tim.uikit.modules.chat.base.ChatInfo;
-import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
-import com.tencent.qcloud.tim.uikit.modules.chat.base.OfflineMessageContainerBean;
-import com.tencent.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.util.SLog;
+import com.work.util.ToastUtil;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageHelper;
 
@@ -117,7 +117,7 @@ public class OfflineMessageDispatcher {
                     && bean.action != OfflineMessageBean.REDIRECT_ACTION_CALL) ) {
             PackageManager packageManager = TUIKit.getAppContext().getPackageManager();
             String label = String.valueOf(packageManager.getApplicationLabel(TUIKit.getAppContext().getApplicationInfo()));
-            ToastUtil.toastLongMessage("您的应用 " + label + " 版本太低，不支持打开该离线消息");
+            ToastUtil.info(TUIKit.getAppContext(),"您的应用 " + label + " 版本太低，不支持打开该离线消息");
             SLog.e( "unknown version: " + bean.version + " or action: " + bean.action);
             return null;
         }
@@ -140,7 +140,7 @@ public class OfflineMessageDispatcher {
             if (model != null) {
                 long timeout = V2TIMManager.getInstance().getServerTime() - bean.sendTime;
                 if (timeout >= model.timeout) {
-                    ToastUtil.toastLongMessage("本次通话已超时");
+                    ToastUtil.info(TUIKit.getAppContext(),"本次通话已超时");
                 } else {
                     if (TextUtils.isEmpty(model.groupId)) {
                         if (bean.chatType == V2TIMConversation.V2TIM_C2C) {

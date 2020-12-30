@@ -27,8 +27,12 @@ public class BaseActivity extends TakePhotoActivity {
             getWindow().setStatusBarColor(color);
             getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.navigation_bar_color));
             int vis = getWindow().getDecorView().getSystemUiVisibility();
-            vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vis |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
             getWindow().getDecorView().setSystemUiVisibility(vis);
         }
     }
