@@ -18,6 +18,10 @@ import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.tencent.imsdk.v2.V2TIMFriendApplication;
+import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.work.api.open.Yz;
 import com.work.api.open.model.GetUserListByMobilesReq;
 import com.work.api.open.model.GetUserListByMobilesResp;
@@ -29,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.tencent.imsdk.v2.V2TIMFriendApplication.V2TIM_FRIEND_APPLICATION_SEND_OUT;
 
 /**
  * Created by tangyx
@@ -48,7 +54,8 @@ public class SystemContactActivity extends BaseActivity {
         mContactListView.setOnItemClickListener(new ContactListView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, ContactItemBean contact) {
-                if(contact.getUserType()!=3){
+                if(contact.getUserType()!=3
+                        && contact.getUserType()!=4){
                     Intent intent = new Intent(SystemContactActivity.this, FriendProfileActivity.class);
                     intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact.getId());
                     startActivity(intent);
@@ -64,6 +71,39 @@ public class SystemContactActivity extends BaseActivity {
         new SearchModelTask().execute();
     }
 
+    private void getFriendApplicationList(final List<OpenData> data){
+        if(isFinishing()){
+            return;
+        }
+        V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
+            @Override
+            public void onError(int code, String desc) {
+                if(isFinishing()){
+                    return;
+                }
+                new MobileTask(data,null).execute();
+            }
+
+            @Override
+            public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
+                if(isFinishing()){
+                    return;
+                }
+                if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
+                    List<V2TIMFriendApplication> friendApplications = v2TIMFriendApplicationResult.getFriendApplicationList();
+                    if (friendApplications.size() == 0) {
+                        new MobileTask(data,null).execute();
+                    }else{
+                        new MobileTask(data,friendApplications).execute();
+                    }
+                }else{
+                    new MobileTask(data,null).execute();
+                }
+
+            }
+        });
+    }
+
 
     @Override
     public int onCustomContentId() {
@@ -76,7 +116,7 @@ public class SystemContactActivity extends BaseActivity {
         if(resp.isSuccess()){
             if(resp instanceof GetUserListByMobilesResp){
                 List<OpenData> data = ((GetUserListByMobilesResp) resp).getData();
-                new MobileTask(data).execute();
+                getFriendApplicationList(data);
             }
         }else{
             ToastUtil.warning(this,resp.getMessage());
@@ -107,7 +147,7 @@ public class SystemContactActivity extends BaseActivity {
                     if(TextUtils.isEmpty(mobile)){
                         continue;
                     }
-                    mobile = mobile.replaceAll(" ","");
+                    mobile = mobile.replaceAll(" ","").replaceAll("-","");
                     if(mContactsMaps.containsKey(mobile) || !RegularUtils.isMobileSimple(mobile)){
                         continue;
                     }
@@ -127,6 +167,9 @@ public class SystemContactActivity extends BaseActivity {
         @Override
         protected void onPostExecute(List<OpenData> contactItemBeans) {
             super.onPostExecute(contactItemBeans);
+            if(isFinishing()){
+                return;
+            }
             if(contactItemBeans.size()==0){
                 ConfirmDialog cd = new ConfirmDialog();
                 cd.setContent(R.string.toast_sys_contacts_error);
@@ -148,9 +191,11 @@ public class SystemContactActivity extends BaseActivity {
     private class MobileTask extends AsyncTask<Void,Void,List<ContactItemBean>>{
 
         private List<OpenData> data;
+        private List<V2TIMFriendApplication> friendsApplications;
 
-        public MobileTask(List<OpenData> data) {
+        public MobileTask(List<OpenData> data,List<V2TIMFriendApplication> friendsApplications) {
             this.data = data;
+            this.friendsApplications = friendsApplications;
         }
 
         @Override
@@ -162,6 +207,14 @@ public class SystemContactActivity extends BaseActivity {
                 contactItemBean.setSystemContacts(true);
                 contactItemBean.setMobile(openData.getMobile());
                 contactItemBean.setUserType(openData.getUserType());
+                if(friendsApplications!=null && friendsApplications.size()>0){
+                    for (V2TIMFriendApplication application : friendsApplications) {
+                        if(application.getType() == V2TIM_FRIEND_APPLICATION_SEND_OUT //我申请加别人好友
+                                && application.getUserID().equals(openData.getUserId())){
+                            contactItemBean.setUserType(4);
+                        }
+                    }
+                }
                 String icon = openData.getUserIcon();
                 if(!TextUtils.isEmpty(icon)){
                     List<Object> iconUrl = new ArrayList<>();
@@ -170,7 +223,8 @@ public class SystemContactActivity extends BaseActivity {
                 }
                 contactItemBean.setNickname(mContactsMaps.get(openData.getMobile()));
                 if(contactItemBean.getUserType()==1
-                        || contactItemBean.getUserType()==2){
+                        || contactItemBean.getUserType()==2
+                        || contactItemBean.getUserType() == 4){
                     contactItemBean.setSystemRemark(getString(R.string.text_contacts_phone_nickname,openData.getNickName()));
                 }
                 contactItemBeans.add(contactItemBean);
@@ -181,6 +235,9 @@ public class SystemContactActivity extends BaseActivity {
         @Override
         protected void onPostExecute(List<ContactItemBean> contactItemBeans) {
             super.onPostExecute(contactItemBeans);
+            if(isFinishing()){
+                return;
+            }
             mContactListView.setDataSource(contactItemBeans);
         }
     }

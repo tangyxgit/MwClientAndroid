@@ -183,6 +183,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                             holder.itemView.getContext().startActivity(intent.putExtra(TUIKitConstants.ProfileType.CONTENT,openData));
                         }
                     });
+                } else if(contactBean.getUserType()==4){
+                    holder.mAgree.setBackgroundColor(Color.TRANSPARENT);
+                    holder.mAgree.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.color_999999));
+                    holder.mAgree.setText(R.string.text_contacts_phone_wait);
                 }else{
                     holder.mAgree.setBackgroundResource(R.drawable.friend_border_3);
                     holder.mAgree.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.defaultColorAccent));

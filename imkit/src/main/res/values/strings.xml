@@ -97,6 +97,7 @@
     <string name="text_new_contacts_approval_title" translatable="false">好友申请和添加</string>
     <string name="text_contacts_phone_nickname" translatable="false">昵称：%1$s</string>
     <string name="text_contacts_phone_friends" translatable="false">已是好友</string>
+    <string name="text_contacts_phone_wait" translatable="false">等待通过</string>
     <string name="text_contacts_phone_download" translatable="false">邀请下载</string>
     <string name="text_contacts_phone_download_sending" translatable="false">正在发送</string>
     <string name="text_contacts_phone_download_ok" translatable="false">邀请成功</string>
@@ -253,21 +254,21 @@
     <string name="ui_at_me" translatable="false">[有人@我]</string>
     <string name="ui_at_all_me" translatable="false">[@所有人][有人@我]</string>
 
-    <string name="date_yesterday">昨天</string>
-    <string name="date_tommorow">明天</string>
-    <string name="date_year">年</string>
-    <string name="date_month">月</string>
-    <string name="date_day">天</string>
-    <string name="date_hour">时</string>
-    <string name="date_minute">分</string>
-    <string name="date_second">秒</string>
+    <string name="date_yesterday" translatable="false">昨天</string>
+    <string name="date_tommorow" translatable="false">明天</string>
+    <string name="date_year" translatable="false">年</string>
+    <string name="date_month" translatable="false">月</string>
+    <string name="date_day" translatable="false">天</string>
+    <string name="date_hour" translatable="false">时</string>
+    <string name="date_minute" translatable="false">分</string>
+    <string name="date_second" translatable="false">秒</string>
 
-    <string name="date_year_short">年</string>
-    <string name="date_month_short">月</string>
-    <string name="date_day_short">天</string>
-    <string name="date_hour_short">时</string>
-    <string name="date_minute_short">分</string>
-    <string name="date_second_short">秒</string>
+    <string name="date_year_short" translatable="false">年</string>
+    <string name="date_month_short" translatable="false">月</string>
+    <string name="date_day_short" translatable="false">天</string>
+    <string name="date_hour_short" translatable="false">时</string>
+    <string name="date_minute_short" translatable="false">分</string>
+    <string name="date_second_short" translatable="false">秒</string>
 
     <string name="zxing_msg_camera_framework_bug" translatable="false">对不起，Android摄像头遇到问题，您需要重启设备</string>
     <string name="zxing_distinguish_picture" translatable="false">识别图中二维码</string>
