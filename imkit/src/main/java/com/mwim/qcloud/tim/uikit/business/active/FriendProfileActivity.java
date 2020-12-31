@@ -38,10 +38,9 @@ public class FriendProfileActivity extends IMBaseActivity {
     @Override
     public void onInitValue() throws Exception {
         super.onInitValue();
-        setTitleName(null);
+        setTitleName(R.string.profile_detail);
         setStatusBar(Color.WHITE);
         mTitleLayout.setBackgroundColor(Color.WHITE);
-
     }
 
     @Override

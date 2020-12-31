@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.chat.interfaces.IInputLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.inputmore.InputMoreActionUnit;
@@ -168,7 +169,8 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             mInputMoreActionList.add(action);
         }
 
-        if (mEnableVideoCall) {
+        int functionPrem = YzIMKitAgent.instance().getFunctionPrem();
+        if (mEnableVideoCall && (functionPrem & 32)>0) {
             action = new InputMoreActionUnit();
             action.setIconResId(R.drawable.img_video_call);
             action.setTitleId(R.string.video_call);
@@ -181,7 +183,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             mInputMoreActionList.add(action);
         }
 
-        if (mEnableAudioCall) {
+        if (mEnableAudioCall && (functionPrem & 16)>0) {
             action = new InputMoreActionUnit();
             action.setIconResId(R.drawable.img_phone_call);
             action.setTitleId(R.string.audio_call);

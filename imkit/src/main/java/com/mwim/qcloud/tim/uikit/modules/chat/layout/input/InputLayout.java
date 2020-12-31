@@ -324,11 +324,10 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             }
 
             String imgPath = FileUtil.saveBitmap("JCamera", bitmap);
-            String videoPath = mUri;
             int imgWidth = bitmap.getWidth();
             int imgHeight = bitmap.getHeight();
             long duration = Long.parseLong(sDuration);
-            return MessageInfoUtil.buildVideoMessage(imgPath, videoPath, imgWidth, imgHeight, duration);
+            return MessageInfoUtil.buildVideoMessage(imgPath, mUri, imgWidth, imgHeight, duration);
         } catch (Exception ex){
             SLog.e("MediaMetadataRetriever exception " + ex);
         } finally {

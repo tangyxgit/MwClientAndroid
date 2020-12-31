@@ -20,7 +20,6 @@ import com.tencent.imsdk.v2.V2TIMGroupMemberChangeInfo;
 import com.tencent.imsdk.v2.V2TIMGroupMemberInfo;
 import com.tencent.imsdk.v2.V2TIMGroupTipsElem;
 import com.tencent.imsdk.v2.V2TIMImageElem;
-import com.tencent.imsdk.v2.V2TIMLocationElem;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMSoundElem;
