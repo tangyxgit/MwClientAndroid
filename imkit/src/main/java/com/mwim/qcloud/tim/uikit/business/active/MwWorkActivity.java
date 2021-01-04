@@ -278,8 +278,9 @@ public class MwWorkActivity extends IMBaseActivity implements
 
             @Override
             public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
+                int count = 0;
                 if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
-                    int count = v2TIMFriendApplicationResult.getUnreadCount();
+                    count = v2TIMFriendApplicationResult.getUnreadCount();
                     if (count > 0) {
                         mContactsNewBadge.show(true);
                     } else {
@@ -292,6 +293,12 @@ public class MwWorkActivity extends IMBaseActivity implements
                     mContactsNewBadge.setText(unreadStr);
                 }else{
                     mContactsNewBadge.hide();
+                }
+                for (BaseFragment fragment:mFragments) {
+                    if(fragment instanceof ContactFragment){
+                        ((ContactFragment) fragment).newFriendCount(count);
+                        break;
+                    }
                 }
             }
         });

@@ -69,9 +69,9 @@ public class ContactFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        SLog.i("onResume");
+    public void newFriendCount(int count){
+        if(mContactLayout!=null){
+            mContactLayout.getContactListView().newFriendCount(count);
+        }
     }
 }

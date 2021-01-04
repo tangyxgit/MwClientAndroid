@@ -41,6 +41,16 @@ public class ContactItemBean extends BaseIndexPinyinBean {
     private int userType;
     private String mobile;
     private List<String> area;
+    private int newFriendCount;
+
+    public int getNewFriendCount() {
+        return newFriendCount;
+    }
+
+    public ContactItemBean setNewFriendCount(int newFriendCount) {
+        this.newFriendCount = newFriendCount;
+        return this;
+    }
 
     public List<String> getArea() {
         return area;

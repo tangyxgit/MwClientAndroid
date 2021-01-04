@@ -5,11 +5,13 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.tencent.imsdk.v2.V2TIMFriendInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
 import com.tencent.imsdk.v2.V2TIMGroupMemberFullInfo;
@@ -37,11 +39,11 @@ public class ContactListView extends LinearLayout {
     private SuspensionDecoration mDecoration;
     private ProgressBar mContactLoadingBar;
     private GroupInfo mGroupInfo;
-
     /**
      * 右侧边栏导航区域
      */
     private IndexBar mIndexBar;
+    private int newFriendCount;
 
     public ContactListView(Context context) {
         super(context);
@@ -72,9 +74,6 @@ public class ContactListView extends LinearLayout {
         mAdapter = new ContactAdapter(mData);
         mRv.setAdapter(mAdapter);
         mRv.addItemDecoration(mDecoration = new SuspensionDecoration(getContext(), mData));
-        /**
-         * 显示指示器DialogText
-         */
         TextView mTvSideBarHint = findViewById(R.id.contact_tvSideBarHint);
         mIndexBar = findViewById(R.id.contact_indexBar);
         mIndexBar.setPressedShowTextView(mTvSideBarHint)
@@ -122,6 +121,7 @@ public class ContactListView extends LinearLayout {
                 break;
             case DataSource.CONTACT_LIST:
                 mData.add((ContactItemBean) new ContactItemBean(getResources().getString(R.string.new_friend))
+                        .setNewFriendCount(this.newFriendCount)
                         .setTop(true).setBaseIndexTag(ContactItemBean.INDEX_STRING_TOP));
                 mData.add((ContactItemBean) new ContactItemBean(getResources().getString(R.string.group)).
                         setTop(true).setBaseIndexTag(ContactItemBean.INDEX_STRING_TOP));
@@ -144,6 +144,17 @@ public class ContactListView extends LinearLayout {
                 break;
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void newFriendCount(int count){
+        this.newFriendCount = count;
+        if(mData!=null && mData.size()>0 && mAdapter!=null){
+            ContactItemBean contactBean = mData.get(0);
+            if(TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.new_friend), contactBean.getId())){
+                contactBean.setNewFriendCount(count);
+                mAdapter.notifyItemChanged(0);
+            }
+        }
     }
 
     public void setGroupInfo(GroupInfo groupInfo) {

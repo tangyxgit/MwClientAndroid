@@ -113,25 +113,31 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             holder.avatar.getLayoutParams().width = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.getLayoutParams().height = SizeUtils.dp2px(holder.avatar.getContext(),24);
             holder.avatar.setRadius(0);
-            V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
-                @Override
-                public void onError(int code, String desc) {
-                    ToastUtil.error(holder.avatar.getContext(),"Error code = " + code + ", desc = " + desc);
-                }
-
-                @Override
-                public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
-                    if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
-                        int pendingRequest = v2TIMFriendApplicationResult.getUnreadCount();
-                        if (pendingRequest == 0) {
-                            holder.unreadText.setVisibility(View.GONE);
-                        } else {
-                            holder.unreadText.setVisibility(View.VISIBLE);
-                            holder.unreadText.setText(String.valueOf(pendingRequest));
-                        }
-                    }
-                }
-            });
+            if(contactBean.getNewFriendCount()==0){
+                holder.unreadText.setVisibility(View.GONE);
+            }else{
+                holder.unreadText.setVisibility(View.VISIBLE);
+                holder.unreadText.setText(String.valueOf(contactBean.getNewFriendCount()));
+            }
+//            V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
+//                @Override
+//                public void onError(int code, String desc) {
+//                    ToastUtil.error(holder.avatar.getContext(),"Error code = " + code + ", desc = " + desc);
+//                }
+//
+//                @Override
+//                public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
+//                    if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
+//                        int pendingRequest = v2TIMFriendApplicationResult.getUnreadCount();
+//                        if (pendingRequest == 0) {
+//                            holder.unreadText.setVisibility(View.GONE);
+//                        } else {
+//                            holder.unreadText.setVisibility(View.VISIBLE);
+//                            holder.unreadText.setText(String.valueOf(pendingRequest));
+//                        }
+//                    }
+//                }
+//            });
         }
         else if (TextUtils.equals(TUIKit.getAppContext().getResources().getString(R.string.group), contactBean.getId())) {
             holder.avatar.setDefaultImageResId(R.drawable.icon_chat_group_stroke,ContextCompat.getColor(holder.avatar.getContext(),R.color.color_fdac3b));
