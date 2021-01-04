@@ -44,6 +44,7 @@ import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.vivo.push.IPushActionListener;
 import com.vivo.push.PushClient;
 import com.work.util.SLog;
+import com.work.util.SharedUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +119,10 @@ public class MwWorkActivity extends IMBaseActivity implements
 
         mNavigationBar.initialise();
         mNavigationBar.setTabSelectedListener(this);
-        UpdateAppDialog.showUpdateDialog(this,false);
+        String yzAppId = SharedUtils.getString("YzAppId");
+        if("de241446a50499bb77a8684cf610fd04".equals(yzAppId)){//只有元信才需要去验证是否升级
+            UpdateAppDialog.showUpdateDialog(this,false);
+        }
     }
 
     private Drawable getSelectDrawable(@DrawableRes int resId, int color){
