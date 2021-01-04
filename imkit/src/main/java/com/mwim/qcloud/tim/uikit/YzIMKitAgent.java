@@ -35,6 +35,7 @@ import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.vivo.push.PushClient;
+import com.work.api.open.ApiClient;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.SysUserReq;
@@ -91,6 +92,10 @@ public final class YzIMKitAgent {
         this.mContext = context;
         loadConfig();
         SharedUtils.putData("YzAppId",mYzAppId);
+        UserApi userApi = UserApi.instance();
+        userApi.setStore("im sdk");
+        //配置网络相关
+        ApiClient.setApiConfig(new ApiClient.ApiConfig().setHostName("https://dev-imapi.yzmetax.com/").setParamObj(userApi));
     }
 
     public static void init(Context context,String appId){
