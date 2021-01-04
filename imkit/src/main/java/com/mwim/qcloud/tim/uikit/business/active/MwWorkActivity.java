@@ -323,10 +323,15 @@ public class MwWorkActivity extends IMBaseActivity implements
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
+        String yzAppId = SharedUtils.getString("YzAppId");
+        if("de241446a50499bb77a8684cf610fd04".equals(yzAppId)){//只有元信才需要去验证
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override
