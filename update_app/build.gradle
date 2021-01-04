@@ -28,5 +28,5 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation project(path: ':utils')
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
 }

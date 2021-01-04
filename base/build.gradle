@@ -22,7 +22,7 @@ dependencies {
     api 'androidx.multidex:multidex:2.0.1'
     //状态栏变化
     api 'com.jaeger.statusbarutil:library:1.5.1'
-    api 'junit:junit:4.12'
+    api 'junit:junit:4.13.1'
     api project(path: ':api')
     api project(path: ':recycler_view_helper')
     implementation project(path: ':utils')
