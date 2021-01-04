@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
+        android:theme="@style/Theme.AppCompat.Slider"
         android:requestLegacyExternalStorage="true">
 <!--        该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束。-->
         <service
