@@ -15,7 +15,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/chat_top_line"/>
+            android:background="@color/color_e6e6e6"/>
         <LinearLayout
             android:background="@color/background_color"
             android:paddingLeft="15dp"
