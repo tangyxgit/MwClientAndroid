@@ -207,7 +207,7 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="@color/bg_negative_btn"
                     android:text="模拟外部分享链接卡片形式"
                     android:textColor="@color/negative_text" />
