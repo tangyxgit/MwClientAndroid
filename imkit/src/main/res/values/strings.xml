@@ -104,6 +104,7 @@
     <string name="text_contacts_add_wording" translatable="false">我是 %1$s</string>
     <string name="text_contacts_add_download_success" translatable="false">邀请成功，已发送链接给您的好友...</string>
     <string name="text_agreement_" translatable="false">用户协议</string>
+    <string name="text_progress_wait" translatable="false">正在匹配数据...</string>
     <string name="text_conceal_" translatable="false">隐私政策</string>
     <string name="hint_user_info_input" translatable="false">未填写</string>
     <string name="hint_user_info_select" translatable="false">未选择</string>

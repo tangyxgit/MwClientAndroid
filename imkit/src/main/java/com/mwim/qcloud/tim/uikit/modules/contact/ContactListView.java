@@ -87,11 +87,15 @@ public class ContactListView extends LinearLayout {
     }
 
     public void setDataSource(List<ContactItemBean> data) {
-        mContactLoadingBar.setVisibility(GONE);
+        hideLoading();
         this.mData = data;
         mAdapter.setDataSource(mData);
         mIndexBar.setSourceDatas(mData).invalidate();
         mDecoration.setDatas(mData);
+    }
+
+    public void hideLoading(){
+        mContactLoadingBar.setVisibility(GONE);
     }
 
     public void setSingleSelectMode(boolean mode) {

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
@@ -46,11 +47,18 @@ public class SystemContactActivity extends BaseActivity {
 
     private ContactListView mContactListView;
     private Map<String,String> mContactsMaps;
+    private List<OpenData> mSystemData;
+    private int mOffset = 0;
+    private List<ContactItemBean> mData;
+    private List<V2TIMFriendApplication> mFriendApplications;
+    private View mProgressLayout;
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
+        mProgressLayout = findViewById(R.id.progress_layout);
         mContactListView = findViewById(R.id.black_list);
+        mContactListView.hideLoading();
         mContactListView.setOnItemClickListener(new ContactListView.OnItemClickListener() {
             @Override
             public void onItemClick(int position, ContactItemBean contact) {
@@ -75,33 +83,37 @@ public class SystemContactActivity extends BaseActivity {
         if(isFinishing()){
             return;
         }
-        V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
-            @Override
-            public void onError(int code, String desc) {
-                if(isFinishing()){
-                    return;
-                }
-                new MobileTask(data,null).execute();
-            }
-
-            @Override
-            public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
-                if(isFinishing()){
-                    return;
-                }
-                if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
-                    List<V2TIMFriendApplication> friendApplications = v2TIMFriendApplicationResult.getFriendApplicationList();
-                    if (friendApplications.size() == 0) {
-                        new MobileTask(data,null).execute();
-                    }else{
-                        new MobileTask(data,friendApplications).execute();
+        if(mFriendApplications!=null){
+            new MobileTask(data,mFriendApplications).execute();
+        }else{
+            V2TIMManager.getFriendshipManager().getFriendApplicationList(new V2TIMValueCallback<V2TIMFriendApplicationResult>() {
+                @Override
+                public void onError(int code, String desc) {
+                    if(isFinishing()){
+                        return;
                     }
-                }else{
                     new MobileTask(data,null).execute();
                 }
 
-            }
-        });
+                @Override
+                public void onSuccess(V2TIMFriendApplicationResult v2TIMFriendApplicationResult) {
+                    if(isFinishing()){
+                        return;
+                    }
+                    if (v2TIMFriendApplicationResult.getFriendApplicationList() != null) {
+                        mFriendApplications = v2TIMFriendApplicationResult.getFriendApplicationList();
+                        if (mFriendApplications.size() == 0) {
+                            new MobileTask(data,null).execute();
+                        }else{
+                            new MobileTask(data,mFriendApplications).execute();
+                        }
+                    }else{
+                        new MobileTask(data,null).execute();
+                    }
+
+                }
+            });
+        }
     }
 
 
@@ -129,6 +141,8 @@ public class SystemContactActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             mContactsMaps = new HashMap<>();
+            mData = new ArrayList<>();
+            mProgressLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -154,8 +168,6 @@ public class SystemContactActivity extends BaseActivity {
 //                    String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                     OpenData contactPhone = new OpenData();
                     contactPhone.setMobile(mobile);
-//                    contactPhone.set(mobile);
-//                    chineseToPy(contactPhone);
                     mContactsMaps.put(mobile,name);
                     contacts.add(contactPhone);
                 }
@@ -181,11 +193,26 @@ public class SystemContactActivity extends BaseActivity {
                 });
                 cd.show(getSupportFragmentManager(),"sys_contacts");
             }else{
-                GetUserListByMobilesReq getUserListByMobilesReq = new GetUserListByMobilesReq();
-                getUserListByMobilesReq.setParamVal(contactItemBeans);
-                Yz.getSession().getUserListByMobiles(getUserListByMobilesReq,SystemContactActivity.this);
+                mSystemData = contactItemBeans;
+                limitData();
             }
         }
+    }
+
+    private void limitData(){
+        if(mOffset >= mSystemData.size()){
+            mProgressLayout.setVisibility(View.GONE);
+            return;
+        }
+        int start = mOffset;
+        int mLength = 40;
+        int end = mOffset + mLength;
+        end = Math.min(end, mSystemData.size());
+        List<OpenData> data = mSystemData.subList(start,end);
+        mOffset = end;
+        GetUserListByMobilesReq getUserListByMobilesReq = new GetUserListByMobilesReq();
+        getUserListByMobilesReq.setParamVal(data);
+        Yz.getSession().getUserListByMobiles(getUserListByMobilesReq,SystemContactActivity.this);
     }
 
     private class MobileTask extends AsyncTask<Void,Void,List<ContactItemBean>>{
@@ -238,7 +265,9 @@ public class SystemContactActivity extends BaseActivity {
             if(isFinishing()){
                 return;
             }
-            mContactListView.setDataSource(contactItemBeans);
+            mData.addAll(contactItemBeans);
+            mContactListView.setDataSource(mData);
+            limitData();
         }
     }
 }
