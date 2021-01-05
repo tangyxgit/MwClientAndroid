@@ -169,6 +169,7 @@
                     android:layout_marginTop="@dimen/dp_5"
                     android:textSize="@dimen/text_size_middle"
                     android:visibility="gone"
+                    android:textColor="@color/white"
                     tools:text="00:01" />
             </LinearLayout>
             <LinearLayout

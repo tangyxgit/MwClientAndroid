@@ -136,6 +136,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="@dimen/dp_5"
                     android:textSize="@dimen/text_size_middle"
+                    android:textColor="@color/white"
                     android:visibility="gone"
                     tools:text="00:01" />
             </LinearLayout>
