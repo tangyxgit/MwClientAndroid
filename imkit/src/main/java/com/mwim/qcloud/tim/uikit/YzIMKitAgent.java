@@ -7,6 +7,7 @@ import android.os.Environment;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
+import com.huawei.hmf.tasks.Task;
 import com.huawei.hms.push.HmsMessaging;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
@@ -259,7 +260,7 @@ public final class YzIMKitAgent {
             // 华为离线推送，设置是否接收Push通知栏消息调用示例
             HmsMessaging.getInstance(mContext).turnOnPush().addOnCompleteListener(new com.huawei.hmf.tasks.OnCompleteListener<Void>() {
                 @Override
-                public void onComplete(com.huawei.hmf.tasks.Task<Void> task) {
+                public void onComplete(Task<Void> task) {
                     if (task.isSuccessful()) {
                         SLog.i( "huawei turnOnPush Complete");
                     } else {

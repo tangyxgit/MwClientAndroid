@@ -18,12 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.mwim.liteav.trtcvideocall.ui.videolayout.TRTCVideoAdapter;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
-import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.liteav.login.ProfileManager;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
@@ -34,8 +33,8 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.work.api.open.Yz;
 import com.work.api.open.model.AddApplyStaticsReq;
 import com.work.util.SLog;
-import com.work.util.SharedUtils;
 import com.work.util.ToastUtil;
+import com.workstation.permission.PermissionsResultAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +46,7 @@ import java.util.Map;
  *
  * @author guanyifeng
  */
-public class TRTCVideoCallActivity extends AppCompatActivity {
+public class TRTCVideoCallActivity extends BaseActivity {
 
     public static final int TYPE_BEING_CALLED = 1;
     public static final int TYPE_CALL = 2;
@@ -100,7 +99,7 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
     /**
      * 拨号的回调
      */
-    private TRTCAVCallListener mTRTCAVCallListener = new TRTCAVCallListener() {
+    private final TRTCAVCallListener mTRTCAVCallListener = new TRTCAVCallListener() {
         @Override
         public void onError(int code, String msg) {
             //发生了错误，报错并退出该页面
@@ -331,9 +330,36 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        // 应用运行时，保持不锁屏、全屏化
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         SLog.i("onCreate");
+    }
 
+    @Override
+    public void onInitView() throws Exception {
+        super.onInitView();
+        String[] permission = {Manifest.permission.RECORD_AUDIO,Manifest.permission.CAMERA};
+        if(!hasPermission(permission)){
+            onPermissionChecker(permission, new PermissionsResultAction() {
+                @Override
+                public void onGranted() {
+                    loadData();
+                }
+
+                @Override
+                public void onDenied(String permission) {
+                    finish();
+                }
+            });
+        }else{
+            loadData();
+        }
+    }
+
+    private void loadData(){
         mCallType = getIntent().getIntExtra(PARAM_TYPE, TYPE_BEING_CALLED);
         SLog.i("mCallType: " + mCallType);
         if (mCallType == TYPE_BEING_CALLED && ((TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(this)).isWaitingLastActivityFinished()) {
@@ -349,15 +375,6 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
             manager.cancelAll();
         }
 
-        // 应用运行时，保持不锁屏、全屏化
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.videocall_activity_online_call);
-
-        PermissionUtils.checkPermission(this, Manifest.permission.CAMERA);
-        PermissionUtils.checkPermission(this, Manifest.permission.RECORD_AUDIO);
-
         mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         mRingtone = RingtoneManager.getRingtone(this,
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE));
@@ -367,6 +384,11 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
         initListener();
     }
 
+    @Override
+    public int onCustomContentId() {
+        return R.layout.videocall_activity_online_call;
+    }
+
     private void finishActivity() {
         ((TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(this)).setWaitingLastActivityFinished(true);
         finish();
@@ -374,7 +396,9 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        mITRTCAVCall.hangup();
+        if(mITRTCAVCall!=null){
+            mITRTCAVCall.hangup();
+        }
         super.onBackPressed();
     }
 
@@ -679,5 +703,10 @@ public class TRTCVideoCallActivity extends AppCompatActivity {
 //            GlideEngine.loadCornerAvatar(layout.getHeadImg(), userModel.userAvatar);
 //        }
         mTrtcAdapter.addData(userModel);
+    }
+
+    @Override
+    public boolean isShowTitleBar() {
+        return false;
     }
 }

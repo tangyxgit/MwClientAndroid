@@ -428,10 +428,10 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     public void startAudioCall() {
-        if (!PermissionUtils.checkPermission(mActivity, Manifest.permission.RECORD_AUDIO)) {
-            SLog.i("startAudioCall checkPermission failed");
-            return;
-        }
+//        if (!PermissionUtils.checkPermission(mActivity, Manifest.permission.RECORD_AUDIO)) {
+//            SLog.i("startAudioCall checkPermission failed");
+//            return;
+//        }
         if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_C2C) {
             List<UserModel> contactList = new ArrayList<>();
             UserModel model = new UserModel();
@@ -447,11 +447,11 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     protected void startVideoCall() {
-        if (!(PermissionUtils.checkPermission(mActivity, Manifest.permission.CAMERA)
-                && PermissionUtils.checkPermission(mActivity, Manifest.permission.RECORD_AUDIO))) {
-            SLog.i("startVideoCall checkPermission failed");
-            return;
-        }
+//        if (!(PermissionUtils.checkPermission(mActivity, Manifest.permission.CAMERA)
+//                && PermissionUtils.checkPermission(mActivity, Manifest.permission.RECORD_AUDIO))) {
+//            SLog.i("startVideoCall checkPermission failed");
+//            return;
+//        }
         if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_C2C) {
             List<UserModel> contactList = new ArrayList<>();
             UserModel model = new UserModel();

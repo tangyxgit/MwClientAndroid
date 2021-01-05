@@ -18,8 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +26,7 @@ import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.mwim.liteav.model.IntentParams;
 import com.mwim.liteav.trtcaudiocall.ui.audiolayout.TRTCAudioCallAdapter;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -43,6 +42,7 @@ import com.work.api.open.Yz;
 import com.work.api.open.model.AddApplyStaticsReq;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
+import com.workstation.permission.PermissionsResultAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author guanyifeng
  */
-public class TRTCAudioCallActivity extends AppCompatActivity {
+public class TRTCAudioCallActivity extends BaseActivity {
 
     public static final int TYPE_BEING_CALLED = 1;
     public static final int TYPE_BEING_CALLED_FROM_NOTIFICATION = 3;
@@ -108,7 +108,7 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     /**
      * 拨号的回调
      */
-    private TRTCAVCallListener mTRTCAudioCallListener = new TRTCAVCallListener() {
+    private final TRTCAVCallListener mTRTCAudioCallListener = new TRTCAVCallListener() {
         @Override
         public void onError(int code, String msg) {
             //发生了错误，报错并退出该页面
@@ -345,10 +345,36 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        // 应用运行时，保持不锁屏、全屏化
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        SLog.i("onCreate");
+    }
 
+    @Override
+    public void onInitView() throws Exception {
+        super.onInitView();
+        String[] permission = {Manifest.permission.RECORD_AUDIO};
+        if(!hasPermission(permission)){
+            onPermissionChecker(permission, new PermissionsResultAction() {
+                @Override
+                public void onGranted() {
+                    loadData();
+                }
+
+                @Override
+                public void onDenied(String permission) {
+                    finish();
+                }
+            });
+        }else{
+            loadData();
+        }
+    }
+
+    private void loadData(){
         mCallType = getIntent().getIntExtra(PARAM_TYPE, TYPE_BEING_CALLED);
         SLog.i("mCallType: " + mCallType);
         if (mCallType == TYPE_BEING_CALLED && ((TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(this)).isWaitingLastActivityFinished()) {
@@ -363,14 +389,6 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         if (manager != null) {
             manager.cancelAll();
         }
-
-        // 应用运行时，保持不锁屏、全屏化
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.audiocall_activity_call_main);
-
-        PermissionUtils.checkPermission(this, Manifest.permission.RECORD_AUDIO);
 
         mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         mRingtone = RingtoneManager.getRingtone(this,
@@ -388,10 +406,17 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
     }
 
     @Override
+    public int onCustomContentId() {
+        return R.layout.audiocall_activity_call_main;
+    }
+
+    @Override
     public void onBackPressed() {
         SLog.i("onBackPressed");
         // 退出这个界面的时候，需要挂断
-        mITRTCAVCall.hangup();
+        if(mITRTCAVCall!=null){
+            mITRTCAVCall.hangup();
+        }
         super.onBackPressed();
     }
 
@@ -727,4 +752,8 @@ public class TRTCAudioCallActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean isShowTitleBar() {
+        return false;
+    }
 }

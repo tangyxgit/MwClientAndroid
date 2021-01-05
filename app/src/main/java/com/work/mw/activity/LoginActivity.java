@@ -46,9 +46,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CHANGE_WIFI_STATE,
-            Manifest.permission.CHANGE_NETWORK_STATE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO};
+            Manifest.permission.CHANGE_NETWORK_STATE};
     private EditText mPhone;
     private EditText mPassword;
     private ActionProcessButton mSubmit;

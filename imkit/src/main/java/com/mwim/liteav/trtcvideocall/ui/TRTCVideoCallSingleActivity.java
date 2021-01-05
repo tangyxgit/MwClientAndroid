@@ -19,13 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
-import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
 import com.mwim.liteav.login.ProfileManager;
 import com.mwim.liteav.login.UserModel;
 import com.mwim.liteav.model.ITRTCAVCall;
@@ -43,6 +42,7 @@ import com.work.api.open.model.LoginResp;
 import com.work.api.open.model.client.OpenData;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
+import com.workstation.permission.PermissionsResultAction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author guanyifeng
  */
-public class TRTCVideoCallSingleActivity extends AppCompatActivity {
+public class TRTCVideoCallSingleActivity extends BaseActivity {
 
     public static final int TYPE_BEING_CALLED = 1;
     public static final int TYPE_CALL = 2;
@@ -87,13 +87,12 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
      */
     private UserModel mSelfModel;
     private List<UserModel> mCallUserModelList = new ArrayList<>(); // 呼叫方
-    private Map<String, UserModel> mCallUserModelMap = new HashMap<>();
+    private final Map<String, UserModel> mCallUserModelMap = new HashMap<>();
     private UserModel mSponsorUserModel; // 被叫方
     private int mCallType;
     private ITRTCAVCall mITRTCAVCall;
     private boolean isHandsFree = true;
     private boolean isMuteMic = false;
-    private boolean isCamera = true;
     private boolean isMuteVideo = false;
     private String mGroupId;
 
@@ -103,7 +102,7 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
     /**
      * 拨号的回调
      */
-    private TRTCAVCallListener mTRTCAVCallListener = new TRTCAVCallListener() {
+    private final TRTCAVCallListener mTRTCAVCallListener = new TRTCAVCallListener() {
         @Override
         public void onError(int code, String msg) {
             //发生了错误，报错并退出该页面
@@ -325,9 +324,34 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        SLog.i("onCreate");
+    }
 
+    @Override
+    public void onInitView() throws Exception {
+        super.onInitView();
+        String[] permission = {Manifest.permission.RECORD_AUDIO,Manifest.permission.CAMERA};
+        if(!hasPermission(permission)){
+            onPermissionChecker(permission, new PermissionsResultAction() {
+                @Override
+                public void onGranted() {
+                    loadData();
+                }
+
+                @Override
+                public void onDenied(String permission) {
+                    finish();
+                }
+            });
+        }else{
+            loadData();
+        }
+    }
+
+    private void loadData(){
         mCallType = getIntent().getIntExtra(PARAM_TYPE, TYPE_BEING_CALLED);
         SLog.i("mCallType: " + mCallType);
         if (mCallType == TYPE_BEING_CALLED && ((TRTCAVCallImpl) TRTCAVCallImpl.sharedInstance(this)).isWaitingLastActivityFinished()) {
@@ -344,13 +368,6 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         }
 
         // 应用运行时，保持不锁屏、全屏化
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.videocall_activity_online_call_single);
-
-        PermissionUtils.checkPermission(this, Manifest.permission.CAMERA);
-        PermissionUtils.checkPermission(this, Manifest.permission.RECORD_AUDIO);
 
         mVibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         mRingtone = RingtoneManager.getRingtone(this,
@@ -359,6 +376,11 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         initView();
         initData();
         initListener();
+    }
+
+    @Override
+    public int onCustomContentId() {
+        return R.layout.videocall_activity_online_call_single;
     }
 
     private void finishActivity() {
@@ -678,4 +700,8 @@ public class TRTCVideoCallSingleActivity extends AppCompatActivity {
         return layout;
     }
 
+    @Override
+    public boolean isShowTitleBar() {
+        return false;
+    }
 }
