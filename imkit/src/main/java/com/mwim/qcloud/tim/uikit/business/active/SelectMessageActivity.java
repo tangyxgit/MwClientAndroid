@@ -1,6 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.active;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
@@ -60,7 +60,7 @@ public class SelectMessageActivity extends BaseActivity {
                     TUIKit.getAppContext().startActivity(intent);
                     finish();
                 } else {
-                    ChatInfo chatInfo = new ChatInfo();
+                    final ChatInfo chatInfo = new ChatInfo();
                     chatInfo.setType(V2TIMConversation.V2TIM_C2C);
                     chatInfo.setId(contact.getId());
                     String chatName = contact.getId();
@@ -94,9 +94,10 @@ public class SelectMessageActivity extends BaseActivity {
     public int onCustomContentId() {
         return R.layout.fragment_im_contact;
     }
-    public static void sendCustomMessage(Activity activity, CustomMessage message,int requestCode){
-        Intent intent = new Intent(activity, SelectMessageActivity.class);
+    public static void sendCustomMessage(Context context, CustomMessage message){
+        Intent intent = new Intent(context, SelectMessageActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(SelectMessageActivity.class.getSimpleName(),message);
-        activity.startActivityForResult(intent,requestCode);
+        context.startActivity(intent);
     }
 }

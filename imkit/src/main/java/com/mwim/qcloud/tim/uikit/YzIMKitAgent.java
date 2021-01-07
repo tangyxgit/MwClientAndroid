@@ -1,9 +1,12 @@
 package com.mwim.qcloud.tim.uikit;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
@@ -14,17 +17,22 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.active.ChatActivity;
 import com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity;
+import com.mwim.qcloud.tim.uikit.business.active.SelectMessageActivity;
 import com.mwim.qcloud.tim.uikit.business.inter.YzStatusListener;
 import com.mwim.qcloud.tim.uikit.business.inter.YzWorkAppItemClickListener;
+import com.mwim.qcloud.tim.uikit.business.message.CustomMessage;
 import com.mwim.qcloud.tim.uikit.business.message.MessageNotification;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.config.GeneralConfig;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
+import com.mwim.qcloud.tim.uikit.modules.chat.C2CChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
+import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
+import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
 import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
@@ -248,6 +256,38 @@ public final class YzIMKitAgent {
         intent.putExtra(Constants.CHAT_TO_CONVERSATION, finishToConversation);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
+    }
+    /**
+     * 分享卡片消息
+     */
+    public void startCustomMessage(CustomMessage message){
+        startCustomMessage(null,null,message);
+    }
+    public void startCustomMessage(String toChatId,String chatName, CustomMessage message){
+        if(TextUtils.isEmpty(toChatId)){
+            SelectMessageActivity.sendCustomMessage(mContext,message);
+        }else{
+            final ChatInfo chatInfo = new ChatInfo();
+            chatInfo.setType(V2TIMConversation.V2TIM_C2C);
+            chatInfo.setId(toChatId);
+            chatInfo.setChatName(chatName);
+            C2CChatManagerKit c2CChatManagerKit = C2CChatManagerKit.getInstance();
+            c2CChatManagerKit.setCurrentChatInfo(chatInfo);
+            final String customData = new Gson().toJson(message);
+            MessageInfo info = MessageInfoUtil.buildCustomMessage(customData);
+            c2CChatManagerKit.sendMessage(info, false, new IUIKitCallBack() {
+                @Override
+                public void onSuccess(Object data) {
+                    SLog.e("custom message send success:"+data);
+                    YzIMKitAgent.instance().startChat(chatInfo.getId(),chatInfo.getChatName(),false);
+                }
+
+                @Override
+                public void onError(String module, int errCode, String errMsg) {
+                    ToastUtil.warning(mContext,errCode+">"+errMsg);
+                }
+            });
+        }
     }
     /**
      * 注册推送

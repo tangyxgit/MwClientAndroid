@@ -28,14 +28,14 @@ public class CustomIMUIController {
         if (data == null) {
             mTitle.setText(text);
         } else {
-            mTitle.setText(data.title);
-            mDesc.setText(data.desc);
-            GlideEngine.loadImage(mLogo,data.logo);
+            mTitle.setText(data.getTitle());
+            mDesc.setText(data.getDesc());
+            GlideEngine.loadImage(mLogo,data.getLogo());
             view.setClickable(true);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    WebActivity.startWebView(data.link);
+                    WebActivity.startWebView(data.getLink());
                 }
             });
         }

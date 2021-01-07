@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.business.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -16,9 +15,9 @@ import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
+import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.active.ScanIMQRCodeActivity;
-import com.mwim.qcloud.tim.uikit.business.active.SelectMessageActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserInfoActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserQRCodeActivity;
 import com.mwim.qcloud.tim.uikit.business.active.UserSettingActivity;
@@ -27,6 +26,7 @@ import com.mwim.qcloud.tim.uikit.business.message.CustomMessage;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
+import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
@@ -142,7 +142,13 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
             getContext().startActivity(new Intent(getContext(), UserSettingActivity.class));
         }else if(v.getId() == R.id.custom_im_message){
             CustomMessage message = new CustomMessage();
-            SelectMessageActivity.sendCustomMessage((Activity) getContext(),message,0);
+            message.setBusinessID(TUIKitConstants.BUSINESS_ID_CUSTOM_CARD);
+            message.setLogo("https://yzkj-im.oss-cn-beijing.aliyuncs.com/user/16037885020911603788500745.png");
+            message.setDesc("欢迎加入元信大家庭！欢迎加入元信大家庭！欢迎加入元信大家庭！欢迎加入元信大家庭！");
+            message.setTitle("元信IM生态工具元信IM生态工具元信IM生态工具元信IM生态工具元信IM生态工具");
+            message.setLink("http://yzmsri.com/");
+            message.setBusinessID(TUIKitConstants.BUSINESS_ID_CUSTOM_CARD);
+            YzIMKitAgent.instance().startCustomMessage(message);
         }else if(v.getId() == R.id.qr_code || v.getId()==R.id.modify_qrcode){
             getContext().startActivity(new Intent(getContext(), UserQRCodeActivity.class));
         }else if(v.getId() == R.id.modify_scan){
