@@ -20,6 +20,6 @@
             android:layout_height="wrap_content"
             android:textColor="#999"
             android:layout_marginStart="@dimen/dp_10"
-            android:text="欢迎使用元信..."/>
+            android:text="欢迎使用元讯..."/>
     </LinearLayout>
 </FrameLayout>

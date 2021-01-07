@@ -144,8 +144,8 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
             CustomMessage message = new CustomMessage();
             message.setBusinessID(TUIKitConstants.BUSINESS_ID_CUSTOM_CARD);
             message.setLogo("https://yzkj-im.oss-cn-beijing.aliyuncs.com/user/16037885020911603788500745.png");
-            message.setDesc("欢迎加入元信大家庭！欢迎加入元信大家庭！欢迎加入元信大家庭！欢迎加入元信大家庭！");
-            message.setTitle("元信IM生态工具元信IM生态工具元信IM生态工具元信IM生态工具元信IM生态工具");
+            message.setDesc("欢迎加入元讯大家庭！欢迎加入元讯大家庭！欢迎加入元讯大家庭！欢迎加入元讯大家庭！");
+            message.setTitle("元讯IM生态工具元讯IM生态工具元讯IM生态工具元讯IM生态工具元讯IM生态工具");
             message.setLink("http://yzmsri.com/");
             message.setBusinessID(TUIKitConstants.BUSINESS_ID_CUSTOM_CARD);
             YzIMKitAgent.instance().startCustomMessage(message);

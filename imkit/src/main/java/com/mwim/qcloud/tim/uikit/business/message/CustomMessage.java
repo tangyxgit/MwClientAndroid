@@ -9,10 +9,10 @@ import java.io.Serializable;
  */
 public class CustomMessage implements Serializable {
     private String businessID = TUIKitConstants.BUSINESS_ID_CUSTOM_CARD;
-    private String title = "元信IM生态工具元信IM生态工具元信IM生态工具元信IM生态工具元信IM生态工具";
-    private String desc = "欢迎加入元信大家庭！欢迎加入元信大家庭！欢迎加入元信大家庭！欢迎加入元信大家庭！";
-    private String link = "http://yzmsri.com/";
-    private String logo = "https://yzkj-im.oss-cn-beijing.aliyuncs.com/user/16037885020911603788500745.png";
+    private String title = "";
+    private String desc = "";
+    private String link = "";
+    private String logo = "";
 
     public final int version = TUIKitConstants.version;
 
