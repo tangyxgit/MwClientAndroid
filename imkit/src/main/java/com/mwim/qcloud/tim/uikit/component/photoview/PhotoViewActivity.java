@@ -21,7 +21,7 @@ import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMDownloadCallback;
 import com.tencent.imsdk.v2.V2TIMElem;
 import com.tencent.imsdk.v2.V2TIMImageElem;
@@ -76,18 +76,18 @@ public class PhotoViewActivity extends BaseActivity {
         });
         mPhotoView.setOnSingleFlingListener(new SingleFlingListener());
         mFileUtils = new FileUtils(this);
-        String imageData = getIntent().getStringExtra(TUIKitConstants.IMAGE_DATA);
+        String imageData = getIntent().getStringExtra(IMKitConstants.IMAGE_DATA);
         if(imageData.startsWith("http")){//加载网络图片
             GlideEngine.loadImage(mPhotoView,imageData);
             return;
         }
         Uri uri = FileUtil.getUriFromPath(imageData);
-        boolean isSelf = getIntent().getBooleanExtra(TUIKitConstants.SELF_MESSAGE, false);
+        boolean isSelf = getIntent().getBooleanExtra(IMKitConstants.SELF_MESSAGE, false);
         mViewOriginalBtn = findViewById(R.id.view_original_btn);
         if (isSelf || mCurrentOriginalImage == null) {
             mPhotoView.setImageURI(uri);
         } else {
-            final String path = TUIKitConstants.IMAGE_DOWNLOAD_DIR + mCurrentOriginalImage.getUUID();
+            final String path = IMKitConstants.IMAGE_DOWNLOAD_DIR + mCurrentOriginalImage.getUUID();
             File file = new File(path);
             if (file.exists()) {
                 mPhotoView.setImageURI(FileUtil.getUriFromPath(file.getPath()));

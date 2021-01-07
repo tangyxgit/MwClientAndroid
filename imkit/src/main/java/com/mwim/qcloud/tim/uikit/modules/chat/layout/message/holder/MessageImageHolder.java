@@ -25,7 +25,7 @@ import com.mwim.qcloud.tim.uikit.component.face.FaceManager;
 import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.component.video.VideoViewActivity;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
@@ -151,7 +151,7 @@ public class MessageImageHolder extends MessageContentHolder {
                         }
                         downloadEles.add(img.getUUID());
                     }
-                    final String path = TUIKitConstants.IMAGE_DOWNLOAD_DIR + img.getUUID();
+                    final String path = IMKitConstants.IMAGE_DOWNLOAD_DIR + img.getUUID();
                     img.downloadImage(path, new V2TIMDownloadCallback() {
                         @Override
                         public void onProgress(V2TIMElem.V2ProgressInfo progressInfo) {
@@ -188,8 +188,8 @@ public class MessageImageHolder extends MessageContentHolder {
                 }
                 Intent intent = new Intent(TUIKit.getAppContext(), PhotoViewActivity.class);
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(TUIKitConstants.IMAGE_DATA, msg.getDataPath());
-                intent.putExtra(TUIKitConstants.SELF_MESSAGE, msg.isSelf());
+                intent.putExtra(IMKitConstants.IMAGE_DATA, msg.getDataPath());
+                intent.putExtra(IMKitConstants.SELF_MESSAGE, msg.isSelf());
                 TUIKit.getAppContext().startActivity(intent);
             }
         });
@@ -225,7 +225,7 @@ public class MessageImageHolder extends MessageContentHolder {
                 }
             }
 
-            final String path = TUIKitConstants.IMAGE_DOWNLOAD_DIR + videoEle.getSnapshotUUID();
+            final String path = IMKitConstants.IMAGE_DOWNLOAD_DIR + videoEle.getSnapshotUUID();
             videoEle.downloadSnapshot(path, new V2TIMDownloadCallback() {
                 @Override
                 public void onProgress(V2TIMElem.V2ProgressInfo progressInfo) {
@@ -253,7 +253,7 @@ public class MessageImageHolder extends MessageContentHolder {
         }
         videoDurationText.setText(durations);
 
-        final String videoPath = TUIKitConstants.VIDEO_DOWNLOAD_DIR + videoEle.getVideoUUID();
+        final String videoPath = IMKitConstants.VIDEO_DOWNLOAD_DIR + videoEle.getVideoUUID();
         final File videoFile = new File(videoPath);
         //以下代码为zanhanding修改，用于fix视频消息发送失败后不显示红色感叹号的问题
         if (msg.getStatus() == MessageInfo.MSG_STATUS_SEND_SUCCESS) {
@@ -339,8 +339,8 @@ public class MessageImageHolder extends MessageContentHolder {
         statusImage.setVisibility(View.GONE);
         sendingProgress.setVisibility(View.GONE);
         Intent intent = new Intent(TUIKit.getAppContext(), VideoViewActivity.class);
-        intent.putExtra(TUIKitConstants.CAMERA_IMAGE_PATH, msg.getDataPath());
-        intent.putExtra(TUIKitConstants.CAMERA_VIDEO_PATH, msg.getDataUri());
+        intent.putExtra(IMKitConstants.CAMERA_IMAGE_PATH, msg.getDataPath());
+        intent.putExtra(IMKitConstants.CAMERA_VIDEO_PATH, msg.getDataUri());
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         TUIKit.getAppContext().startActivity(intent);
     }

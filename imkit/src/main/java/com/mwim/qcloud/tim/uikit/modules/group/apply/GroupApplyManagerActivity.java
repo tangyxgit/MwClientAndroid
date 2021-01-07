@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 public class GroupApplyManagerActivity extends Activity {
 
@@ -24,7 +24,7 @@ public class GroupApplyManagerActivity extends Activity {
         }
         mManagerLayout = findViewById(R.id.group_apply_manager_layout);
 
-        GroupInfo mGroupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
+        GroupInfo mGroupInfo = (GroupInfo) getIntent().getExtras().getSerializable(IMKitConstants.Group.GROUP_INFO);
         mManagerLayout.setDataSource(mGroupInfo);
     }
 
@@ -35,13 +35,13 @@ public class GroupApplyManagerActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != TUIKitConstants.ActivityRequest.CODE_1) {
+        if (requestCode != IMKitConstants.ActivityRequest.CODE_1) {
             return;
         }
         if (resultCode != RESULT_OK) {
             return;
         }
-        GroupApplyInfo info = (GroupApplyInfo) data.getSerializableExtra(TUIKitConstants.Group.MEMBER_APPLY);
+        GroupApplyInfo info = (GroupApplyInfo) data.getSerializableExtra(IMKitConstants.Group.MEMBER_APPLY);
         if (info == null) {
             return;
         }

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
 import com.mwim.qcloud.tim.uikit.utils.MD5Utils;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ThreadHelper;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
@@ -306,7 +306,7 @@ public class TeamHeadSynthesizer implements Synthesizer {
             @Override
             public void run() {
                 //根据id获取存储的文件路径
-                final File file = new File(TUIKitConstants.IMAGE_BASE_DIR + TeamHeadSynthesizer.this.currentTargetID);
+                final File file = new File(IMKitConstants.IMAGE_BASE_DIR + TeamHeadSynthesizer.this.currentTargetID);
                 boolean cacheBitmapExists = false;
                 if (file.exists() && file.isFile()) {
                     //文件存在，加载到内存

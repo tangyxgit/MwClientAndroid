@@ -17,12 +17,8 @@ import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity;
-import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
-import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
-import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.api.open.Yz;
 import com.work.api.open.model.InviteUserReq;
@@ -186,7 +182,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
                             openData.setUserId(contactBean.getId());
                             Intent intent = new Intent(holder.itemView.getContext(),FriendProfileActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            holder.itemView.getContext().startActivity(intent.putExtra(TUIKitConstants.ProfileType.CONTENT,openData));
+                            holder.itemView.getContext().startActivity(intent.putExtra(IMKitConstants.ProfileType.CONTENT,openData));
                         }
                     });
                 } else if(contactBean.getUserType()==4){

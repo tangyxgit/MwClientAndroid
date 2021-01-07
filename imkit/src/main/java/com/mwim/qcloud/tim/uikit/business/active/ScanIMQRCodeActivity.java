@@ -17,7 +17,7 @@ import com.mwim.qcloud.tim.uikit.business.barcodescanner.CaptureManager;
 import com.mwim.qcloud.tim.uikit.business.barcodescanner.DecoratedBarcodeView;
 import com.mwim.qcloud.tim.uikit.business.barcodescanner.QRCodeConstant;
 import com.mwim.qcloud.tim.uikit.business.barcodescanner.QRCodeUtils;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.work.util.NetworkUtils;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
@@ -211,7 +211,7 @@ public class ScanIMQRCodeActivity extends BaseActivity implements View.OnClickLi
                 if (QRCodeConstant.QRIMChat.USER_PATH_INFO.equals(path)){
                     String userId = yzUri.getQueryParameter(QRCodeConstant.QRIMChat.USER_QUERY_USER_ID);
                     if(!TextUtils.isEmpty(userId)){
-                        startActivity(new Intent(ScanIMQRCodeActivity.this,FriendProfileActivity.class).putExtra(TUIKitConstants.ProfileType.CONTENT,userId));
+                        startActivity(new Intent(ScanIMQRCodeActivity.this,FriendProfileActivity.class).putExtra(IMKitConstants.ProfileType.CONTENT,userId));
                         finish();
                     }
                 }

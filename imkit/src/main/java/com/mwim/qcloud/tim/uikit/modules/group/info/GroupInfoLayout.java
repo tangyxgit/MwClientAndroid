@@ -30,7 +30,7 @@ import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
@@ -235,9 +235,9 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             }
         } else if (v.getId() == R.id.group_name) {
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_group_name));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mGroupNameView.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 10);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_group_name));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, mGroupNameView.getContent());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 10);
             SelectionActivity.startTextSelection(getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(final Object text) {
@@ -274,9 +274,9 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
                 return;
             }
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_group_notice));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mGroupNotice.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 200);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_group_notice));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, mGroupNotice.getContent());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 200);
             SelectionActivity.startTextSelection(getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(final Object text) {
@@ -286,9 +286,9 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             });
         } else if (v.getId() == R.id.self_nickname_bar) {
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name_in_goup));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mNickView.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 6);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name_in_goup));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, mNickView.getContent());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 6);
             SelectionActivity.startTextSelection(getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(final Object text) {
@@ -302,9 +302,9 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
                 return;
             }
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.group_join_type));
-            bundle.putStringArrayList(TUIKitConstants.Selection.LIST, mJoinTypes);
-            bundle.putInt(TUIKitConstants.Selection.DEFAULT_SELECT_ITEM_INDEX, mGroupInfo.getJoinType());
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.group_join_type));
+            bundle.putStringArrayList(IMKitConstants.Selection.LIST, mJoinTypes);
+            bundle.putInt(IMKitConstants.Selection.DEFAULT_SELECT_ITEM_INDEX, mGroupInfo.getJoinType());
 //            SelectionActivity.startListSelection((Activity) getContext(), bundle, new SelectionActivity.OnResultReturnListener() {
 //                @Override
 //                public void onReturn(final Object text) {
@@ -319,15 +319,15 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
             groupJoinTypeDialog.setOnResultReturnListener(new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object text) {
-                    mPresenter.modifyGroupInfo((Integer) text, TUIKitConstants.Group.MODIFY_GROUP_JOIN_TYPE);
+                    mPresenter.modifyGroupInfo((Integer) text, IMKitConstants.Group.MODIFY_GROUP_JOIN_TYPE);
                     mJoinTypeView.setContent(mJoinTypes.get((Integer) text));
                 }
             });
             groupJoinTypeDialog.show(activity.getSupportFragmentManager(),"join_type");
         } else if (v.getId() == R.id.group_dissolve_button) {
             if (mGroupInfo.isOwner() &&
-                    (!mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_WORK)
-                            || !mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_PRIVATE))) {
+                    (!mGroupInfo.getGroupType().equals(IMKitConstants.GroupType.TYPE_WORK)
+                            || !mGroupInfo.getGroupType().equals(IMKitConstants.GroupType.TYPE_PRIVATE))) {
                 new ConfirmDialog().setContent("您确认解散该群?").setOnConfirmListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -378,8 +378,8 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mDissolveBtn.setText(R.string.dissolve);
         if (mGroupInfo.isOwner()) {
 //            mJoinTypeView.setVisibility(VISIBLE);
-            if (mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_WORK)
-                    || mGroupInfo.getGroupType().equals(TUIKitConstants.GroupType.TYPE_PRIVATE)) {
+            if (mGroupInfo.getGroupType().equals(IMKitConstants.GroupType.TYPE_WORK)
+                    || mGroupInfo.getGroupType().equals(IMKitConstants.GroupType.TYPE_PRIVATE)) {
                 mDissolveBtn.setText(R.string.dissolve);
             }
         } else {
@@ -418,13 +418,13 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         if (TextUtils.isEmpty(groupType)) {
             return groupText;
         }
-        if (TextUtils.equals(groupType, TUIKitConstants.GroupType.TYPE_PRIVATE)
-                || TextUtils.equals(groupType, TUIKitConstants.GroupType.TYPE_WORK)) {
+        if (TextUtils.equals(groupType, IMKitConstants.GroupType.TYPE_PRIVATE)
+                || TextUtils.equals(groupType, IMKitConstants.GroupType.TYPE_WORK)) {
             groupText = "讨论组";
-        } else if (TextUtils.equals(groupType, TUIKitConstants.GroupType.TYPE_PUBLIC)) {
+        } else if (TextUtils.equals(groupType, IMKitConstants.GroupType.TYPE_PUBLIC)) {
             groupText = "公开群";
-        } else if (TextUtils.equals(groupType, TUIKitConstants.GroupType.TYPE_CHAT_ROOM)
-                || TextUtils.equals(groupType, TUIKitConstants.GroupType.TYPE_MEETING)) {
+        } else if (TextUtils.equals(groupType, IMKitConstants.GroupType.TYPE_CHAT_ROOM)
+                || TextUtils.equals(groupType, IMKitConstants.GroupType.TYPE_MEETING)) {
             groupText = "聊天室";
         }
         return groupText;
@@ -432,18 +432,18 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
 
     public void onGroupInfoModified(Object value, int type) {
         switch (type) {
-            case TUIKitConstants.Group.MODIFY_GROUP_NAME:
+            case IMKitConstants.Group.MODIFY_GROUP_NAME:
                 ToastUtil.success(getContext(),getResources().getString(R.string.modify_group_name_success));
                 mGroupNameView.setContent(value.toString());
                 break;
-            case TUIKitConstants.Group.MODIFY_GROUP_NOTICE:
+            case IMKitConstants.Group.MODIFY_GROUP_NOTICE:
                 mGroupNotice.setContent(value.toString());
                 ToastUtil.success(getContext(),getResources().getString(R.string.modify_group_notice_success));
                 break;
-            case TUIKitConstants.Group.MODIFY_GROUP_JOIN_TYPE:
+            case IMKitConstants.Group.MODIFY_GROUP_JOIN_TYPE:
                 mJoinTypeView.setContent(mJoinTypes.get((Integer) value));
                 break;
-            case TUIKitConstants.Group.MODIFY_MEMBER_NAME:
+            case IMKitConstants.Group.MODIFY_MEMBER_NAME:
                 ToastUtil.success(getContext(),getResources().getString(R.string.modify_nickname_success));
                 mNickView.setContent(value.toString());
                 break;

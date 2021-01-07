@@ -27,7 +27,7 @@ import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMSendCallback;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatManagerKit;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.work.api.open.Yz;
 import com.work.api.open.model.CreateGroupReq;
 import com.work.api.open.model.CreateGroupResp;
@@ -113,7 +113,7 @@ public class GroupChatManagerKit extends ChatManagerKit {
                     chatInfo.setId(groupId);
                     Gson gson = new Gson();
                     MessageCustom messageCustom = new MessageCustom();
-                    messageCustom.version = TUIKitConstants.version;
+                    messageCustom.version = IMKitConstants.version;
                     messageCustom.businessID = MessageCustom.BUSINESS_ID_GROUP_CREATE;
                     messageCustom.opUser = UserApi.instance().getNickName();
                     messageCustom.content = "发起了群聊";

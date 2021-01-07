@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.layout.input;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -43,8 +42,7 @@ import com.mwim.qcloud.tim.uikit.component.video.CameraActivity;
 import com.mwim.qcloud.tim.uikit.component.video.JCameraView;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.BaseInputFragment;
-import com.mwim.qcloud.tim.uikit.utils.PermissionUtils;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
@@ -345,7 +343,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             return;
         }
         Intent captureIntent = new Intent(getContext(), CameraActivity.class);
-        captureIntent.putExtra(TUIKitConstants.CAMERA_TYPE, JCameraView.BUTTON_STATE_ONLY_CAPTURE);
+        captureIntent.putExtra(IMKitConstants.CAMERA_TYPE, JCameraView.BUTTON_STATE_ONLY_CAPTURE);
         CameraActivity.mCallBack = new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
@@ -373,16 +371,16 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             return;
         }
         Intent captureIntent = new Intent(getContext(), CameraActivity.class);
-        captureIntent.putExtra(TUIKitConstants.CAMERA_TYPE, JCameraView.BUTTON_STATE_ONLY_RECORDER);
+        captureIntent.putExtra(IMKitConstants.CAMERA_TYPE, JCameraView.BUTTON_STATE_ONLY_RECORDER);
         CameraActivity.mCallBack = new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
                 Intent videoData = (Intent) data;
-                String imgPath = videoData.getStringExtra(TUIKitConstants.CAMERA_IMAGE_PATH);
-                String videoPath = videoData.getStringExtra(TUIKitConstants.CAMERA_VIDEO_PATH);
-                int imgWidth = videoData.getIntExtra(TUIKitConstants.IMAGE_WIDTH, 0);
-                int imgHeight = videoData.getIntExtra(TUIKitConstants.IMAGE_HEIGHT, 0);
-                long duration = videoData.getLongExtra(TUIKitConstants.VIDEO_TIME, 0);
+                String imgPath = videoData.getStringExtra(IMKitConstants.CAMERA_IMAGE_PATH);
+                String videoPath = videoData.getStringExtra(IMKitConstants.CAMERA_VIDEO_PATH);
+                int imgWidth = videoData.getIntExtra(IMKitConstants.IMAGE_WIDTH, 0);
+                int imgHeight = videoData.getIntExtra(IMKitConstants.IMAGE_HEIGHT, 0);
+                long duration = videoData.getLongExtra(IMKitConstants.VIDEO_TIME, 0);
                 MessageInfo msg = MessageInfoUtil.buildVideoMessage(imgPath, videoPath, imgWidth, imgHeight, duration);
                 if (mMessageHandler != null) {
                     mMessageHandler.sendMessage(msg);

@@ -17,9 +17,8 @@ import com.mwim.qcloud.tim.uikit.business.active.NewFriendActivity;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactLayout;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
-import com.work.util.SLog;
 
 
 public class ContactFragment extends BaseFragment {
@@ -55,7 +54,7 @@ public class ContactFragment extends BaseFragment {
                 } else {
                     Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact);
+                    intent.putExtra(IMKitConstants.ProfileType.CONTENT, contact);
                     TUIKit.getAppContext().startActivity(intent);
                 }
             }

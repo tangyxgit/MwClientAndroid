@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
 
@@ -36,10 +36,10 @@ public class GroupInfoPresenter {
     }
 
     public void modifyGroupName(final String name) {
-        mProvider.modifyGroupInfo(name, TUIKitConstants.Group.MODIFY_GROUP_NAME, new IUIKitCallBack() {
+        mProvider.modifyGroupInfo(name, IMKitConstants.Group.MODIFY_GROUP_NAME, new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
-                mInfoLayout.onGroupInfoModified(name, TUIKitConstants.Group.MODIFY_GROUP_NAME);
+                mInfoLayout.onGroupInfoModified(name, IMKitConstants.Group.MODIFY_GROUP_NAME);
             }
 
             @Override
@@ -51,10 +51,10 @@ public class GroupInfoPresenter {
     }
 
     public void modifyGroupNotice(final String notice) {
-        mProvider.modifyGroupInfo(notice, TUIKitConstants.Group.MODIFY_GROUP_NOTICE, new IUIKitCallBack() {
+        mProvider.modifyGroupInfo(notice, IMKitConstants.Group.MODIFY_GROUP_NOTICE, new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
-                mInfoLayout.onGroupInfoModified(notice, TUIKitConstants.Group.MODIFY_GROUP_NOTICE);
+                mInfoLayout.onGroupInfoModified(notice, IMKitConstants.Group.MODIFY_GROUP_NOTICE);
             }
 
             @Override
@@ -78,7 +78,7 @@ public class GroupInfoPresenter {
         mProvider.modifyMyGroupNickname(nickname, new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
-                mInfoLayout.onGroupInfoModified(nickname, TUIKitConstants.Group.MODIFY_MEMBER_NAME);
+                mInfoLayout.onGroupInfoModified(nickname, IMKitConstants.Group.MODIFY_MEMBER_NAME);
             }
 
             @Override
@@ -127,7 +127,7 @@ public class GroupInfoPresenter {
         mProvider.modifyGroupInfo(value, type, new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
-                mInfoLayout.onGroupInfoModified(data, TUIKitConstants.Group.MODIFY_GROUP_JOIN_TYPE);
+                mInfoLayout.onGroupInfoModified(data, IMKitConstants.Group.MODIFY_GROUP_JOIN_TYPE);
             }
 
             @Override

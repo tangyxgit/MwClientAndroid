@@ -21,7 +21,7 @@ import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.R;
@@ -101,7 +101,7 @@ public class StartGroupChatActivity extends IMBaseActivity implements TextWatche
             }
         });
 
-        setGroupType(getIntent().getIntExtra("type", TUIKitConstants.GroupType.PRIVATE));
+        setGroupType(getIntent().getIntExtra("type", IMKitConstants.GroupType.PRIVATE));
     }
 
     @Override
@@ -130,15 +130,15 @@ public class StartGroupChatActivity extends IMBaseActivity implements TextWatche
         mJoinType.setVisibility(View.GONE);
         mGroupType = type;
         switch (type) {
-            case TUIKitConstants.GroupType.PUBLIC:
+            case IMKitConstants.GroupType.PUBLIC:
                 setTitleName(getResources().getString(R.string.create_group_chat));
 //                mJoinType.setVisibility(View.VISIBLE);
                 break;
-            case TUIKitConstants.GroupType.CHAT_ROOM:
+            case IMKitConstants.GroupType.CHAT_ROOM:
                 setTitleName(getResources().getString(R.string.create_chat_room));
 //                mJoinType.setVisibility(View.VISIBLE);
                 break;
-            case TUIKitConstants.GroupType.PRIVATE:
+            case IMKitConstants.GroupType.PRIVATE:
             default:
                 setTitleName(getResources().getString(R.string.create_private_group));
                 mJoinType.setVisibility(View.GONE);

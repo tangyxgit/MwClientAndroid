@@ -3,7 +3,7 @@ package com.mwim.qcloud.tim.uikit.business.active;
 import android.content.Intent;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
 
 public class BlackListActivity extends IMBaseActivity {
@@ -18,7 +18,7 @@ public class BlackListActivity extends IMBaseActivity {
             @Override
             public void onItemClick(int position, ContactItemBean contact) {
                 Intent intent = new Intent(BlackListActivity.this, FriendProfileActivity.class);
-                intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact);
+                intent.putExtra(IMKitConstants.ProfileType.CONTENT, contact);
                 startActivity(intent);
             }
         });

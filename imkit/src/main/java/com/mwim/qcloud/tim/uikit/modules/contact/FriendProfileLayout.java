@@ -52,7 +52,7 @@ import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.apply.GroupApplyInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
@@ -349,7 +349,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
                         mHeadImageView.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                getContext().startActivity(new Intent(getContext(), PhotoViewActivity.class).putExtra(TUIKitConstants.IMAGE_DATA,data.getUserIcon()));
+                                getContext().startActivity(new Intent(getContext(), PhotoViewActivity.class).putExtra(IMKitConstants.IMAGE_DATA,data.getUserIcon()));
                             }
                         });
                     }else{
@@ -549,7 +549,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             @Override
             public void onSuccess(Object data) {
                 Intent intent = new Intent();
-                intent.putExtra(TUIKitConstants.Group.MEMBER_APPLY, item);
+                intent.putExtra(IMKitConstants.Group.MEMBER_APPLY, item);
                 ((Activity) getContext()).setResult(Activity.RESULT_OK, intent);
                 ((Activity) getContext()).finish();
             }
@@ -566,7 +566,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             @Override
             public void onSuccess(Object data) {
                 Intent intent = new Intent();
-                intent.putExtra(TUIKitConstants.Group.MEMBER_APPLY, item);
+                intent.putExtra(IMKitConstants.Group.MEMBER_APPLY, item);
                 ((Activity) getContext()).setResult(Activity.RESULT_OK, intent);
                 ((Activity) getContext()).finish();
             }
@@ -664,9 +664,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             delete();
         } else if (v.getId() == R.id.remark) {
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.profile_remark_edit));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, mRemarkView.getContent());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 6);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.profile_remark_edit));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, mRemarkView.getContent());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 6);
             SelectionActivity.startTextSelection(TUIKit.getAppContext(), bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object text) {
@@ -679,7 +679,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             });
         }else if(v.getId() == R.id.add_group_member){
             Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
-            intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+            intent.putExtra(IMKitConstants.GroupType.TYPE, IMKitConstants.GroupType.PUBLIC);
             ChatInfo chatInfo = new ChatInfo();
             chatInfo.setId(mId);
             chatInfo.setChatName(mNickname);

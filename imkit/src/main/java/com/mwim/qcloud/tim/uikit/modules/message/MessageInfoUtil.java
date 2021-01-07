@@ -29,7 +29,7 @@ import com.mwim.liteav.model.CallModel;
 import com.mwim.qcloud.tim.uikit.utils.DateTimeUtil;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.work.util.SLog;
 
@@ -38,8 +38,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mwim.qcloud.tim.uikit.utils.TUIKitConstants.BUSINESS_ID_CUSTOM_CARD;
-import static com.mwim.qcloud.tim.uikit.utils.TUIKitConstants.BUSINESS_ID_CUSTOM_LOCATION;
+import static com.mwim.qcloud.tim.uikit.utils.IMKitConstants.BUSINESS_ID_CUSTOM_CARD;
+import static com.mwim.qcloud.tim.uikit.utils.IMKitConstants.BUSINESS_ID_CUSTOM_LOCATION;
 
 public class MessageInfoUtil {
 
@@ -302,7 +302,7 @@ public class MessageInfoUtil {
             MessageCustom custom = new Gson().fromJson(str, MessageCustom.class);
             if (custom != null
                     && TextUtils.equals(custom.businessID, MessageCustom.BUSINESS_ID_AV_CALL)
-                    && custom.version <= TUIKitConstants.version) {
+                    && custom.version <= IMKitConstants.version) {
                 return true;
             }
             return false;
@@ -376,7 +376,7 @@ public class MessageInfoUtil {
                     String businessId = messageCustom.businessID;
                     if (!TextUtils.isEmpty(businessId) && messageCustom.businessID.equals(MessageCustom.BUSINESS_ID_GROUP_CREATE)) {
                         msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_CREATE);
-                        String message = TUIKitConstants.covert2HTMLString(messageCustom.opUser) + messageCustom.content;
+                        String message = IMKitConstants.covert2HTMLString(messageCustom.opUser) + messageCustom.content;
                         msgInfo.setExtra(message);
                     } else if(!TextUtils.isEmpty(businessId) && messageCustom.businessID.equals(BUSINESS_ID_CUSTOM_CARD)){
                         msgInfo.setExtra("[链接]");
@@ -507,7 +507,7 @@ public class MessageInfoUtil {
                     user.append(groupTipElem.getOpMember().getUserID());
                 }
             }
-            StringBuilder message = new StringBuilder(TUIKitConstants.covert2HTMLString(user.toString()));
+            StringBuilder message = new StringBuilder(IMKitConstants.covert2HTMLString(user.toString()));
             if (tipsType == V2TIMGroupTipsElem.V2TIM_GROUP_TIPS_TYPE_JOIN) {
                 msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_JOIN);
                 message.append("加入群组");
@@ -594,7 +594,7 @@ public class MessageInfoUtil {
                 if (msgInfo.isSelf()) {
                     msgInfo.setDataPath(soundElemEle.getPath());
                 } else {
-                    final String path = TUIKitConstants.RECORD_DOWNLOAD_DIR + soundElemEle.getUUID();
+                    final String path = IMKitConstants.RECORD_DOWNLOAD_DIR + soundElemEle.getUUID();
                     File file = new File(path);
                     if (!file.exists()) {
                         soundElemEle.downloadSound(path, new V2TIMDownloadCallback() {
@@ -642,7 +642,7 @@ public class MessageInfoUtil {
                     for (int i = 0; i < imgs.size(); i++) {
                         V2TIMImageElem.V2TIMImage img = imgs.get(i);
                         if (img.getType() == V2TIMImageElem.V2TIM_IMAGE_TYPE_THUMB) {
-                            final String path = TUIKitConstants.IMAGE_DOWNLOAD_DIR + img.getUUID();
+                            final String path = IMKitConstants.IMAGE_DOWNLOAD_DIR + img.getUUID();
                             msgInfo.setImgWidth(img.getWidth());
                             msgInfo.setImgHeight(img.getHeight());
                             File file = new File(path);
@@ -662,12 +662,12 @@ public class MessageInfoUtil {
                     msgInfo.setDataPath(videoEle.getSnapshotPath());
                     msgInfo.setDataUri(FileUtil.getUriFromPath(videoEle.getVideoPath()));
                 } else {
-                    final String videoPath = TUIKitConstants.VIDEO_DOWNLOAD_DIR + videoEle.getVideoUUID();
+                    final String videoPath = IMKitConstants.VIDEO_DOWNLOAD_DIR + videoEle.getVideoUUID();
                     Uri uri = Uri.parse(videoPath);
                     msgInfo.setDataUri(uri);
                     msgInfo.setImgWidth((int) videoEle.getSnapshotWidth());
                     msgInfo.setImgHeight((int) videoEle.getSnapshotHeight());
-                    final String snapPath = TUIKitConstants.IMAGE_DOWNLOAD_DIR + videoEle.getSnapshotUUID();
+                    final String snapPath = IMKitConstants.IMAGE_DOWNLOAD_DIR + videoEle.getSnapshotUUID();
                     //判断快照是否存在,不存在自动下载
                     if (new File(snapPath).exists()) {
                         msgInfo.setDataPath(snapPath);
@@ -681,7 +681,7 @@ public class MessageInfoUtil {
                 if (TextUtils.isEmpty(filename)) {
                     filename = System.currentTimeMillis() + fileElem.getFileName();
                 }
-                final String path = TUIKitConstants.FILE_DOWNLOAD_DIR + filename;
+                final String path = IMKitConstants.FILE_DOWNLOAD_DIR + filename;
                 File file = new File(path);
                 if (file.exists()) {
                     if (msgInfo.isSelf()) {
@@ -730,7 +730,7 @@ public class MessageInfoUtil {
                 if(TextUtils.isEmpty(name)){
                     name = msgInfo.getTimMessage().getNickName();
                 }
-                String message = TUIKitConstants.covert2HTMLString(name);
+                String message = IMKitConstants.covert2HTMLString(name);
                 msgInfo.setExtra(message + "撤回了一条消息");
             } else {
                 msgInfo.setExtra("对方撤回了一条消息");

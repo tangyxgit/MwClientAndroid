@@ -13,7 +13,7 @@ import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
 import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class StartGroupMemberSelectActivity extends BaseActivity implements Text
         EditText mSearch = findViewById(R.id.search);
         mSearch.addTextChangedListener(this);
         mMembers.clear();
-        GroupInfo groupInfo = (GroupInfo) getIntent().getExtras().getSerializable(TUIKitConstants.Group.GROUP_INFO);
+        GroupInfo groupInfo = (GroupInfo) getIntent().getExtras().getSerializable(IMKitConstants.Group.GROUP_INFO);
         if(groupInfo ==null){
             finish();
         }
@@ -70,8 +70,8 @@ public class StartGroupMemberSelectActivity extends BaseActivity implements Text
                 if (position == 0) {
                     mMembers.clear();
                     Intent i = new Intent();
-                    i.putExtra(TUIKitConstants.Selection.USER_NAMECARD_SELECT, getString(R.string.at_all));
-                    i.putExtra(TUIKitConstants.Selection.USER_ID_SELECT, V2TIMGroupAtInfo.AT_ALL_TAG);
+                    i.putExtra(IMKitConstants.Selection.USER_NAMECARD_SELECT, getString(R.string.at_all));
+                    i.putExtra(IMKitConstants.Selection.USER_ID_SELECT, V2TIMGroupAtInfo.AT_ALL_TAG);
                     setResult(3, i);
                     finish();
                 }
@@ -97,8 +97,8 @@ public class StartGroupMemberSelectActivity extends BaseActivity implements Text
     public void onRightClickListener(View view) {
         super.onRightClickListener(view);
         Intent i = new Intent();
-        i.putExtra(TUIKitConstants.Selection.USER_NAMECARD_SELECT, getMembersNameCard());
-        i.putExtra(TUIKitConstants.Selection.USER_ID_SELECT, getMembersUserId());
+        i.putExtra(IMKitConstants.Selection.USER_NAMECARD_SELECT, getMembersNameCard());
+        i.putExtra(IMKitConstants.Selection.USER_ID_SELECT, getMembersUserId());
         setResult(3, i);
 
         finish();

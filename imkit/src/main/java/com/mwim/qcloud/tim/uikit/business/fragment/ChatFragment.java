@@ -25,7 +25,7 @@ import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.modules.group.info.StartGroupMemberSelectActivity;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
@@ -99,7 +99,7 @@ public class ChatFragment extends BaseFragment {
                     mChatInfo.setShowAddGroup(true);
                     Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);
+                    intent.putExtra(IMKitConstants.ProfileType.CONTENT, mChatInfo);
                     TUIKit.getAppContext().startActivity(intent);
                 }
             });
@@ -120,7 +120,7 @@ public class ChatFragment extends BaseFragment {
                 info.setId(messageInfo.getFromUser());
                 Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(TUIKitConstants.ProfileType.CONTENT, info);
+                intent.putExtra(IMKitConstants.ProfileType.CONTENT, info);
                 TUIKit.getAppContext().startActivity(intent);
             }
         });
@@ -131,7 +131,7 @@ public class ChatFragment extends BaseFragment {
                 GroupInfo groupInfo = new GroupInfo();
                 groupInfo.setId(mChatInfo.getId());
                 groupInfo.setChatName(mChatInfo.getChatName());
-                intent.putExtra(TUIKitConstants.Group.GROUP_INFO, groupInfo);
+                intent.putExtra(IMKitConstants.Group.GROUP_INFO, groupInfo);
                 startActivityForResult(intent, 1);
             }
 
@@ -251,8 +251,8 @@ public class ChatFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == 3) {
-            String result_id = data.getStringExtra(TUIKitConstants.Selection.USER_ID_SELECT);
-            String result_name = data.getStringExtra(TUIKitConstants.Selection.USER_NAMECARD_SELECT);
+            String result_id = data.getStringExtra(IMKitConstants.Selection.USER_ID_SELECT);
+            String result_name = data.getStringExtra(IMKitConstants.Selection.USER_NAMECARD_SELECT);
             mChatLayout.getInputLayout().updateInputText(result_name, result_id);
         }
     }

@@ -5,7 +5,7 @@ import android.os.Environment;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 
 
-public class TUIKitConstants {
+public class IMKitConstants {
 
     public static final String CAMERA_IMAGE_PATH = "camera_image_path";
     public static final String IMAGE_WIDTH = "image_width";

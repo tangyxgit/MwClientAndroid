@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.util.KeyboardUtils;
 import com.work.util.RegularUtils;
@@ -25,13 +25,13 @@ public class SelectionActivity extends BaseActivity {
     private int mSelectionType;
 
     public static void startTextSelection(Context context, Bundle bundle, OnResultReturnListener listener) {
-        bundle.putInt(TUIKitConstants.Selection.TYPE, TUIKitConstants.Selection.TYPE_TEXT);
+        bundle.putInt(IMKitConstants.Selection.TYPE, IMKitConstants.Selection.TYPE_TEXT);
         startSelection(context, bundle, listener);
     }
 
     private static void startSelection(Context context, Bundle bundle, OnResultReturnListener listener) {
         Intent intent = new Intent(context, SelectionActivity.class);
-        intent.putExtra(TUIKitConstants.Selection.CONTENT, bundle);
+        intent.putExtra(IMKitConstants.Selection.CONTENT, bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
         sOnResultReturnListener = listener;
@@ -41,10 +41,10 @@ public class SelectionActivity extends BaseActivity {
     public void onInitValue() throws Exception {
         super.onInitValue();
         input = findViewById(R.id.edit_content_et);
-        Bundle bundle = getIntent().getBundleExtra(TUIKitConstants.Selection.CONTENT);
-        if (bundle.getInt(TUIKitConstants.Selection.TYPE) == TUIKitConstants.Selection.TYPE_TEXT) {
-            String defaultString = bundle.getString(TUIKitConstants.Selection.INIT_CONTENT);
-            int limit = bundle.getInt(TUIKitConstants.Selection.LIMIT);
+        Bundle bundle = getIntent().getBundleExtra(IMKitConstants.Selection.CONTENT);
+        if (bundle.getInt(IMKitConstants.Selection.TYPE) == IMKitConstants.Selection.TYPE_TEXT) {
+            String defaultString = bundle.getString(IMKitConstants.Selection.INIT_CONTENT);
+            int limit = bundle.getInt(IMKitConstants.Selection.LIMIT);
             if (!TextUtils.isEmpty(defaultString)) {
                 input.setText(defaultString);
                 input.setSelection(defaultString.length());
@@ -56,12 +56,12 @@ public class SelectionActivity extends BaseActivity {
             finish();
             return;
         }
-        type = bundle.getString(TUIKitConstants.Selection.TYPE_INPUT,"");
+        type = bundle.getString(IMKitConstants.Selection.TYPE_INPUT,"");
         if("email".equals(type)){
             input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         }
-        mSelectionType = bundle.getInt(TUIKitConstants.Selection.TYPE,TUIKitConstants.Selection.TYPE_TEXT);
-        final String title = bundle.getString(TUIKitConstants.Selection.TITLE);
+        mSelectionType = bundle.getInt(IMKitConstants.Selection.TYPE, IMKitConstants.Selection.TYPE_TEXT);
+        final String title = bundle.getString(IMKitConstants.Selection.TITLE);
         setTitleName(title);
         input.post(new Runnable() {
             @Override
@@ -80,7 +80,7 @@ public class SelectionActivity extends BaseActivity {
     @Override
     public void onRightClickListener(View view) {
         super.onRightClickListener(view);
-        if (mSelectionType == TUIKitConstants.Selection.TYPE_TEXT) {
+        if (mSelectionType == IMKitConstants.Selection.TYPE_TEXT) {
 //            if (TextUtils.isEmpty(input.getText().toString())) {
 //                ToastUtil.error(this,R.string.toast_user_message_empty);
 //                return;

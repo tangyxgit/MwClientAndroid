@@ -19,7 +19,7 @@ public class SoftKeyBoardUtil {
     private static int softKeyBoardHeight;
     private static int rootViewVisibleHeight;//纪录根视图的显示高度
     private static View rootView;//activity的根视图
-    private static SharedPreferences preferences = TUIKit.getAppContext().getSharedPreferences(TUIKitConstants.UI_PARAMS, Context.MODE_PRIVATE);
+    private static SharedPreferences preferences = TUIKit.getAppContext().getSharedPreferences(IMKitConstants.UI_PARAMS, Context.MODE_PRIVATE);
     private static InputMethodManager imm = (InputMethodManager) TUIKit.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
     public static void calculateHeight(Activity activity) {
@@ -46,7 +46,7 @@ public class SoftKeyBoardUtil {
                 //根视图显示高度变小超过200，可以看作软键盘显示了
                 if (rootViewVisibleHeight - visibleHeight > 200) {
                     softKeyBoardHeight = rootViewVisibleHeight - visibleHeight - ScreenUtil.getNavigationBarHeight();
-                    preferences.edit().putInt(TUIKitConstants.SOFT_KEY_BOARD_HEIGHT, softKeyBoardHeight).apply();
+                    preferences.edit().putInt(IMKitConstants.SOFT_KEY_BOARD_HEIGHT, softKeyBoardHeight).apply();
                     return;
                 }
 
@@ -63,7 +63,7 @@ public class SoftKeyBoardUtil {
     public static int getSoftKeyBoardHeight() {
         if (softKeyBoardHeight != 0)
             return softKeyBoardHeight;
-        softKeyBoardHeight = preferences.getInt(TUIKitConstants.SOFT_KEY_BOARD_HEIGHT, 0);
+        softKeyBoardHeight = preferences.getInt(IMKitConstants.SOFT_KEY_BOARD_HEIGHT, 0);
         if (softKeyBoardHeight == 0) {
             int height = getScreenSize()[1];
             return height * 2 / 5;

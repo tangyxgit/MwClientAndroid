@@ -22,7 +22,7 @@ import com.mwim.qcloud.tim.uikit.component.video.proxy.IPlayer;
 import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.util.FileUtils;
 import com.work.util.SLog;
@@ -53,8 +53,8 @@ public class VideoViewActivity extends BaseActivity {
         super.onInitView();
         mVideoView = findViewById(R.id.video_play_view);
 
-        String imagePath = getIntent().getStringExtra(TUIKitConstants.CAMERA_IMAGE_PATH);
-        final Uri videoUri = getIntent().getParcelableExtra(TUIKitConstants.CAMERA_VIDEO_PATH);
+        String imagePath = getIntent().getStringExtra(IMKitConstants.CAMERA_IMAGE_PATH);
+        final Uri videoUri = getIntent().getParcelableExtra(IMKitConstants.CAMERA_VIDEO_PATH);
         Bitmap firstFrame = ImageUtil.getBitmapFormPath(imagePath);
         if (firstFrame != null) {
             videoWidth = firstFrame.getWidth();

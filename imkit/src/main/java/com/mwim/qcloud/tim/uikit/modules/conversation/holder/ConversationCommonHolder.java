@@ -12,7 +12,7 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.utils.DateTimeUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 import java.util.Date;
 
@@ -50,7 +50,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
                 if(TextUtils.isEmpty(name)){
                     name = lastMsg.getTimMessage().getNickName();
                 }
-                String message = TUIKitConstants.covert2HTMLString(name);
+                String message = IMKitConstants.covert2HTMLString(name);
                 lastMsg.setExtra(message + "撤回了一条消息");
             } else {
                 lastMsg.setExtra("对方撤回了一条消息");

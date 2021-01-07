@@ -28,7 +28,7 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationListLayout;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationProvider;
 import com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ThreadHelper;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMFriendInfo;
@@ -265,12 +265,12 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
                 contact.setId(item.getUserId());
                 Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact);
+                intent.putExtra(IMKitConstants.ProfileType.CONTENT, contact);
                 TUIKit.getAppContext().startActivity(intent);
             }else{
                 Intent intent = new Intent(this, FriendProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(TUIKitConstants.ProfileType.CONTENT, item);
+                intent.putExtra(IMKitConstants.ProfileType.CONTENT, item);
                 startActivity(intent);
             }
         }

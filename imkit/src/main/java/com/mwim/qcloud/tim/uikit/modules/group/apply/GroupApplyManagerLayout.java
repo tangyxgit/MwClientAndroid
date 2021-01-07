@@ -16,7 +16,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 
 public class GroupApplyManagerLayout extends LinearLayout implements IGroupMemberLayout {
@@ -48,8 +48,8 @@ public class GroupApplyManagerLayout extends LinearLayout implements IGroupMembe
             @Override
             public void onItemClick(GroupApplyInfo info) {
                 Intent intent = new Intent(getContext(), GroupApplyMemberActivity.class);
-                intent.putExtra(TUIKitConstants.ProfileType.CONTENT, info);
-                ((Activity) getContext()).startActivityForResult(intent, TUIKitConstants.ActivityRequest.CODE_1);
+                intent.putExtra(IMKitConstants.ProfileType.CONTENT, info);
+                ((Activity) getContext()).startActivityForResult(intent, IMKitConstants.ActivityRequest.CODE_1);
             }
         });
         mApplyMemberList.setAdapter(mAdapter);

@@ -21,14 +21,14 @@ import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder.ICustomMessa
 import com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.tencent.imsdk.v2.V2TIMCustomElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.util.SLog;
 
-import static com.mwim.qcloud.tim.uikit.utils.TUIKitConstants.BUSINESS_ID_CUSTOM_CARD;
+import static com.mwim.qcloud.tim.uikit.utils.IMKitConstants.BUSINESS_ID_CUSTOM_CARD;
 
 public class ChatLayoutHelper {
 
@@ -236,8 +236,8 @@ public class ChatLayoutHelper {
             }
             if (data == null) {
                 SLog.e( "No Custom Data: " + new String(elem.getData()));
-            } else if (data.version == TUIKitConstants.JSON_VERSION_1
-                    || (data.version == TUIKitConstants.JSON_VERSION_4 && data.getBusinessID().equals(BUSINESS_ID_CUSTOM_CARD))) {
+            } else if (data.version == IMKitConstants.JSON_VERSION_1
+                    || (data.version == IMKitConstants.JSON_VERSION_4 && data.getBusinessID().equals(BUSINESS_ID_CUSTOM_CARD))) {
                 CustomIMUIController.onDraw(parent, data);
             } else {
                 SLog.w("unsupported version: " + data);

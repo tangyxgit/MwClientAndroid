@@ -28,7 +28,7 @@ import com.mwim.qcloud.tim.uikit.component.video.util.CheckPermission;
 import com.mwim.qcloud.tim.uikit.component.video.util.DeviceUtil;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 
 import java.io.ByteArrayOutputStream;
@@ -60,7 +60,7 @@ public class CameraInterface implements Camera.PreviewCallback {
     private boolean isRecorder = false;
     private MediaRecorder mediaRecorder;
     private String videoFileName;
-    private String saveVideoPath = TUIKitConstants.MEDIA_DIR;
+    private String saveVideoPath = IMKitConstants.MEDIA_DIR;
     private String videoFileAbsPath;
     private Bitmap videoFirstFrame = null;
     private ErrorListener errorLisenter;

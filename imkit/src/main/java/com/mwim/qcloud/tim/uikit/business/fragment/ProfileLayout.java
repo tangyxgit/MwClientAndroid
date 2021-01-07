@@ -26,7 +26,7 @@ import com.mwim.qcloud.tim.uikit.business.message.CustomMessage;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.component.LineControllerView;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginReq;
 import com.work.api.open.model.LoginResp;
@@ -142,12 +142,12 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
             getContext().startActivity(new Intent(getContext(), UserSettingActivity.class));
         }else if(v.getId() == R.id.custom_im_message){
             CustomMessage message = new CustomMessage();
-            message.setBusinessID(TUIKitConstants.BUSINESS_ID_CUSTOM_CARD);
+            message.setBusinessID(IMKitConstants.BUSINESS_ID_CUSTOM_CARD);
             message.setLogo("https://yzkj-im.oss-cn-beijing.aliyuncs.com/user/16037885020911603788500745.png");
             message.setDesc("欢迎加入元讯大家庭！欢迎加入元讯大家庭！欢迎加入元讯大家庭！欢迎加入元讯大家庭！");
             message.setTitle("元讯IM生态工具元讯IM生态工具元讯IM生态工具元讯IM生态工具元讯IM生态工具");
             message.setLink("http://yzmsri.com/");
-            message.setBusinessID(TUIKitConstants.BUSINESS_ID_CUSTOM_CARD);
+            message.setBusinessID(IMKitConstants.BUSINESS_ID_CUSTOM_CARD);
             YzIMKitAgent.instance().startCustomMessage(message);
         }else if(v.getId() == R.id.qr_code || v.getId()==R.id.modify_qrcode){
             getContext().startActivity(new Intent(getContext(), UserQRCodeActivity.class));

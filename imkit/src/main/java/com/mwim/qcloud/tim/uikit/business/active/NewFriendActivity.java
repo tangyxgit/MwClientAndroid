@@ -14,7 +14,7 @@ import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.business.adapter.NewFriendListAdapter;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMFriendApplication;
 import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -112,7 +112,7 @@ public class NewFriendActivity extends IMBaseActivity implements BaseQuickAdapte
         if(item!=null && item.getType() == V2TIMFriendApplication.V2TIM_FRIEND_APPLICATION_COME_IN){
             Intent intent = new Intent(this, FriendProfileActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(TUIKitConstants.ProfileType.CONTENT, item);
+            intent.putExtra(IMKitConstants.ProfileType.CONTENT, item);
             startActivity(intent);
         }
     }

@@ -25,7 +25,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,7 @@ public class GroupMemberManagerLayout extends LinearLayout implements IGroupMemb
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.setId(contact.getId());
                 chatInfo.setChatName(contact.getNickname());
-                getContext().startActivity(new Intent(getContext(), FriendProfileActivity.class).putExtra(TUIKitConstants.ProfileType.CONTENT,chatInfo));
+                getContext().startActivity(new Intent(getContext(), FriendProfileActivity.class).putExtra(IMKitConstants.ProfileType.CONTENT,chatInfo));
             }
         });
     }

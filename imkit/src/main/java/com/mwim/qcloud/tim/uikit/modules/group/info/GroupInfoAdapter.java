@@ -16,7 +16,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.TUIKit;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.BackgroundTasks;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,21 +125,21 @@ public class GroupInfoAdapter extends BaseAdapter {
         List<GroupMemberInfo> members = info.getMemberDetails();
         if (members != null) {
             int shootMemberCount = 0;
-            if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PRIVATE)
-                    || TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_WORK)) {
+            if (TextUtils.equals(info.getGroupType(), IMKitConstants.GroupType.TYPE_PRIVATE)
+                    || TextUtils.equals(info.getGroupType(), IMKitConstants.GroupType.TYPE_WORK)) {
                 if (info.isOwner()) {
                     shootMemberCount = Math.min(members.size(), OWNER_PRIVATE_MAX_LIMIT);
                 } else {
                     shootMemberCount = Math.min(members.size(), NORMAL_PRIVATE_MAX_LIMIT);
                 }
-            } else if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PUBLIC)) {
+            } else if (TextUtils.equals(info.getGroupType(), IMKitConstants.GroupType.TYPE_PUBLIC)) {
                 if (info.isOwner()) {
                     shootMemberCount = Math.min(members.size(), OWNER_PUBLIC_MAX_LIMIT);
                 } else {
                     shootMemberCount = Math.min(members.size(), NORMAL_PUBLIC_MAX_LIMIT);
                 }
-            } else if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_CHAT_ROOM)
-                    || TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_MEETING)) {
+            } else if (TextUtils.equals(info.getGroupType(), IMKitConstants.GroupType.TYPE_CHAT_ROOM)
+                    || TextUtils.equals(info.getGroupType(), IMKitConstants.GroupType.TYPE_MEETING)) {
                 if (info.isOwner()) {
                     shootMemberCount = Math.min(members.size(), OWNER_CHATROOM_MAX_LIMIT);
                 } else {
@@ -149,8 +149,8 @@ public class GroupInfoAdapter extends BaseAdapter {
             for (int i = 0; i < shootMemberCount; i++) {
                 mGroupMembers.add(members.get(i));
             }
-            if (TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_PRIVATE)
-                    || TextUtils.equals(info.getGroupType(), TUIKitConstants.GroupType.TYPE_WORK)) {
+            if (TextUtils.equals(info.getGroupType(), IMKitConstants.GroupType.TYPE_PRIVATE)
+                    || TextUtils.equals(info.getGroupType(), IMKitConstants.GroupType.TYPE_WORK)) {
                 // 公开群/聊天室 只有APP管理员可以邀请他人入群
                 GroupMemberInfo add = new GroupMemberInfo();
                 add.setMemberType(ADD_TYPE);

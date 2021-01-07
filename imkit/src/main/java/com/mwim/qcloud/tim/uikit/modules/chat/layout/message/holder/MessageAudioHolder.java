@@ -20,7 +20,7 @@ import com.tencent.imsdk.v2.V2TIMSoundElem;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.component.AudioPlayer;
 import com.mwim.qcloud.tim.uikit.utils.ScreenUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 
@@ -148,7 +148,7 @@ public class MessageAudioHolder extends MessageContentHolder {
     }
 
     private void getSound(final MessageInfo msgInfo, V2TIMSoundElem soundElemEle) {
-        final String path = TUIKitConstants.RECORD_DOWNLOAD_DIR + soundElemEle.getUUID();
+        final String path = IMKitConstants.RECORD_DOWNLOAD_DIR + soundElemEle.getUUID();
         File file = new File(path);
         if (!file.exists()) {
             soundElemEle.downloadSound(path, new V2TIMDownloadCallback() {

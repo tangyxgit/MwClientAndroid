@@ -20,7 +20,7 @@ import com.mwim.qcloud.tim.uikit.modules.conversation.interfaces.IConversationLa
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.work.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
                                         break;
                                     case 1:
                                         Intent intent = new Intent(getContext(), StartGroupChatActivity.class);
-                                        intent.putExtra(TUIKitConstants.GroupType.TYPE, TUIKitConstants.GroupType.PUBLIC);
+                                        intent.putExtra(IMKitConstants.GroupType.TYPE, IMKitConstants.GroupType.PUBLIC);
                                         getContext().startActivity(intent);
                                         break;
                                     case 2:

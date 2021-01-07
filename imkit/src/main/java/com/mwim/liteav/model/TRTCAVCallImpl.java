@@ -10,7 +10,7 @@ import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageContainerBean;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageCustom;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.BaseConstants;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.v2.V2TIMCallback;
@@ -20,8 +20,6 @@ import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMOfflinePushInfo;
 import com.tencent.imsdk.v2.V2TIMSendCallback;
 import com.tencent.imsdk.v2.V2TIMSignalingListener;
-import com.tencent.imsdk.v2.V2TIMUserFullInfo;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.tencent.liteav.beauty.TXBeautyManager;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloud;
@@ -391,7 +389,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         mTIMManager = V2TIMManager.getInstance();
         mTRTCCloud = TRTCCloud.sharedInstance(context);
         mTRTCInteralListenerManager = new TRTCInteralListenerManager();
-        mLastCallModel.version = TUIKitConstants.version;
+        mLastCallModel.version = IMKitConstants.version;
     }
 
     private void startCall() {
@@ -411,7 +409,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         mCurRoomRemoteUserSet.clear();
         mCurSponsorForMe = "";
         mLastCallModel = new CallModel();
-        mLastCallModel.version = TUIKitConstants.version;
+        mLastCallModel.version = IMKitConstants.version;
         mIsRespSponsor = false;
         mCurGroupId = "";
         mCurCallType = TYPE_UNKNOWN;
@@ -767,7 +765,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
         V2TIMOfflinePushInfo v2TIMOfflinePushInfo = getOfflinePushInfo(model);
         MessageCustom custom = new MessageCustom();
         custom.businessID = MessageCustom.BUSINESS_ID_AV_CALL;
-        custom.version = TUIKitConstants.version;
+        custom.version = IMKitConstants.version;
         V2TIMMessage message = V2TIMManager.getMessageManager().createCustomMessage(new Gson().toJson(custom).getBytes());
         for (String receiver: model.invitedList) {
             SLog.i("sendOnlineMessage to " + receiver);
@@ -843,7 +841,7 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
             receiver = user;
         }
         Map<String, Object> customMap = new HashMap<>();
-        customMap.put(CallModel.SIGNALING_EXTRA_KEY_VERSION, TUIKitConstants.version);
+        customMap.put(CallModel.SIGNALING_EXTRA_KEY_VERSION, IMKitConstants.version);
         customMap.put(CallModel.SIGNALING_EXTRA_KEY_CALL_TYPE, realCallModel.callType);
         customMap.put(CallModel.SIGNALING_EXTRA_KEY_BUSINESS_ID, CallModel.SIGNALING_EXTRA_VALUE_BUSINESS_ID);
         // signalling
@@ -877,14 +875,14 @@ public class TRTCAVCallImpl implements ITRTCAVCall {
                             SLog.d("inviteInGroup success:" + realCallModel);
                             realCallModel.callId = getCallId();
                             realCallModel.timeout = TIME_OUT_COUNT;
-                            realCallModel.version = TUIKitConstants.version;
+                            realCallModel.version = IMKitConstants.version;
                             sendOnlineMessageWithOfflinePushInfoForGroupCall(realCallModel);
                         }
                     });
                 } else {
                     realCallModel.callId = getCallId();
                     realCallModel.timeout = TIME_OUT_COUNT;
-                    realCallModel.version = TUIKitConstants.version;
+                    realCallModel.version = IMKitConstants.version;
                     V2TIMOfflinePushInfo offlinePushInfo = getOfflinePushInfo(realCallModel);
                     callID = V2TIMManager.getSignalingManager().invite(receiver, dialingDataStr, false, offlinePushInfo, TIME_OUT_COUNT, new V2TIMCallback() {
                         @Override

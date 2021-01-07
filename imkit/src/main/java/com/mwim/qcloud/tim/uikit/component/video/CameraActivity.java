@@ -16,7 +16,7 @@ import com.mwim.qcloud.tim.uikit.component.video.listener.ErrorListener;
 import com.mwim.qcloud.tim.uikit.component.video.listener.JCameraListener;
 import com.mwim.qcloud.tim.uikit.component.video.util.DeviceUtil;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
 import com.work.util.SLog;
 import com.work.util.ToastUtil;
@@ -44,7 +44,7 @@ public class CameraActivity extends BaseActivity {
         //设置视频保存路径
         //jCameraView.setSaveVideoPath(Environment.getExternalStorageDirectory().getPath() + File.separator + "JCamera");
 
-        int state = getIntent().getIntExtra(TUIKitConstants.CAMERA_TYPE, JCameraView.BUTTON_STATE_BOTH);
+        int state = getIntent().getIntExtra(IMKitConstants.CAMERA_TYPE, JCameraView.BUTTON_STATE_BOTH);
         jCameraView.setFeatures(state);
         if (state == JCameraView.BUTTON_STATE_ONLY_CAPTURE) {
             jCameraView.setTip("点击拍照");
@@ -88,11 +88,11 @@ public class CameraActivity extends BaseActivity {
                 //获取视频路径
                 String path = FileUtil.saveBitmap("JCamera", firstFrame);
                 Intent intent = new Intent();
-                intent.putExtra(TUIKitConstants.IMAGE_WIDTH, firstFrame.getWidth());
-                intent.putExtra(TUIKitConstants.IMAGE_HEIGHT, firstFrame.getHeight());
-                intent.putExtra(TUIKitConstants.VIDEO_TIME, duration);
-                intent.putExtra(TUIKitConstants.CAMERA_IMAGE_PATH, path);
-                intent.putExtra(TUIKitConstants.CAMERA_VIDEO_PATH, url);
+                intent.putExtra(IMKitConstants.IMAGE_WIDTH, firstFrame.getWidth());
+                intent.putExtra(IMKitConstants.IMAGE_HEIGHT, firstFrame.getHeight());
+                intent.putExtra(IMKitConstants.VIDEO_TIME, duration);
+                intent.putExtra(IMKitConstants.CAMERA_IMAGE_PATH, path);
+                intent.putExtra(IMKitConstants.CAMERA_VIDEO_PATH, url);
                 firstFrame.getWidth();
                 //setResult(-1, intent);
                 if (mCallBack != null) {

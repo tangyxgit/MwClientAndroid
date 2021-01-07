@@ -3,7 +3,7 @@ package com.mwim.qcloud.tim.uikit.business.active;
 import android.content.Intent;
 import android.view.View;
 
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
 
 public class AddMoreActivity extends IMBaseActivity {
@@ -21,7 +21,7 @@ public class AddMoreActivity extends IMBaseActivity {
     public void onInitValue() throws Exception {
         super.onInitValue();
         if (getIntent() != null) {
-            mIsGroup = getIntent().getExtras().getBoolean(TUIKitConstants.GroupType.GROUP);
+            mIsGroup = getIntent().getExtras().getBoolean(IMKitConstants.GroupType.GROUP);
         }
         setTitleName(mIsGroup ? getResources().getString(R.string.add_group) : getResources().getString(R.string.add_friend));
         findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {

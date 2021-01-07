@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.mwim.qcloud.tim.uikit.TUIKit;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.TUIKitLog;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 
@@ -16,7 +16,7 @@ public class AudioPlayer {
 
     private static final String TAG = AudioPlayer.class.getSimpleName();
     private static AudioPlayer sInstance = new AudioPlayer();
-    private static String CURRENT_RECORD_FILE = TUIKitConstants.RECORD_DIR + "auto_";
+    private static String CURRENT_RECORD_FILE = IMKitConstants.RECORD_DIR + "auto_";
     private static int MAGIC_NUMBER = 500;
     private static int MIN_RECORD_DURATION = 1000;
     private Callback mRecordCallback;

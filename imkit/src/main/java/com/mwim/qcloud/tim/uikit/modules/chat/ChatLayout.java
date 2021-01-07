@@ -20,7 +20,7 @@ import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.component.TitleBarLayout;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatManagerKit;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.work.util.SharedUtils;
 import com.work.util.ToastUtil;
 
@@ -70,7 +70,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
                 public void onClick(View view) {
                     if (mGroupInfo != null) {
                         Intent intent = new Intent(getContext(), GroupInfoActivity.class);
-                        intent.putExtra(TUIKitConstants.Group.GROUP_ID, mGroupInfo.getId());
+                        intent.putExtra(IMKitConstants.Group.GROUP_ID, mGroupInfo.getId());
                         getContext().startActivity(intent);
                     } else {
                         ToastUtil.info(getContext(),"请稍后再试试~");
@@ -81,7 +81,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getContext(), GroupApplyManagerActivity.class);
-                    intent.putExtra(TUIKitConstants.Group.GROUP_INFO, mGroupInfo);
+                    intent.putExtra(IMKitConstants.Group.GROUP_INFO, mGroupInfo);
                     getContext().startActivity(intent);
                 }
             });

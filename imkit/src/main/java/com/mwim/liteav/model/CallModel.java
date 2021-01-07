@@ -2,7 +2,7 @@ package com.mwim.liteav.model;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMSignalingInfo;
@@ -152,7 +152,7 @@ public class CallModel implements Cloneable, Serializable {
             Map extraMap = new Gson().fromJson(signalingInfo.getData(), Map.class);
             if (extraMap != null
                     && extraMap.containsKey(CallModel.SIGNALING_EXTRA_KEY_VERSION)
-                    && ((Double)extraMap.get(CallModel.SIGNALING_EXTRA_KEY_VERSION)).intValue() > TUIKitConstants.version) {
+                    && ((Double)extraMap.get(CallModel.SIGNALING_EXTRA_KEY_VERSION)).intValue() > IMKitConstants.version) {
                 callModel.action = CallModel.VIDEO_CALL_ACTION_UNKNOWN;
                 return callModel;
             }

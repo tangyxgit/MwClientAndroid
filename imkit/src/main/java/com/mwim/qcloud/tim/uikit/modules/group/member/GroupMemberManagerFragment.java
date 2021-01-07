@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 /**
  * 群成员管理
@@ -34,7 +34,7 @@ public class GroupMemberManagerFragment extends BaseFragment {
         if(bundle==null){
             return;
         }
-        GroupInfo mGroupInfo = (GroupInfo) bundle.getSerializable(TUIKitConstants.Group.GROUP_INFO);
+        GroupInfo mGroupInfo = (GroupInfo) bundle.getSerializable(IMKitConstants.Group.GROUP_INFO);
         mMemberLayout.setDataSource(mGroupInfo);
         mMemberLayout.getTitleBar().setOnLeftClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +58,7 @@ public class GroupMemberManagerFragment extends BaseFragment {
             public void forwardAddMember(GroupInfo info) {
                 GroupMemberInviteFragment fragment = new GroupMemberInviteFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(TUIKitConstants.Group.GROUP_INFO, info);
+                bundle.putSerializable(IMKitConstants.Group.GROUP_INFO, info);
                 fragment.setArguments(bundle);
                 forward(fragment, false);
             }
@@ -67,7 +67,7 @@ public class GroupMemberManagerFragment extends BaseFragment {
             public void forwardDeleteMember(GroupInfo info) {
                 GroupMemberDeleteFragment fragment = new GroupMemberDeleteFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(TUIKitConstants.Group.GROUP_INFO, info);
+                bundle.putSerializable(IMKitConstants.Group.GROUP_INFO, info);
                 fragment.setArguments(bundle);
                 forward(fragment, false);
             }

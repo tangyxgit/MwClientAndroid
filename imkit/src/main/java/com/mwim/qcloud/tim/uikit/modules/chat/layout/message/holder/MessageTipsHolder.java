@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.R;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 public class MessageTipsHolder extends MessageEmptyHolder {
 
@@ -52,7 +52,7 @@ public class MessageTipsHolder extends MessageEmptyHolder {
                 if(TextUtils.isEmpty(name)){
                     name = msg.getTimMessage().getNickName();
                 }
-                String message = TUIKitConstants.covert2HTMLString(name);
+                String message = IMKitConstants.covert2HTMLString(name);
                 msg.setExtra(message + "撤回了一条消息");
             } else {
                 msg.setExtra("对方撤回了一条消息");

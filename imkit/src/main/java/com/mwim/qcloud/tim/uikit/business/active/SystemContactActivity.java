@@ -18,7 +18,7 @@ import com.mwim.qcloud.tim.uikit.business.dialog.BaseDialog;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactListView;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMFriendApplication;
 import com.tencent.imsdk.v2.V2TIMFriendApplicationResult;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -65,7 +65,7 @@ public class SystemContactActivity extends BaseActivity {
                 if(contact.getUserType()!=3
                         && contact.getUserType()!=4){
                     Intent intent = new Intent(SystemContactActivity.this, FriendProfileActivity.class);
-                    intent.putExtra(TUIKitConstants.ProfileType.CONTENT, contact.getId());
+                    intent.putExtra(IMKitConstants.ProfileType.CONTENT, contact.getId());
                     startActivity(intent);
                 }
             }

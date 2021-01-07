@@ -20,7 +20,7 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.utils.ToastUtil;
 import com.work.api.open.Yz;
 import com.work.api.open.model.DestroyGroupReq;
@@ -191,11 +191,11 @@ public class GroupInfoProvider {
     public void modifyGroupInfo(final Object value, final int type, final IUIKitCallBack callBack) {
         V2TIMGroupInfo v2TIMGroupInfo = new V2TIMGroupInfo();
         v2TIMGroupInfo.setGroupID(mGroupInfo.getId());
-        if (type == TUIKitConstants.Group.MODIFY_GROUP_NAME) {
+        if (type == IMKitConstants.Group.MODIFY_GROUP_NAME) {
             v2TIMGroupInfo.setGroupName(value.toString());
-        } else if (type == TUIKitConstants.Group.MODIFY_GROUP_NOTICE) {
+        } else if (type == IMKitConstants.Group.MODIFY_GROUP_NOTICE) {
             v2TIMGroupInfo.setNotification(value.toString());
-        } else if (type == TUIKitConstants.Group.MODIFY_GROUP_JOIN_TYPE) {
+        } else if (type == IMKitConstants.Group.MODIFY_GROUP_JOIN_TYPE) {
             v2TIMGroupInfo.setGroupAddOpt((Integer)value);
         }
         V2TIMManager.getGroupManager().setGroupInfo(v2TIMGroupInfo, new V2TIMCallback() {
@@ -207,11 +207,11 @@ public class GroupInfoProvider {
 
             @Override
             public void onSuccess() {
-                if (type == TUIKitConstants.Group.MODIFY_GROUP_NAME) {
+                if (type == IMKitConstants.Group.MODIFY_GROUP_NAME) {
                     mGroupInfo.setGroupName(value.toString());
-                } else if (type == TUIKitConstants.Group.MODIFY_GROUP_NOTICE) {
+                } else if (type == IMKitConstants.Group.MODIFY_GROUP_NOTICE) {
                     mGroupInfo.setNotice(value.toString());
-                } else if (type == TUIKitConstants.Group.MODIFY_GROUP_JOIN_TYPE) {
+                } else if (type == IMKitConstants.Group.MODIFY_GROUP_JOIN_TYPE) {
                     mGroupInfo.setJoinType((Integer) value);
                 }
                 callBack.onSuccess(value);

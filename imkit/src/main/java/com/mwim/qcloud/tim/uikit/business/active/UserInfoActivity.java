@@ -22,7 +22,7 @@ import com.mwim.qcloud.tim.uikit.component.SelectionActivity;
 import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
@@ -172,13 +172,13 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             if(TextUtils.isEmpty(UserApi.instance().getUserIcon())){
                 selectAvatar();
             }else{
-                startActivity(new Intent(this, PhotoViewActivity.class).putExtra(TUIKitConstants.IMAGE_DATA,UserApi.instance().getUserIcon()));
+                startActivity(new Intent(this, PhotoViewActivity.class).putExtra(IMKitConstants.IMAGE_DATA,UserApi.instance().getUserIcon()));
             }
         }else if (id == R.id.modify_nick_name) {
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getNickName());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 10);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_nick_name));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, UserApi.instance().getNickName());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 10);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {
@@ -191,9 +191,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             });
         } else if (id == R.id.modify_department) {
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_department));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getDepartName());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_department));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, UserApi.instance().getDepartName());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 14);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {
@@ -206,9 +206,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             });
         }else if (id == R.id.modify_position) {
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_position));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getPosition());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 14);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_position));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, UserApi.instance().getPosition());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 14);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {
@@ -221,9 +221,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             });
         }else if (id == R.id.modify_card) {
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_card));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getCard());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 20);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_card));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, UserApi.instance().getCard());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 20);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {
@@ -236,10 +236,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             });
         }else if (id == R.id.modify_email) {
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_email));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getEmail());
-            bundle.putString(TUIKitConstants.Selection.TYPE_INPUT, "email");
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 30);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_im_email));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, UserApi.instance().getEmail());
+            bundle.putString(IMKitConstants.Selection.TYPE_INPUT, "email");
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 30);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {
@@ -254,9 +254,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             startActivity(new Intent(this,UpdatePhoneActivity.class));
         }else if(id == R.id.modify_signature){
             Bundle bundle = new Bundle();
-            bundle.putString(TUIKitConstants.Selection.TITLE, getResources().getString(R.string.modify_signature));
-            bundle.putString(TUIKitConstants.Selection.INIT_CONTENT, UserApi.instance().getUserSignature());
-            bundle.putInt(TUIKitConstants.Selection.LIMIT, 30);
+            bundle.putString(IMKitConstants.Selection.TITLE, getResources().getString(R.string.modify_signature));
+            bundle.putString(IMKitConstants.Selection.INIT_CONTENT, UserApi.instance().getUserSignature());
+            bundle.putInt(IMKitConstants.Selection.LIMIT, 30);
             SelectionActivity.startTextSelection(this, bundle, new SelectionActivity.OnResultReturnListener() {
                 @Override
                 public void onReturn(Object res) {

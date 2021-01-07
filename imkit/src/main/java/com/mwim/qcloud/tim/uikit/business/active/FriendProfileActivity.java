@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import com.mwim.qcloud.tim.uikit.YzIMKitAgent;
 import com.mwim.qcloud.tim.uikit.modules.contact.ContactItemBean;
 import com.mwim.qcloud.tim.uikit.modules.contact.FriendProfileLayout;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 import com.mwim.qcloud.tim.uikit.R;
 
 public class FriendProfileActivity extends IMBaseActivity {
@@ -15,7 +15,7 @@ public class FriendProfileActivity extends IMBaseActivity {
     public void onInitView() throws Exception {
         super.onInitView();
         FriendProfileLayout layout = findViewById(R.id.friend_profile);
-        layout.initData(getIntent().getSerializableExtra(TUIKitConstants.ProfileType.CONTENT));
+        layout.initData(getIntent().getSerializableExtra(IMKitConstants.ProfileType.CONTENT));
         layout.setOnButtonClickListener(new FriendProfileLayout.OnButtonClickListener() {
             @Override
             public void onStartConversationClick(ContactItemBean info) {

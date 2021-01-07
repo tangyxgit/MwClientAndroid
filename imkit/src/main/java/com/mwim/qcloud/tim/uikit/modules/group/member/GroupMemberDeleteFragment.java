@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
 import com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfo;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 
 public class GroupMemberDeleteFragment extends BaseFragment {
@@ -32,7 +32,7 @@ public class GroupMemberDeleteFragment extends BaseFragment {
         if(bundle==null){
             return;
         }
-        mMemberDelLayout.setDataSource((GroupInfo) bundle.getSerializable(TUIKitConstants.Group.GROUP_INFO));
+        mMemberDelLayout.setDataSource((GroupInfo) bundle.getSerializable(IMKitConstants.Group.GROUP_INFO));
         mMemberDelLayout.getTitleBar().setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -18,7 +18,7 @@ import com.mwim.qcloud.tim.uikit.modules.group.member.GroupMemberManagerFragment
 import com.mwim.qcloud.tim.uikit.modules.group.member.IGroupMemberRouter;
 import com.mwim.qcloud.tim.uikit.R;
 import com.mwim.qcloud.tim.uikit.base.BaseFragment;
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 
 public class GroupInfoFragment extends BaseFragment {
@@ -38,13 +38,13 @@ public class GroupInfoFragment extends BaseFragment {
             return;
         }
         GroupInfoLayout mGroupInfoLayout = mBaseView.findViewById(R.id.group_info_layout);
-        mGroupInfoLayout.setGroupId(getArguments().getString(TUIKitConstants.Group.GROUP_ID));
+        mGroupInfoLayout.setGroupId(getArguments().getString(IMKitConstants.Group.GROUP_ID));
         mGroupInfoLayout.setRouter(new IGroupMemberRouter() {
             @Override
             public void forwardListMember(GroupInfo info) {
                 GroupMemberManagerFragment fragment = new GroupMemberManagerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(TUIKitConstants.Group.GROUP_INFO, info);
+                bundle.putSerializable(IMKitConstants.Group.GROUP_INFO, info);
                 fragment.setArguments(bundle);
                 forward(fragment, false);
             }
@@ -54,14 +54,14 @@ public class GroupInfoFragment extends BaseFragment {
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.setId(info.getAccount());
                 chatInfo.setChatName(info.getNickName());
-                startActivity(new Intent(getContext(), FriendProfileActivity.class).putExtra(TUIKitConstants.ProfileType.CONTENT,chatInfo));
+                startActivity(new Intent(getContext(), FriendProfileActivity.class).putExtra(IMKitConstants.ProfileType.CONTENT,chatInfo));
             }
 
             @Override
             public void forwardAddMember(GroupInfo info) {
                 GroupMemberInviteFragment fragment = new GroupMemberInviteFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(TUIKitConstants.Group.GROUP_INFO, info);
+                bundle.putSerializable(IMKitConstants.Group.GROUP_INFO, info);
                 fragment.setArguments(bundle);
                 forward(fragment, false);
             }
@@ -70,7 +70,7 @@ public class GroupInfoFragment extends BaseFragment {
             public void forwardDeleteMember(GroupInfo info) {
                 GroupMemberDeleteFragment fragment = new GroupMemberDeleteFragment();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(TUIKitConstants.Group.GROUP_INFO, info);
+                bundle.putSerializable(IMKitConstants.Group.GROUP_INFO, info);
                 fragment.setArguments(bundle);
                 forward(fragment, false);
             }

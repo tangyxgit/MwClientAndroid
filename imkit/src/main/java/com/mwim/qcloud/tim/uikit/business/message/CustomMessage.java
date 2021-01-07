@@ -1,6 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.message;
 
-import com.mwim.qcloud.tim.uikit.utils.TUIKitConstants;
+import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
 
 import java.io.Serializable;
 
@@ -8,13 +8,13 @@ import java.io.Serializable;
  * 自定义消息的bean实体，用来与json的相互转化
  */
 public class CustomMessage implements Serializable {
-    private String businessID = TUIKitConstants.BUSINESS_ID_CUSTOM_CARD;
+    private String businessID = IMKitConstants.BUSINESS_ID_CUSTOM_CARD;
     private String title = "";
     private String desc = "";
     private String link = "";
     private String logo = "";
 
-    public final int version = TUIKitConstants.version;
+    public final int version = IMKitConstants.version;
 
     public String getBusinessID() {
         return businessID;
