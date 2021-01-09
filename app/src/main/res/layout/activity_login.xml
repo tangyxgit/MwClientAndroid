@@ -32,7 +32,6 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
                 android:text="@string/we_come"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
