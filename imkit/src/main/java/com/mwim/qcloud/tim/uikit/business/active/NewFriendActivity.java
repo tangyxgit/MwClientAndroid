@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
 import com.mwim.qcloud.tim.uikit.TUIKit;
+import com.mwim.qcloud.tim.uikit.base.BaseActivity;
 import com.mwim.qcloud.tim.uikit.business.adapter.NewFriendListAdapter;
 import com.mwim.qcloud.tim.uikit.business.dialog.ConfirmDialog;
 import com.mwim.qcloud.tim.uikit.utils.IMKitConstants;
@@ -119,35 +120,31 @@ public class NewFriendActivity extends IMBaseActivity implements BaseQuickAdapte
 
     @Override
     public void onClick(View view) {
-        intentAddressBook();
+        intentAddressBook(this);
     }
     /**
      * 跳转到系统通讯录
      */
-    private void intentAddressBook(){
+    public static void intentAddressBook(final BaseActivity activity){
         String[] Permission = { Manifest.permission.READ_CONTACTS};
-        final Intent intent = new Intent(this, SystemContactActivity.class);
-        if(hasPermission(Permission)){
-            startActivityForResult(intent,0);
+        final Intent intent = new Intent(activity, SystemContactActivity.class);
+        if(activity.hasPermission(Permission)){
+            activity.startActivityForResult(intent,0);
         }else{
-            onPermissionChecker(Permission, new PermissionsResultAction() {
+            activity.onPermissionChecker(Permission, new PermissionsResultAction() {
                 @Override
                 public void onGranted() {
-                    startActivityForResult(intent,0);
+                    activity.startActivityForResult(intent,0);
                 }
 
                 @Override
                 public void onDenied(String permission) {
-                    showMissingPermissionDialog();
+                    new ConfirmDialog()
+                            .setContent(R.string.tips_permissions)
+                            .setHiddenCancel(true)
+                            .show(activity.getSupportFragmentManager(),"permission");
                 }
             });
         }
-    }
-    // 显示缺失权限提示
-    public void showMissingPermissionDialog() {
-        new ConfirmDialog()
-                .setContent(R.string.tips_permissions)
-                .setHiddenCancel(true)
-                .show(getSupportFragmentManager(),"permission");
     }
 }

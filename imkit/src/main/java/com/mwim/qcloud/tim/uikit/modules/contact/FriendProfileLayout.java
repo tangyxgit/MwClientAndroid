@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -115,6 +116,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         mMobile = findViewById(R.id.mobile);
         mAddWordingView = findViewById(R.id.add_wording);
         mAddWordingView.setSingleLine(false);
+        mAddWordingView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(30)});
 
         mRemarkView = findViewById(R.id.remark);
         mRemarkView.setOnClickListener(this);

@@ -46,6 +46,8 @@ import com.work.util.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mwim.qcloud.tim.uikit.business.active.NewFriendActivity.intentAddressBook;
+
 /**
  * Created by tangyx
  * Date 2020/9/15
@@ -60,11 +62,13 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
     private ConversationListAdapter mConversationAdapter;
     private int flag=-1;
     private List<V2TIMFriendInfo> mV2TIMFriendData;
+    private View mAddNewContactsPhone;
 
     @Override
     public void onInitView() throws Exception {
         super.onInitView();
         flag = getIntent().getIntExtra(SearchAddMoreActivity.class.getSimpleName(),-1);
+        mAddNewContactsPhone = findViewById(R.id.add_new_contacts_phone);
         mSearch = findViewById(R.id.search);
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,6 +89,7 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
             });
             mRecyclerView.setAdapter(mConversationAdapter);
         }else{
+            mAddNewContactsPhone.setVisibility(View.VISIBLE);
             mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.background_color).build());
             mAdapter = new SearchAddMoreAdapter(null);
             mAdapter.setOnItemClickListener(this);
@@ -95,6 +100,7 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
     @Override
     public void onInitValue() throws Exception {
         super.onInitValue();
+        mAddNewContactsPhone.setOnClickListener(this);
         if(flag==0){
             mSearch.setHint(R.string.conversation_search_friends);
         }else if(flag == 1){
@@ -112,7 +118,11 @@ public class SearchAddMoreActivity extends IMBaseActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        onBackPressed();
+        if(view.getId() == R.id.add_new_contacts_phone){
+            intentAddressBook(this);
+        }else{
+            onBackPressed();
+        }
     }
 
     @Override
