@@ -4,7 +4,7 @@
     <color name="holo_blue_light">#28a0e3</color>
 <!--    <color name="status_bar_color">#EDEDED</color>-->
     <color name="status_bar_color">#fff</color>
-    <color name="background_color">#F4F6F9</color>
+    <color name="background_color">#F0F3F8</color>
 
     <color name="color_44A2FF">#44A2FF</color>
     <color name="color_4b5fae">#4b5fae</color>
@@ -144,4 +144,7 @@
     <color name="color_2c2c2c">#2c2c2c</color>
     <color name="color_f9faf9">#f9faf9</color>
     <color name="color_d4d4d4">#d4d4d4</color>
+    <color name="color_2373ff">#2373FF</color>
+    <color name="color_4d9dff">#4D94FF</color>
+    <color name="color_d9d9d9">#D9D9D9</color>
 </resources>

@@ -49,23 +49,18 @@ public class MessageTextHolder extends MessageContentHolder {
                 }
             });
         }
-        if(msg.isSelf()){
-            msgBodyText.setTextColor(Color.WHITE);
-        }else{
-            msgBodyText.setTextColor(Color.BLACK);
-        }
-        if (properties.getChatContextFontSize() != 0) {
-            msgBodyText.setTextSize(properties.getChatContextFontSize());
-        }
-        if (msg.isSelf()) {
-            if (properties.getRightChatContentFontColor() != 0) {
-                msgBodyText.setTextColor(properties.getRightChatContentFontColor());
-            }
-        } else {
-            if (properties.getLeftChatContentFontColor() != 0) {
-                msgBodyText.setTextColor(properties.getLeftChatContentFontColor());
-            }
-        }
+//        if (properties.getChatContextFontSize() != 0) {
+//            msgBodyText.setTextSize(properties.getChatContextFontSize());
+//        }
+//        if (msg.isSelf()) {
+//            if (properties.getRightChatContentFontColor() != 0) {
+//                msgBodyText.setTextColor(properties.getRightChatContentFontColor());
+//            }
+//        } else {
+//            if (properties.getLeftChatContentFontColor() != 0) {
+//                msgBodyText.setTextColor(properties.getLeftChatContentFontColor());
+//            }
+//        }
 //        msgContentFrame.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

@@ -29,8 +29,8 @@
 
         <com.mwim.qcloud.tim.uikit.modules.conversation.base.ConversationIconView
             android:id="@+id/ivAvatar"
-            android:layout_width="@dimen/conversation_avatar_width"
-            android:layout_height="@dimen/conversation_avatar_height" />
+            android:layout_width="@dimen/small_image_size"
+            android:layout_height="@dimen/small_image_size" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

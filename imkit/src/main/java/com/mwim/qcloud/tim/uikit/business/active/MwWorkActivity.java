@@ -2,12 +2,9 @@ package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 
-import androidx.annotation.DrawableRes;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -88,31 +85,31 @@ public class MwWorkActivity extends IMBaseActivity implements
         mContactsNewBadge.hide();
         int functionPrem = YzIMKitAgent.instance().getFunctionPrem();
         if((functionPrem & 1)>0){
-            BottomNavigationItem messageItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_chat_fill,R.color.defaultColorAccent),R.string.tab_conversation_tab_text)
-                    .setInactiveIcon(getSelectDrawable(R.drawable.icon_chat_stroke,R.color.color_b2b2b2))
+            BottomNavigationItem messageItem = new BottomNavigationItem(R.drawable.icon_chat_fill,R.string.tab_conversation_tab_text)
+                    .setInactiveIconResource(R.drawable.icon_chat_stroke)
                     .setActiveColorResource(R.color.defaultColorAccent);
             messageItem.setBadgeItem(mMessageBadge);
             mNavigationBar.addItem(messageItem);
         }
 
         if((functionPrem & 2)>0){
-            BottomNavigationItem contactItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_contact_fill,R.color.defaultColorAccent),R.string.tab_contact_tab_text)
-                    .setInactiveIcon(getSelectDrawable(R.drawable.icon_contact_stroke,R.color.color_b2b2b2))
+            BottomNavigationItem contactItem = new BottomNavigationItem(R.drawable.icon_contact_fill,R.string.tab_contact_tab_text)
+                    .setInactiveIconResource(R.drawable.icon_contact_stroke)
                     .setActiveColorResource(R.color.defaultColorAccent);
             contactItem.setBadgeItem(mContactsNewBadge);
             mNavigationBar.addItem(contactItem);
         }
 
         if((functionPrem & 4)>0){
-            BottomNavigationItem workItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_tools_fill,R.color.defaultColorAccent),R.string.tab_work_tab_text)
-                    .setInactiveIcon(getSelectDrawable(R.drawable.icon_tools_stroke,R.color.color_b2b2b2))
+            BottomNavigationItem workItem = new BottomNavigationItem(R.drawable.icon_tools_fill,R.string.tab_work_tab_text)
+                    .setInactiveIconResource(R.drawable.icon_tools_stroke)
                     .setActiveColorResource(R.color.defaultColorAccent);
             mNavigationBar.addItem(workItem);
         }
 
         if((functionPrem & 8)>0){
-            BottomNavigationItem profileItem = new BottomNavigationItem(getSelectDrawable(R.drawable.icon_user_fill,R.color.defaultColorAccent),R.string.tab_profile_tab_text)
-                    .setInactiveIcon(getSelectDrawable(R.drawable.icon_user_stroke,R.color.color_b2b2b2))
+            BottomNavigationItem profileItem = new BottomNavigationItem(R.drawable.icon_user_fill,R.string.tab_profile_tab_text)
+                    .setInactiveIconResource(R.drawable.icon_user_stroke)
                     .setActiveColorResource(R.color.defaultColorAccent);
             mNavigationBar.addItem(profileItem);
         }
@@ -123,14 +120,6 @@ public class MwWorkActivity extends IMBaseActivity implements
         if("de241446a50499bb77a8684cf610fd04".equals(yzAppId)){//只有元信才需要去验证是否升级
             UpdateAppDialog.showUpdateDialog(this,false);
         }
-    }
-
-    private Drawable getSelectDrawable(@DrawableRes int resId, int color){
-        Drawable drawable = ContextCompat.getDrawable(this,resId);
-        if(drawable!=null){
-            drawable.setColorFilter(ContextCompat.getColor(this,color), PorterDuff.Mode.SRC_ATOP);
-        }
-        return drawable;
     }
 
     @Override

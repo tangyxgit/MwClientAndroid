@@ -63,18 +63,18 @@ public class MessageAudioHolder extends MessageContentHolder {
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             params.rightMargin = 24;
             audioPlayImage.setImageResource(R.drawable.voice_msg_playing_3);
-            audioPlayImage.setColorFilter(ContextCompat.getColor(audioPlayImage.getContext(),R.color.color_f5f6fa));
+            audioPlayImage.setColorFilter(ContextCompat.getColor(audioPlayImage.getContext(),R.color.text_color_black));
             audioPlayImage.setRotation(180f);
             audioContentView.removeView(audioPlayImage);
             audioContentView.addView(audioPlayImage);
             unreadAudioText.setVisibility(View.GONE);
-            audioTimeText.setTextColor(ContextCompat.getColor(audioTimeText.getContext(),R.color.color_f5f6fa));
+            audioTimeText.setTextColor(ContextCompat.getColor(audioTimeText.getContext(),R.color.black));
         } else {
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             params.leftMargin = 24;
             // TODO 图标不对
             audioPlayImage.setImageResource(R.drawable.voice_msg_playing_3);
-            audioPlayImage.setColorFilter(ContextCompat.getColor(audioPlayImage.getContext(),R.color.color_999999));
+            audioPlayImage.setColorFilter(ContextCompat.getColor(audioPlayImage.getContext(),R.color.text_color_black));
             audioContentView.removeView(audioPlayImage);
             audioContentView.addView(audioPlayImage, 0);
             if (msg.getCustomInt() == UNREAD) {

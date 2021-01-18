@@ -103,11 +103,8 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
         mInputMoreView = findViewById(R.id.more_groups);
         mSendAudioButton = findViewById(R.id.chat_voice_input);
         mAudioInputSwitchButton = findViewById(R.id.voice_input_switch);
-        mAudioInputSwitchButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_b2b2b2));
         mEmojiInputButton = findViewById(R.id.face_btn);
-        mEmojiInputButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_b2b2b2));
         mMoreInputButton = findViewById(R.id.more_btn);
-        mMoreInputButton.setColorFilter(ContextCompat.getColor(getContext(),R.color.color_b2b2b2));
         mSendTextButton = findViewById(R.id.send_btn);
         mTextInput = findViewById(R.id.chat_message_input);
 
@@ -119,7 +116,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
         mInputMoreActionList.clear();
         InputMoreActionUnit action = new InputMoreActionUnit();
         if (!mSendPhotoDisable) {
-            action.setIconResId(R.drawable.img_photo);
+            action.setIconResId(R.drawable.icon_photo);
             action.setTitleId(R.string.pic);
             action.setOnClickListener(new OnClickListener() {
                 @Override

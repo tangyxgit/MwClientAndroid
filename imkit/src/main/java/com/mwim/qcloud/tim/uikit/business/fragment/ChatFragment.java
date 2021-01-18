@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.business.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.work.util.SLog;
+import com.workstation.permission.PermissionsManager;
 
 import java.util.List;
 
@@ -41,7 +43,9 @@ import static android.view.View.VISIBLE;
 
 
 public class ChatFragment extends BaseFragment {
-
+    public static String[] PERMISSIONS = new String[]{
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA};
     private View mBaseView;
     private ChatLayout mChatLayout;
     private ChatInfo mChatInfo;
@@ -55,6 +59,9 @@ public class ChatFragment extends BaseFragment {
     }
 
     private void initView() {
+        if(!PermissionsManager.getInstance().hasAllPermissions(getContext(),PERMISSIONS)){
+            PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(this, PERMISSIONS, null);
+        }
         final Bundle bundle = getArguments();
         if(bundle==null){
             getActivity().finish();

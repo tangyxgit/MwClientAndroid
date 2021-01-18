@@ -95,14 +95,6 @@ public class ConversationIconView extends RelativeLayout {
         }
     }
 
-    public void setDefaultImageResId(@DrawableRes int resId, @ColorInt int color) {
-        BitmapDrawable bd = (BitmapDrawable) ContextCompat.getDrawable(getContext(),resId);
-        if(bd!=null){
-            bd.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-            mIconView.setImageDrawable(bd);
-        }
-    }
-
     public void setBitmapResId(int resId) {
         BitmapDrawable bd = (BitmapDrawable) ContextCompat.getDrawable(getContext(),resId);
         if(bd!=null){

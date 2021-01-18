@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,15 +67,16 @@ public class MessageFileHolder extends MessageContentHolder {
         }else{
             fileIconImage.setImageResource(R.drawable.icon_default_fill);
         }
-        if(msg.isSelf()){
-            fileNameText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
-            fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
-            fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
-        }else{
-            fileNameText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.black_font_color));
-            fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.color_999999));
-            fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.color_999999));
-        }
+//        if(msg.isSelf()){
+//            fileNameText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
+//            fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
+//            fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.white));
+//        }else{
+//            fileNameText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.black_font_color));
+//            fileSizeText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.color_999999));
+//            fileStatusText.setTextColor(ContextCompat.getColor(fileNameText.getContext(),R.color.color_999999));
+//        }
+        msgContentFrame.setBackgroundColor(Color.TRANSPARENT);
         String size = FileUtil.FormetFileSize(fileElem.getFileSize());
         fileSizeText.setText(size);
         msgContentFrame.setOnClickListener(new View.OnClickListener() {

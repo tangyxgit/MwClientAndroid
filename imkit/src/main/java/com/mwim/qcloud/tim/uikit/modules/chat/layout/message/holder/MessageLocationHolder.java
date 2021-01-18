@@ -1,5 +1,6 @@
 package com.mwim.qcloud.tim.uikit.modules.chat.layout.message.holder;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class MessageLocationHolder extends MessageContentHolder {
     public void layoutVariableViews(MessageInfo msg, int position) {
         String desc = "";
         double lat=0,lng = 0;
+        msgContentFrame.setBackgroundColor(Color.TRANSPARENT);
         if(msg.getTimMessage().getCustomElem()!=null){//可能是小程序发来的
             V2TIMCustomElem customElem = msg.getTimMessage().getCustomElem();
             String data = new String(customElem.getData());

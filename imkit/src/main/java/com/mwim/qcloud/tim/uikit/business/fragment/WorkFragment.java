@@ -1,6 +1,5 @@
 package com.mwim.qcloud.tim.uikit.business.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.divider.HorizontalDividerItemDecoration;
-import com.chad.library.adapter.base.divider.VerticalDividerItemDecoration;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
@@ -49,7 +47,7 @@ public class WorkFragment extends BaseFragment implements OnResultDataListener {
         mAdapter.addFooterView(view);
 
         view = new View(getContext());
-        view.setLayoutParams(new LinearLayout.LayoutParams(1, SizeUtils.dp2px(getContext(),35)));
+        view.setLayoutParams(new LinearLayout.LayoutParams(1, SizeUtils.dp2px(getContext(),25)));
         mAdapter.addHeaderView(view);
         return baseView;
     }
