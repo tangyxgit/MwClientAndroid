@@ -360,7 +360,7 @@ public class MwWorkActivity extends IMBaseActivity implements
         }else if(fragment instanceof WorkFragment){
             ((WorkFragment) fragment).refreshTool();
         }
-        if(fragment instanceof WorkFragment){
+        if(fragment instanceof WorkFragment || fragment instanceof ProfileFragment){
             setStatusBar(ContextCompat.getColor(this,R.color.background_color));
         }else{
             setStatusBar(ContextCompat.getColor(this,R.color.white));

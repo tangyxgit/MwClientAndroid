@@ -23,7 +23,7 @@
         android:layout_width="@dimen/contact_avatar_width"
         android:layout_height="@dimen/contact_avatar_width"
         android:layout_marginStart="10dp"
-        tools:src="@drawable/ic_avatar" />
+        tools:src="@drawable/default_head" />
 
     <TextView
         android:id="@+id/tv_user_name"
@@ -31,6 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_size_large"/>
+        android:textSize="@dimen/text_size_middle"/>
 
 </LinearLayout>

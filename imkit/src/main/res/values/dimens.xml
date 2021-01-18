@@ -30,8 +30,8 @@
     <dimen name="item_width">50dp</dimen>
     <dimen name="conversation_avatar_width">50dp</dimen>
     <dimen name="conversation_avatar_height">50dp</dimen>
-    <dimen name="contact_avatar_width">40dp</dimen>
-    <dimen name="contact_avatar_height">40dp</dimen>
+    <dimen name="contact_avatar_width">36dp</dimen>
+    <dimen name="contact_avatar_height">36dp</dimen>
 
     <dimen name="switch_thumb_padding">2dp</dimen>
     <dimen name="switch_thumb_width">23dp</dimen>

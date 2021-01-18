@@ -104,10 +104,10 @@ public class ChatFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     mChatInfo.setShowAddGroup(true);
-                    Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
+                    Intent intent = new Intent(getContext(), FriendProfileActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(IMKitConstants.ProfileType.CONTENT, mChatInfo);
-                    TUIKit.getAppContext().startActivity(intent);
+                    startActivity(intent);
                 }
             });
         }
@@ -124,6 +124,7 @@ public class ChatFragment extends BaseFragment {
                     return;
                 }
                 ChatInfo info = new ChatInfo();
+                info.setShowAddGroup(true);
                 info.setId(messageInfo.getFromUser());
                 Intent intent = new Intent(TUIKit.getAppContext(), FriendProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

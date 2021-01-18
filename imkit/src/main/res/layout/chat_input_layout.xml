@@ -73,7 +73,7 @@
             android:id="@+id/send_btn"
             android:layout_width="40dp"
             android:layout_height="30dp"
-            android:background="@drawable/right_buble"
+            android:background="@drawable/shape_2da0f0_radius_5"
             android:text="@string/send"
             android:textColor="#fff"
             android:textSize="13sp"

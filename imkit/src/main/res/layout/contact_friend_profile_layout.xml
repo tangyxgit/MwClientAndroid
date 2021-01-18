@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_20"
-            android:background="@color/white"
             android:orientation="horizontal">
             <LinearLayout
                 android:orientation="vertical"
@@ -38,7 +37,7 @@
                     android:textColor="@color/black"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_12"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
@@ -50,7 +49,7 @@
                     android:textColor="@color/black"
                     tools:text="@string/app_name"
                     android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="20sp" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/mobile"
                     tools:text="@string/app_name"
@@ -63,28 +62,26 @@
                 android:id="@+id/add_group_member"
                 android:gravity="center"
                 android:visibility="gone"
-                android:background="@drawable/bottom_action_border"
-                android:layout_width="56dp"
-                android:layout_height="56dp">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:src="@drawable/add_group_member"/>
             </LinearLayout>
 
         </LinearLayout>
         <LinearLayout
             android:id="@+id/add_wording_layout"
-            android:background="@color/white"
-            android:paddingLeft="@dimen/dp_20"
-            android:paddingRight="@dimen/dp_20"
-            android:paddingBottom="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/add_wording"
                 android:gravity="top"
-                android:background="@drawable/border_backgroun_color_r_10"
+                android:background="@drawable/shape_bg_white_radius_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
@@ -96,9 +93,13 @@
 
         <LinearLayout
             android:id="@+id/dep_layout"
-            android:visibility="gone"
+            android:visibility="visible"
+            android:background="@drawable/shape_bg_white_radius_10"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
+            android:padding="@dimen/dp_4"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.mwim.qcloud.tim.uikit.component.LineControllerView
@@ -126,73 +127,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:name="@string/im_email" />
+            <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                android:id="@+id/remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:canNav="true"
+                app:name="@string/profile_remark" />
+            <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                android:id="@+id/chat_to_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:isSwitch="true"
+                app:name="@string/chat_to_top" />
+            <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                android:id="@+id/blackList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isSwitch="true"
+                app:name="@string/profile_black" />
         </LinearLayout>
 
-        <com.mwim.qcloud.tim.uikit.component.LineControllerView
-            android:id="@+id/remark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:isTop="true"
-            app:canNav="true"
-            app:name="@string/profile_remark" />
-
-        <com.mwim.qcloud.tim.uikit.component.LineControllerView
-            android:id="@+id/chat_to_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"
-            app:isSwitch="true"
-            app:isTop="true"
-            app:name="@string/chat_to_top" />
-
-        <com.mwim.qcloud.tim.uikit.component.LineControllerView
-            android:id="@+id/blackList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:isSwitch="true"
-            app:isTop="true"
-            app:name="@string/profile_black" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
             android:orientation="vertical">
 
-            <TextView
+            <Button
                 android:id="@+id/btnChat"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:text="@string/profile_chat"
-                android:textSize="@dimen/sp_16"
-                android:textColor="@color/color_2da0f0" />
+                android:layout_height="68dp"
+                android:background="@drawable/btn_bg_blue"
+                android:textColor="@color/white"
+                android:text="@string/profile_chat"/>
 
-            <TextView
+            <Button
                 android:id="@+id/btnAudioVideo"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/white"
+                android:layout_height="68dp"
+                android:background="@drawable/btn_bg_blue"
                 android:gravity="center"
-                android:layout_marginTop="0.5dp"
                 android:text="@string/profile_chat_video_audio"
-                android:textSize="@dimen/sp_16"
-                android:textColor="@color/color_2da0f0" />
+                android:textColor="@color/white" />
 
-            <TextView
+            <Button
                 android:id="@+id/btnDel"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
+                android:layout_height="68dp"
+                android:layout_marginTop="79dp"
+                android:background="@drawable/btn_bg_red"
                 android:gravity="center"
                 android:text="@string/profile_del"
                 android:textSize="@dimen/sp_16"
-                android:textColor="@color/negative_text" />
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 

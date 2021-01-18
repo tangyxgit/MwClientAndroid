@@ -85,7 +85,7 @@ public class GroupInfoAdapter extends BaseAdapter {
         holder.memberIcon.setBackground(null);
         if (info.getMemberType() == ADD_TYPE) {
             GlideEngine.loadImage(holder.memberIcon,R.drawable.add_group_member);
-            holder.memberIcon.setBackgroundResource(R.drawable.bottom_action_border);
+//            holder.memberIcon.setBackgroundResource(R.drawable.bottom_action_border);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,8 +95,8 @@ public class GroupInfoAdapter extends BaseAdapter {
                 }
             });
         } else if (info.getMemberType() == DEL_TYPE) {
-            GlideEngine.loadImage(holder.memberIcon,R.drawable.del_group_member);
-            holder.memberIcon.setBackgroundResource(R.drawable.bottom_action_border);
+            GlideEngine.loadImage(holder.memberIcon,R.drawable.del_group_member_);
+//            holder.memberIcon.setBackgroundResource(R.drawable.bottom_action_border);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

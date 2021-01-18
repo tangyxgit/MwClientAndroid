@@ -137,7 +137,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         mAddWordingLayout = findViewById(R.id.add_wording_layout);
         mAddGroupMember = findViewById(R.id.add_group_member);
     }
-
+    private boolean isShowAddGroup;
     public void initData(Object data) {
         SLog.e("friendProfile data:"+data);
         if (data instanceof ChatInfo) {
@@ -146,7 +146,8 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             if(isSelf()){
                 return;
             }
-            if(mChatInfo.isShowAddGroup()){
+            isShowAddGroup = mChatInfo.isShowAddGroup();
+            if(isShowAddGroup){
                 mBottomNameView.setVisibility(VISIBLE);
                 mAddGroupMember.setVisibility(VISIBLE);
                 mAddGroupMember.setOnClickListener(this);
@@ -272,6 +273,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         mRemarkView.setVisibility(GONE);
         mAddBlackView.setVisibility(GONE);
         mChatAudioVideo.setVisibility(GONE);
+        mAddGroupMember.setVisibility(GONE);
         mAddWordingView.setHint(R.string.conversation_wording_send);
         mAddWordingView.setText(getResources().getString(R.string.text_contacts_add_wording,UserApi.instance().getNickName()));
         mAddWordingView.setEnabled(true);
@@ -384,7 +386,7 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
         });
         mId = bean.getId();
         mNickname = bean.getNickname();
-        SLog.e("isFriend:"+bean.isFriend());
+        SLog.e("isFriend:"+bean.isFriend()+">"+isShowAddGroup);
         mAddBlackView.setCheckListener(null);
         mAddBlackView.setChecked(bean.isBlackList());
         mAddBlackView.setCheckListener(new CompoundButton.OnCheckedChangeListener() {
@@ -398,6 +400,9 @@ public class FriendProfileLayout extends LinearLayout implements View.OnClickLis
             }
         });
         if (bean.isFriend()) {
+            if(isShowAddGroup){
+                mAddGroupMember.setVisibility(VISIBLE);
+            }
             mAddWordingLayout.setVisibility(GONE);
             mDepLayout.setVisibility(VISIBLE);
             mRemarkView.setVisibility(VISIBLE);

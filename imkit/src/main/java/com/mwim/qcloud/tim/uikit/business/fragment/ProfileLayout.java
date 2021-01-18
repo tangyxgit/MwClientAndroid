@@ -84,7 +84,6 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
 
         LineControllerView mQRCode = findViewById(R.id.modify_qrcode);
         mQRCode.setLeftDrawable(R.drawable.icon_qrcode_fill);
-        findViewById(R.id.qr_code).setOnClickListener(this);
         mQRCode.setOnClickListener(this);
 
         LineControllerView mScan = findViewById(R.id.modify_scan);
@@ -149,8 +148,6 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
             message.setLink("http://yzmsri.com/");
             message.setBusinessID(IMKitConstants.BUSINESS_ID_CUSTOM_CARD);
             YzIMKitAgent.instance().startCustomMessage(message);
-        }else if(v.getId() == R.id.qr_code || v.getId()==R.id.modify_qrcode){
-            getContext().startActivity(new Intent(getContext(), UserQRCodeActivity.class));
         }else if(v.getId() == R.id.modify_scan){
             getContext().startActivity(new Intent(getContext(), ScanIMQRCodeActivity.class));
         }else if(v.getId() == R.id.modify_agreement){

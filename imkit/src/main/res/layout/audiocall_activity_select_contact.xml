@@ -50,7 +50,7 @@
         android:focusableInTouchMode="true"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="@dimen/dp_5"
-        android:background="@drawable/search_add_more"
+        android:background="@drawable/search_bg_img"
         android:hint="@string/search_call_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
