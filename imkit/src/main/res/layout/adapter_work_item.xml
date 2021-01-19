@@ -4,7 +4,7 @@
     android:padding="@dimen/dp_15"
     android:layout_marginLeft="@dimen/dp_15"
     android:layout_marginRight="@dimen/dp_15"
-    android:background="@drawable/border_background_color_r_8"
+    android:background="@drawable/card_work_bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <androidx.appcompat.widget.AppCompatTextView

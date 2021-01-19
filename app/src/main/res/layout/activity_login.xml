@@ -34,7 +34,7 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:background="@drawable/shape_border_editor"
+            android:background="@drawable/search_bg_img"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_marginRight="@dimen/dp_20"
             android:layout_marginTop="44dp"

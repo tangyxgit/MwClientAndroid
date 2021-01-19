@@ -53,7 +53,7 @@
         <item name="android:layout_marginRight">@dimen/dp_20</item>
         <item name="android:textSize">@dimen/sp_16</item>
         <item name="elevation">3dp</item>
-        <item name="android:background">@drawable/shape_border_editor</item>
+        <item name="android:background">@drawable/search_bg_img</item>
     </style>
 <!--    按钮-->
     <style name="ButtonStyleLarge">
@@ -91,5 +91,15 @@
     <style name="AnimationMainTitleMore">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+    <style name="CardShadowLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/dp_10</item>
+        <item name="android:background">@drawable/card_work_bg</item>
+        <item name="android:layout_marginRight">@dimen/dp_10</item>
+        <item name="android:layout_marginLeft">@dimen/dp_10</item>
+        <item name="android:layout_marginTop">@dimen/dp_10</item>
+        <item name="android:orientation">vertical</item>
     </style>
 </resources>

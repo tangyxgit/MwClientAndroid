@@ -275,7 +275,7 @@
         <activity android:name=".business.active.UserQRCodeActivity"
             android:theme="@style/Theme.AppCompat.Slider"/>
         <activity android:name=".business.active.ScanIMQRCodeActivity"
-            android:theme="@style/Theme.AppCompat.Slider"/>
+            android:theme="@style/AppThemeNoBar"/>
         <activity android:name=".business.active.SystemContactActivity"
             android:theme="@style/Theme.AppCompat.Slider"/>
         <activity android:name=".business.active.CityAddressActivity"

@@ -73,35 +73,26 @@
         </LinearLayout>
         <LinearLayout
             android:id="@+id/add_wording_layout"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            style="@style/CardShadowLayout"
+            android:layout_marginTop="0dp">
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/add_wording"
                 android:gravity="top"
-                android:background="@drawable/shape_bg_white_radius_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_14"
                 android:enabled="false"
                 android:padding="@dimen/dp_10"
+                android:background="@color/transparent"
                 android:hint="@string/conversation_wording_message"
                 android:minHeight="100dp"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/dep_layout"
-            android:visibility="visible"
-            android:background="@drawable/shape_bg_white_radius_10"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/dp_5"
-            android:padding="@dimen/dp_4"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:visibility="gone"
+            style="@style/CardShadowLayout"
+            android:layout_marginTop="0dp">
             <com.mwim.qcloud.tim.uikit.component.LineControllerView
                 android:id="@+id/modify_department"
                 android:visibility="gone"
