@@ -103,6 +103,11 @@ public class LineControllerView extends LinearLayout {
         mContentText.setText(content);
     }
 
+    public void setIsTop(boolean mIsTop) {
+        this.mIsTop = mIsTop;
+        topLine.setVisibility(mIsTop?GONE:VISIBLE);
+    }
+
     public void setSingleLine(boolean singleLine) {
         mContentText.setSingleLine(singleLine);
     }

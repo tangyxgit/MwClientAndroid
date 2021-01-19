@@ -70,14 +70,6 @@ public class MwWorkActivity extends IMBaseActivity implements
         super.onInitView();
         instance = this;
         prepareThirdPushToken();
-        //设置为必须要验证才能加好友
-        V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
-        v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
-//        HashMap<String,byte[]> customMap = new HashMap<>();
-//        customMap.put("mobile", UserApi.instance().getMobile().getBytes());
-//        v2TIMUserFullInfo.setCustomInfo(customMap);
-        V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
-
         mNavigationBar = findViewById(R.id.bottom_navigation_bar);
         mMessageBadge = new TextBadgeItem();
         mMessageBadge.hide();
@@ -119,6 +111,15 @@ public class MwWorkActivity extends IMBaseActivity implements
         String yzAppId = SharedUtils.getString("YzAppId");
         if("de241446a50499bb77a8684cf610fd04".equals(yzAppId)){//只有元信才需要去验证是否升级
             UpdateAppDialog.showUpdateDialog(this,false);
+            //设置为必须要验证才能加好友
+            V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
+            v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_NEED_CONFIRM);
+            V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
+        }else{
+            //随便加好友
+            V2TIMUserFullInfo v2TIMUserFullInfo = new V2TIMUserFullInfo();
+            v2TIMUserFullInfo.setAllowType(V2TIMUserFullInfo.V2TIM_FRIEND_ALLOW_ANY);
+            V2TIMManager.getInstance().setSelfInfo(v2TIMUserFullInfo, null);
         }
     }
 

@@ -7,4 +7,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- 欢迎页面-->
+    <style name="Theme.AppCompat.Welcome" parent="@style/AppThemeNoBar">
+        <item name="android:windowBackground">@drawable/app_splash</item>
+        <item name="android:windowDisablePreview">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

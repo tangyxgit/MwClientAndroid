@@ -96,10 +96,12 @@ public final class YzIMKitAgent {
     private YzStatusListener mIMKitStatusListener;
     private YzWorkAppItemClickListener mWorkAppItemClickListener;
     private int functionPrem;
+    private String yzAppId;
 
     private YzIMKitAgent(Context context, String mYzAppId) {
         this.mContext = context;
         loadConfig();
+        this.yzAppId = mYzAppId;
         SharedUtils.putData("YzAppId",mYzAppId);
         UserApi userApi = UserApi.instance();
         userApi.setStore("im sdk");
@@ -247,6 +249,14 @@ public final class YzIMKitAgent {
             ToastUtil.error(mContext,R.string.toast_conversation_permission);
             return;
         }
+//        if("de241446a50499bb77a8684cf610fd04".equals(yzAppId)){//只有元信才需要去验证是否升级
+//        }else{
+//
+//        }
+        toChatInfo(toChatId,chatName,finishToConversation);
+
+    }
+    private void toChatInfo(String toChatId,String chatName,boolean finishToConversation){
         ChatInfo chatInfo = new ChatInfo();
         chatInfo.setType(V2TIMConversation.V2TIM_C2C);
         chatInfo.setId(toChatId);

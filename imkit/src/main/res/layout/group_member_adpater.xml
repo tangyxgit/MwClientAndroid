@@ -14,7 +14,7 @@
         android:src="@drawable/default_head" />
     <TextView
         android:id="@+id/group_member_name"
-        android:layout_width="36dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:gravity="center"

@@ -40,12 +40,6 @@
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
-    <!-- 欢迎页面-->
-    <style name="Theme.AppCompat.Welcome" parent="@style/AppThemeNoBar">
-        <item name="android:windowBackground">@drawable/app_splash</item>
-        <item name="android:windowDisablePreview">false</item>
-        <item name="android:windowFullscreen">true</item>
-    </style>
     <!--  设置ToolBar样式-->
     <style name="ToolBarTheme" parent="AppActionBar">
         <item name="android:layout_width">match_parent</item>

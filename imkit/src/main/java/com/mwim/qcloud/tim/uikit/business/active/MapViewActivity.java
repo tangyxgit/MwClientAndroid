@@ -121,14 +121,6 @@ public abstract class MapViewActivity extends BaseActivity implements AMap.OnMar
     }
 
     @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        if(mMapView!=null){
-            mMapView.onLowMemory();
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         if(mMapView!=null){

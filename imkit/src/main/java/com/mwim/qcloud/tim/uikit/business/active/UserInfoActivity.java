@@ -67,8 +67,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         mPosition = findViewById(R.id.modify_position);
         mCard = findViewById(R.id.modify_card);
         mEmail = findViewById(R.id.modify_email);
-        ImageView mRightView = findViewById(R.id.icon_arrow_right);
-        mRightView.setColorFilter(ContextCompat.getColor(this,R.color.color_E4E6E9));
     }
 
     @Override

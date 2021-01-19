@@ -99,12 +99,13 @@
                 app:name="@string/join_group_type" />
 
             <LinearLayout
-                android:padding="@dimen/dp_4"
+                android:id="@+id/group_owner_layout"
                 android:orientation="vertical"
-                android:layout_marginLeft="@dimen/dp_15"
-                android:layout_marginTop="@dimen/dp_15"
-                android:layout_marginRight="@dimen/dp_15"
                 android:background="@drawable/shape_bg_white_radius_10"
+                android:padding="@dimen/dp_4"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
@@ -114,6 +115,18 @@
                     app:isTop="true"
                     app:name="@string/transfer_group_owner"
                     app:canNav="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:padding="@dimen/dp_4"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_15"
+                android:background="@drawable/shape_bg_white_radius_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
                     android:id="@+id/group_member_admin"
                     android:layout_width="match_parent"
@@ -133,6 +146,7 @@
                     android:numColumns="6" />
 
                 <com.mwim.qcloud.tim.uikit.component.LineControllerView
+                    app:isTop="true"
                     android:id="@+id/self_nickname_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -57,6 +57,7 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
     private LineControllerView mMutedSwitchView;
     private LineControllerView mRevOptView;
     private LineControllerView mTopSwitchView;
+    private View mOwnerLayout;
     private LineControllerView mTransferGroupView;
     private LineControllerView mMemberAdminView;
     private Button mDissolveBtn;
@@ -126,6 +127,7 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
         mNickView.setOnClickListener(this);
         mNickView.setCanNav(true);
         //转让群主
+        mOwnerLayout = findViewById(R.id.group_owner_layout);
         mTransferGroupView = findViewById(R.id.transfer_group_owner);
         mTransferGroupView.setOnClickListener(new OnClickListener() {
             @Override
@@ -383,7 +385,7 @@ public class GroupInfoLayout extends LinearLayout implements IGroupMemberLayout,
                 mDissolveBtn.setText(R.string.dissolve);
             }
         } else {
-            mTransferGroupView.setVisibility(GONE);
+            mOwnerLayout.setVisibility(GONE);
 //            mJoinTypeView.setVisibility(GONE);
             mDissolveBtn.setText(R.string.exit_group);
         }

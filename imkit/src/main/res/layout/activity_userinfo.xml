@@ -14,8 +14,8 @@
         android:layout_height="wrap_content">
         <RelativeLayout
             android:id="@+id/user_layout"
-            android:paddingLeft="@dimen/dp_20"
-            android:paddingRight="@dimen/dp_20"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_10"
             android:paddingTop="@dimen/dp_10"
             android:background="@color/white"
