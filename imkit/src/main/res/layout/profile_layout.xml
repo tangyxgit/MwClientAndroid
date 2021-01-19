@@ -12,7 +12,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="57dp"
+            android:paddingTop="40dp"
             android:orientation="vertical">
             <FrameLayout
                 android:layout_width="match_parent"
@@ -22,9 +22,9 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center"
                     style="@style/CardShadowLayout"
-                    android:layout_marginTop="50dp">
+                    android:layout_marginTop="60dp">
                     <LinearLayout
-                       android:layout_marginTop="70dp"
+                       android:layout_marginTop="50dp"
                        android:gravity="center"
                         android:paddingLeft="@dimen/dp_10"
                         android:paddingRight="@dimen/dp_10"
@@ -91,8 +91,10 @@
                 <ImageView
                     android:id="@+id/self_icon"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:padding="20dp"
+                    android:background="@drawable/icon_avatar_bg"
                     android:src="@drawable/default_head"/>
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/user_editor"
