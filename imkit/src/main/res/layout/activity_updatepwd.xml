@@ -23,17 +23,11 @@
         android:id="@+id/confirm_password"
         android:hint="@string/hint_password_new"
         android:inputType="textPassword"/>
-    <com.dd.processbutton.iml.ActionProcessButton
+    <Button
         android:id="@+id/submit"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        style="@style/ButtonStyleLarge"
         android:layout_marginTop="@dimen/dp_20"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="@color/white"
-        app:pb_textProgress="@string/user_text_please_wait"
-        app:pb_cornerRadius="5dp"
-        app:pb_colorNormal="@color/defaultColorAccent"
-        app:pb_colorPressed="@color/defaultColorAccent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/user_save"/>
 </LinearLayout>

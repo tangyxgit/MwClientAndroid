@@ -62,17 +62,11 @@
             android:textColor="@drawable/selector_2da0f0_disabled_e6e6e6_text"
             android:text="@string/text_get_sms_code"/>
     </FrameLayout>
-    <com.dd.processbutton.iml.ActionProcessButton
+    <Button
         android:id="@+id/submit"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        style="@style/ButtonStyleLarge"
         android:layout_marginTop="@dimen/dp_20"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:textColor="@color/white"
-        app:pb_textProgress="@string/user_text_please_wait"
-        app:pb_cornerRadius="5dp"
-        app:pb_colorNormal="@color/defaultColorAccent"
-        app:pb_colorPressed="@color/defaultColorAccent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/text_compile"/>
 </LinearLayout>

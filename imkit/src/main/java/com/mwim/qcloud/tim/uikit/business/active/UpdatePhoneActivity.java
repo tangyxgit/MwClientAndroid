@@ -5,12 +5,10 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.dd.processbutton.iml.ActionProcessButton;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.R;
@@ -29,7 +27,7 @@ import com.work.util.ToastUtil;
 
 public class UpdatePhoneActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
 
-    private ActionProcessButton mSubmit;
+    private Button mSubmit;
     private EditText mPhone;
     private EditText mSmsCode;
     private TextView mSend;
@@ -59,10 +57,8 @@ public class UpdatePhoneActivity extends BaseActivity implements View.OnClickLis
 
     private void setSubEnable(boolean enable){
         if(enable){
-            mSubmit.setBackgroundCompat(ContextCompat.getDrawable(this,R.drawable.shape_2da0f0_radius_5));
             mSubmit.setEnabled(true);
         }else{
-            mSubmit.setBackgroundCompat(ContextCompat.getDrawable(this,R.drawable.shape_dbe7ef_radius_5));
             mSubmit.setEnabled(false);
         }
     }

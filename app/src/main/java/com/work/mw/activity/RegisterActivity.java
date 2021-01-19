@@ -5,13 +5,13 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.dd.processbutton.iml.ActionProcessButton;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
@@ -35,7 +35,7 @@ import com.work.util.ToastUtil;
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
 
-    private ActionProcessButton mSubmit;
+    private Button mSubmit;
     private EditText mPhone;
     private EditText mSmsCode;
     private TextView mSend;
@@ -80,10 +80,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
     private void setSubEnable(boolean enable){
         if(enable){
-            mSubmit.setBackgroundCompat(ContextCompat.getDrawable(this,R.drawable.shape_2da0f0_radius_5));
             mSubmit.setEnabled(true);
         }else{
-            mSubmit.setBackgroundCompat(ContextCompat.getDrawable(this,R.drawable.shape_dbe7ef_radius_5));
             mSubmit.setEnabled(false);
         }
     }
@@ -157,7 +155,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 registerReq.setMobile(phone);
                 registerReq.setSmsCode(smsCode);
                 mSubmit.setEnabled(false);
-                mSubmit.setProgress(50);
+                showProgressLoading(false,false);
                 if(isRegister){
                     Yz.getSession().register(registerReq,this);
                 }else{
@@ -207,7 +205,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             }
         }else if(resp instanceof LoginResp){
             mSubmit.setEnabled(true);
-            mSubmit.setProgress(0);
             if(resp.isSuccess()){
                 OpenData data = ((LoginResp) resp).getData();
                 if(data!=null){
@@ -223,7 +220,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             }
         }else if(req instanceof RegisterReq){
             mSubmit.setEnabled(true);
-            mSubmit.setProgress(0);
             if(resp.isSuccess()){
                 ToastUtil.success(this,R.string.toast_reset_success);
                 onBackPressed();

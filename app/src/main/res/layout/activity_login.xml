@@ -98,19 +98,14 @@
                 android:textColor="@color/color_999999"
                 android:textSize="13sp" />
         </RelativeLayout>
-        <com.dd.processbutton.iml.ActionProcessButton
+        <Button
             android:id="@+id/submit"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_12"
-            android:layout_marginEnd="20dp"
-            android:text="@string/text_manager_login"
-            android:textColor="@color/white"
-            app:pb_colorNormal="@color/defaultColorAccent"
-            app:pb_colorPressed="@color/defaultColorAccent"
-            app:pb_cornerRadius="5dp"
-            app:pb_textProgress="@string/text_login_ing" />
+            style="@style/ButtonStyleLarge"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:enabled="false"
+            android:text="@string/text_manager_login"/>
 
     </LinearLayout>
 

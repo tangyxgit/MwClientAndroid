@@ -10,12 +10,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
-import com.dd.processbutton.iml.ActionProcessButton;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
 import com.jaeger.library.StatusBarUtil;
@@ -49,7 +47,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             Manifest.permission.CHANGE_NETWORK_STATE};
     private EditText mPhone;
     private EditText mPassword;
-    private ActionProcessButton mSubmit;
+    private Button mSubmit;
 
     @Override
     public void onInitView() throws Exception {
@@ -101,10 +99,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     private void setSubEnable(boolean enable){
         if(enable){
-            mSubmit.setBackgroundCompat(ContextCompat.getDrawable(this,R.drawable.shape_2da0f0_radius_5));
             mSubmit.setEnabled(true);
         }else{
-            mSubmit.setBackgroundCompat(ContextCompat.getDrawable(this,R.drawable.shape_dbe7ef_radius_5));
             mSubmit.setEnabled(false);
         }
     }
@@ -139,7 +135,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 loginReq.setMobile(mPhone.getText().toString().trim());
                 loginReq.setPassword(mPassword.getText().toString().trim());
                 mSubmit.setEnabled(false);
-                mSubmit.setProgress(50);
+                showProgressLoading(false,false);
                 Yz.getSession().login(loginReq,this);
                 break;
         }
@@ -163,7 +159,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onResult(RequestWork req, ResponseWork resp) throws Exception {
         super.onResult(req, resp);
-        mSubmit.setProgress(0);
         mSubmit.setEnabled(true);
         if(resp.isSuccess()){
             if(resp instanceof LoginResp){
