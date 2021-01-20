@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.business.active.UserQRCodeActivity;
 import com.mwim.qcloud.tim.uikit.component.picture.imageEngine.impl.GlideEngine;
 import com.mwim.qcloud.tim.uikit.utils.FileUtil;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
@@ -155,8 +156,13 @@ public class PhotoViewActivity extends BaseActivity {
                                                new String[]{"image/jpeg"},
                                                new MediaScannerConnection.OnScanCompletedListener() {
                                                    @Override
-                                                   public void onScanCompleted(String path, Uri uri) {
-                                                       SLog.i("onScanCompleted"+path);
+                                                   public void onScanCompleted(final String path, Uri uri) {
+                                                       mPhotoView.post(new Runnable() {
+                                                           @Override
+                                                           public void run() {
+                                                               ToastUtil.success(PhotoViewActivity.this,getString(R.string.toast_save_success)+":"+path);
+                                                           }
+                                                       });
                                                    }
                                                });
                                    }

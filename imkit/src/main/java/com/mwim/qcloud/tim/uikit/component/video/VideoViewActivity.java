@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.mwim.qcloud.tim.uikit.base.BaseActivity;
+import com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity;
 import com.mwim.qcloud.tim.uikit.component.video.proxy.IPlayer;
 import com.mwim.qcloud.tim.uikit.utils.ImageUtil;
 import com.mwim.qcloud.tim.uikit.utils.PopWindowUtil;
@@ -110,13 +111,20 @@ public class VideoViewActivity extends BaseActivity {
                                     @Override
                                     public void run() {
                                         FileUtils fileUtils = new FileUtils(VideoViewActivity.this);
-                                        String mOpenFile = fileUtils.getStorageDirectory()+"/"+System.currentTimeMillis()/1000+".mp4";
+                                        final String mOpenFile = fileUtils.getStorageDirectory()+"/"+System.currentTimeMillis()/1000+".mp4";
                                         fileUtils.copyFile(videoUri.getPath(),mOpenFile);
                                         ContentResolver localContentResolver = getContentResolver();
                                         File file = new File(mOpenFile);
                                         ContentValues localContentValues = getVideoContentValues(file, System.currentTimeMillis());
                                         Uri localUri = localContentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, localContentValues);
                                         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, localUri));
+                                        mVideoView.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                ToastUtil.success(VideoViewActivity.this,getString(R.string.toast_save_success)+":"+mOpenFile);
+                                            }
+                                        });
+
                                     }
                                 }).start();
                             }catch (Exception e){
