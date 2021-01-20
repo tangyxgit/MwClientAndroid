@@ -8,7 +8,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/dp_25"
-        android:background="@drawable/shape_border_editor"
+        android:background="@drawable/search_bg_img"
         android:layout_marginLeft="@dimen/dp_20"
         android:layout_marginRight="@dimen/dp_20"
         android:layout_width="match_parent"

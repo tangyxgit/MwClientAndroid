@@ -47,7 +47,7 @@ public class WorkFragment extends BaseFragment implements OnResultDataListener {
         mAdapter.addFooterView(view);
 
         view = new View(getContext());
-        view.setLayoutParams(new LinearLayout.LayoutParams(1, SizeUtils.dp2px(getContext(),25)));
+        view.setLayoutParams(new LinearLayout.LayoutParams(1, SizeUtils.dp2px(getContext(),10)));
         mAdapter.addHeaderView(view);
         return baseView;
     }

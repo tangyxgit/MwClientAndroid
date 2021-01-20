@@ -154,6 +154,8 @@ public class ProfileLayout extends LinearLayout implements View.OnClickListener 
             WebActivity.startWebView(getResources().getString(R.string.text_agreement));
         }else if(v.getId() == R.id.modify_conceal){
             WebActivity.startWebView(getResources().getString(R.string.text_conceal));
+        }else if(v.getId()==R.id.modify_qrcode){
+            getContext().startActivity(new Intent(getContext(), UserQRCodeActivity.class));
         }
     }
 
