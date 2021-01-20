@@ -95,12 +95,10 @@ public final class YzIMKitAgent {
     private YzStatusListener mIMKitStatusListener;
     private YzWorkAppItemClickListener mWorkAppItemClickListener;
     private int functionPrem;
-    private String yzAppId;
 
     private YzIMKitAgent(Context context, String mYzAppId) {
         this.mContext = context;
         loadConfig();
-        this.yzAppId = mYzAppId;
         SharedUtils.putData("YzAppId",mYzAppId);
         UserApi userApi = UserApi.instance();
         userApi.setStore("im sdk");
