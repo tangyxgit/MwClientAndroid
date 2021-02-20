@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -21,12 +21,14 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
-    <application android:requestLegacyExternalStorage="true">
-        <!--        该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束。-->
+    <application
+        android:requestLegacyExternalStorage="true">
+<!--        该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束。-->
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
-            android:process=":dexopt"></service>
+            android:process=":dexopt" >
+        </service>
 
 
         <!-- ********小米推送service和receiver设置start******** -->
@@ -85,9 +87,13 @@
             android:name=".business.thirdpush.HUAWEIHmsMessageService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+        <meta-data
+            tools:replace="android:value"
+            android:name="com.huawei.hms.client.appid"
+            android:value="" />
         <!-- ********华为推送设置end******** -->
         <!-- ********魅族推送设置start******** -->
 
@@ -108,21 +114,26 @@
                 <action android:name="com.vivo.pushclient.action.RECEIVE" />
             </intent-filter>
         </receiver>
-
+        <meta-data tools:replace="android:value"
+            android:name="com.vivo.push.api_key"
+            android:value="" />
+        <meta-data tools:replace="android:value"
+            android:name="com.vivo.push.app_id"
+            android:value="" />
         <!-- ********OPPO 推送 start******** -->
         <service
             android:name="com.heytap.msp.push.service.CompatibleDataMessageCallbackService"
             android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
             <intent-filter>
-                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
+                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>
             </intent-filter>
         </service> <!--兼容Q以下版本-->
         <service
             android:name="com.heytap.msp.push.service.DataMessageCallbackService"
             android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
             <intent-filter>
-                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE" />
-                <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE" />
+                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>
+                <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE"/>
             </intent-filter>
         </service> <!--兼容Q版本-->
         <!-- ********OPPO 推送 end******** -->
@@ -130,42 +141,42 @@
         <activity
             android:name="com.mwim.qcloud.tim.uikit.component.video.CameraActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider" />
+            android:theme="@style/Theme.AppCompat.Slider"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.component.video.VideoViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Slider" />
+            android:theme="@style/Theme.AppCompat.Slider"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.component.photoview.PhotoViewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider" />
+            android:theme="@style/Theme.AppCompat.Slider"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.modules.group.info.GroupInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.AppCompat.Slider"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.component.SelectionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="stateAlwaysVisible" />
+            android:windowSoftInputMode="stateAlwaysVisible"
+            android:theme="@style/Theme.AppCompat.Slider"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.modules.group.apply.GroupApplyManagerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:theme="@style/Theme.AppCompat.Slider" />
         <activity
             android:name="com.mwim.qcloud.tim.uikit.modules.group.apply.GroupApplyMemberActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            android:theme="@style/Theme.AppCompat.Slider" />
 
         <activity
             android:name="com.mwim.liteav.SelectContactActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/Theme.AppCompat.Slider"/>
         <activity
             android:name="com.mwim.liteav.trtcaudiocall.ui.TRTCAudioCallActivity"
             android:launchMode="singleTop"
@@ -182,18 +193,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoBar" />
         <!--    业务逻辑    -->
-        <activity
-            android:name="com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity"
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.MwWorkActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.AppCompat.Slider"/>
         <activity
             android:name="com.mwim.qcloud.tim.uikit.business.active.ChatActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:theme="@style/Theme.AppCompat.Slider">
             <!-- 华为离线推送打开应用内页面 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -211,90 +221,65 @@
             <!-- OPPO离线推送的scheme url方式必须配置action和category -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
                 <data
-                    android:host="com.tencent.qcloud"
-                    android:scheme="pushscheme" />
+                    android:scheme="pushscheme"
+                    android:host="com.tencent.qcloud"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.mwim.qcloud.tim.uikit.business.active.AddMoreActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name="com.mwim.qcloud.tim.uikit.business.active.BlackListActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name="com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity"
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.AddMoreActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.BlackListActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.FriendProfileActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name="com.mwim.qcloud.tim.uikit.business.active.NewFriendActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name="com.mwim.qcloud.tim.uikit.business.active.GroupListActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name="com.mwim.qcloud.tim.uikit.business.active.StartC2CChatActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name="com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name=".business.active.UserInfoActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.UserSettingActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.UpdatePwdActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.SearchAddMoreActivity"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="stateVisible" />
-        <activity
-            android:name=".business.active.UpdatePhoneActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".modules.group.member.GroupMemberRemindActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.WebActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.X5FileOpenActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".modules.group.info.StartGroupMemberSelectActivity"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name=".business.active.AboutYzActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.ListStopMapActivity"
-            android:theme="@style/Theme.AppCompat.Slider"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name=".business.active.MapLocationActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.SelectMessageActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.UserQRCodeActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.ScanIMQRCodeActivity"
-            android:theme="@style/AppThemeNoBar" />
-        <activity
-            android:name=".business.active.SystemContactActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-        <activity
-            android:name=".business.active.CityAddressActivity"
-            android:theme="@style/Theme.AppCompat.Slider" />
-
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.NewFriendActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.GroupListActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.StartC2CChatActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name="com.mwim.qcloud.tim.uikit.business.active.StartGroupChatActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.UserInfoActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.UserSettingActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.UpdatePwdActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.SearchAddMoreActivity"
+            android:windowSoftInputMode="stateVisible"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.UpdatePhoneActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".modules.group.member.GroupMemberRemindActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.WebActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.X5FileOpenActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".modules.group.info.StartGroupMemberSelectActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.AboutYzActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.ListStopMapActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.MapLocationActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.SelectMessageActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.UserQRCodeActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.ScanIMQRCodeActivity"
+            android:theme="@style/AppThemeNoBar"/>
+        <activity android:name=".business.active.SystemContactActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
+        <activity android:name=".business.active.CityAddressActivity"
+            android:theme="@style/Theme.AppCompat.Slider"/>
         <provider
             android:name="com.mwim.qcloud.tim.uikit.utils.TUIKitFileProvider"
             android:authorities="${applicationId}.uikit.fileprovider"
@@ -302,7 +287,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths_public" />
+                android:resource="@xml/file_paths_public"/>
         </provider>
 
     </application>
