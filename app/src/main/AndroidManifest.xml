@@ -21,6 +21,17 @@
             android:value="ab887fbd22354b21ed5581fb8d859bb6"/>
         <service android:name="com.amap.api.location.APSService" />
 
+        <meta-data
+            tools:replace="android:value"
+            android:name="com.huawei.hms.client.appid"
+            android:value="" />
+
+        <meta-data tools:replace="android:value"
+            android:name="com.vivo.push.api_key"
+            android:value="" />
+        <meta-data tools:replace="android:value"
+            android:name="com.vivo.push.app_id"
+            android:value="" />
 
         <activity android:name=".activity.SplashActivity"
             android:theme="@style/Theme.AppCompat.Welcome">

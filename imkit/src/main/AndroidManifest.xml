@@ -90,10 +90,6 @@
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <meta-data
-            tools:replace="android:value"
-            android:name="com.huawei.hms.client.appid"
-            android:value="" />
         <!-- ********华为推送设置end******** -->
         <!-- ********魅族推送设置start******** -->
 
@@ -114,12 +110,6 @@
                 <action android:name="com.vivo.pushclient.action.RECEIVE" />
             </intent-filter>
         </receiver>
-        <meta-data tools:replace="android:value"
-            android:name="com.vivo.push.api_key"
-            android:value="" />
-        <meta-data tools:replace="android:value"
-            android:name="com.vivo.push.app_id"
-            android:value="" />
         <!-- ********OPPO 推送 start******** -->
         <service
             android:name="com.heytap.msp.push.service.CompatibleDataMessageCallbackService"
