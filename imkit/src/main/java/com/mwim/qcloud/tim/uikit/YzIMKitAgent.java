@@ -9,8 +9,6 @@ import com.google.gson.Gson;
 import com.http.network.listener.OnResultDataListener;
 import com.http.network.model.RequestWork;
 import com.http.network.model.ResponseWork;
-import com.huawei.hmf.tasks.Task;
-import com.huawei.hms.push.HmsMessaging;
 import com.mwim.qcloud.tim.uikit.base.IMEventListener;
 import com.mwim.qcloud.tim.uikit.base.IUIKitCallBack;
 import com.mwim.qcloud.tim.uikit.business.Constants;
@@ -23,17 +21,14 @@ import com.mwim.qcloud.tim.uikit.business.message.CustomMessage;
 import com.mwim.qcloud.tim.uikit.business.message.MessageNotification;
 import com.mwim.qcloud.tim.uikit.business.modal.UserApi;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
-import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.config.GeneralConfig;
 import com.mwim.qcloud.tim.uikit.config.TUIKitConfigs;
 import com.mwim.qcloud.tim.uikit.modules.chat.C2CChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
-import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfo;
 import com.mwim.qcloud.tim.uikit.modules.message.MessageInfoUtil;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
-import com.mwim.qcloud.tim.uikit.utils.PrivateConstants;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -42,7 +37,6 @@ import com.tencent.smtt.export.external.TbsCoreSettings;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
-import com.vivo.push.PushClient;
 import com.work.api.open.ApiClient;
 import com.work.api.open.Yz;
 import com.work.api.open.model.LoginResp;
@@ -52,7 +46,6 @@ import com.work.util.AppUtils;
 import com.work.util.SLog;
 import com.work.util.SharedUtils;
 import com.work.util.ToastUtil;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
 import java.util.HashMap;
@@ -302,22 +295,22 @@ public final class YzIMKitAgent {
     private void registerPush(){
         if (BrandUtil.isBrandXiaoMi()) {
             // 小米离线推送
-            MiPushClient.registerPush(mContext, PrivateConstants.XM_PUSH_APPID, PrivateConstants.XM_PUSH_APPKEY);
+//            MiPushClient.registerPush(mContext, PrivateConstants.XM_PUSH_APPID, PrivateConstants.XM_PUSH_APPKEY);
         } else if (BrandUtil.isBrandHuawei()) {
             // 华为离线推送，设置是否接收Push通知栏消息调用示例
-            HmsMessaging.getInstance(mContext).turnOnPush().addOnCompleteListener(new com.huawei.hmf.tasks.OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        SLog.i( "huawei turnOnPush Complete");
-                    } else {
-                        SLog.e("huawei turnOnPush failed: ret=" + task.getException().getMessage());
-                    }
-                }
-            });
+//            HmsMessaging.getInstance(mContext).turnOnPush().addOnCompleteListener(new com.huawei.hmf.tasks.OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(Task<Void> task) {
+//                    if (task.isSuccessful()) {
+//                        SLog.i( "huawei turnOnPush Complete");
+//                    } else {
+//                        SLog.e("huawei turnOnPush failed: ret=" + task.getException().getMessage());
+//                    }
+//                }
+//            });
         } else if (BrandUtil.isBrandVivo()) {
             // vivo离线推送
-            PushClient.getInstance(mContext.getApplicationContext()).initialize();
+//            PushClient.getInstance(mContext.getApplicationContext()).initialize();
         }
     }
 
@@ -339,11 +332,11 @@ public final class YzIMKitAgent {
     }
 
     public boolean parseOfflineMessage(Intent intent){
-        OfflineMessageBean bean = OfflineMessageDispatcher.parseOfflineMessage(intent);
-        if (bean != null) {
-            OfflineMessageDispatcher.redirect(bean);
-            return true;
-        }
+//        OfflineMessageBean bean = OfflineMessageDispatcher.parseOfflineMessage(intent);
+//        if (bean != null) {
+//            OfflineMessageDispatcher.redirect(bean);
+//            return true;
+//        }
         return false;
     }
 

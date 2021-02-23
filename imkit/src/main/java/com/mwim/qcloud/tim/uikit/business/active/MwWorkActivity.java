@@ -2,7 +2,6 @@ package com.mwim.qcloud.tim.uikit.business.active;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
@@ -11,9 +10,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
-import com.huawei.agconnect.config.AGConnectServicesConfig;
-import com.huawei.hms.aaid.HmsInstanceId;
-import com.huawei.hms.common.ApiException;
 import com.mwim.liteav.model.CallModel;
 import com.mwim.liteav.model.TRTCAVCallImpl;
 import com.mwim.qcloud.tim.uikit.TUIKit;
@@ -27,7 +23,6 @@ import com.mwim.qcloud.tim.uikit.business.fragment.ConversationFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.ProfileFragment;
 import com.mwim.qcloud.tim.uikit.business.fragment.WorkFragment;
 import com.mwim.qcloud.tim.uikit.business.thirdpush.HUAWEIHmsMessageService;
-import com.mwim.qcloud.tim.uikit.business.thirdpush.ThirdPushTokenMgr;
 import com.mwim.qcloud.tim.uikit.modules.chat.GroupChatManagerKit;
 import com.mwim.qcloud.tim.uikit.modules.conversation.ConversationManagerKit;
 import com.mwim.qcloud.tim.uikit.utils.BrandUtil;
@@ -38,9 +33,6 @@ import com.tencent.imsdk.v2.V2TIMSignalingInfo;
 import com.mwim.qcloud.tim.uikit.R;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
-import com.vivo.push.IPushActionListener;
-import com.vivo.push.PushClient;
-import com.work.util.SLog;
 import com.work.util.SharedUtils;
 
 import java.util.ArrayList;
@@ -173,42 +165,42 @@ public class MwWorkActivity extends IMBaseActivity implements
 
 
     private void prepareThirdPushToken() {
-        ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
+//        ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
 
         if (BrandUtil.isBrandHuawei()) {
             // 华为离线推送
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        // read from agconnect-services.json
-                        String appId = AGConnectServicesConfig.fromContext(MwWorkActivity.this).getString("client/app_id");
-                        String token = HmsInstanceId.getInstance(MwWorkActivity.this).getToken(appId, "HCM");
-                        if (!TextUtils.isEmpty(token)) {
-                            ThirdPushTokenMgr.getInstance().setThirdPushToken(token);
-                            ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
-                        }
-                    } catch (ApiException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
+//            new Thread() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        // read from agconnect-services.json
+//                        String appId = AGConnectServicesConfig.fromContext(MwWorkActivity.this).getString("client/app_id");
+//                        String token = HmsInstanceId.getInstance(MwWorkActivity.this).getToken(appId, "HCM");
+//                        if (!TextUtils.isEmpty(token)) {
+//                            ThirdPushTokenMgr.getInstance().setThirdPushToken(token);
+//                            ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
+//                        }
+//                    } catch (ApiException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }.start();
         } else if (BrandUtil.isBrandVivo()) {
             // vivo离线推送
 //            DemoLog.i(TAG, "vivo support push: " + PushClient.getInstance(getApplicationContext()).isSupport());
-            PushClient.getInstance(getApplicationContext()).turnOnPush(new IPushActionListener() {
-                @Override
-                public void onStateChanged(int state) {
-                    if (state == 0) {
-                        String regId = PushClient.getInstance(getApplicationContext()).getRegId();
-                        ThirdPushTokenMgr.getInstance().setThirdPushToken(regId);
-                        ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
-                    } else {
-                        // 根据vivo推送文档说明，state = 101 表示该vivo机型或者版本不支持vivo推送，链接：https://dev.vivo.com.cn/documentCenter/doc/156
-                        SLog.i("vivopush open vivo push fail state = " + state);
-                    }
-                }
-            });
+//            PushClient.getInstance(getApplicationContext()).turnOnPush(new IPushActionListener() {
+//                @Override
+//                public void onStateChanged(int state) {
+//                    if (state == 0) {
+//                        String regId = PushClient.getInstance(getApplicationContext()).getRegId();
+//                        ThirdPushTokenMgr.getInstance().setThirdPushToken(regId);
+//                        ThirdPushTokenMgr.getInstance().setPushTokenToTIM();
+//                    } else {
+//                        // 根据vivo推送文档说明，state = 101 表示该vivo机型或者版本不支持vivo推送，链接：https://dev.vivo.com.cn/documentCenter/doc/156
+//                        SLog.i("vivopush open vivo push fail state = " + state);
+//                    }
+//                }
+//            });
         }
 //        else if (HeytapPushManager.isSupportPush()) {
 //            // oppo离线推送

@@ -8,9 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.mwim.qcloud.tim.uikit.business.Constants;
 import com.mwim.qcloud.tim.uikit.business.fragment.ChatFragment;
-import com.mwim.qcloud.tim.uikit.business.thirdpush.OfflineMessageDispatcher;
 import com.mwim.qcloud.tim.uikit.modules.chat.base.ChatInfo;
-import com.mwim.qcloud.tim.uikit.modules.chat.base.OfflineMessageBean;
 import com.tencent.imsdk.v2.V2TIMManager;
 import com.mwim.qcloud.tim.uikit.R;
 
@@ -43,30 +41,22 @@ public class ChatActivity extends IMBaseActivity {
             return;
         }
 
-        OfflineMessageBean bean = OfflineMessageDispatcher.parseOfflineMessage(intent);
         ChatInfo mChatInfo;
-        if (bean != null) {
-            mChatInfo = new ChatInfo();
-            mChatInfo.setType(bean.chatType);
-            mChatInfo.setId(bean.sender);
-            bundle.putSerializable(Constants.CHAT_INFO, mChatInfo);
-        } else {
-            mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
-            if(mChatInfo==null){
-                String chatId = bundle.getString(Constants.CHAT_INTO_ID);
-                int chatType = bundle.getInt(Constants.CHAT_INTO_TYPE,-1);
-                if(!TextUtils.isEmpty(chatId) && chatType!=-1){
-                    mChatInfo = new ChatInfo();
-                    mChatInfo.setId(chatId);
-                    mChatInfo.setType(chatType);
-                    mChatInfo.setChatName(bundle.getString(Constants.CHAT_INTO_NAME));
-                    bundle.putSerializable(Constants.CHAT_INFO, mChatInfo);
-                }
+        mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
+        if(mChatInfo==null){
+            String chatId = bundle.getString(Constants.CHAT_INTO_ID);
+            int chatType = bundle.getInt(Constants.CHAT_INTO_TYPE,-1);
+            if(!TextUtils.isEmpty(chatId) && chatType!=-1){
+                mChatInfo = new ChatInfo();
+                mChatInfo.setId(chatId);
+                mChatInfo.setType(chatType);
+                mChatInfo.setChatName(bundle.getString(Constants.CHAT_INTO_NAME));
+                bundle.putSerializable(Constants.CHAT_INFO, mChatInfo);
             }
-            if (mChatInfo == null) {
-                finish();
-                return;
-            }
+        }
+        if (mChatInfo == null) {
+            finish();
+            return;
         }
         if (V2TIMManager.getInstance().getLoginStatus() == V2TIM_STATUS_LOGINED) {
             ChatFragment mChatFragment = new ChatFragment();
